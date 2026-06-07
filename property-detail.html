@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxury Property in Guanacaste Costa Rica | Tiago Leao Real Estate</title>
+  <meta name="description" content="View this luxury property for sale in Guanacaste, Costa Rica. Contact Tiago Leao at KRAIN Luxury Real Estate for more information or to schedule a showing.">
+  <link rel="canonical" href="https://tiagoleaorealty.com/property-detail.html">
+  <meta property="og:title" content="Luxury Property in Guanacaste | Tiago Leao">
+  <meta property="og:type" content="product">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Luxury Property in Guanacaste, Costa Rica",
+    "description": "Luxury real estate for sale in Guanacaste, Costa Rica listed by Tiago Leao at KRAIN Luxury Real Estate.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tiago Leao Real Estate"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "RealEstateAgent",
+        "name": "Tiago Leao",
+        "url": "https://tiagoleaorealty.com"
+      }
+    }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #f4f6f4;
+      --charcoal: #f4f6f4;
+      --stone:    #6b7c6f;
+      --sand:     #3d5443;
+      --cream:    #1a2b1e;
+      --terra:    #2d5a3d;
+      --accent:   #7ec99a;
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+    button { cursor: none; font-family: var(--font); }
+
+    /* ─── Custom Cursor ──────────────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+    }
+    #cursor.hovered { width: 28px; height: 28px; opacity: 0.6; }
+    #cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(126,201,154,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.35s cubic-bezier(.2,.6,.3,1), width 0.3s ease, height 0.3s ease;
+    }
+
+    /* ─── Grain ──────────────────────────────────────────────────── */
+    .grain { position: relative; }
+    .grain::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .grain > * { position: relative; z-index: 2; }
+
+    /* ─── Scroll Reveal ──────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(.16,1,.3,1), transform 0.7s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.35s; }
+
+    /* ─── Nav ────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(244,246,244,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cream);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--terra); }
+    .nav-cta {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream);
+      border-bottom: 1px solid var(--terra);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .nav-cta:hover { color: var(--accent); }
+
+    /* ─── Page wrapper ───────────────────────────────────────────── */
+    .page-content {
+      padding-top: 80px;
+    }
+
+    /* ─── Photo Gallery ──────────────────────────────────────────── */
+    .gallery-wrap {
+      max-width: 1200px;
+      margin: 32px auto 0;
+      padding: 0 48px;
+    }
+    .gallery {
+      position: relative;
+      display: grid;
+      grid-template-columns: 3fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      height: 400px;
+      gap: 8px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--black);
+    }
+    .gallery-main {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-thumb {
+      background: #3a3a38;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-placeholder-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .gallery-show-all {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: #fff;
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 10px 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: none;
+      z-index: 10;
+    }
+    .gallery-show-all svg { width: 15px; height: 15px; }
+
+    /* ─── Detail Layout ──────────────────────────────────────────── */
+    .detail-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 48px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 80px;
+      align-items: start;
+    }
+
+    /* ─── Main Column ────────────────────────────────────────────── */
+    .detail-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .detail-eyebrow::before {
+      content: "";
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--terra);
+    }
+    .detail-title {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .detail-location {
+      font-size: 15px;
+      color: var(--stone);
+      margin-bottom: 8px;
+    }
+    .detail-price {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      color: var(--terra);
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+    }
+
+    /* Stats row */
+    .detail-stats {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 48px;
+    }
+    .detail-stat {
+      flex: 1;
+      padding: 24px 16px;
+      text-align: center;
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+    .detail-stat:last-child { border-right: none; }
+    .detail-stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+      display: block;
+    }
+    .detail-stat-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Description */
+    .detail-section-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 20px;
+    }
+    .detail-description {
+      font-size: 16px;
+      color: var(--sand);
+      line-height: 1.75;
+      margin-bottom: 48px;
+    }
+    .detail-description p + p { margin-top: 16px; }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 32px;
+      margin-bottom: 48px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--sand);
+    }
+    .feature-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(45,90,61,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-check svg { width: 10px; height: 10px; }
+
+    /* ─── Location Map ───────────────────────────────────────────── */
+    .map-section { margin-bottom: 48px; }
+    #property-map {
+      width: 100%;
+      height: 340px;
+      border-radius: 12px;
+      background: #d0c9be;
+      overflow: hidden;
+    }
+    .map-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: var(--stone); letter-spacing: 0.08em;
+    }
+    .map-marker {
+      width: 36px; height: 36px;
+      background: var(--terra);
+      border: 3px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      animation: markerPulse 2s ease-in-out infinite;
+    }
+    @keyframes markerPulse {
+      0%, 100% { box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+      50% { box-shadow: 0 4px 20px rgba(45,90,61,0.5); }
+    }
+
+    /* ─── Contact Form Toggle ────────────────────────────────────── */
+    .inquiry-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: var(--terra);
+      color: #f5f3ef;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 18px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .inquiry-toggle:hover { background: #a03d24; }
+    .inquiry-toggle-arrow {
+      transition: transform 0.3s ease;
+      display: flex;
+    }
+    .inquiry-toggle.open .inquiry-toggle-arrow {
+      transform: rotate(180deg);
+    }
+
+    .inquiry-collapse {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(.16,1,.3,1), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .inquiry-collapse.open {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    /* ─── Contact Form ───────────────────────────────────────────── */
+    .sidebar-form { display: flex; flex-direction: column; gap: 16px; padding-top: 20px; }
+    .sidebar-form label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--stone);
+      margin-bottom: 6px;
+    }
+    .sidebar-form input,
+    .sidebar-form textarea {
+      width: 100%;
+      background: rgba(0,0,0,0.03);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 10px;
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 15px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .sidebar-form input:focus,
+    .sidebar-form textarea:focus {
+      border-color: var(--terra);
+    }
+    .sidebar-form input::placeholder,
+    .sidebar-form textarea::placeholder {
+      color: var(--stone); opacity: 0.5;
+    }
+    .sidebar-form textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.5;
+    }
+    .sidebar-form .btn-primary {
+      border-radius: 10px;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 24px 0;
+    }
+    .form-success-icon {
+      width: 48px; height: 48px;
+      background: rgba(45,90,61,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .form-success h3 {
+      font-size: 18px; font-weight: 700;
+      color: var(--cream); margin-bottom: 8px;
+    }
+    .form-success p {
+      font-size: 14px; color: var(--stone); line-height: 1.5;
+    }
+
+    /* ─── Sidebar ────────────────────────────────────────────────── */
+    .detail-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+    .sidebar-card {
+      background: var(--charcoal);
+      padding: 40px 36px;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 16px;
+    }
+    .sidebar-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 12px;
+    }
+    .sidebar-heading {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .sidebar-sub {
+      font-size: 14px;
+      color: var(--stone);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--terra);
+      color: #f5f3ef;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 18px 24px;
+      border: none;
+      text-align: center;
+      transition: background 0.25s, transform 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: #a03d24; transform: translateY(-2px); }
+    .sidebar-agent {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .sidebar-agent-photo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #ccc;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .sidebar-agent-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .sidebar-agent-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--cream);
+    }
+    .sidebar-agent-title {
+      font-size: 12px;
+      color: var(--stone);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── Back link ──────────────────────────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--stone);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 48px 0;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--terra); }
+    .back-link svg { width: 14px; height: 14px; }
+
+    /* ─── Similar Properties ────────────────────────────────────── */
+    .similar-section {
+      padding: 100px 130px;
+      border-top: 1px solid rgba(45,90,61,0.12);
+    }
+    .similar-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .similar-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--terra);
+    }
+    .similar-heading {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      margin-bottom: 48px;
+    }
+    .similar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .sim-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.06);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sim-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    }
+    .sim-img {
+      height: 200px;
+      background: #d8ddd9;
+      overflow: hidden;
+      position: relative;
+    }
+    .sim-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .sim-card:hover .sim-img img { transform: scale(1.04); }
+    .sim-type {
+      position: absolute;
+      top: 12px; left: 12px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.9);
+      color: var(--cream);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .sim-info {
+      padding: 18px 20px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .sim-price {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .sim-meta {
+      font-size: 12px;
+      color: var(--stone);
+      margin-bottom: 6px;
+    }
+    .sim-meta strong { color: var(--sand); font-weight: 600; }
+    .sim-meta .meta-div { margin: 0 5px; color: var(--stone); font-size: 9px; }
+    .sim-name {
+      font-size: 13px;
+      color: var(--stone);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    #footer {
+      background: var(--charcoal);
+      padding: 80px 48px 48px;
+      border-top: 1px solid rgba(45,90,61,0.25);
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 60px;
+      margin-bottom: 60px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      gap: 48px;
+    }
+    .footer-brand .footer-name {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .footer-brand .footer-tagline {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .footer-contact { display: flex; flex-direction: column; gap: 16px; }
+    .footer-contact a {
+      font-size: 15px;
+      color: var(--sand);
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+      width: fit-content;
+    }
+    .footer-contact a:hover { color: var(--cream); border-color: var(--terra); }
+    .footer-krain { max-width: 220px; }
+    .footer-krain p { font-size: 13px; color: var(--stone); line-height: 1.6; margin-bottom: 8px; }
+    .footer-krain a { font-size: 13px; color: var(--sand); border-bottom: 1px solid var(--terra); transition: color 0.2s; }
+    .footer-krain a:hover { color: var(--cream); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy { font-size: 12px; color: var(--stone); letter-spacing: 0.04em; }
+    .footer-domain { font-size: 12px; color: rgba(0,0,0,0.25); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ─── Mobile ─────────────────────────────────────────────────── */
+    /* Hamburger & Mobile Nav */
+    .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    nav.nav-open .nav-hamburger span { background: #fff !important; }
+    nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+    nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav-mobile { position: fixed; inset: 0; background: #1a2b1e; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile.open { opacity: 1; pointer-events: all; }
+    .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
+    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile a:hover, .nav-mobile a:active { color: #fff; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #7ec99a; color: #1a2b1e !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .gallery { grid-template-columns: 1fr; grid-template-rows: 260px; }
+      .gallery-main { grid-row: 1; }
+      .gallery-thumb { display: none; }
+      .detail-layout { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
+      .detail-sidebar { position: static; }
+      .detail-stats { flex-wrap: wrap; }
+      .detail-stat { flex: 1 1 45%; border-right: none !important; border-bottom: 1px solid rgba(0,0,0,0.08); }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .similar-section { padding: 60px 24px; }
+      .similar-grid { grid-template-columns: 1fr; gap: 16px; }
+      .back-link { padding: 20px 24px 0; }
+      #footer { padding: 60px 24px 40px; }
+      .footer-top { flex-direction: column; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      #cursor, #cursor-ring { display: none; }
+      body { cursor: auto; }
+    }
+    @media (max-width: 600px) {
+      .gallery { grid-template-rows: 220px; }
+      .detail-title { font-size: 26px; }
+      .detail-stat { flex: 1 1 100%; }
+      .features-grid { grid-template-columns: 1fr; }
+      .similar-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">Tiago Leao</a>
+    <ul class="nav-links">
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="index.html#form-section">Work With Me</a></li>
+    </ul>
+    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="properties.html">Properties</a>
+    <a href="index.html#about">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#form-section">Work With Me</a>
+    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+  </div>
+
+  <div class="page-content">
+
+    <!-- Back link -->
+    <a href="properties.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      All Properties
+    </a>
+
+    <!-- Photo Gallery -->
+    <div class="gallery-wrap">
+    <div class="gallery" id="gallery">
+      <div class="gallery-main">
+        <span class="gallery-placeholder-label">Photo 1</span>
+      </div>
+      <div class="gallery-thumb">
+        <span class="gallery-placeholder-label">Photo 2</span>
+      </div>
+      <div class="gallery-thumb">
+        <span class="gallery-placeholder-label">Photo 3</span>
+      </div>
+      <div class="gallery-thumb">
+        <span class="gallery-placeholder-label">Photo 4</span>
+      </div>
+      <div class="gallery-thumb">
+        <span class="gallery-placeholder-label">Photo 5</span>
+      </div>
+      <button class="gallery-show-all" onclick="alert('Full gallery coming soon')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Show all photos
+      </button>
+    </div>
+    </div>
+
+    <!-- Detail Layout -->
+    <div class="detail-layout">
+
+      <!-- Main Column -->
+      <div class="detail-main">
+
+        <div class="detail-eyebrow reveal" id="detail-type">Luxury Villa</div>
+        <h1 class="detail-title reveal reveal-delay-1" id="detail-title">Tamarindo Highlands Estate</h1>
+        <div class="detail-location reveal reveal-delay-2" id="detail-location">Tamarindo Highlands, Guanacaste, Costa Rica</div>
+        <div class="detail-price reveal reveal-delay-3" id="detail-price">$2,450,000</div>
+
+        <!-- Stats -->
+        <div class="detail-stats reveal">
+          <div class="detail-stat">
+            <span class="detail-stat-value" id="stat-beds">4</span>
+            <span class="detail-stat-label">Bedrooms</span>
+          </div>
+          <div class="detail-stat">
+            <span class="detail-stat-value" id="stat-baths">4.5</span>
+            <span class="detail-stat-label">Bathrooms</span>
+          </div>
+          <div class="detail-stat">
+            <span class="detail-stat-value" id="stat-sqft">6,200</span>
+            <span class="detail-stat-label">m² Built</span>
+          </div>
+          <div class="detail-stat">
+            <span class="detail-stat-value" id="stat-lot">0.8</span>
+            <span class="detail-stat-label">m² Lot</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="reveal">
+          <div class="detail-section-title">About This Property</div>
+          <div class="detail-description" id="detail-description">
+            <p>A rare opportunity to own one of Guanacaste's most exceptional properties. Perched above Tamarindo with panoramic Pacific Ocean views, this estate combines the finest finishes with an effortless indoor-outdoor lifestyle.</p>
+            <p>The open-plan living areas flow seamlessly to an expansive terrace, infinity pool, and lush tropical gardens. Designed by a local award-winning architect, every detail has been considered — from the soaring ceilings and imported stone floors to the chef's kitchen and climate-controlled wine cellar.</p>
+            <p>Offered fully furnished and turnkey. Rental income history available upon request. Walking distance to Tamarindo's world-class surf and dining.</p>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="reveal">
+          <div class="detail-section-title">Features &amp; Amenities</div>
+          <div class="features-grid" id="features-grid">
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Infinity Pool
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Ocean Views
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Chef's Kitchen
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Fully Furnished
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Private Garage
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Air Conditioning
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Gated Community
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Wine Cellar
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Outdoor Kitchen
+            </div>
+            <div class="feature-item">
+              <div class="feature-check">
+                <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+              </div>
+              Tropical Garden
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Map -->
+        <div class="map-section reveal" id="map-section">
+          <div class="detail-section-title">Location</div>
+          <div id="property-map">
+            <div class="map-placeholder">Map loading…</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <div class="detail-sidebar reveal">
+        <div class="sidebar-card">
+          <div class="sidebar-label">Interested in this property?</div>
+          <div class="sidebar-heading">Ready to make a move?</div>
+          <div class="sidebar-sub">I'll answer every question you have about this property, the market, and the buying process in Costa Rica.</div>
+
+          <button class="inquiry-toggle" id="inquiry-toggle" type="button">
+            Inquire Now
+            <span class="inquiry-toggle-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+
+          <div class="inquiry-collapse" id="inquiry-collapse">
+            <form class="sidebar-form" id="inquiry-form">
+              <div>
+                <label for="inquiry-name">Your Name</label>
+                <input type="text" id="inquiry-name" name="name" placeholder="Full name" required />
+              </div>
+              <div>
+                <label for="inquiry-email">Email</label>
+                <input type="email" id="inquiry-email" name="email" placeholder="you@email.com" required />
+              </div>
+              <div>
+                <label for="inquiry-message">Message</label>
+                <textarea id="inquiry-message" name="message" rows="4"></textarea>
+              </div>
+              <button type="submit" class="btn-primary">Send Inquiry</button>
+            </form>
+
+            <div class="form-success" id="form-success">
+              <div class="form-success-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d5a3d" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <h3>Message Sent</h3>
+              <p>Thanks for reaching out! I'll get back to you shortly.</p>
+            </div>
+          </div>
+
+          <div class="sidebar-agent">
+            <div class="sidebar-agent-photo">
+              <img src="Headshot-2.jpg" alt="Tiago Leao" />
+            </div>
+            <div>
+              <div class="sidebar-agent-name">Tiago Leao</div>
+              <div class="sidebar-agent-title">KRAIN Luxury Real Estate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Similar Properties ──────────────────────────────────── -->
+  <section class="similar-section">
+    <div class="similar-label">Similar Properties</div>
+    <h2 class="similar-heading">You Might Also Like</h2>
+    <div class="similar-grid" id="similar-grid">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-name">Tiago Leao</div>
+        <div class="footer-tagline">Guanacaste Real Estate</div>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:tiago@tiagoleaorealty.com">tiago@tiagoleaorealty.com</a>
+        <a href="https://www.instagram.com/soldbytiago" target="_blank">@soldbytiago</a>
+        <a href="https://tiagoleaorealty.com">tiagoleaorealty.com</a>
+      </div>
+      <div class="footer-krain">
+        <img src="KRAIN LOGO.png" alt="KRAIN Real Estate" style="height:32px;opacity:0.7;margin-bottom:14px;width:auto;filter:invert(1);" />
+        <p>Agent at KRAIN Luxury Real Estate, Costa Rica's most connected luxury network.</p>
+        <a href="https://krainrealestate.com" target="_blank">KRAIN Real Estate &rarr;</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 Tiago Leao. All rights reserved.</span>
+      <a href="admin.html" style="font-size:11px;color:rgba(0,0,0,0.15);letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='rgba(0,0,0,0.4)'" onmouseout="this.style.color='rgba(0,0,0,0.15)'">Admin</a>
+      <span class="footer-domain">tiagoleaorealty.com</span>
+    </div>
+  </footer>
+
+  <script src="supabase-data.js"></script>
+  <script>
+    // ── Custom Cursor ───────────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top  = mouseY + 'px';
+    });
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+    });
+
+    // ── Scroll Reveal ───────────────────────────────────────────────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ── Map helper ────────────────────────────────────────────────
+    function initMap(lat, lng) {
+      const mapKey = (typeof TL !== 'undefined') ? TL.getMapboxKey() : '';
+      if (!mapKey || !lat || !lng) {
+        document.getElementById('property-map').innerHTML = '<div class="map-placeholder">Location map unavailable</div>';
+        return;
+      }
+      mapboxgl.accessToken = mapKey;
+      const map = new mapboxgl.Map({
+        container: 'property-map',
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: [lng, lat],
+        zoom: 14,
+        interactive: true,
+        scrollZoom: false
+      });
+      map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+      // Warm pink/cream tones to match website
+      map.on('style.load', () => {
+        // Land — warm cream
+        map.setPaintProperty('land', 'background-color', '#f5e6d8');
+        // Water — soft blue
+        try { map.setPaintProperty('water', 'fill-color', '#c0d8ef'); } catch(e){}
+        // Parks / greenspace — muted sage
+        try { map.setPaintProperty('landuse', 'fill-color', [
+          'match', ['get', 'class'],
+          'park', '#d5e2c8',
+          'cemetery', '#d5e2c8',
+          'glacier', '#e0ecf4',
+          'hospital', '#f0ddd8',
+          'school', '#f0e4d0',
+          'commercial_area', '#f0e0d2',
+          'industrial', '#ede4da',
+          '#f0e4d6'
+        ]); } catch(e){}
+        // Roads — warm grey/blush
+        const roadLayers = ['road-street', 'road-minor', 'road-major', 'road-motorway', 'road-primary', 'road-secondary', 'road-tertiary', 'road-trunk',
+          'road-street-case', 'road-minor-case', 'road-major-case', 'road-motorway-case', 'road-primary-case', 'road-secondary-case', 'road-tertiary-case', 'road-trunk-case'];
+        roadLayers.forEach(layer => {
+          try { map.setPaintProperty(layer, 'line-color', '#d9c4b8'); } catch(e){}
+        });
+        // Buildings — soft blush
+        try { map.setPaintProperty('building', 'fill-color', '#ecdbd0'); } catch(e){}
+        // Road labels — muted
+        ['road-label', 'road-number-shield'].forEach(l => {
+          try { map.setPaintProperty(l, 'text-color', '#8a7e76'); } catch(e){}
+        });
+        // Place labels — warm dark
+        ['settlement-major-label', 'settlement-minor-label', 'settlement-subdivision-label', 'poi-label'].forEach(l => {
+          try { map.setPaintProperty(l, 'text-color', '#6b5d54'); } catch(e){}
+        });
+      });
+
+      const markerEl = document.createElement('div');
+      markerEl.className = 'map-marker';
+      new mapboxgl.Marker(markerEl).setLngLat([lng, lat]).addTo(map);
+    }
+
+    // ── Pre-fill inquiry form message ─────────────────────────────
+    function prefillForm(propertyName) {
+      const msgEl = document.getElementById('inquiry-message');
+      if (msgEl && propertyName) {
+        msgEl.value = 'Hi Tiago, I am interested in ' + propertyName + '. I would love to learn more about this property.';
+      }
+    }
+
+    // ── Inquiry form toggle ──────────────────────────────────────
+    document.getElementById('inquiry-toggle').addEventListener('click', function() {
+      this.classList.toggle('open');
+      document.getElementById('inquiry-collapse').classList.toggle('open');
+    });
+
+    // ── Contact form submit (mailto fallback) ─────────────────────
+    document.getElementById('inquiry-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('inquiry-name').value.trim();
+      const email = document.getElementById('inquiry-email').value.trim();
+      const message = document.getElementById('inquiry-message').value.trim();
+
+      // Build mailto link as fallback delivery
+      const subject = encodeURIComponent('Property Inquiry — ' + (document.getElementById('detail-title').textContent || 'Listing'));
+      const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message);
+      window.location.href = 'mailto:tiago@tiagoleaorealty.com?subject=' + subject + '&body=' + body;
+
+      // Show success state
+      this.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    });
+
+    // ── Static property data ──────────────────────────────────────
+    const properties = {
+      1: {
+        type: 'Luxury Villa',
+        title: 'Tamarindo Highlands Estate',
+        location: 'Tamarindo Highlands, Guanacaste, Costa Rica',
+        price: '$2,450,000',
+        beds: '4', baths: '4.5', sqft: '6,200', lot: '0.8 ac',
+        lat: 10.2994, lng: -85.8372,
+        description: [
+          'A rare opportunity to own one of Guanacaste\'s most exceptional properties. Perched above Tamarindo with panoramic Pacific Ocean views, this estate combines the finest finishes with an effortless indoor-outdoor lifestyle.',
+          'The open-plan living areas flow seamlessly to an expansive terrace, infinity pool, and lush tropical gardens. Designed by a local award-winning architect, every detail has been considered — from the soaring ceilings and imported stone floors to the chef\'s kitchen and climate-controlled wine cellar.',
+          'Offered fully furnished and turnkey. Rental income history available upon request. Walking distance to Tamarindo\'s world-class surf and dining.'
+        ],
+        features: ['Infinity Pool','Ocean Views','Chef\'s Kitchen','Fully Furnished','Private Garage','Air Conditioning','Gated Community','Wine Cellar','Outdoor Kitchen','Tropical Garden']
+      },
+      2: {
+        type: 'Beachfront Condo',
+        title: 'Flamingo Beach Residence',
+        location: 'Playa Flamingo, Guanacaste, Costa Rica',
+        price: '$890,000',
+        beds: '3', baths: '3', sqft: '2,800', lot: '—',
+        lat: 10.4395, lng: -85.7903,
+        description: [
+          'A turn-key oceanfront residence in the heart of Playa Flamingo, one of Guanacaste\'s most desirable beach communities.',
+          'Floor-to-ceiling windows frame unobstructed Pacific views from every room. The open-plan interior features high-end finishes throughout, with a chef\'s kitchen, spa-style bathrooms, and a wraparound terrace perfect for watching the sunset.',
+          'Located steps from the beach, marina, and Flamingo\'s best restaurants. Excellent rental income potential with an established management program in place.'
+        ],
+        features: ['Direct Beach Access','Pacific Views','Wraparound Terrace','Pool & Gym','Concierge Service','Air Conditioning','Secure Parking','Marina Access','Rental Program','Fully Furnished']
+      },
+      3: {
+        type: 'Private Estate',
+        title: 'Conchal Beach Estate',
+        location: 'Conchal Beach Estates, Guanacaste, Costa Rica',
+        price: '$1,175,000',
+        beds: '4', baths: '4', sqft: '3,900', lot: '0.5 ac',
+        lat: 10.4068, lng: -85.8025,
+        description: [
+          'Set within the exclusive Conchal Beach Estates community, this private residence offers an unparalleled combination of luxury, privacy, and natural beauty.',
+          'The home is designed to blend seamlessly with its tropical surroundings, with open-air living spaces, natural materials, and sweeping views across the resort grounds and Pacific coastline.',
+          'Community amenities include a world-class golf course, beach club, spa, and fine dining. This is a rare opportunity in one of Costa Rica\'s most sought-after addresses.'
+        ],
+        features: ['Golf Course Access','Beach Club','Spa & Wellness','Private Pool','Ocean Views','Smart Home','Staff Quarters','Wine Room','Home Theater','Tropical Garden']
+      }
+    };
+
+    function loadProperty() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id')) || 1;
+      const p = properties[id] || properties[1];
+
+      document.title = p.title + ' | Tiago Leao — Guanacaste Real Estate';
+      document.getElementById('detail-type').textContent = p.type;
+      document.getElementById('detail-title').textContent = p.title;
+      document.getElementById('detail-location').textContent = p.location;
+      document.getElementById('detail-price').textContent = p.price;
+      document.getElementById('stat-beds').textContent = p.beds;
+      document.getElementById('stat-baths').textContent = p.baths;
+      document.getElementById('stat-sqft').textContent = p.sqft;
+      document.getElementById('stat-lot').textContent = p.lot;
+
+      const desc = document.getElementById('detail-description');
+      desc.innerHTML = p.description.map(t => `<p>${t}</p>`).join('');
+
+      const grid = document.getElementById('features-grid');
+      grid.innerHTML = p.features.map(f => `
+        <div class="feature-item">
+          <div class="feature-check">
+            <svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg>
+          </div>
+          ${f}
+        </div>`).join('');
+
+      prefillForm(p.title);
+      initMap(p.lat, p.lng);
+    }
+
+    // ── Similar Properties ────────────────────────────────────────
+    function renderSimCard(id, price, beds, baths, sqft, name, type, imgUrl) {
+      return `<a href="property-detail.html?id=${id}" class="sim-card">
+        <div class="sim-img">
+          ${imgUrl ? `<img src="${imgUrl}" alt="${name}" />` : ''}
+          <span class="sim-type">${type}</span>
+        </div>
+        <div class="sim-info">
+          <div class="sim-price">${price}</div>
+          <div class="sim-meta">
+            <strong>${beds}</strong> bd<span class="meta-div">|</span><strong>${baths}</strong> ba<span class="meta-div">|</span><strong>${sqft}</strong> m²
+          </div>
+          <div class="sim-name">${name}</div>
+        </div>
+      </a>`;
+    }
+
+    async function loadSimilarProperties(currentId) {
+      const grid = document.getElementById('similar-grid');
+      const currentIdStr = String(currentId);
+
+      // Try Supabase
+      if (typeof TL !== 'undefined' && TL.isConnected()) {
+        try {
+          const all = await TL.getProperties();
+          if (all && all.length > 0) {
+            const others = all.filter(p => String(p.id) !== currentIdStr).slice(0, 3);
+            if (others.length > 0) {
+              grid.innerHTML = others.map(p => renderSimCard(
+                p.id, p.price || '—',
+                p.beds || '—', p.baths || '—',
+                p.size ? Number(p.size).toLocaleString() : '—',
+                p.name || '', (p.type || 'property').charAt(0).toUpperCase() + (p.type || 'property').slice(1),
+                p.photos && p.photos[0] ? p.photos[0] : ''
+              )).join('');
+              return;
+            }
+          }
+        } catch(e) {}
+      }
+
+      // Fallback: use static data
+      const currentIdNum = parseInt(currentId) || 0;
+      const cards = Object.entries(properties)
+        .filter(([id]) => parseInt(id) !== currentIdNum)
+        .slice(0, 3);
+      grid.innerHTML = cards.map(([id, p]) => renderSimCard(
+        id, p.price, p.beds, p.baths, p.sqft, p.title, p.type, ''
+      )).join('');
+    }
+
+    // Try Supabase first, fall back to static data
+    (async function() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (typeof TL !== 'undefined' && TL.isConnected() && id) {
+        const p = await TL.getProperty(id);
+        if (p) {
+          document.title = p.name + ' | Tiago Leao — Guanacaste Real Estate';
+          document.getElementById('detail-type').textContent = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
+          document.getElementById('detail-title').textContent = p.name || '';
+          document.getElementById('detail-location').textContent = p.location || '';
+          document.getElementById('detail-price').textContent = p.price || '';
+          document.getElementById('stat-beds').textContent = p.beds || '—';
+          document.getElementById('stat-baths').textContent = p.baths || '—';
+          document.getElementById('stat-sqft').textContent = p.size ? Number(p.size).toLocaleString() : '—';
+          document.getElementById('stat-lot').textContent = p.lot ? Number(p.lot).toLocaleString() : '—';
+
+          const desc = document.getElementById('detail-description');
+          desc.innerHTML = (p.description || '').split('\n\n').filter(Boolean).map(t => '<p>' + t + '</p>').join('');
+
+          const grid = document.getElementById('features-grid');
+          grid.innerHTML = (p.features || []).map(f => '<div class="feature-item"><div class="feature-check"><svg viewBox="0 0 10 10" fill="none" stroke="#2d5a3d" stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div>' + f + '</div>').join('');
+
+          // Load photos into gallery
+          if (p.photos && p.photos.length > 0) {
+            const gallery = document.getElementById('gallery');
+            const main = gallery.querySelector('.gallery-main');
+            const thumbs = gallery.querySelectorAll('.gallery-thumb');
+            if (main && p.photos[0]) {
+              main.innerHTML = '<img src="' + p.photos[0] + '" alt="' + (p.name || 'Property') + '" />';
+            }
+            p.photos.slice(1, 5).forEach((url, i) => {
+              if (thumbs[i]) thumbs[i].innerHTML = '<img src="' + url + '" alt="Photo ' + (i+2) + '" />';
+            });
+          }
+
+          prefillForm(p.name);
+          initMap(parseFloat(p.lat), parseFloat(p.lng));
+          loadSimilarProperties(id);
+          return;
+        }
+      }
+
+      // Fallback to static
+      loadProperty();
+      const params2 = new URLSearchParams(window.location.search);
+      loadSimilarProperties(parseInt(params2.get('id')) || 1);
+    })();
+
+    // ── Hamburger ─────────────────────────────────────────────────
+    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+  </script>
+
+</body>
+</html>

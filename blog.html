@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guanacaste Real Estate Blog | Tiago Leao</title>
+  <meta name="description" content="Expert insights on buying and selling real estate in Guanacaste, Costa Rica. Market updates, neighborhood guides, and tips for American and Canadian buyers from local agent Tiago Leao.">
+  <link rel="canonical" href="https://tiagoleaorealty.com/blog.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #f4f6f4;
+      --charcoal: #f4f6f4;
+      --stone:    #6b7c6f;
+      --sand:     #3d5443;
+      --cream:    #1a2b1e;
+      --terra:    #2d5a3d;
+      --accent:   #7ec99a;
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 48px;
+      background: rgba(244,246,244,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 500; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--cream);
+      display: flex; flex-direction: column; line-height: 1.2;
+    }
+    .nav-logo-sub {
+      font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--terra); font-weight: 400;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+    .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); border-bottom: 1px solid var(--terra); padding-bottom: 2px; transition: color .2s; }
+    .nav-cta:hover { color: var(--accent); }
+
+    /* Page header */
+    .page-header {
+      padding: 160px 48px 60px;
+      max-width: 900px;
+    }
+    .page-header h1 {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+    .page-header p {
+      font-size: 16px;
+      color: var(--stone);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* Blog grid */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      padding: 0 48px 80px;
+    }
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--black);
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    .blog-card:hover {
+      border-color: rgba(0,0,0,0.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .blog-card-img {
+      height: 200px;
+      background: #d8ddd9;
+    }
+    .blog-card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .blog-card-tag {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terra);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .blog-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .blog-card-excerpt {
+      font-size: 14px;
+      color: var(--stone);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .blog-card-meta {
+      font-size: 12px;
+      color: var(--stone);
+      margin-bottom: 12px;
+    }
+    .blog-card-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--terra);
+      letter-spacing: 0.02em;
+      transition: opacity 0.2s;
+    }
+    .blog-card-link:hover { opacity: 0.7; }
+
+    /* Footer */
+    footer {
+      background: var(--black);
+      padding: 80px 48px 40px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+    .footer-name { font-size: 32px; font-weight: 700; letter-spacing: -.03em; color: var(--cream); margin-bottom: 6px; }
+    .footer-tagline { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); }
+    .footer-contact { display: flex; flex-direction: column; gap: 14px; }
+    .footer-contact a { font-size: 14px; color: var(--sand); border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; width: fit-content; }
+    .footer-contact a:hover { color: var(--cream); border-color: var(--terra); }
+    .footer-krain { max-width: 200px; }
+    .footer-krain img { height: 32px; opacity: .7; margin-bottom: 12px; width: auto; filter: invert(1); }
+    .footer-krain p { font-size: 12px; color: var(--stone); line-height: 1.6; margin-bottom: 8px; }
+    .footer-krain a { font-size: 12px; color: var(--sand); border-bottom: 1px solid var(--terra); transition: color .2s; }
+    .footer-krain a:hover { color: var(--cream); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(0,0,0,0.06); padding-top: 24px;
+    }
+    .footer-copy { font-size: 12px; color: var(--stone); }
+    .footer-domain { font-size: 12px; color: rgba(0,0,0,.25); letter-spacing: .08em; text-transform: uppercase; }
+
+    /* Hamburger & Mobile Nav */
+    .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    nav.nav-open .nav-hamburger span { background: #fff !important; }
+    nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+    nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav-mobile { position: fixed; inset: 0; background: #1a2b1e; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile.open { opacity: 1; pointer-events: all; }
+    .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
+    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile a:hover, .nav-mobile a:active { color: #fff; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #7ec99a; color: #1a2b1e !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .page-header { padding: 110px 24px 48px; }
+      .blog-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+      footer { padding: 60px 24px 40px; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .page-header h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">Tiago Leao<span class="nav-logo-sub">Real Estate Group</span></a>
+    <ul class="nav-links">
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#why">The Difference</a></li>
+      <li><a href="index.html#why-guanacaste">Why Guanacaste</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="index.html#form-section">Work With Me</a></li>
+    </ul>
+    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="properties.html">Properties</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#why">The Difference</a>
+    <a href="index.html#why-guanacaste">Why Guanacaste</a>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#form-section">Work With Me</a>
+    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+  </div>
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Guanacaste Real Estate Insights.</h1>
+    <p>Local knowledge, market updates, and everything you need to know before buying or selling in Costa Rica.</p>
+  </div>
+
+  <!-- Blog Grid -->
+  <div class="blog-grid">
+
+    <a href="blog-tamarindo-vs-nosara.html" class="blog-card">
+      <div class="blog-card-img"></div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag">Market</div>
+        <div class="blog-card-title">Tamarindo vs Nosara: Which Should You Buy Real Estate In?</div>
+        <div class="blog-card-excerpt">They're the two most talked-about markets on the Gold Coast. But they are fundamentally different places — and the right one depends on what you're looking for.</div>
+        <div class="blog-card-meta">6 min read</div>
+        <span class="blog-card-link">Read More &rarr;</span>
+      </div>
+    </a>
+
+    <a href="blog-americans-buying-costa-rica.html" class="blog-card">
+      <div class="blog-card-img"></div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag">Guide</div>
+        <div class="blog-card-title">How Americans Can Buy Property in Costa Rica (Complete Guide 2025)</div>
+        <div class="blog-card-excerpt">Everything Americans need to know before buying real estate in Costa Rica. Ownership rights, the buying process, closing costs, and what to watch out for.</div>
+        <div class="blog-card-meta">8 min read</div>
+        <span class="blog-card-link">Read More &rarr;</span>
+      </div>
+    </a>
+
+    <a href="blog-guanacaste-investment.html" class="blog-card">
+      <div class="blog-card-img"></div>
+      <div class="blog-card-body">
+        <div class="blog-card-tag">Market</div>
+        <div class="blog-card-title">Is Guanacaste Real Estate a Good Investment in 2025?</div>
+        <div class="blog-card-excerpt">An honest look at appreciation rates, rental income potential, market risks, and why North American buyers keep choosing Costa Rica.</div>
+        <div class="blog-card-meta">7 min read</div>
+        <span class="blog-card-link">Read More &rarr;</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-name">Tiago Leao</div>
+        <div class="footer-tagline">Guanacaste Real Estate</div>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:tiago@tiagoleaorealty.com">tiago@tiagoleaorealty.com</a>
+        <a href="https://www.instagram.com/soldbytiago" target="_blank">@soldbytiago</a>
+        <a href="https://tiagoleaorealty.com">tiagoleaorealty.com</a>
+      </div>
+      <div class="footer-krain">
+        <img src="KRAIN LOGO.png" alt="KRAIN Real Estate" />
+        <p>Agent at KRAIN Luxury Real Estate, Costa Rica's most connected luxury network.</p>
+        <a href="https://krainrealestate.com" target="_blank">KRAIN Real Estate &rarr;</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 Tiago Leao. All rights reserved.</span>
+      <a href="admin.html" style="font-size:11px;color:rgba(0,0,0,0.15);letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='rgba(0,0,0,0.4)'" onmouseout="this.style.color='rgba(0,0,0,0.15)'">Admin</a>
+      <span class="footer-domain">tiagoleaorealty.com</span>
+    </div>
+  </footer>
+
+  <script src="supabase-data.js"></script>
+  <script>
+    // Load blog posts from Supabase (keeps static cards as fallback)
+    (async function() {
+      if (typeof TL === 'undefined' || !TL.isConnected()) return;
+      const posts = await TL.getBlogPosts();
+      if (!posts || posts.length === 0) return;
+
+      const grid = document.querySelector('.blog-grid');
+      grid.innerHTML = posts.map(p => `
+        <a href="blog-post.html?slug=${p.slug}" class="blog-card">
+          <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
+          <div class="blog-card-body">
+            <div class="blog-card-tag">${(p.category || 'market').charAt(0).toUpperCase() + (p.category || 'market').slice(1)}</div>
+            <div class="blog-card-title">${p.title || ''}</div>
+            <div class="blog-card-excerpt">${p.excerpt || ''}</div>
+            <div class="blog-card-meta">${p.readtime || ''}</div>
+            <span class="blog-card-link">Read More &rarr;</span>
+          </div>
+        </a>
+      `).join('');
+    })();
+
+    // ── Hamburger ─────────────────────────────────────────────────
+    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+  </script>
+
+</body>
+</html>

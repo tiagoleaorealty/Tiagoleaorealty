@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ruby -e \"require 'webrick'\")",
+      "Bash(ruby --version)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "WebSearch",
+      "Bash(python3 -m http.server 8080)",
+      "Bash(ruby -run -e httpd . -p 8001)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8001/index.html)"
+    ]
+  }
+}

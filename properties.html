@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guanacaste Properties for Sale | Tiago Leao Real Estate</title>
+  <meta name="description" content="Browse luxury properties for sale in Guanacaste, Costa Rica. Homes, condos, villas, and land in Tamarindo, Flamingo, Conchal, Nosara, and Papagayo. Listed by Tiago Leao at KRAIN Luxury Real Estate.">
+  <link rel="canonical" href="https://tiagoleaorealty.com/properties.html">
+  <meta property="og:title" content="Guanacaste Properties for Sale | Tiago Leao">
+  <meta property="og:description" content="Luxury homes, condos, villas, and land for sale across Guanacaste's Gold Coast. Browse current listings.">
+  <meta property="og:url" content="https://tiagoleaorealty.com/properties.html">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #f4f6f4;
+      --charcoal: #f4f6f4;
+      --stone:    #6b7c6f;
+      --sand:     #3d5443;
+      --cream:    #1a2b1e;
+      --terra:    #2d5a3d;
+      --accent:   #7ec99a;
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; height: 100%; }
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      cursor: none;
+      overflow: hidden;
+      height: 100%;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+    button { cursor: none; font-family: var(--font); }
+
+    /* ─── Cursor ─────────────────────────────────────────────────── */
+    #cursor {
+      position: fixed; top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, opacity .2s;
+    }
+    #cursor.hovered { width: 28px; height: 28px; opacity: .6; }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(126,201,154,.4); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: transform .35s cubic-bezier(.2,.6,.3,1);
+    }
+
+    /* ─── Grain ──────────────────────────────────────────────────── */
+    .grain { position: relative; }
+    .grain::after {
+      content: ""; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px; opacity: .035; pointer-events: none; z-index: 1;
+    }
+    .grain > * { position: relative; z-index: 2; }
+
+    /* ─── Reveal ─────────────────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .08s; }
+    .reveal-delay-2 { transition-delay: .16s; }
+    .reveal-delay-3 { transition-delay: .24s; }
+    .reveal-delay-4 { transition-delay: .32s; }
+    .reveal-delay-5 { transition-delay: .40s; }
+
+    /* ─── Nav ────────────────────────────────────────────────────── */
+    nav {
+      padding: 16px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--black);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      flex-shrink: 0;
+    }
+    .nav-logo { font-size: 15px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+    .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); border-bottom: 1px solid var(--terra); padding-bottom: 2px; transition: color .2s; }
+    .nav-cta:hover { color: var(--accent); }
+
+    /* ─── Filter Bar ─────────────────────────────────────────────── */
+    .filter-bar {
+      background: var(--charcoal);
+      padding: 14px 32px;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      z-index: 90;
+      flex-shrink: 0;
+    }
+    .filter-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    /* Search input */
+    .filter-search-wrap {
+      position: relative;
+      flex: 0 0 260px;
+    }
+    .filter-search-wrap svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 16px; color: var(--stone);
+    }
+    .filter-search {
+      width: 100%;
+      font-family: var(--font); font-size: 14px;
+      padding: 10px 14px 10px 36px;
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 8px;
+      background: rgba(244,246,244,0.6);
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .filter-search:focus { border-color: var(--terra); }
+    .filter-search::placeholder { color: var(--stone); }
+
+    /* Pill buttons */
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(244,246,244,0.6);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 8px;
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      position: relative;
+    }
+    .filter-pill:hover { border-color: rgba(0,0,0,.3); }
+    .filter-pill.has-value { border-color: var(--terra); color: var(--terra); }
+    .filter-pill svg { width: 12px; height: 12px; opacity: 0.5; flex-shrink: 0; }
+
+    /* Dropdown panel */
+    .pill-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.1);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      padding: 12px;
+      z-index: 200;
+      min-width: 200px;
+    }
+    .pill-dropdown.open { display: block; }
+    .pill-dropdown.price-dropdown { min-width: 300px; padding: 16px; }
+    .pill-dropdown-label {
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--stone); font-weight: 500; margin-bottom: 8px;
+    }
+
+    /* Type options in dropdown */
+    .pill-option {
+      display: block; width: 100%;
+      background: none; border: none;
+      font-family: var(--font); font-size: 14px;
+      color: var(--sand); padding: 8px 12px;
+      border-radius: 6px; cursor: pointer;
+      text-align: left; transition: all 0.15s;
+    }
+    .pill-option:hover { background: rgba(0,0,0,0.04); color: var(--cream); }
+    .pill-option.active { background: rgba(45,90,61,0.08); color: var(--terra); font-weight: 600; }
+
+    /* Dual price range */
+    .price-display {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .dual-range {
+      position: relative;
+      width: 100%;
+      height: 24px;
+    }
+    .dual-range input[type=range] {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      -webkit-appearance: none;
+      height: 24px;
+      background: transparent;
+      outline: none;
+      pointer-events: none;
+      margin: 0;
+    }
+    .dual-range input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--terra);
+      border: 3px solid #fff;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      pointer-events: auto;
+      position: relative;
+      z-index: 2;
+    }
+    .dual-range input[type=range]::-moz-range-thumb {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--terra);
+      border: 3px solid #fff;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    .range-track {
+      position: absolute;
+      top: 10px; left: 0; right: 0;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(0,0,0,0.08);
+      pointer-events: none;
+    }
+    .range-fill {
+      position: absolute;
+      top: 0; height: 100%;
+      background: var(--terra);
+      border-radius: 2px;
+    }
+    .price-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+    .price-labels span {
+      font-size: 10px;
+      color: var(--stone);
+      letter-spacing: 0.02em;
+    }
+
+    /* Beds options */
+    .beds-row { display: flex; gap: 4px; }
+    .bed-btn {
+      background: none;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 6px;
+      color: var(--sand);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      min-width: 42px;
+      text-align: center;
+    }
+    .bed-btn:hover { border-color: rgba(0,0,0,0.25); color: var(--cream); }
+    .bed-btn.active { background: var(--terra); border-color: var(--terra); color: #fff; }
+
+    /* Filter right side */
+    .filter-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .prop-count { font-size: 13px; color: var(--stone); white-space: nowrap; }
+    .prop-count span { color: var(--cream); font-weight: 600; }
+    .filter-clear {
+      background: none; border: none;
+      color: var(--stone); font-family: var(--font);
+      font-size: 12px; cursor: pointer;
+      padding: 0; transition: color 0.2s; white-space: nowrap;
+    }
+    .filter-clear:hover { color: var(--terra); }
+
+    /* Sort dropdown */
+    .sort-select {
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cream);
+      background: rgba(244,246,244,0.6);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a8a84' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+      white-space: nowrap;
+    }
+    .sort-select:hover { border-color: rgba(0,0,0,.3); }
+
+    /* ─── View Toggle ────────────────────────────────────────────── */
+    .view-toggle {
+      display: flex;
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .view-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(244,246,244,0.6);
+      border: none;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--stone);
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .view-btn:first-child { border-right: 1px solid rgba(0,0,0,.12); }
+    .view-btn.active {
+      background: var(--cream);
+      color: #fff;
+    }
+    .view-btn svg { width: 14px; height: 14px; }
+
+    /* ─── App Layout ────────────────────────────────────────────── */
+    .app-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ─── Split Layout ───────────────────────────────────────────── */
+    .split-wrap {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    .split-wrap.map-active .map-panel {
+      width: 55%;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .split-wrap.map-active .list-panel {
+      width: 45%;
+    }
+    .split-wrap.map-active .list-panel .properties-grid-full {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: none;
+      padding: 0;
+      gap: 14px;
+    }
+    .split-wrap.map-active .list-panel .properties-section {
+      padding: 16px 16px 40px;
+    }
+    .split-wrap.map-active .property-card .prop-img { height: 150px; }
+    .split-wrap.map-active .prop-info { padding: 6px 2px 0; }
+    .split-wrap.map-active .prop-price { font-size: 17px; }
+    .split-wrap.map-active .prop-meta { font-size: 11px; }
+    .split-wrap.map-active .prop-meta .meta-divider { margin: 0 4px; }
+    .split-wrap.map-active .prop-name { font-size: 12px; }
+
+    .map-panel {
+      width: 0;
+      opacity: 0;
+      pointer-events: none;
+      height: 100%;
+      overflow: hidden;
+      transition: width 0.4s ease, opacity 0.3s ease;
+      flex-shrink: 0;
+    }
+    #properties-map {
+      width: 100%;
+      height: 100%;
+    }
+    .list-panel {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      transition: width 0.4s ease;
+    }
+
+    /* Map markers */
+    .map-price-marker {
+      background: var(--terra);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 2px solid #fff;
+    }
+    .map-price-marker:hover,
+    .map-price-marker.active {
+      background: var(--cream);
+      color: #fff;
+      transform: scale(1.08);
+      z-index: 10 !important;
+    }
+
+    /* Card highlight when hovering pin */
+    .property-card.map-highlight {
+      background: rgba(45,90,61,0.04);
+    }
+
+    /* ─── Properties Grid ────────────────────────────────────────── */
+    .properties-section {
+      padding: 16px 24px 40px;
+      background: var(--black);
+    }
+    .properties-grid-full {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    /* ─── List Header ────────────────────────────────────────────── */
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 16px 0 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      margin-bottom: 4px;
+    }
+    .list-header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cream);
+    }
+    .list-header-count {
+      font-size: 13px;
+      color: var(--stone);
+    }
+
+    /* ─── Property Card ──────────────────────────────────────────── */
+    .property-card {
+      background: transparent;
+      overflow: hidden;
+      position: relative;
+      border-radius: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      box-shadow: none;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      display: none;
+      flex-direction: column;
+      padding-bottom: 12px;
+      margin-bottom: 4px;
+      transition: none;
+    }
+    .property-card.visible-card { display: flex; }
+    .property-card:hover {
+      background: rgba(0,0,0,0.015);
+    }
+
+    /* Photo area */
+    .prop-img {
+      width: 100%;
+      height: 180px;
+      background: #e8e4dd;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      border-radius: 8px;
+    }
+    .prop-img::after {
+      content: "";
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; letter-spacing: .3em;
+      color: rgba(80,74,66,.2);
+    }
+    /* Carousel dots */
+    .prop-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4px;
+      z-index: 2;
+    }
+    .prop-dots span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+    }
+    .prop-dots span:first-child {
+      background: #fff;
+    }
+    .prop-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      z-index: 1;
+    }
+    /* Badges */
+    .prop-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      background: var(--terra);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px; color: #fff;
+      border-radius: 4px;
+    }
+    .prop-type-tag {
+      position: absolute; top: 10px; right: 10px; z-index: 2;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px; color: #fff;
+      border-radius: 4px;
+    }
+    /* Carousel slides */
+    .prop-slide {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.35s;
+      z-index: 1;
+    }
+    .prop-slide.active { opacity: 1; }
+
+    /* Carousel arrows */
+    .prop-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 4; background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px);
+      border: none; border-radius: 50%;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      font-size: 14px; color: var(--cream); line-height: 1;
+    }
+    .prop-arrow-prev { left: 8px; }
+    .prop-arrow-next { right: 8px; }
+    .property-card:hover .prop-arrow { opacity: 1; }
+    .prop-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
+
+    /* Active dot */
+    .prop-dots span.dot-active { background: #fff; }
+
+    /* Heart button */
+    .prop-heart {
+      position: absolute; top: 10px; right: 10px; z-index: 3;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px);
+      border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .prop-heart:hover { background: #fff; transform: scale(1.1); }
+    .prop-heart svg { width: 16px; height: 16px; stroke: var(--cream); fill: none; stroke-width: 2; }
+    .prop-heart.liked svg { fill: #e74c3c; stroke: #e74c3c; }
+
+    /* Info area */
+    .prop-info {
+      padding: 8px 2px 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .prop-price {
+      font-size: 20px; font-weight: 800;
+      letter-spacing: -0.01em; color: var(--cream);
+      margin-bottom: 2px;
+    }
+    .prop-meta {
+      display: flex; align-items: center; gap: 0;
+      font-size: 13px; color: var(--sand);
+      margin-bottom: 4px;
+    }
+    .prop-meta span {
+      display: inline-flex; align-items: center;
+      font-size: 13px; font-weight: 400;
+      color: var(--sand);
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .prop-meta span strong {
+      font-weight: 700; color: var(--cream); margin-right: 2px;
+    }
+    .prop-meta .meta-divider {
+      margin: 0 6px;
+      color: var(--stone);
+      font-size: 10px;
+    }
+    .prop-name {
+      font-size: 13px; font-weight: 400;
+      color: var(--stone); letter-spacing: 0;
+      margin-bottom: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .prop-location {
+      font-size: 13px; color: var(--stone);
+      margin-bottom: 0;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .prop-location::before { display: none; }
+    .prop-cta { display: none; }
+
+    /* ─── No results ─────────────────────────────────────────────── */
+    .no-results {
+      display: none; text-align: center; padding: 80px 0;
+      color: var(--stone); font-size: 15px;
+      grid-column: 1 / -1;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────── */
+    /* Hamburger & Mobile Nav */
+    .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    nav.nav-open .nav-hamburger span { background: #fff !important; }
+    nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+    nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav-mobile { position: fixed; inset: 0; background: #1a2b1e; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile.open { opacity: 1; pointer-events: all; }
+    .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
+    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile a:hover, .nav-mobile a:active { color: #fff; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #7ec99a; color: #1a2b1e !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+
+    @media (max-width: 1100px) {
+      .properties-grid-full { grid-template-columns: repeat(2, 1fr); }
+      .split-wrap.map-active .list-panel .properties-grid-full { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      nav { padding: 12px 16px; }
+      .filter-bar { padding: 10px 16px; }
+      .filter-inner { flex-wrap: wrap; gap: 8px; }
+      .filter-search-wrap { flex: 1 1 100%; }
+      .filter-pills { flex-wrap: wrap; }
+      .filter-right { width: 100%; justify-content: space-between; }
+      .properties-section { padding: 12px 12px 40px; }
+      #cursor, #cursor-ring { display: none; }
+      body { cursor: auto; }
+      button { cursor: pointer; }
+      /* Mobile map: stacks on top */
+      .split-wrap { flex-direction: column; }
+      .split-wrap.map-active .map-panel {
+        width: 100%;
+        height: 45vh;
+        flex-shrink: 0;
+      }
+      .split-wrap.map-active .list-panel { width: 100%; flex: 1; }
+      .split-wrap.map-active .list-panel .properties-grid-full { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .properties-grid-full { grid-template-columns: 1fr; }
+      .split-wrap.map-active .map-panel { height: 35vh; }
+      .pill-dropdown { left: auto; right: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <div class="app-wrap">
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">Tiago Leao</a>
+    <ul class="nav-links">
+      <li><a href="properties.html" class="active">Properties</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="index.html#form-section">Work With Me</a></li>
+    </ul>
+    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="properties.html">Properties</a>
+    <a href="index.html#about">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#form-section">Work With Me</a>
+    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+
+      <!-- Search -->
+      <div class="filter-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="filter-search" id="filter-location" placeholder="City, neighborhood, area..." />
+      </div>
+
+      <!-- Pill Filters -->
+      <div class="filter-pills">
+
+        <!-- Property Type -->
+        <div class="filter-pill" id="pill-type" onclick="toggleDropdown('type-dropdown')">
+          <span id="pill-type-label">All types</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          <div class="pill-dropdown" id="type-dropdown" onclick="event.stopPropagation()">
+            <button class="pill-option active" data-filter="all">All Types</button>
+            <button class="pill-option" data-filter="home">Homes</button>
+            <button class="pill-option" data-filter="condo">Condos</button>
+            <button class="pill-option" data-filter="land">Land</button>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="filter-pill" id="pill-price" onclick="toggleDropdown('price-dropdown')">
+          <span id="pill-price-label">Any price</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          <div class="pill-dropdown price-dropdown" id="price-dropdown" onclick="event.stopPropagation()">
+            <div class="price-display" id="price-display">Any Price</div>
+            <div class="dual-range">
+              <div class="range-track"><div class="range-fill" id="range-fill"></div></div>
+              <input type="range" id="filter-price-min" min="0" max="19" step="1" value="0" />
+              <input type="range" id="filter-price-max" min="0" max="19" step="1" value="19" />
+            </div>
+            <div class="price-labels"><span>$50K</span><span>$10M+</span></div>
+          </div>
+        </div>
+
+        <!-- Beds -->
+        <div class="filter-pill" id="pill-beds" onclick="toggleDropdown('beds-dropdown')">
+          <span id="pill-beds-label">All beds</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          <div class="pill-dropdown" id="beds-dropdown" onclick="event.stopPropagation()">
+            <div class="beds-row">
+              <button class="bed-btn active" data-beds="any">Any</button>
+              <button class="bed-btn" data-beds="1">1+</button>
+              <button class="bed-btn" data-beds="2">2+</button>
+              <button class="bed-btn" data-beds="3">3+</button>
+              <button class="bed-btn" data-beds="4">4+</button>
+              <button class="bed-btn" data-beds="5">5+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Keywords -->
+        <input type="text" class="filter-search" id="filter-keyword" placeholder="Keywords..." style="max-width:160px;padding:9px 14px;" />
+
+      </div>
+
+      <!-- Right side -->
+      <div class="filter-right">
+        <div class="prop-count"><span id="visible-count">6</span> results</div>
+        <select class="sort-select" id="sort-select" onchange="applySort()">
+          <option value="newest">Newest</option>
+          <option value="price-high" selected>Price: High to Low</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="name-az">Name: A–Z</option>
+        </select>
+        <button class="filter-clear" id="filter-clear">Clear all</button>
+        <div class="view-toggle">
+          <button class="view-btn" id="view-list" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            List
+          </button>
+          <button class="view-btn active" id="view-map" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Map
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Split Layout: Map + Properties -->
+  <div class="split-wrap map-active" id="split-wrap">
+    <div class="map-panel" id="map-panel">
+      <div id="properties-map"></div>
+    </div>
+    <div class="list-panel">
+  <section class="properties-section">
+    <div class="list-header">
+      <div class="list-header-title">Properties For Sale</div>
+      <div class="list-header-count"><span id="list-count">0</span> results</div>
+    </div>
+    <div class="properties-grid-full" id="property-grid">
+
+      <div class="no-results" id="no-results">
+        No properties match this filter.
+        <a href="index.html#form-section" style="color:var(--terra);border-bottom:1px solid var(--terra);margin-left:6px;">Contact me directly →</a>
+      </div>
+
+    </div>
+  </section>
+    </div><!-- /list-panel -->
+  </div><!-- /split-wrap -->
+
+  </div><!-- /app-wrap -->
+
+  <script src="supabase-data.js"></script>
+  <script>
+    // ── Load dynamic properties from Supabase ───────────────────────
+    (async function() {
+      if (typeof TL === 'undefined' || !TL.isConnected()) return;
+      const props = await TL.getProperties();
+      if (!props || props.length === 0) return;
+
+      const grid = document.getElementById('property-grid');
+      const noResults = document.getElementById('no-results');
+
+      // Parse numeric price from string like "$1,200,000"
+      function parsePrice(str) {
+        if (!str) return 0;
+        return parseInt(str.replace(/[^0-9]/g, '')) || 0;
+      }
+      // Guess location key from location string
+      function locKey(str) {
+        if (!str) return '';
+        const s = str.toLowerCase();
+        if (s.includes('tamarindo')) return 'tamarindo';
+        if (s.includes('flamingo')) return 'flamingo';
+        if (s.includes('conchal')) return 'conchal';
+        if (s.includes('nosara')) return 'nosara';
+        if (s.includes('potrero')) return 'potrero';
+        if (s.includes('papagayo')) return 'papagayo';
+        if (s.includes('huacas')) return 'huacas';
+        return '';
+      }
+
+      grid.innerHTML = props.map((p, i) => {
+        const isNew = p.created_at && (Date.now() - new Date(p.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
+        const isFeatured = p.featured;
+        const metaParts = [];
+        if (p.beds) metaParts.push(`<span><strong>${p.beds}</strong> bds</span>`);
+        if (p.baths) metaParts.push(`<span><strong>${p.baths}</strong> ba</span>`);
+        if (p.size) metaParts.push(`<span><strong>${Number(p.size).toLocaleString()}</strong> m²</span>`);
+        const typeName = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
+        if (typeName) metaParts.push(`<span>${typeName} for sale</span>`);
+        const photos = (p.photos && p.photos.length > 0) ? p.photos.slice(0, 5) : [];
+        const slides = photos.map((url, di) => `<img class="prop-slide${di === 0 ? ' active' : ''}" src="${url}" alt="Photo ${di+1}" loading="lazy" />`).join('');
+        const dots = photos.length > 1 ? `<div class="prop-dots">${photos.map((_, di) => `<span class="${di === 0 ? 'dot-active' : ''}"></span>`).join('')}</div>` : '';
+        const arrows = photos.length > 1 ? `<button class="prop-arrow prop-arrow-prev" onclick="event.preventDefault();event.stopPropagation();propCarouselStep(this.closest('.prop-img'),-1)">&#8249;</button><button class="prop-arrow prop-arrow-next" onclick="event.preventDefault();event.stopPropagation();propCarouselStep(this.closest('.prop-img'),1)">&#8250;</button>` : '';
+        return `
+        <a href="property-detail.html?id=${p.id}" class="property-card visible-card reveal${i > 0 ? ' reveal-delay-' + Math.min(i, 5) : ''}" data-type="${p.type || 'home'}" data-price="${parsePrice(p.price)}" data-location="${locKey(p.location)}" data-beds="${p.beds || 0}" data-keywords="${(p.name || '').toLowerCase() + ' ' + (p.location || '').toLowerCase() + ' ' + ((p.features || []).join(' ')).toLowerCase() + ' ' + (p.short_desc || '').toLowerCase()}" data-lat="${p.lat || ''}" data-lng="${p.lng || ''}" data-created="${p.created_at || ''}">
+          <div class="prop-img">
+            ${slides}
+            ${isNew ? '<div class="prop-badge">New</div>' : (isFeatured ? '<div class="prop-badge">Featured</div>' : '')}
+            <button class="prop-heart" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('liked')"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            ${arrows}
+            ${dots}
+          </div>
+          <div class="prop-info">
+            <div class="prop-price">${p.price || ''}</div>
+            <div class="prop-meta">${metaParts.join('<span class="meta-divider">|</span>')}</div>
+            <div class="prop-name">${p.name || ''}${p.location ? ', ' + p.location : ''}</div>
+          </div>
+        </a>`;
+      }).join('') + noResults.outerHTML;
+
+      // Update count
+      document.getElementById('visible-count').textContent = props.length;
+      document.getElementById('list-count').textContent = props.length;
+
+      // Re-init reveals and filters
+      const io2 = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io2.unobserve(e.target); }});
+      }, { threshold: 0.08 });
+      grid.querySelectorAll('.reveal').forEach(el => io2.observe(el));
+      rebindFilters();
+    })();
+
+    function propCarouselStep(imgDiv, dir) {
+      const slides = imgDiv.querySelectorAll('.prop-slide');
+      const dots   = imgDiv.querySelectorAll('.prop-dots span');
+      if (slides.length < 2) return;
+      let cur = [...slides].findIndex(s => s.classList.contains('active'));
+      slides[cur].classList.remove('active');
+      dots[cur] && dots[cur].classList.remove('dot-active');
+      cur = (cur + dir + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dots[cur] && dots[cur].classList.add('dot-active');
+    }
+
+    function rebindFilters() {
+      applyFilters();
+    }
+
+    // ── Cursor ──────────────────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+    });
+    (function loop() {
+      rx += (mx-rx)*.12; ry += (my-ry)*.12;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+    });
+
+    // ── Scroll Reveals ──────────────────────────────────────────────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }});
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ── Dropdown Toggles ──────────────────────────────────────────
+    function toggleDropdown(id) {
+      const dd = document.getElementById(id);
+      const wasOpen = dd.classList.contains('open');
+      // Close all dropdowns
+      document.querySelectorAll('.pill-dropdown').forEach(d => d.classList.remove('open'));
+      if (!wasOpen) dd.classList.add('open');
+    }
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.filter-pill')) {
+        document.querySelectorAll('.pill-dropdown').forEach(d => d.classList.remove('open'));
+      }
+    });
+
+    // ── Filters ──────────────────────────────────────────────────
+    const priceSteps = [50000, 100000, 150000, 200000, 300000, 400000, 500000, 600000, 750000, 1000000, 1250000, 1500000, 2000000, 2500000, 3000000, 4000000, 5000000, 7500000, 10000000, Infinity];
+    const priceLabels = ['$50K','$100K','$150K','$200K','$300K','$400K','$500K','$600K','$750K','$1M','$1.25M','$1.5M','$2M','$2.5M','$3M','$4M','$5M','$7.5M','$10M','No Max'];
+    const STEPS_MAX = priceSteps.length - 1;
+
+    const sliderMin = document.getElementById('filter-price-min');
+    const sliderMax = document.getElementById('filter-price-max');
+    const rangeFill = document.getElementById('range-fill');
+
+    let currentType = 'all';
+
+    function updatePriceDisplay() {
+      let lo = parseInt(sliderMin.value);
+      let hi = parseInt(sliderMax.value);
+      if (lo > hi) { sliderMin.value = hi; lo = hi; }
+
+      const display = document.getElementById('price-display');
+      const pillLabel = document.getElementById('pill-price-label');
+      const loLabel = priceLabels[lo];
+      const hiLabel = priceLabels[hi];
+      const pill = document.getElementById('pill-price');
+
+      let text;
+      if (lo === 0 && hi === STEPS_MAX) {
+        text = 'Any price';
+        pill.classList.remove('has-value');
+      } else if (hi === STEPS_MAX) {
+        text = loLabel + ' +';
+        pill.classList.add('has-value');
+      } else if (lo === 0) {
+        text = 'Up to ' + hiLabel;
+        pill.classList.add('has-value');
+      } else {
+        text = loLabel + ' — ' + hiLabel;
+        pill.classList.add('has-value');
+      }
+      display.textContent = text;
+      pillLabel.textContent = text;
+
+      const pctLo = (lo / STEPS_MAX) * 100;
+      const pctHi = (hi / STEPS_MAX) * 100;
+      rangeFill.style.left = pctLo + '%';
+      rangeFill.style.width = (pctHi - pctLo) + '%';
+    }
+
+    function applyFilters() {
+      const cards = document.querySelectorAll('.property-card:not(.no-results)');
+      const countEl = document.getElementById('visible-count');
+      const noResults = document.getElementById('no-results');
+
+      const typeFilter = currentType;
+      const locFilter = document.getElementById('filter-location').value.trim().toLowerCase();
+      const minPrice = priceSteps[parseInt(sliderMin.value)];
+      const maxPrice = priceSteps[parseInt(sliderMax.value)];
+      const activeBed = document.querySelector('.bed-btn.active');
+      const minBeds = activeBed ? activeBed.dataset.beds : 'any';
+      const keyword = document.getElementById('filter-keyword').value.trim().toLowerCase();
+
+      let count = 0;
+      cards.forEach(c => {
+        let match = true;
+        if (typeFilter !== 'all' && c.dataset.type !== typeFilter) match = false;
+        if (locFilter) {
+          const cardLoc = (c.dataset.location || '') + ' ' + (c.dataset.keywords || '') + ' ' + (c.querySelector('.prop-name')?.textContent || '').toLowerCase();
+          if (!cardLoc.includes(locFilter)) match = false;
+        }
+        const cardPrice = parseInt(c.dataset.price) || 0;
+        if (cardPrice < minPrice) match = false;
+        if (maxPrice !== Infinity && cardPrice > maxPrice) match = false;
+        if (minBeds !== 'any') {
+          const cardBeds = parseInt(c.dataset.beds) || 0;
+          if (cardBeds < parseInt(minBeds)) match = false;
+        }
+        if (keyword) {
+          const searchText = (c.dataset.keywords || '') + ' ' + (c.querySelector('.prop-name')?.textContent || '').toLowerCase() + ' ' + (c.querySelector('.prop-location')?.textContent || '').toLowerCase();
+          if (!searchText.includes(keyword)) match = false;
+        }
+        // Map bounds filter — only apply when map is active and user has navigated
+        if (match && mapBoundsFilter && splitWrap && splitWrap.classList.contains('map-active')) {
+          const lat = parseFloat(c.dataset.lat);
+          const lng = parseFloat(c.dataset.lng);
+          if (!isNaN(lat) && !isNaN(lng)) {
+            if (!mapBoundsFilter.contains([lng, lat])) match = false;
+          }
+        }
+        c.classList.toggle('visible-card', match);
+        if (match) count++;
+      });
+      countEl.textContent = count;
+      const lc = document.getElementById('list-count');
+      if (lc) lc.textContent = count;
+      noResults.style.display = count === 0 ? 'block' : 'none';
+
+      // Keep map markers in sync with filtered cards
+      if (splitWrap && splitWrap.classList.contains('map-active')) {
+        syncMarkers();
+      }
+    }
+
+    function applySort() {
+      const grid = document.getElementById('property-grid');
+      if (!grid) return;
+      const cards = Array.from(grid.querySelectorAll('.property-card:not(.no-results)'));
+      const sort = document.getElementById('sort-select').value;
+
+      cards.sort((a, b) => {
+        if (sort === 'price-high') {
+          return (parseInt(b.dataset.price) || 0) - (parseInt(a.dataset.price) || 0);
+        } else if (sort === 'price-low') {
+          return (parseInt(a.dataset.price) || 0) - (parseInt(b.dataset.price) || 0);
+        } else if (sort === 'name-az') {
+          const nameA = (a.querySelector('.prop-name')?.textContent || '').toLowerCase();
+          const nameB = (b.querySelector('.prop-name')?.textContent || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        } else {
+          // newest — sort by data-created or original order (descending)
+          const dateA = a.dataset.created || '';
+          const dateB = b.dataset.created || '';
+          return dateB.localeCompare(dateA);
+        }
+      });
+
+      cards.forEach(c => grid.appendChild(c));
+      if (typeof syncMarkers === 'function') syncMarkers();
+    }
+
+    function initAllFilters() {
+      // Type pill options
+      document.querySelectorAll('.pill-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.pill-option').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentType = btn.dataset.filter;
+          const label = document.getElementById('pill-type-label');
+          const pill = document.getElementById('pill-type');
+          label.textContent = btn.textContent;
+          if (currentType === 'all') { pill.classList.remove('has-value'); }
+          else { pill.classList.add('has-value'); }
+          document.getElementById('type-dropdown').classList.remove('open');
+          applyFilters();
+        });
+      });
+
+      // Location search (debounced)
+      let locTimer;
+      document.getElementById('filter-location').addEventListener('input', () => {
+        clearTimeout(locTimer);
+        locTimer = setTimeout(applyFilters, 250);
+      });
+
+      // Price sliders
+      sliderMin.addEventListener('input', () => {
+        if (parseInt(sliderMin.value) > parseInt(sliderMax.value)) sliderMin.value = sliderMax.value;
+        updatePriceDisplay(); applyFilters();
+      });
+      sliderMax.addEventListener('input', () => {
+        if (parseInt(sliderMax.value) < parseInt(sliderMin.value)) sliderMax.value = sliderMin.value;
+        updatePriceDisplay(); applyFilters();
+      });
+      updatePriceDisplay();
+
+      // Beds
+      document.querySelectorAll('.bed-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.bed-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const pillLabel = document.getElementById('pill-beds-label');
+          const pill = document.getElementById('pill-beds');
+          if (btn.dataset.beds === 'any') {
+            pillLabel.textContent = 'All beds';
+            pill.classList.remove('has-value');
+          } else {
+            pillLabel.textContent = btn.dataset.beds + '+ beds';
+            pill.classList.add('has-value');
+          }
+          applyFilters();
+        });
+      });
+
+      // Keyword (debounced)
+      let keyTimer;
+      document.getElementById('filter-keyword').addEventListener('input', () => {
+        clearTimeout(keyTimer);
+        keyTimer = setTimeout(applyFilters, 250);
+      });
+
+      // Clear all
+      document.getElementById('filter-clear').addEventListener('click', () => {
+        currentType = 'all';
+        document.querySelectorAll('.pill-option').forEach(b => b.classList.remove('active'));
+        document.querySelector('.pill-option[data-filter="all"]').classList.add('active');
+        document.getElementById('pill-type-label').textContent = 'All types';
+        document.getElementById('pill-type').classList.remove('has-value');
+        document.getElementById('filter-location').value = '';
+        sliderMin.value = '0';
+        sliderMax.value = STEPS_MAX;
+        updatePriceDisplay();
+        document.querySelectorAll('.bed-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.bed-btn[data-beds="any"]').classList.add('active');
+        document.getElementById('pill-beds-label').textContent = 'All beds';
+        document.getElementById('pill-beds').classList.remove('has-value');
+        document.getElementById('filter-keyword').value = '';
+        applyFilters();
+      });
+    }
+
+    initAllFilters();
+
+    // ── Map Split View ──────────────────────────────────────────
+    let propertiesMap = null;
+    let mapMarkers = [];
+    let mapInitialized = false;
+    let mapBoundsFilter = null; // set when user navigates map manually
+
+    const splitWrap = document.getElementById('split-wrap');
+    const viewListBtn = document.getElementById('view-list');
+    const viewMapBtn = document.getElementById('view-map');
+
+    function formatPriceShort(price) {
+      if (price >= 1000000) return '$' + (price / 1000000).toFixed(price % 1000000 === 0 ? 0 : 1) + 'M';
+      if (price >= 1000) return '$' + Math.round(price / 1000) + 'K';
+      return '$' + price;
+    }
+
+    function initMap() {
+      const key = (typeof TL !== 'undefined' && TL.getMapboxKey()) || '';
+      if (!key) {
+        console.warn('[Map] No Mapbox key found in localStorage (tl_mapbox_key)');
+        return false;
+      }
+      mapboxgl.accessToken = key;
+      propertiesMap = new mapboxgl.Map({
+        container: 'properties-map',
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: [-85.80, 10.30],
+        zoom: 9.5,
+        attributionControl: false
+      });
+
+      propertiesMap.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
+
+      // Warm pink/cream style overrides
+      propertiesMap.on('style.load', () => {
+        try {
+          propertiesMap.setPaintProperty('land', 'background-color', '#eae8e2');
+          propertiesMap.setPaintProperty('water', 'fill-color', '#b8d4e3');
+          propertiesMap.setPaintProperty('landcover', 'fill-color', '#d4e2d0');
+          propertiesMap.setPaintProperty('national-park', 'fill-color', '#c5dabb');
+        } catch(e) {}
+        try {
+          const roadLayers = ['road-street','road-minor','road-major-link','road-motorway-trunk','road-primary','road-secondary-tertiary','bridge-primary','bridge-secondary-tertiary','bridge-motorway-trunk'];
+          roadLayers.forEach(id => {
+            try { propertiesMap.setPaintProperty(id, 'line-color', '#c8d0c4'); } catch(e){}
+          });
+        } catch(e) {}
+        try { propertiesMap.setPaintProperty('building', 'fill-color', '#dde3d8'); } catch(e){}
+      });
+
+      propertiesMap.on('load', () => {
+        mapInitialized = true;
+        syncMarkers();
+      });
+
+      // Filter cards to visible map area when user pans or zooms
+      propertiesMap.on('moveend', () => {
+        if (!splitWrap.classList.contains('map-active')) return;
+        mapBoundsFilter = propertiesMap.getBounds();
+        applyFilters(); // applyFilters already calls syncMarkers when map is active
+      });
+
+      return true;
+    }
+
+    function syncMarkers() {
+      if (!propertiesMap || !mapInitialized) return;
+
+      // Remove existing markers
+      mapMarkers.forEach(m => m.marker.remove());
+      mapMarkers = [];
+
+      const cards = document.querySelectorAll('.property-card.visible-card');
+      const bounds = new mapboxgl.LngLatBounds();
+      let hasCoords = false;
+
+      cards.forEach(card => {
+        const lat = parseFloat(card.dataset.lat);
+        const lng = parseFloat(card.dataset.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        const price = parseInt(card.dataset.price) || 0;
+        const name = card.querySelector('.prop-name')?.textContent || '';
+
+        // Create price pill marker
+        const el = document.createElement('div');
+        el.className = 'map-price-marker';
+        el.textContent = formatPriceShort(price);
+
+        const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
+          .setLngLat([lng, lat])
+          .addTo(propertiesMap);
+
+        mapMarkers.push({ marker, el, card, lat, lng });
+        bounds.extend([lng, lat]);
+        hasCoords = true;
+
+        // Marker → Card interactions
+        el.addEventListener('mouseenter', () => {
+          el.classList.add('active');
+          card.classList.add('map-highlight');
+          // Scroll card into view in list panel
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        el.addEventListener('mouseleave', () => {
+          el.classList.remove('active');
+          card.classList.remove('map-highlight');
+        });
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Navigate to property
+          window.location.href = card.getAttribute('href');
+        });
+
+        // Card → Marker interactions
+        card.addEventListener('mouseenter', () => {
+          el.classList.add('active');
+          card.classList.add('map-highlight');
+        });
+        card.addEventListener('mouseleave', () => {
+          el.classList.remove('active');
+          card.classList.remove('map-highlight');
+        });
+      });
+
+      // Only auto-fit bounds when the user hasn't manually navigated the map
+      if (!mapBoundsFilter) {
+        if (hasCoords && mapMarkers.length > 1) {
+          propertiesMap.fitBounds(bounds, { padding: 60, maxZoom: 13, duration: 500 });
+        } else if (hasCoords && mapMarkers.length === 1) {
+          propertiesMap.flyTo({ center: [mapMarkers[0].lng, mapMarkers[0].lat], zoom: 12, duration: 500 });
+        }
+      }
+    }
+
+
+    // ── View Toggle ────────────────────────────────────────────
+    viewListBtn.addEventListener('click', () => {
+      viewListBtn.classList.add('active');
+      viewMapBtn.classList.remove('active');
+      splitWrap.classList.remove('map-active');
+      mapBoundsFilter = null;
+      applyFilters();
+    });
+
+    viewMapBtn.addEventListener('click', () => {
+      viewMapBtn.classList.add('active');
+      viewListBtn.classList.remove('active');
+
+      if (!propertiesMap) {
+        const ok = initMap();
+        if (!ok) {
+          alert('Map not available — please set your Mapbox key in the admin panel.');
+          viewListBtn.classList.add('active');
+          viewMapBtn.classList.remove('active');
+          return;
+        }
+      }
+
+      splitWrap.classList.add('map-active');
+
+      setTimeout(() => {
+        if (propertiesMap) {
+          propertiesMap.resize();
+          syncMarkers();
+        }
+      }, 450);
+    });
+
+    // Apply default sort (price high to low) on load
+    applySort();
+
+    // ── Initialize map on page load (default open) ──────────────
+    (function initMapOnLoad() {
+      const ok = initMap();
+      if (!ok) {
+        // No Mapbox key — fall back to list view
+        splitWrap.classList.remove('map-active');
+        viewListBtn.classList.add('active');
+        viewMapBtn.classList.remove('active');
+      }
+    })();
+
+    // ── Hamburger ─────────────────────────────────────────────────
+    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+  </script>
+</body>
+</html>

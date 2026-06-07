@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin | Tiago Leao Real Estate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f4f6f4;
+      --bg2: #f4f6f4;
+      --text: #1a2b1e;
+      --stone: #6b7c6f;
+      --sand: #3d5443;
+      --terra: #2d5a3d;
+      --accent: #7ec99a;
+      --white: #fff;
+      --border: rgba(255,255,255,0.1);
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── Login gate ───────────────────────────────────────────── */
+    #login-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .login-box { text-align: center; max-width: 360px; width: 100%; padding: 0 24px; }
+    .login-brand {
+      font-size: 18px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .login-brand span { color: var(--terra); }
+    .login-sub { font-size: 14px; color: var(--stone); margin-bottom: 28px; }
+    .login-field { display: flex; gap: 8px; }
+    .login-field input {
+      flex: 1; font-family: var(--font); font-size: 14px;
+      padding: 12px 16px; border: 1px solid var(--border);
+      border-radius: 4px; background: var(--white);
+      color: var(--text); outline: none;
+    }
+    .login-field input:focus { border-color: var(--terra); }
+    .login-field button {
+      font-family: var(--font); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 12px 24px; border: none; border-radius: 4px;
+      background: var(--terra); color: var(--white);
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .login-field button:hover { opacity: 0.85; }
+    .login-error { font-size: 13px; color: #d44; margin-top: 12px; min-height: 20px; }
+
+    /* ─── Top bar ──────────────────────────────────────────────── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 32px;
+      background: var(--text); color: var(--bg);
+    }
+    .topbar-brand { font-size: 14px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .topbar-brand span { color: var(--terra); }
+    .topbar-links { display: flex; gap: 8px; }
+    .topbar-links a {
+      font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 4px;
+      color: rgba(253,248,242,0.6); transition: all 0.2s;
+    }
+    .topbar-links a:hover { color: var(--bg); }
+    .topbar-links a.active { background: var(--terra); color: var(--white); }
+
+    /* ─── Layout ───────────────────────────────────────────────── */
+    .page { max-width: 1200px; margin: 0 auto; padding: 40px 32px; }
+    .page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .page-sub { font-size: 14px; color: var(--stone); margin-bottom: 32px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ─── Connection status ────────────────────────────────────── */
+    .status-dot {
+      display: inline-block; width: 8px; height: 8px;
+      border-radius: 50%; margin-right: 6px;
+    }
+    .status-dot.connected { background: #2ea043; }
+    .status-dot.disconnected { background: #d44; }
+    .connection-bar {
+      font-size: 12px; color: var(--stone);
+      padding: 8px 32px;
+      background: rgba(0,0,0,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── Cards list ───────────────────────────────────────────── */
+    .items-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .items-count { font-size: 13px; color: var(--stone); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 10px 20px; border: none; border-radius: 4px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-terra { background: var(--terra); color: var(--white); }
+    .btn-terra:hover { opacity: 0.85; }
+    .btn-outline { background: none; border: 1px solid var(--border); color: var(--sand); }
+    .btn-outline:hover { border-color: var(--terra); color: var(--terra); }
+    .btn-danger { background: none; border: 1px solid #d44; color: #d44; }
+    .btn-danger:hover { background: #d44; color: white; }
+    .btn-sm { padding: 6px 12px; font-size: 11px; }
+
+    .item-card {
+      display: grid; grid-template-columns: 100px 1fr auto;
+      gap: 20px; align-items: center;
+      padding: 16px 20px; background: var(--white);
+      border: 0.5px solid var(--border); border-radius: 6px;
+      margin-bottom: 8px; transition: box-shadow 0.2s;
+    }
+    .item-card:hover { box-shadow: 0 4px 16px rgba(255,255,255,0.06); }
+    .item-thumb { width: 100px; height: 70px; background: #d0c9be; border-radius: 4px; overflow: hidden; }
+    .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .item-info h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .item-info .item-meta { font-size: 12px; color: var(--stone); }
+    .item-info .item-meta span { margin-right: 12px; }
+    .item-info .item-meta .tag {
+      display: inline-block; font-size: 9px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--terra); font-weight: 500;
+      background: rgba(45,90,61,0.08); padding: 2px 8px; border-radius: 3px;
+    }
+    .item-actions { display: flex; gap: 6px; }
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--stone); }
+    .empty-state h3 { font-size: 18px; color: var(--sand); margin-bottom: 8px; }
+    .empty-state p { font-size: 14px; margin-bottom: 24px; }
+
+    /* ─── Status badges ────────────────────────────────────────── */
+    .status-badge { display: inline-block; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
+    .status-active { background: rgba(46,160,67,0.1); color: #2ea043; }
+    .status-pending { background: rgba(227,179,65,0.15); color: #b08800; }
+    .status-sold { background: rgba(255,255,255,0.06); color: var(--stone); }
+    .status-draft { background: rgba(255,255,255,0.06); color: var(--stone); }
+    .status-published { background: rgba(46,160,67,0.1); color: #2ea043; }
+
+    /* ─── Modal / Editor ───────────────────────────────────────── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(15,15,14,0.5); backdrop-filter: blur(4px); overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; justify-content: center; padding: 40px 20px; }
+    .modal {
+      background: var(--bg); border-radius: 10px;
+      width: 100%; max-width: 800px; max-height: fit-content;
+      padding: 40px; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; font-size: 24px;
+      color: var(--stone); cursor: pointer;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; transition: all 0.2s;
+    }
+    .modal-close:hover { background: rgba(0,0,0,0.05); color: var(--text); }
+    .modal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 32px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      font-family: var(--font); font-size: 14px; padding: 10px 14px;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--white); color: var(--text); outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--terra); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-section-title {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--terra);
+      margin: 32px 0 16px; padding-top: 24px; border-top: 1px solid var(--border);
+    }
+
+    /* ─── Photo uploader ───────────────────────────────────────── */
+    .photo-upload-area {
+      border: 2px dashed rgba(0,0,0,0.12); border-radius: 8px;
+      padding: 32px; text-align: center; cursor: pointer;
+      transition: all 0.2s; margin-bottom: 16px;
+    }
+    .photo-upload-area:hover, .photo-upload-area.dragover { border-color: var(--terra); background: rgba(45,90,61,0.03); }
+    .photo-upload-area p { font-size: 14px; color: var(--stone); margin-bottom: 8px; }
+    .photo-upload-area .upload-hint { font-size: 12px; color: rgba(0,0,0,0.3); }
+    .photo-upload-area input { display: none; }
+
+    .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 12px; }
+    .photo-item {
+      position: relative; aspect-ratio: 4/3; border-radius: 6px;
+      overflow: hidden; cursor: grab; border: 2px solid transparent; transition: border-color 0.2s;
+    }
+    .photo-item:active { cursor: grabbing; }
+    .photo-item.dragging { opacity: 0.4; }
+    .photo-item.drag-over { border-color: var(--terra); }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-item .photo-badge {
+      position: absolute; top: 6px; left: 6px;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--terra); color: white; padding: 2px 8px; border-radius: 3px;
+    }
+    .photo-item .photo-remove {
+      position: absolute; top: 6px; right: 6px;
+      width: 22px; height: 22px; background: rgba(0,0,0,0.6); color: white;
+      border: none; border-radius: 50%; font-size: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .photo-item:hover .photo-remove { opacity: 1; }
+    .photo-uploading {
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.04); border-radius: 6px; aspect-ratio: 4/3;
+      font-size: 12px; color: var(--stone);
+    }
+
+    /* ─── Map ──────────────────────────────────────────────────── */
+    .map-container { height: 300px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); margin-top: 8px; }
+    .map-hint { font-size: 12px; color: var(--stone); margin-top: 6px; }
+
+    /* ─── Blog editor ──────────────────────────────────────────── */
+    .editor-toolbar {
+      display: flex; gap: 4px; padding: 8px;
+      background: var(--white); border: 1px solid var(--border);
+      border-bottom: none; border-radius: 4px 4px 0 0;
+    }
+    .editor-toolbar button {
+      background: none; border: 1px solid var(--border); border-radius: 3px;
+      padding: 4px 10px; font-family: var(--font); font-size: 12px;
+      color: var(--sand); cursor: pointer; transition: all 0.2s;
+    }
+    .editor-toolbar button:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+    .blog-body-textarea {
+      font-family: var(--font); font-size: 15px; line-height: 1.7;
+      padding: 16px; border: 1px solid var(--border); border-radius: 0 0 4px 4px;
+      background: var(--white); color: var(--text);
+      width: 100%; min-height: 300px; resize: vertical; outline: none;
+    }
+    .blog-body-textarea:focus { border-color: var(--terra); }
+
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+    /* ─── Toast ────────────────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 32px; right: 32px; z-index: 300;
+      background: var(--text); color: var(--bg);
+      padding: 14px 24px; border-radius: 6px; font-size: 13px; font-weight: 500;
+      transform: translateY(100px); opacity: 0; transition: all 0.3s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── Config banner ────────────────────────────────────────── */
+    .config-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 8px; padding: 24px; margin-bottom: 20px;
+    }
+    .config-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .config-card p { font-size: 13px; color: var(--stone); margin-bottom: 12px; }
+    .config-card .config-row { display: flex; gap: 8px; align-items: center; }
+    .config-card input {
+      font-family: var(--font); font-size: 13px; padding: 8px 12px;
+      border: 1px solid var(--border); border-radius: 4px; flex: 1;
+    }
+
+    /* ─── Toggle switch ───────────────────────────────────────── */
+    .toggle-switch {
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; padding-top: 4px; user-select: none;
+    }
+    .toggle-switch input { display: none; }
+    .toggle-slider {
+      position: relative; width: 40px; height: 22px;
+      background: rgba(0,0,0,0.12); border-radius: 11px;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .toggle-slider::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; background: white;
+      border-radius: 50%; transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--terra); }
+    .toggle-switch input:checked + .toggle-slider::after { transform: translateX(18px); }
+    .toggle-label { font-size: 13px; color: var(--sand); font-weight: 500; }
+
+    /* Featured badge in list */
+    .badge-featured {
+      display: inline-block; font-size: 9px; letter-spacing: 0.1em;
+      text-transform: uppercase; font-weight: 600;
+      background: rgba(45,90,61,0.12); color: var(--terra);
+      padding: 2px 8px; border-radius: 3px; margin-left: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── LOGIN GATE ──────────────────────────────────────────── -->
+  <div id="login-gate">
+    <div class="login-box">
+      <div class="login-brand">Tiago Leao <span>Admin</span></div>
+      <p class="login-sub">Enter your password to continue.</p>
+      <div class="login-field">
+        <input type="password" id="login-password" placeholder="Password" autocomplete="off" />
+        <button onclick="attemptLogin()">Enter</button>
+      </div>
+      <p class="login-error" id="login-error"></p>
+    </div>
+  </div>
+
+  <!-- ── ADMIN APP ───────────────────────────────────────────── -->
+  <div id="admin-app" style="display:none;">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-brand">Tiago Leao <span>Admin</span></div>
+    <div class="topbar-links">
+      <a href="#" class="active" data-tab="properties">Properties</a>
+      <a href="#" data-tab="blog">Blog Posts</a>
+      <a href="#" data-tab="settings">Settings</a>
+      <a href="index.html" style="opacity:0.4;">View Site &rarr;</a>
+      <a href="#" onclick="logout()" style="opacity:0.4;">Log Out</a>
+    </div>
+  </div>
+
+  <!-- Connection status -->
+  <div class="connection-bar" id="conn-bar">
+    <span class="status-dot disconnected" id="conn-dot"></span>
+    <span id="conn-text">Not connected to Supabase</span>
+  </div>
+
+  <div class="page">
+
+    <!-- ══ PROPERTIES TAB ════════════════════════════════════════ -->
+    <div class="tab-content active" id="tab-properties">
+      <h1 class="page-title">Properties</h1>
+      <p class="page-sub">Manage your property listings. Data syncs to Supabase in real time.</p>
+      <div class="items-header">
+        <span class="items-count" id="prop-count">0 properties</span>
+        <button class="btn btn-terra" onclick="openPropertyEditor()">+ Add Property</button>
+      </div>
+      <div id="properties-list"></div>
+    </div>
+
+    <!-- ══ BLOG TAB ══════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-blog">
+      <h1 class="page-title">Blog Posts</h1>
+      <p class="page-sub">Create and manage blog articles.</p>
+      <div class="items-header">
+        <span class="items-count" id="blog-count">0 posts</span>
+        <button class="btn btn-terra" onclick="openBlogEditor()">+ New Post</button>
+      </div>
+      <div id="blog-list"></div>
+    </div>
+
+    <!-- ══ SETTINGS TAB ══════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-settings">
+      <h1 class="page-title">Settings</h1>
+      <p class="page-sub">Configure your Supabase connection and API keys.</p>
+
+      <div class="config-card">
+        <h3>Supabase Connection</h3>
+        <p>Connect to your Supabase project. Find these in Project Settings &rarr; API.</p>
+        <div class="config-row" style="margin-bottom:10px;">
+          <input type="text" id="sb-url-input" placeholder="https://yourproject.supabase.co" style="width:100%;" />
+        </div>
+        <div class="config-row">
+          <input type="text" id="sb-key-input" placeholder="eyJhbGci... (anon public key)" style="width:100%;" />
+          <button class="btn btn-terra btn-sm" onclick="saveSupabaseConfig()">Connect</button>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <h3>Mapbox API Key</h3>
+        <p>Required for property location maps. Get a free key at <a href="https://mapbox.com" target="_blank" style="color:var(--terra);">mapbox.com</a></p>
+        <div class="config-row">
+          <input type="text" id="mapbox-key-input" placeholder="pk.eyJ..." />
+          <button class="btn btn-terra btn-sm" onclick="saveMapboxKey()">Save</button>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <h3>Change Password</h3>
+        <p>Update the admin login password.</p>
+        <div class="config-row">
+          <input type="password" id="new-pass-input" placeholder="New password" />
+          <button class="btn btn-terra btn-sm" onclick="changePassword()">Update</button>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <h3>Database Setup</h3>
+        <p>Run this SQL in your Supabase SQL Editor to create the required tables and storage bucket.</p>
+        <button class="btn btn-outline" onclick="window.open('supabase-setup.sql')">View Setup SQL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROPERTY EDITOR MODAL ═══════════════════════════════════ -->
+  <div class="modal-overlay" id="prop-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('prop-modal')">&times;</button>
+      <h2 id="prop-modal-title">Add Property</h2>
+      <input type="hidden" id="prop-edit-id" />
+
+      <div class="form-row">
+        <div class="form-group"><label>Property Name</label><input type="text" id="prop-name" placeholder="e.g. Casa Serena Oceanview" /></div>
+        <div class="form-group"><label>Price (USD)</label><input type="text" id="prop-price" placeholder="e.g. $1,250,000" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Property Type</label>
+          <select id="prop-type"><option value="home">Home</option><option value="condo">Condo</option><option value="villa">Villa</option><option value="land">Land</option><option value="commercial">Commercial</option></select>
+        </div>
+        <div class="form-group"><label>Status</label>
+          <select id="prop-status"><option value="active">Active</option><option value="pending">Pending</option><option value="sold">Sold</option></select>
+        </div>
+        <div class="form-group"><label>Featured on Homepage</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="prop-featured" />
+            <span class="toggle-slider"></span>
+            <span class="toggle-label" id="prop-featured-label">No</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Location / Area</label><input type="text" id="prop-location" placeholder="e.g. Tamarindo, Guanacaste" /></div>
+        <div class="form-group"><label>Address</label><input type="text" id="prop-address" placeholder="Full address or area description" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Bedrooms</label><input type="number" id="prop-beds" placeholder="3" min="0" /></div>
+        <div class="form-group"><label>Bathrooms</label><input type="number" id="prop-baths" placeholder="2" min="0" step="0.5" /></div>
+        <div class="form-group"><label>Size (sq ft)</label><input type="number" id="prop-size" placeholder="2400" min="0" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Lot Size (sq ft) — optional</label><input type="number" id="prop-lot" placeholder="8000" min="0" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Short Description (for cards)</label><input type="text" id="prop-short-desc" placeholder="Brief one-liner for listing cards" maxlength="120" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Full Description</label><textarea id="prop-desc" placeholder="Detailed property description..." rows="5"></textarea></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Features (comma-separated)</label><input type="text" id="prop-features" placeholder="e.g. Pool, Ocean View, Gated Community, A/C" /></div>
+      </div>
+
+      <div class="form-section-title">Photos</div>
+      <div class="photo-upload-area" id="prop-photo-upload"
+           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+           ondrop="handlePhotoDrop(event, 'property')" onclick="document.getElementById('prop-photo-input').click()">
+        <p>Drop photos here or click to upload</p>
+        <span class="upload-hint">Photos upload to Supabase Storage. Drag to reorder. First photo is the cover.</span>
+        <input type="file" id="prop-photo-input" multiple accept="image/*" onchange="handlePhotoSelect(event, 'property')" />
+      </div>
+      <div class="photo-grid" id="prop-photo-grid"></div>
+
+      <div class="form-section-title">Location Pin</div>
+      <p style="font-size:13px;color:var(--stone);margin-bottom:8px;">Click the map to place a pin, or enter coordinates manually.</p>
+      <div class="form-row">
+        <div class="form-group"><label>Latitude</label><input type="number" id="prop-lat" placeholder="10.2636" step="any" /></div>
+        <div class="form-group"><label>Longitude</label><input type="number" id="prop-lng" placeholder="-85.8388" step="any" /></div>
+      </div>
+      <div class="map-container" id="prop-map"></div>
+      <p class="map-hint">Click anywhere on the map to set the property location pin.</p>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal('prop-modal')">Cancel</button>
+        <button class="btn btn-terra" id="prop-save-btn" onclick="saveProperty()">Save Property</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BLOG EDITOR MODAL ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="blog-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('blog-modal')">&times;</button>
+      <h2 id="blog-modal-title">New Blog Post</h2>
+      <input type="hidden" id="blog-edit-id" />
+
+      <div class="form-row">
+        <div class="form-group"><label>Title</label><input type="text" id="blog-title" placeholder="Article headline" /></div>
+        <div class="form-group"><label>URL Slug</label><input type="text" id="blog-slug" placeholder="auto-generated-from-title" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Category</label>
+          <select id="blog-category"><option value="market">Market</option><option value="lifestyle">Lifestyle</option><option value="guide">Guide</option><option value="investment">Investment</option><option value="news">News</option></select>
+        </div>
+        <div class="form-group"><label>Status</label>
+          <select id="blog-status"><option value="draft">Draft</option><option value="published">Published</option></select>
+        </div>
+        <div class="form-group"><label>Read Time</label><input type="text" id="blog-readtime" placeholder="e.g. 6 min read" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Excerpt (for cards)</label><input type="text" id="blog-excerpt" placeholder="Short summary for the blog index page" maxlength="200" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Meta Description (SEO)</label><input type="text" id="blog-meta-desc" placeholder="Description for search engines" maxlength="160" /></div>
+      </div>
+
+      <div class="form-section-title">Cover Image</div>
+      <div class="photo-upload-area" id="blog-photo-upload"
+           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+           ondrop="handlePhotoDrop(event, 'blog')" onclick="document.getElementById('blog-photo-input').click()">
+        <p>Drop a cover image here or click to upload</p>
+        <span class="upload-hint">Recommended: 1200 x 630px</span>
+        <input type="file" id="blog-photo-input" accept="image/*" onchange="handlePhotoSelect(event, 'blog')" />
+      </div>
+      <div class="photo-grid" id="blog-photo-grid"></div>
+
+      <div class="form-section-title">Article Body</div>
+      <div class="editor-toolbar">
+        <button onclick="insertMarkdown('## ')" title="Heading">H2</button>
+        <button onclick="insertMarkdown('### ')" title="Subheading">H3</button>
+        <button onclick="insertMarkdown('**', '**')" title="Bold">B</button>
+        <button onclick="insertMarkdown('*', '*')" title="Italic">I</button>
+      </div>
+      <textarea class="blog-body-textarea" id="blog-body" placeholder="Write your article here...
+
+Use ## for headings, **text** for bold, *text* for italic.
+Separate paragraphs with a blank line."></textarea>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal('blog-modal')">Cancel</button>
+        <button class="btn btn-terra" id="blog-save-btn" onclick="saveBlogPost()">Save Post</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  </div><!-- /admin-app -->
+
+  <script>
+    // ══════════════════════════════════════════════════════════════
+    //  LOGIN
+    // ══════════════════════════════════════════════════════════════
+    const SESSION_KEY = 'tl_admin_session';
+
+    async function hashPass(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function attemptLogin() {
+      const pw = document.getElementById('login-password').value;
+      if (!pw) return;
+      const hash = await hashPass(pw);
+      const stored = localStorage.getItem('tl_admin_hash');
+      if (!stored) {
+        localStorage.setItem('tl_admin_hash', hash);
+        sessionStorage.setItem(SESSION_KEY, '1');
+        showAdmin();
+        showToast('Password set! This will be required next time.');
+        return;
+      }
+      if (hash === stored) {
+        sessionStorage.setItem(SESSION_KEY, '1');
+        showAdmin();
+      } else {
+        document.getElementById('login-error').textContent = 'Incorrect password.';
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+      }
+    }
+
+    function showAdmin() {
+      document.getElementById('login-gate').style.display = 'none';
+      document.getElementById('admin-app').style.display = 'block';
+      initApp();
+    }
+
+    function logout() {
+      sessionStorage.removeItem(SESSION_KEY);
+      location.reload();
+    }
+
+    async function changePassword() {
+      const pw = document.getElementById('new-pass-input').value;
+      if (!pw) return;
+      localStorage.setItem('tl_admin_hash', await hashPass(pw));
+      document.getElementById('new-pass-input').value = '';
+      showToast('Password updated');
+    }
+
+    document.getElementById('prop-featured').addEventListener('change', function() {
+      document.getElementById('prop-featured-label').textContent = this.checked ? 'Yes' : 'No';
+    });
+
+    if (sessionStorage.getItem(SESSION_KEY) === '1') showAdmin();
+    document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+
+    // ══════════════════════════════════════════════════════════════
+    //  SUPABASE CLIENT
+    // ══════════════════════════════════════════════════════════════
+    let sb = null; // Supabase client instance
+
+    function getConfig() {
+      return {
+        url: localStorage.getItem('tl_sb_url') || '',
+        key: localStorage.getItem('tl_sb_key') || '',
+        mapbox: localStorage.getItem('tl_mapbox_key') || ''
+      };
+    }
+
+    function initSupabase() {
+      const cfg = getConfig();
+      if (cfg.url && cfg.key) {
+        try {
+          sb = supabase.createClient(cfg.url, cfg.key);
+          document.getElementById('conn-dot').className = 'status-dot connected';
+          document.getElementById('conn-text').textContent = 'Connected to Supabase';
+          return true;
+        } catch (e) {
+          console.error('Supabase init error:', e);
+        }
+      }
+      sb = null;
+      document.getElementById('conn-dot').className = 'status-dot disconnected';
+      document.getElementById('conn-text').textContent = 'Not connected — add Supabase keys in Settings';
+      return false;
+    }
+
+    function saveSupabaseConfig() {
+      localStorage.setItem('tl_sb_url', document.getElementById('sb-url-input').value.trim().replace(/\/$/, ''));
+      localStorage.setItem('tl_sb_key', document.getElementById('sb-key-input').value.trim());
+      if (initSupabase()) {
+        showToast('Connected to Supabase');
+        loadProperties();
+        loadBlogPosts();
+      } else {
+        showToast('Connection failed — check your URL and key');
+      }
+    }
+
+    function saveMapboxKey() {
+      localStorage.setItem('tl_mapbox_key', document.getElementById('mapbox-key-input').value.trim());
+      showToast('Mapbox key saved');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    //  UI HELPERS
+    // ══════════════════════════════════════════════════════════════
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+    function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+
+    // Tab switching
+    document.querySelectorAll('.topbar-links a[data-tab]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.topbar-links a[data-tab]').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + link.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ══════════════════════════════════════════════════════════════
+    //  PROPERTIES
+    // ══════════════════════════════════════════════════════════════
+    let allProperties = [];
+    let propPhotos = [];
+    let propMap = null;
+    let propMarker = null;
+
+    async function loadProperties() {
+      if (!sb) return;
+      const { data, error } = await sb.from('properties').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+      if (error) { showToast('Error loading properties: ' + error.message); return; }
+      allProperties = data || [];
+      renderProperties();
+    }
+
+    function renderProperties() {
+      const list = document.getElementById('properties-list');
+      document.getElementById('prop-count').textContent = allProperties.length + ' propert' + (allProperties.length === 1 ? 'y' : 'ies');
+      if (allProperties.length === 0) {
+        list.innerHTML = `<div class="empty-state"><h3>No properties yet</h3><p>Add your first listing to get started.</p><button class="btn btn-terra" onclick="openPropertyEditor()">+ Add Property</button></div>`;
+        return;
+      }
+      list.innerHTML = allProperties.map(p => `
+        <div class="item-card">
+          <div class="item-thumb">${p.photos && p.photos.length > 0 ? `<img src="${p.photos[0]}" alt="${p.name}" />` : ''}</div>
+          <div class="item-info">
+            <h3>${p.name || 'Untitled'}</h3>
+            <div class="item-meta">
+              <span class="tag">${p.type || 'home'}</span>
+              <span>${p.price || ''}</span>
+              <span>${p.location || ''}</span>
+              ${p.beds ? `<span>${p.beds} bd</span>` : ''}
+              ${p.baths ? `<span>${p.baths} ba</span>` : ''}
+              ${p.size ? `<span>${Number(p.size).toLocaleString()} sqft</span>` : ''}
+              <span class="status-badge status-${p.status || 'active'}">${p.status || 'active'}</span>
+              ${p.featured ? '<span class="badge-featured">★ Featured</span>' : ''}
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-outline btn-sm" onclick="editProperty('${p.id}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProperty('${p.id}')">Delete</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function openPropertyEditor(data) {
+      propPhotos = data ? [...(data.photos || [])] : [];
+      document.getElementById('prop-edit-id').value = data ? data.id : '';
+      document.getElementById('prop-modal-title').textContent = data ? 'Edit Property' : 'Add Property';
+      document.getElementById('prop-name').value = data ? data.name || '' : '';
+      document.getElementById('prop-price').value = data ? data.price || '' : '';
+      document.getElementById('prop-type').value = data ? data.type || 'home' : 'home';
+      document.getElementById('prop-status').value = data ? data.status || 'active' : 'active';
+      document.getElementById('prop-location').value = data ? data.location || '' : '';
+      document.getElementById('prop-address').value = data ? data.address || '' : '';
+      document.getElementById('prop-beds').value = data ? data.beds || '' : '';
+      document.getElementById('prop-baths').value = data ? data.baths || '' : '';
+      document.getElementById('prop-size').value = data ? data.size || '' : '';
+      document.getElementById('prop-lot').value = data ? data.lot || '' : '';
+      document.getElementById('prop-short-desc').value = data ? data.short_desc || '' : '';
+      document.getElementById('prop-desc').value = data ? data.description || '' : '';
+      document.getElementById('prop-features').value = data ? (data.features || []).join(', ') : '';
+      document.getElementById('prop-lat').value = data ? data.lat || '' : '';
+      document.getElementById('prop-lng').value = data ? data.lng || '' : '';
+      document.getElementById('prop-featured').checked = data ? !!data.featured : false;
+      document.getElementById('prop-featured-label').textContent = (data && data.featured) ? 'Yes' : 'No';
+      renderPropPhotos();
+      openModal('prop-modal');
+      setTimeout(() => initPropMap(data), 100);
+    }
+
+    function renderPropPhotos() {
+      document.getElementById('prop-photo-grid').innerHTML = propPhotos.map((src, i) => `
+        <div class="photo-item" draggable="true"
+             ondragstart="photoDragStart(event,${i})" ondragover="photoDragOver(event)"
+             ondragenter="photoDragEnter(event)" ondragleave="photoDragItemLeave(event)"
+             ondrop="photoDragDrop(event,${i})" ondragend="photoDragEnd(event)">
+          <img src="${src}" alt="Photo ${i+1}" />
+          ${i === 0 ? '<span class="photo-badge">Cover</span>' : ''}
+          <button class="photo-remove" onclick="removePropPhoto(${i})">&times;</button>
+        </div>`).join('');
+    }
+
+    function removePropPhoto(idx) { propPhotos.splice(idx, 1); renderPropPhotos(); }
+
+    // Photo drag reorder
+    let dragPhotoIdx = null;
+    function photoDragStart(e, idx) { dragPhotoIdx = idx; e.target.closest('.photo-item').classList.add('dragging'); }
+    function photoDragOver(e) { e.preventDefault(); }
+    function photoDragEnter(e) { e.preventDefault(); e.target.closest('.photo-item')?.classList.add('drag-over'); }
+    function photoDragItemLeave(e) { e.target.closest('.photo-item')?.classList.remove('drag-over'); }
+    function photoDragDrop(e, targetIdx) {
+      e.preventDefault();
+      e.target.closest('.photo-item')?.classList.remove('drag-over');
+      if (dragPhotoIdx !== null && dragPhotoIdx !== targetIdx) {
+        const moved = propPhotos.splice(dragPhotoIdx, 1)[0];
+        propPhotos.splice(targetIdx, 0, moved);
+        renderPropPhotos();
+      }
+    }
+    function photoDragEnd() { document.querySelectorAll('.photo-item').forEach(el => el.classList.remove('dragging','drag-over')); dragPhotoIdx = null; }
+
+    function initPropMap(data) {
+      const key = getConfig().mapbox;
+      const container = document.getElementById('prop-map');
+      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8e5df;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings to enable maps</div>'; return; }
+      mapboxgl.accessToken = key;
+      const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
+      const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
+      if (propMap) propMap.remove();
+      propMap = new mapboxgl.Map({ container: 'prop-map', style: 'mapbox://styles/mapbox/outdoors-v12', center: [lng, lat], zoom: data?.lat ? 14 : 10 });
+      propMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      if (data?.lat && data?.lng) {
+        propMarker = new mapboxgl.Marker({ color: '#2d5a3d' }).setLngLat([lng, lat]).addTo(propMap);
+      }
+      propMap.on('click', (e) => {
+        document.getElementById('prop-lat').value = e.lngLat.lat.toFixed(6);
+        document.getElementById('prop-lng').value = e.lngLat.lng.toFixed(6);
+        if (propMarker) propMarker.remove();
+        propMarker = new mapboxgl.Marker({ color: '#2d5a3d' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(propMap);
+      });
+    }
+
+    async function saveProperty() {
+      if (!sb) { showToast('Connect to Supabase first'); return; }
+      const btn = document.getElementById('prop-save-btn');
+      btn.textContent = 'Saving...'; btn.disabled = true;
+
+      const id = document.getElementById('prop-edit-id').value;
+      const row = {
+        name: document.getElementById('prop-name').value,
+        price: document.getElementById('prop-price').value,
+        type: document.getElementById('prop-type').value,
+        status: document.getElementById('prop-status').value,
+        location: document.getElementById('prop-location').value,
+        address: document.getElementById('prop-address').value,
+        beds: parseFloat(document.getElementById('prop-beds').value) || 0,
+        baths: parseFloat(document.getElementById('prop-baths').value) || 0,
+        size: parseFloat(document.getElementById('prop-size').value) || 0,
+        lot: parseFloat(document.getElementById('prop-lot').value) || 0,
+        short_desc: document.getElementById('prop-short-desc').value,
+        description: document.getElementById('prop-desc').value,
+        features: document.getElementById('prop-features').value.split(',').map(s => s.trim()).filter(Boolean),
+        photos: propPhotos,
+        lat: parseFloat(document.getElementById('prop-lat').value) || null,
+        lng: parseFloat(document.getElementById('prop-lng').value) || null,
+        featured: document.getElementById('prop-featured').checked,
+      };
+
+      let error;
+      if (id) {
+        ({ error } = await sb.from('properties').update(row).eq('id', id));
+      } else {
+        ({ error } = await sb.from('properties').insert([row]));
+      }
+
+      btn.textContent = 'Save Property'; btn.disabled = false;
+
+      if (error) { showToast('Error: ' + error.message); return; }
+      closeModal('prop-modal');
+      await loadProperties();
+      showToast(id ? 'Property updated' : 'Property added');
+    }
+
+    function editProperty(id) {
+      const p = allProperties.find(x => x.id === id);
+      if (p) openPropertyEditor(p);
+    }
+
+    async function deleteProperty(id) {
+      if (!confirm('Delete this property? This cannot be undone.')) return;
+      if (!sb) return;
+      const { error } = await sb.from('properties').delete().eq('id', id);
+      if (error) { showToast('Error: ' + error.message); return; }
+      await loadProperties();
+      showToast('Property deleted');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    //  BLOG POSTS
+    // ══════════════════════════════════════════════════════════════
+    let allBlogPosts = [];
+    let blogCoverUrl = '';
+
+    async function loadBlogPosts() {
+      if (!sb) return;
+      const { data, error } = await sb.from('blog_posts').select('*').order('created_at', { ascending: false });
+      if (error) { showToast('Error loading posts: ' + error.message); return; }
+      allBlogPosts = data || [];
+      renderBlogPosts();
+    }
+
+    function renderBlogPosts() {
+      const list = document.getElementById('blog-list');
+      document.getElementById('blog-count').textContent = allBlogPosts.length + ' post' + (allBlogPosts.length === 1 ? '' : 's');
+      if (allBlogPosts.length === 0) {
+        list.innerHTML = `<div class="empty-state"><h3>No blog posts yet</h3><p>Write your first article.</p><button class="btn btn-terra" onclick="openBlogEditor()">+ New Post</button></div>`;
+        return;
+      }
+      list.innerHTML = allBlogPosts.map(p => `
+        <div class="item-card">
+          <div class="item-thumb">${p.cover_url ? `<img src="${p.cover_url}" alt="${p.title}" />` : ''}</div>
+          <div class="item-info">
+            <h3>${p.title || 'Untitled'}</h3>
+            <div class="item-meta">
+              <span class="tag">${p.category || 'market'}</span>
+              <span>${p.readtime || ''}</span>
+              <span class="status-badge status-${p.status || 'draft'}">${p.status || 'draft'}</span>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-outline btn-sm" onclick="editBlogPost('${p.id}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteBlogPost('${p.id}')">Delete</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function openBlogEditor(data) {
+      blogCoverUrl = data ? data.cover_url || '' : '';
+      document.getElementById('blog-edit-id').value = data ? data.id : '';
+      document.getElementById('blog-modal-title').textContent = data ? 'Edit Post' : 'New Blog Post';
+      document.getElementById('blog-title').value = data ? data.title || '' : '';
+      document.getElementById('blog-slug').value = data ? data.slug || '' : '';
+      document.getElementById('blog-category').value = data ? data.category || 'market' : 'market';
+      document.getElementById('blog-status').value = data ? data.status || 'draft' : 'draft';
+      document.getElementById('blog-readtime').value = data ? data.readtime || '' : '';
+      document.getElementById('blog-excerpt').value = data ? data.excerpt || '' : '';
+      document.getElementById('blog-meta-desc').value = data ? data.meta_desc || '' : '';
+      document.getElementById('blog-body').value = data ? data.body || '' : '';
+      renderBlogCover();
+      openModal('blog-modal');
+    }
+
+    function renderBlogCover() {
+      const grid = document.getElementById('blog-photo-grid');
+      grid.innerHTML = blogCoverUrl ? `
+        <div class="photo-item">
+          <img src="${blogCoverUrl}" alt="Cover" />
+          <span class="photo-badge">Cover</span>
+          <button class="photo-remove" onclick="blogCoverUrl='';renderBlogCover();">&times;</button>
+        </div>` : '';
+    }
+
+    document.getElementById('blog-title').addEventListener('input', function() {
+      if (!document.getElementById('blog-edit-id').value) {
+        document.getElementById('blog-slug').value = this.value.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,60);
+      }
+    });
+
+    function insertMarkdown(before, after) {
+      const ta = document.getElementById('blog-body');
+      const start = ta.selectionStart, end = ta.selectionEnd;
+      const selected = ta.value.substring(start, end);
+      ta.value = ta.value.substring(0, start) + before + selected + (after || '') + ta.value.substring(end);
+      ta.focus();
+      ta.selectionStart = start + before.length;
+      ta.selectionEnd = start + before.length + selected.length;
+    }
+
+    async function saveBlogPost() {
+      if (!sb) { showToast('Connect to Supabase first'); return; }
+      const btn = document.getElementById('blog-save-btn');
+      btn.textContent = 'Saving...'; btn.disabled = true;
+
+      const id = document.getElementById('blog-edit-id').value;
+      const row = {
+        title: document.getElementById('blog-title').value,
+        slug: document.getElementById('blog-slug').value,
+        category: document.getElementById('blog-category').value,
+        status: document.getElementById('blog-status').value,
+        readtime: document.getElementById('blog-readtime').value,
+        excerpt: document.getElementById('blog-excerpt').value,
+        meta_desc: document.getElementById('blog-meta-desc').value,
+        body: document.getElementById('blog-body').value,
+        cover_url: blogCoverUrl,
+      };
+
+      let error;
+      if (id) {
+        ({ error } = await sb.from('blog_posts').update(row).eq('id', id));
+      } else {
+        ({ error } = await sb.from('blog_posts').insert([row]));
+      }
+
+      btn.textContent = 'Save Post'; btn.disabled = false;
+      if (error) { showToast('Error: ' + error.message); return; }
+      closeModal('blog-modal');
+      await loadBlogPosts();
+      showToast(id ? 'Post updated' : 'Post created');
+    }
+
+    function editBlogPost(id) {
+      const p = allBlogPosts.find(x => x.id === id);
+      if (p) openBlogEditor(p);
+    }
+
+    async function deleteBlogPost(id) {
+      if (!confirm('Delete this blog post?')) return;
+      if (!sb) return;
+      const { error } = await sb.from('blog_posts').delete().eq('id', id);
+      if (error) { showToast('Error: ' + error.message); return; }
+      await loadBlogPosts();
+      showToast('Post deleted');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    //  PHOTO UPLOAD (Supabase Storage)
+    // ══════════════════════════════════════════════════════════════
+    function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); }
+    function handleDragLeave(e) { e.currentTarget.classList.remove('dragover'); }
+
+    function handlePhotoDrop(e, type) {
+      e.preventDefault(); e.currentTarget.classList.remove('dragover');
+      processPhotos(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')), type);
+    }
+    function handlePhotoSelect(e, type) {
+      processPhotos(Array.from(e.target.files), type);
+      e.target.value = '';
+    }
+
+    async function processPhotos(files, type) {
+      if (!sb) { showToast('Connect to Supabase first'); return; }
+      const cfg = getConfig();
+
+      for (const file of files) {
+        // Generate unique filename
+        const ext = file.name.split('.').pop();
+        const filename = `${type}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+
+        // Show uploading state
+        if (type === 'property') {
+          propPhotos.push('uploading');
+          renderPropPhotos();
+        }
+
+        // Upload to Supabase Storage
+        const { data, error } = await sb.storage.from('photos').upload(filename, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+        if (error) {
+          showToast('Upload error: ' + error.message);
+          if (type === 'property') {
+            propPhotos = propPhotos.filter(p => p !== 'uploading');
+            renderPropPhotos();
+          }
+          continue;
+        }
+
+        // Get the public URL
+        const { data: urlData } = sb.storage.from('photos').getPublicUrl(filename);
+        const publicUrl = urlData.publicUrl;
+
+        if (type === 'property') {
+          const idx = propPhotos.indexOf('uploading');
+          if (idx >= 0) propPhotos[idx] = publicUrl;
+          else propPhotos.push(publicUrl);
+          renderPropPhotos();
+        } else {
+          blogCoverUrl = publicUrl;
+          renderBlogCover();
+        }
+      }
+      showToast(files.length + ' photo' + (files.length > 1 ? 's' : '') + ' uploaded');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════════════════════
+    function initApp() {
+      const cfg = getConfig();
+      document.getElementById('sb-url-input').value = cfg.url;
+      document.getElementById('sb-key-input').value = cfg.key;
+      document.getElementById('mapbox-key-input').value = cfg.mapbox;
+
+      if (initSupabase()) {
+        loadProperties();
+        loadBlogPosts();
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-c", "import os,http.server,socketserver; os.chdir('/Users/tiagoleao/Desktop/WEBSITE'); h=http.server.SimpleHTTPRequestHandler; socketserver.TCPServer(('',8000),h).serve_forever()"],
+      "port": 8000
+    }
+  ]
+}
