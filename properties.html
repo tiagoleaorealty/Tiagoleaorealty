@@ -704,11 +704,65 @@
 
     /* ── Mobile Redesign ─────────────────────────────────────── */
     @media (max-width: 900px) {
-      /* Fix list view: hidden map must not consume height in column layout */
+      /* List view: hidden map must not consume height */
       .split-wrap:not(.map-active) .map-panel { height: 0 !important; }
-      .split-wrap.map-active .map-panel { height: 52vh; }
+      .split-wrap:not(.map-active) .sheet-handle { display: none; }
 
-      /* Filter bar: hide pill filters, keep search + controls */
+      /* Map view: map fills full height, sheet overlays from bottom */
+      .split-wrap { position: relative; }
+      .split-wrap.map-active .map-panel {
+        position: absolute;
+        inset: 0;
+        height: 100% !important;
+        width: 100% !important;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .split-wrap.map-active .list-panel {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 148px;
+        width: auto;
+        flex: none;
+        background: var(--black);
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 28px rgba(0,0,0,0.14);
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 50;
+      }
+
+      /* Drag handle */
+      .sheet-handle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 30px;
+        flex-shrink: 0;
+        touch-action: none;
+        position: sticky;
+        top: 0;
+        background: var(--black);
+        z-index: 2;
+        border-radius: 20px 20px 0 0;
+      }
+      .sheet-handle::before {
+        content: '';
+        width: 36px; height: 4px;
+        background: rgba(0,0,0,0.15);
+        border-radius: 2px;
+      }
+
+      /* Sticky list header */
+      .split-wrap.map-active .list-header {
+        position: sticky;
+        top: 30px;
+        background: var(--black);
+        z-index: 1;
+      }
+
+      /* Filter bar: clean up overflow */
       .filter-pills { display: none; }
       .filter-inner { flex-wrap: wrap; gap: 8px; }
       .filter-search-wrap { flex: 0 0 100%; }
@@ -719,6 +773,10 @@
         gap: 8px;
       }
       .prop-count { flex: 1; }
+      .filter-clear { display: none; }
+      .sort-select { font-size: 12px; max-width: 136px; padding: 8px 22px 8px 8px; }
+      .view-btn-label { display: none; }
+      .view-btn { padding: 8px 12px; gap: 0; }
 
       /* Section */
       .properties-section { background: var(--black); padding: 12px 12px 48px; }
@@ -736,13 +794,9 @@
       }
       .property-card:hover { background: #fff; }
 
-      /* Photo */
       .prop-img { height: 220px; border-radius: 0; }
-
-      /* Always show carousel arrows on touch */
       .prop-arrow { opacity: 1; }
 
-      /* Badge: rounded pill, white */
       .prop-badge {
         background: rgba(255,255,255,0.92);
         color: var(--cream);
@@ -754,7 +808,6 @@
         letter-spacing: 0;
       }
 
-      /* Info area */
       .prop-info { padding: 12px 14px 16px; gap: 5px; }
 
       /* Reorder: location → price → stats */
@@ -762,19 +815,9 @@
       .prop-price { order: 0; }
       .prop-meta  { order: 1; }
 
-      /* Location line */
-      .prop-name {
-        font-size: 12px;
-        color: var(--stone);
-        white-space: normal;
-        overflow: visible;
-        font-weight: 400;
-      }
-
-      /* Price */
+      .prop-name { font-size: 12px; color: var(--stone); white-space: normal; overflow: visible; font-weight: 400; }
       .prop-price { font-size: 22px; margin-bottom: 0; }
 
-      /* Pill stats */
       .prop-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0; }
       .prop-meta span {
         background: #f4f6f4;
@@ -788,13 +831,14 @@
       .prop-meta span strong { font-weight: 700; color: var(--cream); }
       .prop-meta .meta-divider { display: none; }
 
-      /* Compact cards when map+list are both showing */
-      .split-wrap.map-active .property-card .prop-img { height: 140px; }
+      /* Compact cards in map+list mode */
+      .split-wrap.map-active .property-card .prop-img { height: 150px; }
       .split-wrap.map-active .prop-info { padding: 8px 12px 12px; gap: 4px; }
       .split-wrap.map-active .prop-price { font-size: 17px; }
       .split-wrap.map-active .prop-meta span { font-size: 11px; padding: 3px 8px; }
       .split-wrap.map-active .prop-name { font-size: 11px; }
     }
+    @media (min-width: 901px) { .sheet-handle { display: none; } }
   </style>
 </head>
 
@@ -898,11 +942,11 @@
         <div class="view-toggle">
           <button class="view-btn" id="view-list" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-            List
+            <span class="view-btn-label">List</span>
           </button>
           <button class="view-btn active" id="view-map" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-            Map
+            <span class="view-btn-label">Map</span>
           </button>
         </div>
       </div>
@@ -915,7 +959,8 @@
     <div class="map-panel" id="map-panel">
       <div id="properties-map"></div>
     </div>
-    <div class="list-panel">
+    <div class="list-panel" id="list-panel">
+  <div class="sheet-handle" id="sheet-handle"></div>
   <section class="properties-section">
     <div class="list-header">
       <div class="list-header-title">Properties For Sale</div>
@@ -1455,6 +1500,62 @@
 
     // ── Hamburger ─────────────────────────────────────────────────
     (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+
+    // ── Mobile Bottom Sheet ────────────────────────────────────────
+    (function() {
+      const handle = document.getElementById('sheet-handle');
+      const sheet  = document.getElementById('list-panel');
+      if (!handle || !sheet) return;
+
+      const SNAP_PEEK = 148;
+
+      function isMobileMap() {
+        return window.innerWidth <= 900 &&
+               document.getElementById('split-wrap').classList.contains('map-active');
+      }
+      function clamp(h) {
+        return Math.max(80, Math.min(window.innerHeight * 0.85, h));
+      }
+      function snapTo(h) {
+        sheet.style.transition = 'height 0.3s cubic-bezier(0.32,0.72,0,1)';
+        sheet.style.height = clamp(h) + 'px';
+        setTimeout(() => { sheet.style.transition = ''; }, 350);
+      }
+
+      let dragging = false, startY = 0, startH = 0;
+
+      handle.addEventListener('touchstart', e => {
+        if (!isMobileMap()) return;
+        dragging = true;
+        startY = e.touches[0].clientY;
+        startH = sheet.offsetHeight;
+        sheet.style.transition = 'none';
+      }, { passive: true });
+
+      window.addEventListener('touchmove', e => {
+        if (!dragging) return;
+        const dy = startY - e.touches[0].clientY;
+        sheet.style.height = clamp(startH + dy) + 'px';
+      }, { passive: true });
+
+      window.addEventListener('touchend', () => {
+        if (!dragging) return;
+        dragging = false;
+        const h = sheet.offsetHeight;
+        const snapFull = window.innerHeight * 0.65;
+        snapTo(h > (SNAP_PEEK + snapFull) / 2 ? snapFull : SNAP_PEEK);
+      });
+
+      // Init sheet height when map activates
+      viewMapBtn.addEventListener('click', () => {
+        if (window.innerWidth <= 900) setTimeout(() => { sheet.style.height = SNAP_PEEK + 'px'; }, 10);
+      });
+      // Reset when switching to list view
+      viewListBtn.addEventListener('click', () => { sheet.style.height = ''; });
+
+      // Init on load if map is already active
+      if (isMobileMap()) sheet.style.height = SNAP_PEEK + 'px';
+    })();
   </script>
 </body>
 </html>
