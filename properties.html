@@ -10,9 +10,9 @@
   <meta property="og:description" content="Luxury homes, condos, villas, and land for sale across Guanacaste's Gold Coast. Browse current listings.">
   <meta property="og:url" content="https://tiagoleaorealty.com/properties.html">
   <meta property="og:type" content="website">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Neue+Haas+Grotesk+Display+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  
+  
+  <link rel="stylesheet" href="fonts.css" />
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 
@@ -1064,8 +1064,22 @@
       dots[cur] && dots[cur].classList.add('dot-active');
     }
 
+    function initCarouselTouch() {
+      document.querySelectorAll('.prop-img').forEach(imgDiv => {
+        if (imgDiv.dataset.touchInit) return;
+        imgDiv.dataset.touchInit = '1';
+        let ts = 0;
+        imgDiv.addEventListener('touchstart', e => { ts = e.touches[0].clientX; }, { passive: true });
+        imgDiv.addEventListener('touchend', e => {
+          const diff = ts - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 35) propCarouselStep(imgDiv, diff > 0 ? 1 : -1);
+        }, { passive: true });
+      });
+    }
+
     function rebindFilters() {
       applyFilters();
+      initCarouselTouch();
     }
 
     // ── Cursor ──────────────────────────────────────────────────────
