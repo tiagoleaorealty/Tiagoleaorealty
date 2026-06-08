@@ -752,14 +752,94 @@
     .nav-mobile a:hover, .nav-mobile a:active { color: #fff; }
     .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #7ec99a; color: #1a2b1e !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
 
+    /* ─── Lightbox ───────────────────────────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.96);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #lightbox.open { display: flex; }
+    #lb-img {
+      max-width: 92vw;
+      max-height: 82vh;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+    }
+    #lb-close {
+      position: absolute;
+      top: 20px; right: 24px;
+      background: none; border: none;
+      color: #fff; font-size: 32px;
+      cursor: pointer; line-height: 1;
+      opacity: 0.8; transition: opacity 0.2s;
+    }
+    #lb-close:hover { opacity: 1; }
+    #lb-prev, #lb-next {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.12);
+      border: none; color: #fff;
+      font-size: 32px; line-height: 1;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    #lb-prev:hover, #lb-next:hover { background: rgba(255,255,255,0.25); }
+    #lb-prev { left: 20px; }
+    #lb-next { right: 20px; }
+    #lb-counter {
+      position: absolute;
+      bottom: 24px;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── Mobile gallery carousel ────────────────────────────────── */
+    .gallery-nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(4px);
+      border: none; border-radius: 50%;
+      width: 34px; height: 34px;
+      display: none;
+      align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10;
+      font-size: 20px; color: var(--cream); line-height: 1;
+    }
+    .gallery-nav-prev { left: 10px; }
+    .gallery-nav-next { right: 10px; }
+    .gallery-photo-counter {
+      position: absolute;
+      bottom: 52px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #fff; font-size: 12px;
+      padding: 4px 12px; border-radius: 20px;
+      z-index: 10; display: none;
+      font-family: var(--font);
+    }
+
     @media (max-width: 900px) {
       nav { padding: 20px 24px; }
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
-      .gallery { grid-template-columns: 1fr; grid-template-rows: 260px; }
-      .gallery-main { grid-row: 1; }
+      .gallery-wrap { padding: 0; margin-top: 0; }
+      .gallery { grid-template-columns: 1fr; grid-template-rows: 300px; border-radius: 0; }
+      .gallery-main { grid-row: 1; position: relative; cursor: pointer; }
       .gallery-thumb { display: none; }
+      .gallery-nav { display: flex; }
+      .gallery-photo-counter { display: block; }
       .detail-layout { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
       .detail-sidebar { position: static; }
       .detail-stats { flex-wrap: wrap; }
@@ -835,7 +915,7 @@
       <div class="gallery-thumb">
         <span class="gallery-placeholder-label">Photo 5</span>
       </div>
-      <button class="gallery-show-all" onclick="alert('Full gallery coming soon')">
+      <button class="gallery-show-all" onclick="openLightbox(0)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         Show all photos
       </button>
@@ -1321,14 +1401,22 @@
 
           // Load photos into gallery
           if (p.photos && p.photos.length > 0) {
+            allPhotos = p.photos;
+            carouselIndex = 0;
             const gallery = document.getElementById('gallery');
             const main = gallery.querySelector('.gallery-main');
             const thumbs = gallery.querySelectorAll('.gallery-thumb');
             if (main && p.photos[0]) {
-              main.innerHTML = '<img src="' + p.photos[0] + '" alt="' + (p.name || 'Property') + '" />';
+              main.innerHTML = '<img src="' + p.photos[0] + '" alt="' + (p.name || 'Property') + '" style="width:100%;height:100%;object-fit:cover;display:block;" />'
+                + (p.photos.length > 1 ? '<button class="gallery-nav gallery-nav-prev" onclick="event.stopPropagation();carouselNav(-1)">&#8249;</button><button class="gallery-nav gallery-nav-next" onclick="event.stopPropagation();carouselNav(1)">&#8250;</button><div class="gallery-photo-counter" id="gallery-photo-counter">1 / ' + p.photos.length + '</div>' : '');
+              main.onclick = () => openLightbox(carouselIndex);
             }
             p.photos.slice(1, 5).forEach((url, i) => {
-              if (thumbs[i]) thumbs[i].innerHTML = '<img src="' + url + '" alt="Photo ' + (i+2) + '" />';
+              if (thumbs[i]) {
+                thumbs[i].innerHTML = '<img src="' + url + '" alt="Photo ' + (i+2) + '" style="width:100%;height:100%;object-fit:cover;display:block;" />';
+                thumbs[i].style.cursor = 'pointer';
+                thumbs[i].onclick = () => openLightbox(i + 1);
+              }
             });
           }
 
@@ -1347,7 +1435,65 @@
 
     // ── Hamburger ─────────────────────────────────────────────────
     (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+
+    // ── Lightbox & Mobile Carousel ────────────────────────────────
+    let allPhotos = [];
+    let lbIndex = 0;
+    let carouselIndex = 0;
+
+    function openLightbox(idx) {
+      if (!allPhotos.length) return;
+      lbIndex = idx;
+      document.getElementById('lb-img').src = allPhotos[lbIndex];
+      document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + allPhotos.length;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function lbNav(dir) {
+      lbIndex = (lbIndex + dir + allPhotos.length) % allPhotos.length;
+      document.getElementById('lb-img').src = allPhotos[lbIndex];
+      document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + allPhotos.length;
+    }
+    function carouselNav(dir) {
+      carouselIndex = (carouselIndex + dir + allPhotos.length) % allPhotos.length;
+      const img = document.querySelector('.gallery-main img');
+      if (img) img.src = allPhotos[carouselIndex];
+      const counter = document.getElementById('gallery-photo-counter');
+      if (counter) counter.textContent = (carouselIndex + 1) + ' / ' + allPhotos.length;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowLeft') lbNav(-1);
+      if (e.key === 'ArrowRight') lbNav(1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Touch swipe for lightbox
+    (function() {
+      const lb = document.getElementById('lightbox');
+      let ts = 0;
+      lb.addEventListener('touchstart', e => { ts = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener('touchend', e => {
+        const diff = ts - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) lbNav(diff > 0 ? 1 : -1);
+      }, { passive: true });
+    })();
   </script>
+
+  <!-- Lightbox -->
+  <div id="lightbox">
+    <button id="lb-close" onclick="closeLightbox()">&#215;</button>
+    <button id="lb-prev" onclick="lbNav(-1)">&#8249;</button>
+    <img id="lb-img" alt="Property photo" />
+    <button id="lb-next" onclick="lbNav(1)">&#8250;</button>
+    <div id="lb-counter"></div>
+  </div>
 
 </body>
 </html>
