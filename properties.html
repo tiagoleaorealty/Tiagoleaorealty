@@ -656,6 +656,7 @@
     /* Hamburger & Mobile Nav */
     .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
     .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    nav.nav-open { z-index: 201; }
     nav.nav-open .nav-hamburger span { background: #fff !important; }
     nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
@@ -699,6 +700,100 @@
       .properties-grid-full { grid-template-columns: 1fr; }
       .split-wrap.map-active .map-panel { height: 35vh; }
       .pill-dropdown { left: auto; right: 0; }
+    }
+
+    /* ── Mobile Redesign ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      /* Fix list view: hidden map must not consume height in column layout */
+      .split-wrap:not(.map-active) .map-panel { height: 0 !important; }
+      .split-wrap.map-active .map-panel { height: 52vh; }
+
+      /* Filter bar: hide pill filters, keep search + controls */
+      .filter-pills { display: none; }
+      .filter-inner { flex-wrap: wrap; gap: 8px; }
+      .filter-search-wrap { flex: 0 0 100%; }
+      .filter-right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 8px;
+      }
+      .prop-count { flex: 1; }
+
+      /* Section */
+      .properties-section { background: var(--black); padding: 12px 12px 48px; }
+      .properties-grid-full { gap: 12px; }
+
+      /* White rounded cards */
+      .property-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        overflow: hidden;
+      }
+      .property-card:hover { background: #fff; }
+
+      /* Photo */
+      .prop-img { height: 220px; border-radius: 0; }
+
+      /* Always show carousel arrows on touch */
+      .prop-arrow { opacity: 1; }
+
+      /* Badge: rounded pill, white */
+      .prop-badge {
+        background: rgba(255,255,255,0.92);
+        color: var(--cream);
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 5px 12px;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+
+      /* Info area */
+      .prop-info { padding: 12px 14px 16px; gap: 5px; }
+
+      /* Reorder: location → price → stats */
+      .prop-name  { order: -1; }
+      .prop-price { order: 0; }
+      .prop-meta  { order: 1; }
+
+      /* Location line */
+      .prop-name {
+        font-size: 12px;
+        color: var(--stone);
+        white-space: normal;
+        overflow: visible;
+        font-weight: 400;
+      }
+
+      /* Price */
+      .prop-price { font-size: 22px; margin-bottom: 0; }
+
+      /* Pill stats */
+      .prop-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0; }
+      .prop-meta span {
+        background: #f4f6f4;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: var(--sand);
+        font-weight: 400;
+      }
+      .prop-meta span strong { font-weight: 700; color: var(--cream); }
+      .prop-meta .meta-divider { display: none; }
+
+      /* Compact cards when map+list are both showing */
+      .split-wrap.map-active .property-card .prop-img { height: 140px; }
+      .split-wrap.map-active .prop-info { padding: 8px 12px 12px; gap: 4px; }
+      .split-wrap.map-active .prop-price { font-size: 17px; }
+      .split-wrap.map-active .prop-meta span { font-size: 11px; padding: 3px 8px; }
+      .split-wrap.map-active .prop-name { font-size: 11px; }
     }
   </style>
 </head>
