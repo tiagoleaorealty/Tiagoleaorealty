@@ -1184,8 +1184,8 @@
           const searchText = (c.dataset.keywords || '') + ' ' + (c.querySelector('.prop-name')?.textContent || '').toLowerCase() + ' ' + (c.querySelector('.prop-location')?.textContent || '').toLowerCase();
           if (!searchText.includes(keyword)) match = false;
         }
-        // Map bounds filter — only apply when map is active and user has navigated
-        if (match && mapBoundsFilter && splitWrap && splitWrap.classList.contains('map-active')) {
+        // Map bounds filter — only apply when map is active, user has navigated, and no text search is active
+        if (match && mapBoundsFilter && !locFilter && splitWrap && splitWrap.classList.contains('map-active')) {
           const lat = parseFloat(c.dataset.lat);
           const lng = parseFloat(c.dataset.lng);
           if (!isNaN(lat) && !isNaN(lng)) {
@@ -1250,11 +1250,28 @@
         });
       });
 
-      // Location search (debounced)
+      // Location search (debounced) — resets map bounds filter + geocodes to fly map
       let locTimer;
       document.getElementById('filter-location').addEventListener('input', () => {
         clearTimeout(locTimer);
-        locTimer = setTimeout(applyFilters, 250);
+        locTimer = setTimeout(() => {
+          mapBoundsFilter = null; // let map re-fit to filtered results
+          applyFilters();
+          const q = document.getElementById('filter-location').value.trim();
+          if (q.length > 1 && propertiesMap && mapInitialized) {
+            const token = mapboxgl.accessToken;
+            if (token) {
+              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?access_token=${token}&country=CR&proximity=-85.5,10.3&limit=1`)
+                .then(r => r.json())
+                .then(d => {
+                  if (d.features && d.features.length > 0) {
+                    propertiesMap.flyTo({ center: d.features[0].center, zoom: 12, duration: 900 });
+                  }
+                })
+                .catch(() => {});
+            }
+          }
+        }, 400);
       });
 
       // Price sliders
@@ -1370,11 +1387,14 @@
         syncMarkers();
       });
 
-      // Filter cards to visible map area when user pans or zooms
+      // Filter cards to visible map area when user pans or zooms (only when no text search active)
       propertiesMap.on('moveend', () => {
         if (!splitWrap.classList.contains('map-active')) return;
-        mapBoundsFilter = propertiesMap.getBounds();
-        applyFilters(); // applyFilters already calls syncMarkers when map is active
+        const locSearch = document.getElementById('filter-location').value.trim();
+        if (!locSearch) {
+          mapBoundsFilter = propertiesMap.getBounds();
+          applyFilters();
+        }
       });
 
       return true;
