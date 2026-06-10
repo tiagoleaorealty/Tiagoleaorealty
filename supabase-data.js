@@ -6,8 +6,12 @@
 (function() {
   'use strict';
 
-  const SB_URL = localStorage.getItem('tl_sb_url');
-  const SB_KEY = localStorage.getItem('tl_sb_key');
+  const DEFAULT_SB_URL = 'https://xjliwfmugylwxlrwyvmh.supabase.co';
+  const DEFAULT_SB_KEY = 'sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum';
+  const DEFAULT_MAPBOX_KEY = 'pk.eyJ1IjoidGlhZ29sZWFvcmVhbHR5IiwiYSI6ImNtcGI2ZmJ4MzE1eDMydXExZ3dpNDRoNmsifQ.otE9ctfSu7jpJ5OmL_Ts0g';
+
+  const SB_URL = localStorage.getItem('tl_sb_url') || DEFAULT_SB_URL;
+  const SB_KEY = localStorage.getItem('tl_sb_key') || DEFAULT_SB_KEY;
 
   if (!SB_URL || !SB_KEY) {
     console.log('[Supabase] No config found — using static content');
@@ -104,7 +108,7 @@
 
     // Mapbox key
     getMapboxKey() {
-      return localStorage.getItem('tl_mapbox_key') || '';
+      return localStorage.getItem('tl_mapbox_key') || DEFAULT_MAPBOX_KEY;
     },
 
     // Check if Supabase is configured

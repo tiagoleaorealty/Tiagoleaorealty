@@ -8,7 +8,11 @@
       "WebSearch",
       "Bash(python3 -m http.server 8080)",
       "Bash(ruby -run -e httpd . -p 8001)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8001/index.html)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8001/index.html)",
+      "Bash(python3 -c \"print\\('hello'\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=id&limit=1\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(kill %1 %2)",
+      "Bash(pkill -f \"http.server 8002\")"
     ]
   }
 }
