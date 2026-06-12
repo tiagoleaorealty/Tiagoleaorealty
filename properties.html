@@ -407,6 +407,36 @@
       width: 100%;
       height: 100%;
     }
+    .map-style-toggle {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 5;
+      display: flex;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      font-family: var(--font);
+    }
+    .map-style-toggle button {
+      border: none;
+      background: transparent;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--sand);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .map-style-toggle button.active {
+      background: var(--terra);
+      color: #fff;
+    }
+    .map-style-toggle button:not(.active):hover {
+      background: #f0f0f0;
+    }
     .list-panel {
       width: 100%;
       height: 100%;
@@ -959,6 +989,10 @@
   <div class="split-wrap map-active" id="split-wrap">
     <div class="map-panel" id="map-panel">
       <div id="properties-map"></div>
+      <div class="map-style-toggle" id="map-style-toggle">
+        <button type="button" class="active" data-style="colored">Map</button>
+        <button type="button" data-style="satellite">Satellite</button>
+      </div>
     </div>
     <div class="list-panel" id="list-panel">
   <div class="sheet-handle" id="sheet-handle"></div>
@@ -1352,6 +1386,7 @@
     let mapMarkers = [];
     let mapInitialized = false;
     let mapBoundsFilter = null; // set when user navigates map manually
+    let currentMapStyle = 'colored'; // 'colored' or 'satellite'
 
     const splitWrap = document.getElementById('split-wrap');
     const viewListBtn = document.getElementById('view-list');
@@ -1380,8 +1415,9 @@
 
       propertiesMap.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
 
-      // Warm pink/cream style overrides
+      // Warm pink/cream style overrides (only for the "colored" style)
       propertiesMap.on('style.load', () => {
+        if (currentMapStyle !== 'colored') return;
         try {
           propertiesMap.setPaintProperty('land', 'background-color', '#eae8e2');
           propertiesMap.setPaintProperty('water', 'fill-color', '#b8d4e3');
@@ -1401,6 +1437,23 @@
         mapInitialized = true;
         syncMarkers();
       });
+
+      // Map / Satellite style toggle
+      const styleToggle = document.getElementById('map-style-toggle');
+      if (styleToggle) {
+        styleToggle.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const choice = btn.dataset.style;
+            if (choice === currentMapStyle) return;
+            currentMapStyle = choice;
+            styleToggle.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+            propertiesMap.setStyle(choice === 'satellite'
+              ? 'mapbox://styles/mapbox/satellite-streets-v12'
+              : 'mapbox://styles/mapbox/light-v11');
+            propertiesMap.once('styledata', () => syncMarkers());
+          });
+        });
+      }
 
       // Filter cards to visible map area when user pans or zooms (only when no text search active)
       propertiesMap.on('moveend', () => {
