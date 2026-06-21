@@ -12,7 +12,8 @@
       "Bash(python3 -c \"print\\('hello'\\)\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=id&limit=1\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
       "Bash(kill %1 %2)",
-      "Bash(pkill -f \"http.server 8002\")"
+      "Bash(pkill -f \"http.server 8002\")",
+      "WebFetch(domain:stayintamarindo.com)"
     ]
   }
 }

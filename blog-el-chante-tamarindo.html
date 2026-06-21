@@ -4,11 +4,22 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/Favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guanacaste Real Estate Blog | Tiago Leao</title>
-  <meta name="description" content="Expert insights on buying and selling real estate in Guanacaste, Costa Rica. Market updates, neighborhood guides, and tips for American and Canadian buyers from local agent Tiago Leao.">
-  <link rel="canonical" href="https://tiagoleaorealty.com/blog.html">
-  
-  
+  <title>El Chante: 8 Private Villas Above Tamarindo Beach | Tiago Leao</title>
+  <meta name="description" content="El Chante is a private estate of 8 detached one-bedroom villas above Tamarindo Beach in Costa Rica — one huge pool, open-air ocean-view living, and a walk to downtown. Here's why it's perfect for a big family trip.">
+  <link rel="canonical" href="https://tiagoleaorealty.com/blog-el-chante-tamarindo.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "El Chante: 8 Private Villas Above Tamarindo Beach",
+    "author": {"@type": "Person", "name": "Tiago Leao"},
+    "publisher": {"@type": "Organization", "name": "Tiago Leao Real Estate", "url": "https://tiagoleaorealty.com"},
+    "datePublished": "2026-06-21",
+    "description": "A look at El Chante, a private estate of 8 detached villas above Tamarindo Beach, and what it tells you about owning real estate in Guanacaste, Costa Rica."
+  }
+  </script>
+
+
   <link rel="stylesheet" href="fonts.css" />
 
   <style>
@@ -60,92 +71,108 @@
     .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); border-bottom: 1px solid var(--terra); padding-bottom: 2px; transition: color .2s; }
     .nav-cta:hover { color: var(--accent); }
 
-    /* Page header */
-    .page-header {
-      padding: 160px 48px 60px;
-      max-width: 900px;
+    /* Article */
+    .article-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 140px 24px 80px;
     }
-    .page-header h1 {
-      font-size: clamp(36px, 4vw, 52px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-      margin-bottom: 16px;
-    }
-    .page-header p {
-      font-size: 16px;
+    .article-back {
+      display: inline-block;
+      font-size: 13px;
       color: var(--stone);
-      max-width: 600px;
-      line-height: 1.6;
+      letter-spacing: 0.04em;
+      margin-bottom: 32px;
+      transition: color 0.2s;
     }
-
-    /* Blog grid */
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1200px;
-      padding: 0 48px 80px;
-    }
-    .blog-card {
-      display: flex;
-      flex-direction: column;
-      background: var(--black);
-      border: 0.5px solid rgba(0,0,0,0.08);
-      border-radius: 6px;
-      overflow: hidden;
-      transition: box-shadow 0.3s, border-color 0.3s;
-    }
-    .blog-card:hover {
-      border-color: rgba(0,0,0,0.15);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    }
-    .blog-card-img {
-      height: 200px;
-      background: #d8ddd9;
-    }
-    .blog-card-body {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .blog-card-tag {
+    .article-back:hover { color: var(--cream); }
+    .article-tag {
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--terra);
       font-weight: 500;
-      margin-bottom: 10px;
-    }
-    .blog-card-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      color: var(--cream);
-      margin-bottom: 10px;
-    }
-    .blog-card-excerpt {
-      font-size: 14px;
-      color: var(--stone);
-      line-height: 1.6;
-      margin-bottom: 16px;
-      flex: 1;
-    }
-    .blog-card-meta {
-      font-size: 12px;
-      color: var(--stone);
       margin-bottom: 12px;
     }
-    .blog-card-link {
-      font-size: 13px;
-      font-weight: 500;
+    .article-title {
+      font-size: clamp(32px, 4vw, 46px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .article-byline {
+      font-size: 14px;
+      color: var(--stone);
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 0.5px solid rgba(0,0,0,0.1);
+    }
+    .article-body p {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--sand);
+      margin-bottom: 28px;
+    }
+    .article-body h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      margin-top: 48px;
+      margin-bottom: 20px;
+    }
+    .article-body a.inline-link {
       color: var(--terra);
-      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--terra);
+      transition: color 0.2s, opacity 0.2s;
+    }
+    .article-body a.inline-link:hover { color: var(--cream); opacity: 0.85; }
+
+    /* Booking button (mid-article) */
+    .article-book {
+      margin: 8px 0 36px;
+    }
+    .article-book a {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f0ede8;
+      background: var(--terra);
+      padding: 14px 32px;
+      border-radius: 4px;
       transition: opacity 0.2s;
     }
-    .blog-card-link:hover { opacity: 0.7; }
+    .article-book a:hover { opacity: 0.85; }
+
+    /* CTA box */
+    .article-cta {
+      margin-top: 56px;
+      padding: 40px;
+      background: rgba(45,90,61,0.06);
+      border: 1px solid rgba(45,90,61,0.15);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .article-cta p {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+    .article-cta a {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f0ede8;
+      background: var(--terra);
+      padding: 14px 32px;
+      border-radius: 4px;
+      transition: opacity 0.2s;
+    }
+    .article-cta a:hover { opacity: 0.85; }
 
     /* Footer */
     footer {
@@ -176,7 +203,6 @@
     .footer-copy { font-size: 12px; color: var(--stone); }
     .footer-domain { font-size: 12px; color: rgba(0,0,0,.25); letter-spacing: .08em; text-transform: uppercase; }
 
-    /* Hamburger & Mobile Nav */
     .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
     .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
     nav.nav-open .nav-hamburger span { background: #fff !important; }
@@ -187,21 +213,20 @@
     .nav-mobile.open { opacity: 1; pointer-events: all; }
     .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
     .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
-    .nav-mobile a:hover, .nav-mobile a:active { color: #fff; }
+    .nav-mobile a:active { color: #fff; }
     .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #7ec99a; color: #1a2b1e !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
-
     @media (max-width: 900px) {
       nav { padding: 20px 24px; }
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
-      .page-header { padding: 110px 24px 48px; }
-      .blog-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+      .article-wrap { padding: 110px 20px 60px; }
       footer { padding: 60px 24px 40px; }
       .footer-top { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
-      .page-header h1 { font-size: 32px; }
+      .article-wrap h1 { font-size: 28px; }
+      .article-wrap h2 { font-size: 22px; }
     }
   </style>
 </head>
@@ -225,66 +250,49 @@
   <div class="nav-mobile" id="nav-mobile">
     <a href="properties.html">Properties</a>
     <a href="index.html#about">About</a>
-    <a href="index.html#why">The Difference</a>
-    <a href="index.html#why-guanacaste">Why Guanacaste</a>
     <a href="blog.html">Blog</a>
     <a href="index.html#form-section">Work With Me</a>
     <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
   </div>
 
-  <!-- Header -->
-  <div class="page-header">
-    <h1>Guanacaste Real Estate Insights.</h1>
-    <p>Local knowledge, market updates, and everything you need to know before buying or selling in Costa Rica.</p>
-  </div>
+  <div class="article-wrap">
+    <a href="blog.html" class="article-back">&larr; All Articles</a>
+    <div class="article-tag">Vacation Rentals</div>
+    <h1 class="article-title">El Chante: 8 Private Villas Above Tamarindo Beach</h1>
+    <div class="article-byline">By Tiago Leao &middot; KRAIN Luxury Real Estate &middot; 4 min read</div>
 
-  <!-- Blog Grid -->
-  <div class="blog-grid">
+    <div class="article-body">
+      <p>Every now and then I find a place that stops me in my tracks. El Chante is one of them — and if you're planning a big family trip to Costa Rica, you need to see it.</p>
 
-    <a href="blog-el-chante-tamarindo.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Vacation Rentals</div>
-        <div class="blog-card-title">El Chante: 8 Private Villas Above Tamarindo Beach</div>
-        <div class="blog-card-excerpt">Eight detached one-bedroom villas, one huge pool, and an open-air living room with the best ocean views I've ever seen — all walking distance to downtown Tamarindo.</div>
-        <div class="blog-card-meta">4 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
+      <p>It's not one villa. It's eight. Eight detached one-bedroom villas, each completely private, all set on the same hillside above Tamarindo. You get one huge pool, an open-air living room with some of the best ocean views I've ever seen, and a front-row seat to one of Costa Rica's most prized beaches. And somehow, you're still walking distance to downtown Tamarindo.</p>
+
+      <h2>Why It Works for a Big Group</h2>
+
+      <p>The thing that makes El Chante special is the layout. Most large rentals cram everyone under one roof. Here, every couple or every part of the family gets their own detached villa with its own space and privacy — then you all come together at the pool, the open-air living room, and the dining areas. You get togetherness when you want it and your own space when you don't.</p>
+
+      <p>The estate sits on a hill about 300 meters from Tamarindo Beach, looking out over the beach, the river mouth, and Playa Grande beyond it. The infinity pool overlooks the ocean. Breakfast is prepared for you most mornings, housekeeping is daily, and there's a concierge who can arrange everything from a private chef to airport pickup to tours. It's a private mini-resort, not just a house.</p>
+
+      <p>And because it's right above downtown Tamarindo, you're minutes from the restaurants, surf, and nightlife — without giving up the privacy of being up on the hill.</p>
+
+      <div class="article-book">
+        <a href="https://stayintamarindo.com/rentals/el-chante" target="_blank" rel="noopener">Book El Chante &rarr;</a>
       </div>
-    </a>
 
-    <a href="blog-tamarindo-vs-nosara.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Market</div>
-        <div class="blog-card-title">Tamarindo vs Nosara: Which Should You Buy Real Estate In?</div>
-        <div class="blog-card-excerpt">They're the two most talked-about markets on the Gold Coast. But they are fundamentally different places — and the right one depends on what you're looking for.</div>
-        <div class="blog-card-meta">6 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
+      <h2>What a Place Like This Tells You About Tamarindo</h2>
+
+      <p>Here's why I notice properties like El Chante: they're a window into what Tamarindo real estate can actually do. A property that sleeps a large group, books at a premium nightly rate, and sits in the most in-demand beach town on the Gold Coast is exactly the kind of asset that performs — both as a place to make memories and as an investment.</p>
+
+      <p>People fall in love with Tamarindo on a trip like this, and a lot of them start asking the same question on the flight home: <em>what would it take to own a piece of this?</em></p>
+
+      <p>That's the part I help with. Whether you want a vacation home you rent out when you're not using it, a pure investment property, or you already own in Costa Rica and you're thinking about selling — that's my world. I'm a real estate agent with KRAIN Luxury Real Estate, based right here on the Gold Coast, and I work with American and Canadian buyers and sellers every day.</p>
+
+      <p>If a trip to a place like El Chante has you thinking about owning in Costa Rica, let's talk. The conversation is free, there's no pressure, and it's genuinely what I do best — <a href="properties.html" class="inline-link">browse current listings here</a> or reach out below and tell me what you're looking for.</p>
+
+      <div class="article-cta">
+        <p>Thinking about buying or selling in Costa Rica?</p>
+        <a href="index.html#form-section">Work With Me &rarr;</a>
       </div>
-    </a>
-
-    <a href="blog-americans-buying-costa-rica.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Guide</div>
-        <div class="blog-card-title">How Americans Can Buy Property in Costa Rica (Complete Guide 2025)</div>
-        <div class="blog-card-excerpt">Everything Americans need to know before buying real estate in Costa Rica. Ownership rights, the buying process, closing costs, and what to watch out for.</div>
-        <div class="blog-card-meta">8 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
-      </div>
-    </a>
-
-    <a href="blog-guanacaste-investment.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Market</div>
-        <div class="blog-card-title">Is Guanacaste Real Estate a Good Investment in 2025?</div>
-        <div class="blog-card-excerpt">An honest look at appreciation rates, rental income potential, market risks, and why North American buyers keep choosing Costa Rica.</div>
-        <div class="blog-card-meta">7 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
-      </div>
-    </a>
-
+    </div>
   </div>
 
   <!-- Footer -->
@@ -311,34 +319,7 @@
       <span class="footer-domain">tiagoleaorealty.com</span>
     </div>
   </footer>
-
-  <script src="supabase-data.js"></script>
-  <script>
-    // Load blog posts from Supabase (keeps static cards as fallback)
-    (async function() {
-      if (typeof TL === 'undefined' || !TL.isConnected()) return;
-      const posts = await TL.getBlogPosts();
-      if (!posts || posts.length === 0) return;
-
-      const grid = document.querySelector('.blog-grid');
-      grid.innerHTML = posts.map(p => `
-        <a href="blog-post.html?slug=${p.slug}" class="blog-card">
-          <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
-          <div class="blog-card-body">
-            <div class="blog-card-tag">${(p.category || 'market').charAt(0).toUpperCase() + (p.category || 'market').slice(1)}</div>
-            <div class="blog-card-title">${p.title || ''}</div>
-            <div class="blog-card-excerpt">${p.excerpt || ''}</div>
-            <div class="blog-card-meta">${p.readtime || ''}</div>
-            <span class="blog-card-link">Read More &rarr;</span>
-          </div>
-        </a>
-      `).join('');
-    })();
-
-    // ── Hamburger ─────────────────────────────────────────────────
-    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
-  </script>
-
+  <script>(function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();</script>
   <a href="https://wa.me/50683028660" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 </body>
 </html>
