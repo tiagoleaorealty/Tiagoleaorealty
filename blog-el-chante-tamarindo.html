@@ -4,14 +4,17 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/Favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>El Chante: 8 Private Villas Above Tamarindo Beach | Tiago Leao</title>
-  <meta name="description" content="El Chante is a private estate of 8 detached one-bedroom villas above Tamarindo Beach in Costa Rica — one huge pool, open-air ocean-view living, and a walk to downtown. Here's why it's perfect for a big family trip.">
+  <title>You Found El Chante — 8 Private Villas Above Tamarindo Beach | Tiago Leao</title>
+  <meta name="description" content="El Chante is a private estate of 8 detached one-bedroom villas above Tamarindo Beach in Costa Rica — one infinity pool, open-air ocean-view living, breakfast and concierge included, a short walk to downtown. Book your stay, or own a piece of this coast.">
   <link rel="canonical" href="https://tiagoleaorealty.com/blog-el-chante-tamarindo.html">
+  <meta property="og:title" content="You Found El Chante — 8 Private Villas Above Tamarindo Beach">
+  <meta property="og:description" content="Eight private villas above town, one infinity pool, and the kind of ocean view that ends the scroll.">
+  <meta property="og:type" content="article">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "El Chante: 8 Private Villas Above Tamarindo Beach",
+    "headline": "You Found El Chante — 8 Private Villas Above Tamarindo Beach",
     "author": {"@type": "Person", "name": "Tiago Leao"},
     "publisher": {"@type": "Organization", "name": "Tiago Leao Real Estate", "url": "https://tiagoleaorealty.com"},
     "datePublished": "2026-06-21",
@@ -19,27 +22,29 @@
   }
   </script>
 
-
   <link rel="stylesheet" href="fonts.css" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:    #f4f6f4;
-      --charcoal: #f4f6f4;
-      --stone:    #6b7c6f;
-      --sand:     #3d5443;
-      --cream:    #1a2b1e;
-      --terra:    #2d5a3d;
-      --accent:   #7ec99a;
+      --bg:        #f4f6f4;  /* page light */
+      --bg-warm:   #eef1ec;  /* warm light section */
+      --ink:       #1a2b1e;  /* primary dark forest */
+      --ink-deep:  #14211a;  /* deeper forest (hero) */
+      --sand:      #3d5443;  /* body text on light */
+      --stone:     #6b7c6f;  /* muted */
+      --terra:     #2d5a3d;  /* CTA green */
+      --accent:    #7ec99a;  /* mint highlight */
+      --line-dark: rgba(255,255,255,0.12);
+      --line-light:rgba(26,43,30,0.12);
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
     body {
-      background: var(--black);
-      color: var(--cream);
+      background: var(--bg);
+      color: var(--ink);
       font-family: var(--font);
       font-size: 16px;
       line-height: 1.6;
@@ -47,186 +52,217 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* Nav */
+    /* ── Nav ───────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 48px;
+      padding: 22px 48px;
+      background: rgba(20,33,26,0);
+      transition: background .3s, padding .3s, backdrop-filter .3s;
+    }
+    nav.solid {
       background: rgba(244,246,244,.92);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      border-bottom: 1px solid var(--line-light);
+      padding: 18px 48px;
     }
     .nav-logo {
       font-size: 18px; font-weight: 500; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--cream);
-      display: flex; flex-direction: column; line-height: 1.2;
+      text-transform: uppercase; color: #fff;
+      display: flex; flex-direction: column; line-height: 1.2; transition: color .3s;
     }
-    .nav-logo-sub {
-      font-size: 11px; letter-spacing: .15em;
-      text-transform: uppercase; color: var(--terra); font-weight: 400;
-    }
-    .nav-links { display: flex; gap: 40px; list-style: none; }
-    .nav-links a { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); transition: color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
-    .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); border-bottom: 1px solid var(--terra); padding-bottom: 2px; transition: color .2s; }
+    .nav-logo-sub { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); font-weight: 400; }
+    nav.solid .nav-logo { color: var(--ink); }
+    nav.solid .nav-logo-sub { color: var(--terra); }
+    .nav-links { display: flex; gap: 38px; list-style: none; }
+    .nav-links a { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.72); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    nav.solid .nav-links a { color: var(--stone); }
+    nav.solid .nav-links a:hover, nav.solid .nav-links a.active { color: var(--ink); }
+    .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #fff; border-bottom: 1px solid var(--accent); padding-bottom: 2px; transition: color .2s; }
+    nav.solid .nav-cta { color: var(--ink); }
     .nav-cta:hover { color: var(--accent); }
 
-    /* Article */
-    .article-wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 140px 24px 80px;
-    }
-    .article-back {
-      display: inline-block;
-      font-size: 13px;
-      color: var(--stone);
-      letter-spacing: 0.04em;
-      margin-bottom: 32px;
-      transition: color 0.2s;
-    }
-    .article-back:hover { color: var(--cream); }
-    .article-tag {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--terra);
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-    .article-title {
-      font-size: clamp(32px, 4vw, 46px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    .article-byline {
-      font-size: 14px;
-      color: var(--stone);
-      margin-bottom: 48px;
-      padding-bottom: 32px;
-      border-bottom: 0.5px solid rgba(0,0,0,0.1);
-    }
-    .article-body p {
-      font-size: 17px;
-      line-height: 1.8;
-      color: var(--sand);
+    /* ── Shared building blocks ────────────────────────────── */
+    .eyebrow {
+      display: flex; align-items: center; gap: 16px;
+      font-size: 12px; letter-spacing: .22em; text-transform: uppercase; font-weight: 500;
       margin-bottom: 28px;
     }
-    .article-body h2 {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--cream);
-      margin-top: 48px;
-      margin-bottom: 20px;
-    }
-    .article-body a.inline-link {
-      color: var(--terra);
-      border-bottom: 1px solid var(--terra);
-      transition: color 0.2s, opacity 0.2s;
-    }
-    .article-body a.inline-link:hover { color: var(--cream); opacity: 0.85; }
+    .eyebrow::before { content: ""; width: 38px; height: 1px; background: currentColor; opacity: .6; }
 
-    /* Booking button (mid-article) */
-    .article-book {
-      margin: 8px 0 36px;
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 500; letter-spacing: .02em;
+      padding: 16px 30px; border-radius: 40px;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s, color .25s, border-color .25s;
+      cursor: pointer; border: 1px solid transparent;
     }
-    .article-book a {
-      display: inline-block;
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #f0ede8;
-      background: var(--terra);
-      padding: 14px 32px;
-      border-radius: 4px;
-      transition: opacity 0.2s;
-    }
-    .article-book a:hover { opacity: 0.85; }
+    .btn-primary { background: var(--terra); color: #f3f7f3; box-shadow: 0 10px 30px rgba(45,90,61,.28); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(45,90,61,.38); }
+    .btn-ghost-light { background: transparent; color: var(--ink); border-color: var(--line-light); }
+    .btn-ghost-light:hover { border-color: var(--terra); color: var(--terra); }
+    .btn-ghost-dark { background: transparent; color: #fff; border-color: rgba(255,255,255,.28); }
+    .btn-ghost-dark:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-wa { background: #25D366; color: #fff; box-shadow: 0 10px 30px rgba(37,211,102,.28); }
+    .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(37,211,102,.38); }
+    .btn .arrow { transition: transform .25s; }
+    .btn:hover .arrow { transform: translateX(4px); }
 
-    /* CTA box */
-    .article-cta {
-      margin-top: 56px;
-      padding: 40px;
-      background: rgba(45,90,61,0.06);
-      border: 1px solid rgba(45,90,61,0.15);
-      border-radius: 8px;
-      text-align: center;
-    }
-    .article-cta p {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--cream);
-      margin-bottom: 20px;
-    }
-    .article-cta a {
-      display: inline-block;
-      font-size: 13px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #f0ede8;
-      background: var(--terra);
-      padding: 14px 32px;
-      border-radius: 4px;
-      transition: opacity 0.2s;
-    }
-    .article-cta a:hover { opacity: 0.85; }
+    em { font-style: italic; font-weight: 400; color: var(--accent); }
 
-    /* Footer */
-    footer {
-      background: var(--black);
-      padding: 80px 48px 40px;
-      border-top: 1px solid rgba(0,0,0,0.06);
+    /* ── Reveal animation ──────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal.d1 { transition-delay: .08s; }
+    .reveal.d2 { transition-delay: .16s; }
+    .reveal.d3 { transition-delay: .24s; }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    .hero {
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(120% 90% at 78% 10%, rgba(126,201,154,.16) 0%, rgba(126,201,154,0) 55%),
+        radial-gradient(100% 120% at 0% 100%, rgba(45,90,61,.5) 0%, rgba(45,90,61,0) 50%),
+        linear-gradient(160deg, #1c2f23 0%, #14211a 60%, #101a14 100%);
+      color: #fff;
+      padding: 200px 48px 120px;
+      min-height: 92vh;
+      display: flex; align-items: center;
     }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 60px;
+    .hero-inner { max-width: 1180px; margin: 0 auto; width: 100%; }
+    .hero .eyebrow { color: var(--accent); }
+    .hero h1 {
+      font-size: clamp(54px, 9vw, 132px);
+      font-weight: 300; letter-spacing: -.035em; line-height: .95;
+      max-width: 14ch; margin-bottom: 32px;
     }
-    .footer-name { font-size: 32px; font-weight: 700; letter-spacing: -.03em; color: var(--cream); margin-bottom: 6px; }
+    .hero h1 em { display: block; }
+    .hero-sub {
+      font-size: clamp(19px, 2.2vw, 26px); font-weight: 300; line-height: 1.45;
+      color: rgba(255,255,255,.82); max-width: 30ch; margin-bottom: 44px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .scroll-hint { position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.4); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .scroll-hint span.line { width: 1px; height: 36px; background: linear-gradient(rgba(255,255,255,.5), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity: .3; transform: scaleY(.7); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); } }
+
+    /* ── VILLA SECTION (light) ─────────────────────────────── */
+    .villa { background: var(--bg-warm); padding: 130px 48px; }
+    .villa-inner { max-width: 1080px; margin: 0 auto; }
+    .villa .eyebrow { color: var(--terra); }
+    .villa h2 {
+      font-size: clamp(32px, 4.6vw, 58px); font-weight: 300; letter-spacing: -.03em; line-height: 1.05;
+      color: var(--ink); max-width: 18ch; margin-bottom: 40px;
+    }
+    .villa h2 em { color: var(--terra); }
+    .villa-copy { max-width: 640px; }
+    .villa-copy p { font-size: 18px; line-height: 1.75; color: var(--sand); margin-bottom: 24px; }
+
+    .stats {
+      margin: 64px 0 56px;
+      border: 1px solid var(--line-light); border-radius: 20px; overflow: hidden;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      background: rgba(255,255,255,.5);
+    }
+    .stat { padding: 34px 32px; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); }
+    .stat:nth-child(3n) { border-right: none; }
+    .stat:nth-child(n+4) { border-bottom: none; }
+    .stat-num { font-size: 40px; font-weight: 400; letter-spacing: -.02em; color: var(--terra); line-height: 1; margin-bottom: 12px; }
+    .stat-label { font-size: 14px; color: var(--sand); line-height: 1.4; }
+
+    .villa-book { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .villa-book .note { font-size: 14px; color: var(--stone); }
+
+    /* ── BUY / SELL SECTION (dark) ─────────────────────────── */
+    .convert {
+      background:
+        radial-gradient(110% 80% at 90% 0%, rgba(126,201,154,.12) 0%, rgba(126,201,154,0) 50%),
+        linear-gradient(180deg, #14211a 0%, #101a14 100%);
+      color: #fff; padding: 130px 48px;
+    }
+    .convert-inner { max-width: 1080px; margin: 0 auto; }
+    .convert .eyebrow { color: var(--accent); }
+    .convert h2 { font-size: clamp(32px, 4.6vw, 58px); font-weight: 300; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 28px; }
+    .convert-intro { font-size: 19px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,.8); max-width: 56ch; margin-bottom: 56px; }
+
+    .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 22px; }
+    .icard {
+      background: rgba(255,255,255,.035); border: 1px solid var(--line-dark); border-radius: 20px;
+      padding: 38px; transition: transform .3s, border-color .3s, background .3s;
+    }
+    .icard:hover { transform: translateY(-4px); border-color: rgba(126,201,154,.4); background: rgba(255,255,255,.06); }
+    .icard h3 { font-size: 24px; font-weight: 500; color: var(--accent); margin-bottom: 16px; }
+    .icard p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.74); }
+
+    .agent {
+      display: flex; align-items: center; gap: 26px;
+      background: rgba(255,255,255,.035); border: 1px solid var(--line-dark); border-radius: 20px;
+      padding: 32px 38px; margin-bottom: 44px;
+    }
+    .agent-photo { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(126,201,154,.5); flex-shrink: 0; object-position: center 20%; }
+    .agent-name { font-size: 22px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 6px; }
+    .agent-role { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .agent-bio { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.72); max-width: 60ch; }
+
+    .convert-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    footer { background: var(--bg); padding: 80px 48px 40px; border-top: 1px solid var(--line-light); }
+    .footer-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; max-width: 1080px; margin: 0 auto 60px; }
+    .footer-name { font-size: 32px; font-weight: 700; letter-spacing: -.03em; color: var(--ink); margin-bottom: 6px; }
     .footer-tagline { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); }
     .footer-contact { display: flex; flex-direction: column; gap: 14px; }
     .footer-contact a { font-size: 14px; color: var(--sand); border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; width: fit-content; }
-    .footer-contact a:hover { color: var(--cream); border-color: var(--terra); }
+    .footer-contact a:hover { color: var(--ink); border-color: var(--terra); }
     .footer-krain { max-width: 200px; }
     .footer-krain img { height: 32px; opacity: .7; margin-bottom: 12px; width: auto; filter: invert(1); }
     .footer-krain p { font-size: 12px; color: var(--stone); line-height: 1.6; margin-bottom: 8px; }
     .footer-krain a { font-size: 12px; color: var(--sand); border-bottom: 1px solid var(--terra); transition: color .2s; }
-    .footer-krain a:hover { color: var(--cream); }
-    .footer-bottom {
-      display: flex; justify-content: space-between; align-items: center;
-      border-top: 1px solid rgba(0,0,0,0.06); padding-top: 24px;
-    }
+    .footer-krain a:hover { color: var(--ink); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line-light); padding-top: 24px; max-width: 1080px; margin: 0 auto; }
     .footer-copy { font-size: 12px; color: var(--stone); }
-    .footer-domain { font-size: 12px; color: rgba(0,0,0,.25); letter-spacing: .08em; text-transform: uppercase; }
+    .footer-domain { font-size: 12px; color: rgba(26,43,30,.25); letter-spacing: .08em; text-transform: uppercase; }
 
+    /* ── Mobile nav ────────────────────────────────────────── */
     .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
-    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: #fff; border-radius: 2px; transition: transform .3s, opacity .3s, background .3s; }
+    nav.solid .nav-hamburger span { background: var(--ink); }
     nav.nav-open .nav-hamburger span { background: #fff !important; }
     nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
     nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    .nav-mobile { position: fixed; inset: 0; background: #1a2b1e; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile { position: fixed; inset: 0; background: #14211a; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity .3s; overflow-y: auto; }
     .nav-mobile.open { opacity: 1; pointer-events: all; }
-    .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
-    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,.6); letter-spacing: -.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,.07); transition: color .2s; line-height: 1.2; }
+    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,.07); }
     .nav-mobile a:active { color: #fff; }
-    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #7ec99a; color: #1a2b1e !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: .08em !important; text-transform: uppercase; background: var(--accent); color: var(--ink) !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+
     @media (max-width: 900px) {
-      nav { padding: 20px 24px; }
-      .nav-links { display: none; }
-      .nav-cta { display: none; }
+      nav, nav.solid { padding: 18px 24px; }
+      .nav-links, .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
-      .article-wrap { padding: 110px 20px 60px; }
-      footer { padding: 60px 24px 40px; }
+      .hero { padding: 150px 24px 100px; min-height: auto; }
+      .villa, .convert { padding: 88px 24px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat:nth-child(3n) { border-right: 1px solid var(--line-light); }
+      .stat:nth-child(2n) { border-right: none; }
+      .stat:nth-child(n+4) { border-bottom: 1px solid var(--line-light); }
+      .stat:nth-child(n+5) { border-bottom: none; }
+      .cards2 { grid-template-columns: 1fr; }
+      .agent { flex-direction: column; text-align: center; align-items: center; }
       .footer-top { grid-template-columns: 1fr; }
+      footer { padding: 60px 24px 40px; }
+      .scroll-hint { display: none; }
     }
-    @media (max-width: 600px) {
-      .article-wrap h1 { font-size: 28px; }
-      .article-wrap h2 { font-size: 22px; }
+    @media (max-width: 540px) {
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: none !important; border-bottom: 1px solid var(--line-light) !important; }
+      .stat:last-child { border-bottom: none !important; }
+      .hero-actions, .villa-book, .convert-actions { width: 100%; }
+      .btn { width: 100%; justify-content: center; }
+      .villa-book .note { width: 100%; text-align: center; }
     }
   </style>
 </head>
@@ -234,13 +270,11 @@
 <body>
 
   <!-- Nav -->
-  <nav>
+  <nav id="nav">
     <a href="index.html" class="nav-logo">Tiago Leao<span class="nav-logo-sub">Real Estate Group</span></a>
     <ul class="nav-links">
       <li><a href="properties.html">Properties</a></li>
       <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#why">The Difference</a></li>
-      <li><a href="index.html#why-guanacaste">Why Guanacaste</a></li>
       <li><a href="blog.html" class="active">Blog</a></li>
       <li><a href="index.html#form-section">Work With Me</a></li>
     </ul>
@@ -255,45 +289,79 @@
     <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
   </div>
 
-  <div class="article-wrap">
-    <a href="blog.html" class="article-back">&larr; All Articles</a>
-    <div class="article-tag">Vacation Rentals</div>
-    <h1 class="article-title">El Chante: 8 Private Villas Above Tamarindo Beach</h1>
-    <div class="article-byline">By Tiago Leao &middot; KRAIN Luxury Real Estate &middot; 4 min read</div>
-
-    <div class="article-body">
-      <p>Every now and then I find a place that stops me in my tracks. El Chante is one of them — and if you're planning a big family trip to Costa Rica, you need to see it.</p>
-
-      <p>It's not one villa. It's eight. Eight detached one-bedroom villas, each completely private, all set on the same hillside above Tamarindo. You get one huge pool, an open-air living room with some of the best ocean views I've ever seen, and a front-row seat to one of Costa Rica's most prized beaches. And somehow, you're still walking distance to downtown Tamarindo.</p>
-
-      <h2>Why It Works for a Big Group</h2>
-
-      <p>The thing that makes El Chante special is the layout. Most large rentals cram everyone under one roof. Here, every couple or every part of the family gets their own detached villa with its own space and privacy — then you all come together at the pool, the open-air living room, and the dining areas. You get togetherness when you want it and your own space when you don't.</p>
-
-      <p>The estate sits on a hill about 300 meters from Tamarindo Beach, looking out over the beach, the river mouth, and Playa Grande beyond it. The infinity pool overlooks the ocean. Breakfast is prepared for you most mornings, housekeeping is daily, and there's a concierge who can arrange everything from a private chef to airport pickup to tours. It's a private mini-resort, not just a house.</p>
-
-      <p>And because it's right above downtown Tamarindo, you're minutes from the restaurants, surf, and nightlife — without giving up the privacy of being up on the hill.</p>
-
-      <div class="article-book">
-        <a href="https://stayintamarindo.com/rentals/el-chante" target="_blank" rel="noopener">Book El Chante &rarr;</a>
-      </div>
-
-      <h2>What a Place Like This Tells You About Tamarindo</h2>
-
-      <p>Here's why I notice properties like El Chante: they're a window into what Tamarindo real estate can actually do. A property that sleeps a large group, books at a premium nightly rate, and sits in the most in-demand beach town on the Gold Coast is exactly the kind of asset that performs — both as a place to make memories and as an investment.</p>
-
-      <p>People fall in love with Tamarindo on a trip like this, and a lot of them start asking the same question on the flight home: <em>what would it take to own a piece of this?</em></p>
-
-      <p>That's the part I help with. Whether you want a vacation home you rent out when you're not using it, a pure investment property, or you already own in Costa Rica and you're thinking about selling — that's my world. I'm a real estate agent with KRAIN Luxury Real Estate, based right here on the Gold Coast, and I work with American and Canadian buyers and sellers every day.</p>
-
-      <p>If a trip to a place like El Chante has you thinking about owning in Costa Rica, let's talk. The conversation is free, there's no pressure, and it's genuinely what I do best — <a href="properties.html" class="inline-link">browse current listings here</a> or reach out below and tell me what you're looking for.</p>
-
-      <div class="article-cta">
-        <p>Thinking about buying or selling in Costa Rica?</p>
-        <a href="index.html#form-section">Work With Me &rarr;</a>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow reveal">Tamarindo, Guanacaste &middot; Costa Rica</div>
+      <h1 class="reveal d1">You found <em>El Chante.</em></h1>
+      <p class="hero-sub reveal d2">Eight private villas above town, one infinity pool, and the kind of ocean view that ends the scroll.</p>
+      <div class="hero-actions reveal d3">
+        <a href="https://stayintamarindo.com/rentals/el-chante" target="_blank" rel="noopener" class="btn btn-primary">Book your stay <span class="arrow">&rarr;</span></a>
+        <a href="#convert" class="btn btn-ghost-dark">Or own a piece of this coast</a>
       </div>
     </div>
-  </div>
+    <div class="scroll-hint"><span class="line"></span>Scroll</div>
+  </section>
+
+  <!-- VILLA -->
+  <section class="villa">
+    <div class="villa-inner">
+      <div class="eyebrow reveal">The villa from the video</div>
+      <h2 class="reveal d1">It's not one house &mdash; it's <em>eight,</em> scattered down a hillside above where Playa Tamarindo meets Playa Grande.</h2>
+      <div class="villa-copy">
+        <p class="reveal d1">Each of the eight bungalows is its own private one-bedroom retreat, so a big family or a whole group of friends can all stay together without stepping on each other. They share a huge open-air living room, a full kitchen, and an infinity pool that hangs right out over the view.</p>
+        <p class="reveal d1">Breakfast and concierge come included, you're a short walk from the sand, and you're minutes from everything downtown Tamarindo has to offer. It sleeps right around 19.</p>
+      </div>
+
+      <div class="stats reveal">
+        <div class="stat"><div class="stat-num">8</div><div class="stat-label">Private one-bedroom villas</div></div>
+        <div class="stat"><div class="stat-num">~19</div><div class="stat-label">Guests, comfortably</div></div>
+        <div class="stat"><div class="stat-num">1</div><div class="stat-label">Infinity pool over the ocean</div></div>
+        <div class="stat"><div class="stat-num">5 min</div><div class="stat-label">Walk to Tamarindo Beach</div></div>
+        <div class="stat"><div class="stat-num">Daily</div><div class="stat-label">Breakfast &amp; concierge included</div></div>
+        <div class="stat"><div class="stat-num">360&deg;</div><div class="stat-label">Ocean &amp; jungle views</div></div>
+      </div>
+
+      <div class="villa-book reveal">
+        <a href="https://stayintamarindo.com/rentals/el-chante" target="_blank" rel="noopener" class="btn btn-primary">Check dates &amp; book <span class="arrow">&rarr;</span></a>
+        <span class="note">Booking is handled directly by El Chante.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONVERT -->
+  <section class="convert" id="convert">
+    <div class="convert-inner">
+      <div class="eyebrow reveal">For the people already picturing it</div>
+      <h2 class="reveal d1">Stay a week. <em>Or never leave.</em></h2>
+      <p class="convert-intro reveal d1">If a few minutes at El Chante had you wondering what it would cost to actually live on this coast &mdash; that's my world. I'm a real estate agent right here in Guanacaste, and helping people land somewhere like this is the whole job.</p>
+
+      <div class="cards2">
+        <div class="icard reveal d1">
+          <h3>I want to buy</h3>
+          <p>Ocean-view homes, condos, and land from Tamarindo to Flamingo to Hacienda Pinilla. Tell me your budget and your dream and I'll send a shortlist that actually fits.</p>
+        </div>
+        <div class="icard reveal d2">
+          <h3>I want to sell</h3>
+          <p>Own something on this coast already? I'll price it properly and market it with photography that makes buyers stop scrolling &mdash; the same eye you just saw in the video.</p>
+        </div>
+      </div>
+
+      <div class="agent reveal">
+        <img src="Headshot.png" alt="Tiago Leao" class="agent-photo" />
+        <div>
+          <div class="agent-name">Tiago Leao</div>
+          <div class="agent-role">Real Estate Advisor &amp; Photographer &middot; KRAIN Luxury Real Estate</div>
+          <div class="agent-bio">I split my time between selling Guanacaste real estate and shooting it. Your search gets local eyes, straight answers, and marketing that looks like the coast actually looks.</div>
+        </div>
+      </div>
+
+      <div class="convert-actions reveal">
+        <a href="https://wa.me/50683028660" target="_blank" rel="noopener" class="btn btn-wa">Message me on WhatsApp <span class="arrow">&rarr;</span></a>
+        <a href="index.html#form-section" class="btn btn-ghost-dark">Or send me a message</a>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -315,11 +383,34 @@
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">&copy; 2026 Tiago Leao. All rights reserved.</span>
-      <a href="admin.html" style="font-size:11px;color:rgba(0,0,0,0.15);letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='rgba(0,0,0,0.4)'" onmouseout="this.style.color='rgba(0,0,0,0.15)'">Admin</a>
+      <a href="admin.html" style="font-size:11px;color:rgba(26,43,30,0.15);letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='rgba(26,43,30,0.4)'" onmouseout="this.style.color='rgba(26,43,30,0.15)'">Admin</a>
       <span class="footer-domain">tiagoleaorealty.com</span>
     </div>
   </footer>
-  <script>(function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();</script>
+
   <a href="https://wa.me/50683028660" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+
+  <script>
+    // Sticky nav state
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('solid', window.scrollY > 60);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Mobile menu
+    (function(){
+      const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.getElementById('nav');
+      if(!b||!m)return;
+      function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}
+      function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}
+      b.addEventListener('click',()=>m.classList.contains('open')?c():o());
+      m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));
+    })();
+  </script>
 </body>
 </html>
