@@ -209,6 +209,18 @@
 
     .convert-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
+    /* ── Back to blog bar ──────────────────────────────────── */
+    .backbar { background: var(--bg); padding: 56px 48px; text-align: center; border-top: 1px solid var(--line-light); }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 500; letter-spacing: .02em;
+      color: var(--ink); padding: 14px 28px; border-radius: 40px;
+      border: 1px solid var(--line-light); transition: border-color .25s, color .25s, transform .25s, background .25s;
+    }
+    .back-link .b-arrow { transition: transform .25s; }
+    .back-link:hover { border-color: var(--terra); color: var(--terra); transform: translateY(-2px); }
+    .back-link:hover .b-arrow { transform: translateX(-4px); }
+
     /* ── Footer ────────────────────────────────────────────── */
     footer { background: var(--bg); padding: 80px 48px 40px; border-top: 1px solid var(--line-light); }
     .footer-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; max-width: 1080px; margin: 0 auto 60px; }
@@ -345,7 +357,7 @@
         </div>
         <div class="icard reveal d2">
           <h3>I want to sell</h3>
-          <p>Own something on this coast already? I'll price it properly and market it with photography that makes buyers stop scrolling &mdash; the same eye you just saw in the video.</p>
+          <p>Own something on this coast already? I'll price it properly and put it in front of the right buyers &mdash; with marketing that makes people stop and pay attention.</p>
         </div>
       </div>
 
@@ -353,8 +365,8 @@
         <img src="Headshot.png" alt="Tiago Leao" class="agent-photo" />
         <div>
           <div class="agent-name">Tiago Leao</div>
-          <div class="agent-role">Real Estate Advisor &amp; Photographer &middot; KRAIN Luxury Real Estate</div>
-          <div class="agent-bio">I split my time between selling Guanacaste real estate and shooting it. Your search gets local eyes, straight answers, and marketing that looks like the coast actually looks.</div>
+          <div class="agent-role">Real Estate Advisor &middot; KRAIN Luxury Real Estate</div>
+          <div class="agent-bio">This coast is home. I help buyers from the US and Canada find the right property in Guanacaste, and I help owners sell for what it's really worth. You get someone who actually lives here, knows every beach town, and gives you straight answers.</div>
         </div>
       </div>
 
@@ -364,6 +376,11 @@
       </div>
     </div>
   </section>
+
+  <!-- Back to blog -->
+  <div class="backbar">
+    <a href="blog.html" class="back-link"><span class="b-arrow">&larr;</span> Back to Blog</a>
+  </div>
 
   <!-- Footer -->
   <footer>
