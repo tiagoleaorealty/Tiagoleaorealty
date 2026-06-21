@@ -17,7 +17,14 @@
       "Bash(grep -iE \"\\\\.\\(jpg|png|jpeg|webp|JPG|PNG\\)$\")",
       "Bash(pkill -f \"http.server 8003\")",
       "Bash(cp CasaChante.jpg CasaChante-original.jpg)",
-      "Bash(sips -Z 2000 -s format jpeg -s formatOptions 72 CasaChante.jpg --out CasaChante-tmp.jpg)"
+      "Bash(sips -Z 2000 -s format jpeg -s formatOptions 72 CasaChante.jpg --out CasaChante-tmp.jpg)",
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?select=*&limit=5\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?select=id,title,slug,status\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(curl -s -w '\\\\nHTTP %{http_code}\\\\n' -X POST https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts -H 'apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum' -H 'Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"title\":\"__TEST__\",\"slug\":\"__test_delete_me__\",\"category\":\"market\",\"status\":\"draft\",\"readtime\":\"1 min read\",\"excerpt\":\"test\",\"meta_desc\":\"test\",\"body\":\"test\",\"cover_url\":\"\"}')",
+      "Bash(curl -s -w \"deleted HTTP %{http_code}\\\\n\" -X DELETE \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?slug=eq.__test_delete_me__\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(python3 _seed_blog.py)",
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?status=eq.published&order=created_at.desc&select=slug,title,category,readtime,cover_url\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")"
     ]
   }
 }

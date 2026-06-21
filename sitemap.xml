@@ -11,11 +11,6 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://tiagoleaorealty.com/search.html</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
     <loc>https://tiagoleaorealty.com/property-detail.html</loc>
     <priority>0.7</priority>
     <changefreq>weekly</changefreq>
@@ -26,23 +21,48 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://tiagoleaorealty.com/blog-tamarindo-vs-nosara.html</loc>
+    <loc>https://tiagoleaorealty.com/blog-el-chante-tamarindo.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=buying-property-costa-rica-foreigners-guide</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://tiagoleaorealty.com/blog-americans-buying-costa-rica.html</loc>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=costa-rica-closing-costs-taxes</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://tiagoleaorealty.com/blog-guanacaste-investment.html</loc>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=titled-vs-concession-beachfront-costa-rica</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://tiagoleaorealty.com/blog-post.html</loc>
-    <priority>0.6</priority>
-    <changefreq>weekly</changefreq>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=guanacaste-gold-coast-towns-guide</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=guanacaste-real-estate-investment-2026</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=costa-rica-vacation-rental-income-guanacaste</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=costa-rica-residency-property-buyers</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://tiagoleaorealty.com/blog-post.html?slug=tamarindo-vs-nosara-real-estate</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>

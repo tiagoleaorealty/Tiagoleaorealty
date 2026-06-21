@@ -238,53 +238,9 @@
     <p>Local knowledge, market updates, and everything you need to know before buying or selling in Costa Rica.</p>
   </div>
 
-  <!-- Blog Grid -->
+  <!-- Blog Grid (populated from Supabase) -->
   <div class="blog-grid">
-
-    <a href="blog-el-chante-tamarindo.html" class="blog-card">
-      <div class="blog-card-img" style="background-image:url('CasaChante.jpg');background-size:cover;background-position:center;"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Vacation Rentals</div>
-        <div class="blog-card-title">You Found El Chante</div>
-        <div class="blog-card-excerpt">Eight private villas above town, one infinity pool, and the kind of ocean view that ends the scroll. Book your stay — or own a piece of this coast.</div>
-        <div class="blog-card-meta">El Chante &middot; Tamarindo</div>
-        <span class="blog-card-link">Read More &rarr;</span>
-      </div>
-    </a>
-
-    <a href="blog-tamarindo-vs-nosara.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Market</div>
-        <div class="blog-card-title">Tamarindo vs Nosara: Which Should You Buy Real Estate In?</div>
-        <div class="blog-card-excerpt">They're the two most talked-about markets on the Gold Coast. But they are fundamentally different places — and the right one depends on what you're looking for.</div>
-        <div class="blog-card-meta">6 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
-      </div>
-    </a>
-
-    <a href="blog-americans-buying-costa-rica.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Guide</div>
-        <div class="blog-card-title">How Americans Can Buy Property in Costa Rica (Complete Guide 2025)</div>
-        <div class="blog-card-excerpt">Everything Americans need to know before buying real estate in Costa Rica. Ownership rights, the buying process, closing costs, and what to watch out for.</div>
-        <div class="blog-card-meta">8 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
-      </div>
-    </a>
-
-    <a href="blog-guanacaste-investment.html" class="blog-card">
-      <div class="blog-card-img"></div>
-      <div class="blog-card-body">
-        <div class="blog-card-tag">Market</div>
-        <div class="blog-card-title">Is Guanacaste Real Estate a Good Investment in 2025?</div>
-        <div class="blog-card-excerpt">An honest look at appreciation rates, rental income potential, market risks, and why North American buyers keep choosing Costa Rica.</div>
-        <div class="blog-card-meta">7 min read</div>
-        <span class="blog-card-link">Read More &rarr;</span>
-      </div>
-    </a>
-
+    <div class="blog-loading" style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">Loading articles&hellip;</div>
   </div>
 
   <!-- Footer -->
@@ -314,15 +270,27 @@
 
   <script src="supabase-data.js"></script>
   <script>
-    // Load blog posts from Supabase (keeps static cards as fallback)
+    // Load blog posts from Supabase
+    // Posts with a custom-designed landing page link there instead of the markdown template.
+    const CUSTOM_PAGES = {
+      'el-chante-tamarindo-villas': 'blog-el-chante-tamarindo.html'
+    };
     (async function() {
-      if (typeof TL === 'undefined' || !TL.isConnected()) return;
-      const posts = await TL.getBlogPosts();
-      if (!posts || posts.length === 0) return;
-
       const grid = document.querySelector('.blog-grid');
-      grid.innerHTML = posts.map(p => `
-        <a href="blog-post.html?slug=${p.slug}" class="blog-card">
+      if (typeof TL === 'undefined' || !TL.isConnected()) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">Articles are loading. Please check back shortly.</div>';
+        return;
+      }
+      const posts = await TL.getBlogPosts();
+      if (!posts || posts.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">New articles coming soon.</div>';
+        return;
+      }
+
+      grid.innerHTML = posts.map(p => {
+        const href = CUSTOM_PAGES[p.slug] || ('blog-post.html?slug=' + p.slug);
+        return `
+        <a href="${href}" class="blog-card">
           <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
           <div class="blog-card-body">
             <div class="blog-card-tag">${(p.category || 'market').charAt(0).toUpperCase() + (p.category || 'market').slice(1)}</div>
@@ -331,8 +299,8 @@
             <div class="blog-card-meta">${p.readtime || ''}</div>
             <span class="blog-card-link">Read More &rarr;</span>
           </div>
-        </a>
-      `).join('');
+        </a>`;
+      }).join('');
     })();
 
     // ── Hamburger ─────────────────────────────────────────────────
