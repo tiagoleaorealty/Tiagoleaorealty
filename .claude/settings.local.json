@@ -15,7 +15,9 @@
       "Bash(pkill -f \"http.server 8002\")",
       "WebFetch(domain:stayintamarindo.com)",
       "Bash(grep -iE \"\\\\.\\(jpg|png|jpeg|webp|JPG|PNG\\)$\")",
-      "Bash(pkill -f \"http.server 8003\")"
+      "Bash(pkill -f \"http.server 8003\")",
+      "Bash(cp CasaChante.jpg CasaChante-original.jpg)",
+      "Bash(sips -Z 2000 -s format jpeg -s formatOptions 72 CasaChante.jpg --out CasaChante-tmp.jpg)"
     ]
   }
 }
