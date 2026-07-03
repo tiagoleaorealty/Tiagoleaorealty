@@ -30,7 +30,8 @@
       "Bash(node -e ' *)",
       "Bash(python3 -c ' *)",
       "Bash(curl -s -o /dev/null -w \"live blog_posts API: HTTP %{http_code}\\\\n\" \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?select=id&limit=1\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
-      "Bash(perl -pi -e 's/600,000\\\\+ social followers/1,000,000+ social followers/g; s/600,000\\\\+ followers/1,000,000+ followers/g' index.html)"
+      "Bash(perl -pi -e 's/600,000\\\\+ social followers/1,000,000+ social followers/g; s/600,000\\\\+ followers/1,000,000+ followers/g' index.html)",
+      "Bash(perl -pi -e 's/\\(?<!tiago\\\\@\\)tiagoleaorealty\\\\.com/soldbytiago.com/g' index.html properties.html property-detail.html blog.html blog-post.html blog-el-chante-tamarindo.html sitemap.xml robots.txt llms.txt)"
     ]
   }
 }

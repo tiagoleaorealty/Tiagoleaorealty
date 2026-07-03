@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://tiagoleaorealty.com/sitemap.xml
+Sitemap: https://soldbytiago.com/sitemap.xml
 
 # AI crawlers — explicitly welcome (AI search visibility)
 User-agent: GPTBot
