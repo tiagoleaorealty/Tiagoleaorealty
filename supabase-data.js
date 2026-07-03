@@ -18,6 +18,23 @@
     return;
   }
 
+  // Escape HTML special chars so DB text can never inject markup/scripts
+  // when pages render it via innerHTML (XSS protection).
+  function escapeHTML(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function sanitize(value) {
+    if (typeof value === 'string') return escapeHTML(value);
+    if (Array.isArray(value)) return value.map(sanitize);
+    if (value && typeof value === 'object') {
+      const out = {};
+      for (const k of Object.keys(value)) out[k] = sanitize(value[k]);
+      return out;
+    }
+    return value;
+  }
+
   // Lightweight fetch wrapper (no SDK needed for read-only)
   async function sbFetch(table, params) {
     const url = new URL(`${SB_URL}/rest/v1/${table}`);
@@ -30,7 +47,7 @@
       }
     });
     if (!res.ok) throw new Error(`Supabase fetch error: ${res.status}`);
-    return res.json();
+    return sanitize(await res.json());
   }
 
   // ── Expose globally ─────────────────────────────────────────

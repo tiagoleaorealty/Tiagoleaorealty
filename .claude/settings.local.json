@@ -24,7 +24,12 @@
       "Bash(curl -s -w '\\\\nHTTP %{http_code}\\\\n' -X POST https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts -H 'apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum' -H 'Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"title\":\"__TEST__\",\"slug\":\"__test_delete_me__\",\"category\":\"market\",\"status\":\"draft\",\"readtime\":\"1 min read\",\"excerpt\":\"test\",\"meta_desc\":\"test\",\"body\":\"test\",\"cover_url\":\"\"}')",
       "Bash(curl -s -w \"deleted HTTP %{http_code}\\\\n\" -X DELETE \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?slug=eq.__test_delete_me__\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
       "Bash(python3 _seed_blog.py)",
-      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?status=eq.published&order=created_at.desc&select=slug,title,category,readtime,cover_url\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")"
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?status=eq.published&order=created_at.desc&select=slug,title,category,readtime,cover_url\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(perl -pi -e 's|https://tiagoleaorealty\\\\.com/hero-beach\\\\.jpg|https://tiagoleaorealty.com/og-image.jpg|g' index.html)",
+      "Bash(node --check supabase-data.js)",
+      "Bash(node -e ' *)",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -o /dev/null -w \"live blog_posts API: HTTP %{http_code}\\\\n\" \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/blog_posts?select=id&limit=1\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")"
     ]
   }
 }

@@ -184,11 +184,57 @@
         return;
       }
 
-      document.title = post.title + ' | Tiago Leao Real Estate';
-      if (post.meta_desc) {
-        let metaEl = document.querySelector('meta[name="description"]');
-        if (metaEl) metaEl.content = post.meta_desc;
+      // Data arrives HTML-escaped from supabase-data.js; decode for
+      // plain-text contexts (title bar, meta tags, JSON-LD).
+      function decode(s) {
+        const ta = document.createElement('textarea');
+        ta.innerHTML = s || '';
+        return ta.value;
       }
+      const plainTitle = decode(post.title);
+      const plainDesc = decode(post.meta_desc || post.excerpt || '');
+      const pageUrl = 'https://tiagoleaorealty.com/blog-post.html?slug=' + encodeURIComponent(slug);
+
+      document.title = plainTitle + ' | Tiago Leao Real Estate';
+      if (plainDesc) {
+        let metaEl = document.querySelector('meta[name="description"]');
+        if (metaEl) metaEl.content = plainDesc;
+      }
+
+      // Canonical + Open Graph (helps SEO & link previews for dynamic posts)
+      const canon = document.createElement('link');
+      canon.rel = 'canonical'; canon.href = pageUrl;
+      document.head.appendChild(canon);
+      const ogTags = {
+        'og:title': plainTitle,
+        'og:description': plainDesc,
+        'og:url': pageUrl,
+        'og:type': 'article',
+        'og:site_name': 'Tiago Leao Real Estate',
+        'og:image': post.cover_url ? 'https://tiagoleaorealty.com/' + encodeURI(decode(post.cover_url)) : 'https://tiagoleaorealty.com/og-image.jpg'
+      };
+      Object.entries(ogTags).forEach(([prop, content]) => {
+        const m = document.createElement('meta');
+        m.setAttribute('property', prop); m.content = content;
+        document.head.appendChild(m);
+      });
+
+      // Article structured data (JSON-LD) for search engines & AI crawlers
+      const ld = document.createElement('script');
+      ld.type = 'application/ld+json';
+      ld.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        'headline': plainTitle,
+        'description': plainDesc,
+        'url': pageUrl,
+        'datePublished': post.created_at || undefined,
+        'dateModified': post.updated_at || post.created_at || undefined,
+        'image': ogTags['og:image'],
+        'author': { '@type': 'Person', 'name': 'Tiago Leao', 'url': 'https://tiagoleaorealty.com' },
+        'publisher': { '@type': 'Organization', 'name': 'Tiago Leao Real Estate', 'url': 'https://tiagoleaorealty.com' }
+      });
+      document.head.appendChild(ld);
 
       const cat = (post.category || 'market').charAt(0).toUpperCase() + (post.category || 'market').slice(1);
 
