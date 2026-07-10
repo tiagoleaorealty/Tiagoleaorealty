@@ -141,13 +141,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:    #f4f6f4;
-      --charcoal: #f4f6f4;
-      --stone:    #6b7c6f;
-      --sand:     #3d5443;
-      --cream:    #1a2b1e;
-      --terra:    #2d5a3d;
-      --accent:   #7ec99a;
+      --black:    #fafafa;
+      --charcoal: #fafafa;
+      --stone:    #6b7a7a;
+      --sand:     #3d4a4a;
+      --cream:    #1d2021;
+      --terra:    #0d4a4a;
+      --accent:   #7fd0c8;
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -188,7 +188,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 36px; height: 36px;
-      border: 1px solid rgba(126,201,154,0.4);
+      border: 1px solid rgba(127,208,200,0.4);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9998;
@@ -282,10 +282,10 @@
       border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(244,246,244,0.88);
+      background: rgba(250,250,250,0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom-color: rgba(45,90,61,0.12);
+      border-bottom-color: rgba(13,74,74,0.12);
     }
     nav.scrolled .nav-logo { color: var(--cream); }
     nav.scrolled .nav-logo-sub { color: var(--terra); }
@@ -486,10 +486,10 @@
       padding: 120px 130px;
     }
     #about, #why, #form-section {
-      border-top: 1px solid rgba(45,90,61,0.25);
+      border-top: 1px solid rgba(13,74,74,0.25);
     }
     #footer {
-      border-top: 1px solid rgba(45,90,61,0.25);
+      border-top: 1px solid rgba(13,74,74,0.25);
     }
     .section-label {
       font-size: 11px;
@@ -560,7 +560,7 @@
     .property-img-placeholder {
       width: 100%;
       height: 280px;
-      background: #d0c9be;
+      background: #d5dbda;
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
@@ -686,7 +686,7 @@
 
     /* ─── About ──────────────────────────────────────────────────── */
     #about {
-      background: #f4f6f4;
+      background: #fafafa;
     }
     #about .about-name span { color: var(--stone); opacity: 1; }
     #about .about-stats { border-top-color: rgba(0,0,0,0.1); }
@@ -792,7 +792,7 @@
       font-size: 11px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #1a3d25;
+      color: #0d4a4a;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
@@ -803,7 +803,7 @@
       display: block;
       width: 32px;
       height: 1px;
-      background: #1a3d25;
+      background: #0d4a4a;
     }
     .faq-headline {
       font-size: clamp(28px, 2.8vw, 40px);
@@ -836,7 +836,7 @@
     .faq-question-text {
       font-size: 17px;
       font-weight: 600;
-      color: #1a3d25;
+      color: #0d4a4a;
       line-height: 1.4;
     }
     .faq-icon {
@@ -844,11 +844,11 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      border: 1.5px solid #1a3d25;
+      border: 1.5px solid #0d4a4a;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #1a3d25;
+      color: #0d4a4a;
       font-size: 18px;
       line-height: 1;
       transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
@@ -1109,7 +1109,7 @@
     }
     .intent-btn:hover {
       border-color: var(--terra);
-      background: rgba(45,90,61,0.04);
+      background: rgba(13,74,74,0.04);
       transform: translateY(-2px);
     }
     .intent-btn-label {
@@ -1182,7 +1182,7 @@
     }
     .success-ig:hover {
       border-color: var(--terra);
-      background: rgba(45,90,61,0.06);
+      background: rgba(13,74,74,0.06);
     }
 
     /* ─── Footer ─────────────────────────────────────────────────── */
@@ -1279,7 +1279,7 @@
     .wg-hero-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(26,43,30,0.55);
+      background: rgba(29,32,33,0.55);
       z-index: 1;
     }
     .wg-hero-content {
@@ -1359,7 +1359,7 @@
     .wg-loc-card.expanded {
       background: #faf8f4;
       border-color: var(--terra);
-      box-shadow: 0 8px 28px rgba(45,90,61,0.08);
+      box-shadow: 0 8px 28px rgba(13,74,74,0.08);
     }
     .wg-loc-tag {
       font-size: 9px;
@@ -1461,7 +1461,7 @@
     .nav-mobile {
       position: fixed;
       inset: 0;
-      background: #1a2b1e;
+      background: #1d2021;
       z-index: 200;
       display: flex;
       flex-direction: column;
@@ -1495,8 +1495,8 @@
       font-weight: 600 !important;
       letter-spacing: 0.08em !important;
       text-transform: uppercase;
-      background: #7ec99a;
-      color: #1a2b1e !important;
+      background: #7fd0c8;
+      color: #1d2021 !important;
       padding: 14px 36px !important;
       border-radius: 40px;
       border: none !important;
@@ -1611,7 +1611,7 @@
       <div class="scroll-line"></div>
       <span>Scroll</span>
     </div>
-    <div style="position:absolute;bottom:0;left:0;width:100%;height:40px;background:linear-gradient(to bottom, transparent, #f4f6f4);pointer-events:none;z-index:10;"></div>
+    <div style="position:absolute;bottom:0;left:0;width:100%;height:40px;background:linear-gradient(to bottom, transparent, #fafafa);pointer-events:none;z-index:10;"></div>
   </section>
 
   <!-- ── PROPERTIES ─────────────────────────────────────────────── -->

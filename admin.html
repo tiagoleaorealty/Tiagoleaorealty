@@ -17,13 +17,13 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f4f6f4;
-      --bg2: #f4f6f4;
-      --text: #1a2b1e;
-      --stone: #6b7c6f;
-      --sand: #3d5443;
-      --terra: #2d5a3d;
-      --accent: #7ec99a;
+      --bg: #fafafa;
+      --bg2: #fafafa;
+      --text: #1d2021;
+      --stone: #6b7a7a;
+      --sand: #3d4a4a;
+      --terra: #0d4a4a;
+      --accent: #7fd0c8;
       --white: #fff;
       --border: rgba(255,255,255,0.1);
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -137,7 +137,7 @@
       margin-bottom: 8px; transition: box-shadow 0.2s;
     }
     .item-card:hover { box-shadow: 0 4px 16px rgba(255,255,255,0.06); }
-    .item-thumb { width: 100px; height: 70px; background: #d0c9be; border-radius: 4px; overflow: hidden; }
+    .item-thumb { width: 100px; height: 70px; background: #d5dbda; border-radius: 4px; overflow: hidden; }
     .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .item-info h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
     .item-info .item-meta { font-size: 12px; color: var(--stone); }
@@ -145,7 +145,7 @@
     .item-info .item-meta .tag {
       display: inline-block; font-size: 9px; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--terra); font-weight: 500;
-      background: rgba(45,90,61,0.08); padding: 2px 8px; border-radius: 3px;
+      background: rgba(13,74,74,0.08); padding: 2px 8px; border-radius: 3px;
     }
     .item-actions { display: flex; gap: 6px; }
     .empty-state { text-align: center; padding: 80px 20px; color: var(--stone); }
@@ -206,7 +206,7 @@
       padding: 32px; text-align: center; cursor: pointer;
       transition: all 0.2s; margin-bottom: 16px;
     }
-    .photo-upload-area:hover, .photo-upload-area.dragover { border-color: var(--terra); background: rgba(45,90,61,0.03); }
+    .photo-upload-area:hover, .photo-upload-area.dragover { border-color: var(--terra); background: rgba(13,74,74,0.03); }
     .photo-upload-area p { font-size: 14px; color: var(--stone); margin-bottom: 8px; }
     .photo-upload-area .upload-hint { font-size: 12px; color: rgba(0,0,0,0.3); }
     .photo-upload-area input { display: none; }
@@ -312,7 +312,7 @@
     .badge-featured {
       display: inline-block; font-size: 9px; letter-spacing: 0.1em;
       text-transform: uppercase; font-weight: 600;
-      background: rgba(45,90,61,0.12); color: var(--terra);
+      background: rgba(13,74,74,0.12); color: var(--terra);
       padding: 2px 8px; border-radius: 3px; margin-left: 4px;
     }
   </style>
@@ -798,13 +798,13 @@ Separate paragraphs with a blank line."></textarea>
       propMap = new mapboxgl.Map({ container: 'prop-map', style: 'mapbox://styles/mapbox/outdoors-v12', center: [lng, lat], zoom: data?.lat ? 14 : 10 });
       propMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
       if (data?.lat && data?.lng) {
-        propMarker = new mapboxgl.Marker({ color: '#2d5a3d' }).setLngLat([lng, lat]).addTo(propMap);
+        propMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(propMap);
       }
       propMap.on('click', (e) => {
         document.getElementById('prop-lat').value = e.lngLat.lat.toFixed(6);
         document.getElementById('prop-lng').value = e.lngLat.lng.toFixed(6);
         if (propMarker) propMarker.remove();
-        propMarker = new mapboxgl.Marker({ color: '#2d5a3d' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(propMap);
+        propMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(propMap);
       });
     }
 

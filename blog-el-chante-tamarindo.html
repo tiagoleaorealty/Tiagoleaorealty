@@ -28,16 +28,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #f4f6f4;  /* page light */
-      --bg-warm:   #eef1ec;  /* warm light section */
-      --ink:       #1a2b1e;  /* primary dark forest */
-      --ink-deep:  #14211a;  /* deeper forest (hero) */
-      --sand:      #3d5443;  /* body text on light */
-      --stone:     #6b7c6f;  /* muted */
-      --terra:     #2d5a3d;  /* CTA green */
-      --accent:    #7ec99a;  /* mint highlight */
+      --bg:        #fafafa;  /* page light */
+      --bg-warm:   #f2f5f5;  /* warm light section */
+      --ink:       #1d2021;  /* primary dark forest */
+      --ink-deep:  #0b2b2b;  /* deeper forest (hero) */
+      --sand:      #3d4a4a;  /* body text on light */
+      --stone:     #6b7a7a;  /* muted */
+      --terra:     #0d4a4a;  /* CTA green */
+      --accent:    #7fd0c8;  /* mint highlight */
       --line-dark: rgba(255,255,255,0.12);
-      --line-light:rgba(26,43,30,0.12);
+      --line-light:rgba(29,32,33,0.12);
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -57,11 +57,11 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 22px 48px;
-      background: rgba(20,33,26,0);
+      background: rgba(11,43,43,0);
       transition: background .3s, padding .3s, backdrop-filter .3s;
     }
     nav.solid {
-      background: rgba(244,246,244,.92);
+      background: rgba(250,250,250,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line-light);
       padding: 18px 48px;
@@ -98,8 +98,8 @@
       transition: transform .25s ease, box-shadow .25s ease, background .25s, color .25s, border-color .25s;
       cursor: pointer; border: 1px solid transparent;
     }
-    .btn-primary { background: var(--terra); color: #f3f7f3; box-shadow: 0 10px 30px rgba(45,90,61,.28); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(45,90,61,.38); }
+    .btn-primary { background: var(--terra); color: #ffffff; box-shadow: 0 10px 30px rgba(13,74,74,.28); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(13,74,74,.38); }
     .btn-ghost-light { background: transparent; color: var(--ink); border-color: var(--line-light); }
     .btn-ghost-light:hover { border-color: var(--terra); color: var(--terra); }
     .btn-ghost-dark { background: transparent; color: #fff; border-color: rgba(255,255,255,.28); }
@@ -122,8 +122,8 @@
     .hero {
       position: relative; overflow: hidden;
       background:
-        linear-gradient(105deg, rgba(16,26,20,.94) 0%, rgba(16,26,20,.78) 38%, rgba(16,26,20,.40) 70%, rgba(16,26,20,.30) 100%),
-        radial-gradient(120% 90% at 78% 10%, rgba(126,201,154,.18) 0%, rgba(126,201,154,0) 55%),
+        linear-gradient(105deg, rgba(8,31,31,.94) 0%, rgba(8,31,31,.78) 38%, rgba(8,31,31,.40) 70%, rgba(8,31,31,.30) 100%),
+        radial-gradient(120% 90% at 78% 10%, rgba(127,208,200,.18) 0%, rgba(127,208,200,0) 55%),
         url("CasaChante.jpg");
       background-size: cover;
       background-position: center;
@@ -179,8 +179,8 @@
     /* ── BUY / SELL SECTION (dark) ─────────────────────────── */
     .convert {
       background:
-        radial-gradient(110% 80% at 90% 0%, rgba(126,201,154,.12) 0%, rgba(126,201,154,0) 50%),
-        linear-gradient(180deg, #14211a 0%, #101a14 100%);
+        radial-gradient(110% 80% at 90% 0%, rgba(127,208,200,.12) 0%, rgba(127,208,200,0) 50%),
+        linear-gradient(180deg, #0b2b2b 0%, #081f1f 100%);
       color: #fff; padding: 130px 48px;
     }
     .convert-inner { max-width: 1080px; margin: 0 auto; }
@@ -193,7 +193,7 @@
       background: rgba(255,255,255,.035); border: 1px solid var(--line-dark); border-radius: 20px;
       padding: 38px; transition: transform .3s, border-color .3s, background .3s;
     }
-    .icard:hover { transform: translateY(-4px); border-color: rgba(126,201,154,.4); background: rgba(255,255,255,.06); }
+    .icard:hover { transform: translateY(-4px); border-color: rgba(127,208,200,.4); background: rgba(255,255,255,.06); }
     .icard h3 { font-size: 24px; font-weight: 500; color: var(--accent); margin-bottom: 16px; }
     .icard p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.74); }
 
@@ -202,7 +202,7 @@
       background: rgba(255,255,255,.035); border: 1px solid var(--line-dark); border-radius: 20px;
       padding: 32px 38px; margin-bottom: 44px;
     }
-    .agent-photo { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(126,201,154,.5); flex-shrink: 0; object-position: center 20%; }
+    .agent-photo { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(127,208,200,.5); flex-shrink: 0; object-position: center 20%; }
     .agent-name { font-size: 22px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 6px; }
     .agent-role { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
     .agent-bio { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.72); max-width: 60ch; }
@@ -236,7 +236,7 @@
     .footer-krain a:hover { color: var(--ink); }
     .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line-light); padding-top: 24px; max-width: 1080px; margin: 0 auto; }
     .footer-copy { font-size: 12px; color: var(--stone); }
-    .footer-domain { font-size: 12px; color: rgba(26,43,30,.25); letter-spacing: .08em; text-transform: uppercase; }
+    .footer-domain { font-size: 12px; color: rgba(29,32,33,.25); letter-spacing: .08em; text-transform: uppercase; }
 
     /* ── Mobile nav ────────────────────────────────────────── */
     .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
@@ -246,7 +246,7 @@
     nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
     nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    .nav-mobile { position: fixed; inset: 0; background: #14211a; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity .3s; overflow-y: auto; }
+    .nav-mobile { position: fixed; inset: 0; background: #0b2b2b; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity .3s; overflow-y: auto; }
     .nav-mobile.open { opacity: 1; pointer-events: all; }
     .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,.6); letter-spacing: -.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,.07); transition: color .2s; line-height: 1.2; }
     .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,.07); }
@@ -402,7 +402,7 @@
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">&copy; 2026 Tiago Leao. All rights reserved.</span>
-      <a href="admin.html" style="font-size:11px;color:rgba(26,43,30,0.15);letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='rgba(26,43,30,0.4)'" onmouseout="this.style.color='rgba(26,43,30,0.15)'">Admin</a>
+      <a href="admin.html" style="font-size:11px;color:rgba(29,32,33,0.15);letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='rgba(29,32,33,0.4)'" onmouseout="this.style.color='rgba(29,32,33,0.15)'">Admin</a>
       <span class="footer-domain">soldbytiago.com</span>
     </div>
   </footer>

@@ -37,7 +37,10 @@
       "Bash(curl -s -o /dev/null -w \"github.com HTTPS: %{http_code}\\\\n\" --max-time 8 https://github.com)",
       "Bash(git push *)",
       "Bash(git config *)",
-      "Bash(GIT_TERMINAL_PROMPT=0 git -c credential.helper=osxkeychain push origin main)"
+      "Bash(GIT_TERMINAL_PROMPT=0 git -c credential.helper=osxkeychain push origin main)",
+      "Bash(perl -pi -e 's/#1a3d25/#0d4a4a/gi' index.html)",
+      "Bash(pip3 install *)",
+      "Bash(sips -g pixelWidth Favicon.png)"
     ]
   }
 }
