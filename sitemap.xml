@@ -65,4 +65,9 @@
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://soldbytiago.com/blog-post.html?slug=tamarindo-house-prices-2026</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>

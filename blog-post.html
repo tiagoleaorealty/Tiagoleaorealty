@@ -151,6 +151,8 @@
       <div class="footer-contact">
         <a href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
         <a href="https://www.instagram.com/soldbytiago" target="_blank">@soldbytiago</a>
+        <a href="https://www.linkedin.com/in/tiago-leao-643b6b339/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://share.google/8hH5U6DUcLnVQqh2Y" target="_blank" rel="noopener">Google Business Profile</a>
         <a href="https://soldbytiago.com">soldbytiago.com</a>
       </div>
       <div class="footer-krain">
@@ -270,11 +272,15 @@
 
       const cat = (post.category || 'market').charAt(0).toUpperCase() + (post.category || 'market').slice(1);
 
+      // Visible publish/update date — freshness signal for readers, search & AI engines
+      const dateSrc = post.updated_at || post.created_at;
+      const dateStr = dateSrc ? new Date(dateSrc).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+
       container.innerHTML = `
         <a href="blog.html" class="article-back">&larr; All Articles</a>
         <div class="article-tag">${cat}</div>
         <h1 class="article-title">${post.title || ''}</h1>
-        <div class="article-byline">By Tiago Leao &middot; KRAIN Luxury Real Estate${post.readtime ? ' &middot; ' + post.readtime : ''}</div>
+        <div class="article-byline">By Tiago Leao &middot; KRAIN Luxury Real Estate${dateStr ? ' &middot; Updated ' + dateStr : ''}${post.readtime ? ' &middot; ' + post.readtime : ''}</div>
         <div class="article-body">
           ${parseBody(post.body)}
           <div class="article-cta">
