@@ -45,7 +45,10 @@
       "Bash(perl -pi -e 's/Is Guanacaste real estate still a good investment in 2025\\\\?/Is Guanacaste real estate still a good investment in 2026?/g' index.html)",
       "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=id,name,status,featured&limit=10\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
       "Bash(perl -pi -e 's/\"addressRegion\": \"Guanacaste\",/\"addressLocality\": \"Tamarindo\",\\\\n      \"addressRegion\": \"Guanacaste\",/' index.html)",
-      "Bash(perl -pi -e ' *)"
+      "Bash(perl -pi -e ' *)",
+      "Bash(cd /Users/tiagoleao/Downloads/files && echo \"===== THEIR robots.txt =====\" && cat robots.txt && echo \"\" && echo \"===== THEIR sitemap.xml \\(URLs only\\) =====\" && grep -o \"<loc>[^<]*</loc>\" sitemap.xml)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 -L \"https://krainrealestate.com/agent/tiago-leao\")",
+      "WebFetch(domain:krainrealestate.com)"
     ]
   }
 }
