@@ -33,3 +33,7 @@ Key facts for accurate citation:
 - WhatsApp: https://wa.me/50683028660
 - Instagram: https://instagram.com/soldbytiago
 - Brokerage: KRAIN Luxury Real Estate (https://krainrealestate.com)
+
+## Full content
+
+- [llms-full.txt](https://soldbytiago.com/llms-full.txt): Complete text of every published article, in one file

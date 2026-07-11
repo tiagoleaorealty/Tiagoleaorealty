@@ -37,3 +37,20 @@ Allow: /
 
 User-agent: CCBot
 Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# LLM-friendly content: https://soldbytiago.com/llms.txt and /llms-full.txt

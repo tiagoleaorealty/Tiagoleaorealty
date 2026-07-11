@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/Favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d4a4a" />
   <title>Blog | Tiago Leao Real Estate</title>
   <meta name="description" content="Real estate insights from Tiago Leao, Guanacaste Costa Rica.">
   
@@ -14,7 +15,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --black: #fafafa; --charcoal: #fafafa; --stone: #6b7a7a;
-      --sand: #3d4a4a; --cream: #1d2021; --terra: #0d4a4a;
+      --sand: #3d4a4a; --cream: #1d2021; --terra: #0d4a4a; --accent: #7fd0c8;
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     html { scroll-behavior: smooth; }
@@ -92,6 +93,23 @@
     @media (max-width: 600px) {
       .article-wrap h1 { font-size: 28px; }
     }
+  
+    /* ── Footer: brand teal with white text ───────────────────── */
+    footer { background: #0d4a4a; }
+    footer .footer-top { border-bottom-color: rgba(255,255,255,0.15); }
+    footer .footer-name { color: #fff; }
+    footer .footer-tagline { color: rgba(255,255,255,0.55); }
+    footer .footer-contact a { color: rgba(255,255,255,0.78); }
+    footer .footer-contact a:hover { color: #fff; border-color: #7fd0c8; }
+    footer .footer-krain p { color: rgba(255,255,255,0.55); }
+    footer .footer-krain a { color: rgba(255,255,255,0.78); border-bottom-color: #7fd0c8; }
+    footer .footer-krain a:hover { color: #fff; }
+    footer .footer-krain img { filter: none !important; opacity: 0.9 !important; }
+    footer .footer-bottom { border-top-color: rgba(255,255,255,0.15); }
+    footer .footer-copy { color: rgba(255,255,255,0.55); }
+    footer .footer-domain { color: rgba(255,255,255,0.35); }
+    footer a[href="admin.html"] { color: rgba(255,255,255,0.3) !important; }
+  
   </style>
 </head>
 
@@ -235,6 +253,20 @@
         'publisher': { '@type': 'Organization', 'name': 'Tiago Leao Real Estate', 'url': 'https://soldbytiago.com' }
       });
       document.head.appendChild(ld);
+
+      // Breadcrumb trail (Home > Blog > Article) for search engines
+      const bc = document.createElement('script');
+      bc.type = 'application/ld+json';
+      bc.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://soldbytiago.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Blog', 'item': 'https://soldbytiago.com/blog.html' },
+          { '@type': 'ListItem', 'position': 3, 'name': plainTitle, 'item': pageUrl }
+        ]
+      });
+      document.head.appendChild(bc);
 
       const cat = (post.category || 'market').charAt(0).toUpperCase() + (post.category || 'market').slice(1);
 

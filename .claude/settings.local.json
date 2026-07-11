@@ -40,7 +40,8 @@
       "Bash(GIT_TERMINAL_PROMPT=0 git -c credential.helper=osxkeychain push origin main)",
       "Bash(perl -pi -e 's/#1a3d25/#0d4a4a/gi' index.html)",
       "Bash(pip3 install *)",
-      "Bash(sips -g pixelWidth Favicon.png)"
+      "Bash(sips -g pixelWidth Favicon.png)",
+      "Bash(python3)"
     ]
   }
 }

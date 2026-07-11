@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/Favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d4a4a" />
   <title>Guanacaste Real Estate Blog | Tiago Leao</title>
   <meta name="description" content="Expert insights on buying and selling real estate in Guanacaste, Costa Rica. Market updates, neighborhood guides, and tips for American and Canadian buyers from local agent Tiago Leao.">
   <link rel="canonical" href="https://soldbytiago.com/blog.html">
@@ -211,6 +212,23 @@
     @media (max-width: 600px) {
       .page-header h1 { font-size: 32px; }
     }
+  
+    /* ── Footer: brand teal with white text ───────────────────── */
+    footer { background: #0d4a4a; }
+    footer .footer-top { border-bottom-color: rgba(255,255,255,0.15); }
+    footer .footer-name { color: #fff; }
+    footer .footer-tagline { color: rgba(255,255,255,0.55); }
+    footer .footer-contact a { color: rgba(255,255,255,0.78); }
+    footer .footer-contact a:hover { color: #fff; border-color: #7fd0c8; }
+    footer .footer-krain p { color: rgba(255,255,255,0.55); }
+    footer .footer-krain a { color: rgba(255,255,255,0.78); border-bottom-color: #7fd0c8; }
+    footer .footer-krain a:hover { color: #fff; }
+    footer .footer-krain img { filter: none !important; opacity: 0.9 !important; }
+    footer .footer-bottom { border-top-color: rgba(255,255,255,0.15); }
+    footer .footer-copy { color: rgba(255,255,255,0.55); }
+    footer .footer-domain { color: rgba(255,255,255,0.35); }
+    footer a[href="admin.html"] { color: rgba(255,255,255,0.3) !important; }
+  
   </style>
 </head>
 
@@ -309,6 +327,22 @@
           </div>
         </a>`;
       }).join('');
+
+      // ItemList structured data so search engines & AI crawlers see the article catalog
+      function decode(s) { const ta = document.createElement('textarea'); ta.innerHTML = s || ''; return ta.value; }
+      const ld = document.createElement('script');
+      ld.type = 'application/ld+json';
+      ld.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        'itemListElement': posts.map((p, i) => ({
+          '@type': 'ListItem',
+          'position': i + 1,
+          'name': decode(p.title),
+          'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog-post.html?slug=' + encodeURIComponent(decode(p.slug))))
+        }))
+      });
+      document.head.appendChild(ld);
     })();
 
     // ── Hamburger ─────────────────────────────────────────────────
