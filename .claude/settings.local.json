@@ -48,7 +48,8 @@
       "Bash(perl -pi -e ' *)",
       "Bash(cd /Users/tiagoleao/Downloads/files && echo \"===== THEIR robots.txt =====\" && cat robots.txt && echo \"\" && echo \"===== THEIR sitemap.xml \\(URLs only\\) =====\" && grep -o \"<loc>[^<]*</loc>\" sitemap.xml)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 -L \"https://krainrealestate.com/agent/tiago-leao\")",
-      "WebFetch(domain:krainrealestate.com)"
+      "WebFetch(domain:krainrealestate.com)",
+      "Bash(perl -pi -e 's/offers guidance in English and Spanish/offers guidance in English, Spanish, and Portuguese/' llms.txt)"
     ]
   }
 }

@@ -49,6 +49,12 @@
     .article-body p { font-size: 17px; line-height: 1.8; color: var(--sand); margin-bottom: 28px; }
     .article-body h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); margin-top: 48px; margin-bottom: 20px; }
     .article-body h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); margin-top: 36px; margin-bottom: 16px; }
+    .article-body ul, .article-body ol { margin: 0 0 28px 24px; color: var(--sand); font-size: 17px; line-height: 1.8; }
+    .article-body li { margin-bottom: 10px; }
+    .article-body li::marker { color: var(--terra); }
+    .article-body a.body-link { color: var(--terra); border-bottom: 1px solid var(--terra); transition: opacity 0.2s; }
+    .article-body a.body-link:hover { opacity: 0.7; }
+    .article-body hr.body-hr { border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 44px 0; }
 
     .article-cta { margin-top: 56px; padding: 40px; background: rgba(13,74,74,0.06); border: 1px solid rgba(13,74,74,0.15); border-radius: 8px; text-align: center; }
     .article-cta p { font-size: 20px; font-weight: 600; color: var(--cream); margin-bottom: 20px; }
@@ -175,19 +181,32 @@
   <script src="supabase-data.js"></script>
   <script>
     // Parse markdown-style body into HTML
+    // Supports: ## h2, ### h3, **bold**, *italic*, [links](url),
+    // "- " bullet lists, "1. " numbered lists, and --- dividers.
     function parseBody(text) {
       if (!text) return '';
+      function inline(t) {
+        t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" class="body-link" target="_blank" rel="noopener">$1</a>');
+        t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        return t;
+      }
       return text
         .split('\n\n')
         .filter(Boolean)
         .map(block => {
           block = block.trim();
-          if (block.startsWith('### ')) return '<h3>' + block.slice(4) + '</h3>';
-          if (block.startsWith('## ')) return '<h2>' + block.slice(3) + '</h2>';
-          // Bold and italic
-          block = block.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-          block = block.replace(/\*(.+?)\*/g, '<em>$1</em>');
-          return '<p>' + block + '</p>';
+          if (block === '---') return '<hr class="body-hr" />';
+          if (block.startsWith('### ')) return '<h3>' + inline(block.slice(4)) + '</h3>';
+          if (block.startsWith('## ')) return '<h2>' + inline(block.slice(3)) + '</h2>';
+          const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+          if (lines.length > 1 && lines.every(l => l.startsWith('- '))) {
+            return '<ul>' + lines.map(l => '<li>' + inline(l.slice(2)) + '</li>').join('') + '</ul>';
+          }
+          if (lines.length > 1 && lines.every(l => /^\d+\.\s/.test(l))) {
+            return '<ol>' + lines.map(l => '<li>' + inline(l.replace(/^\d+\.\s/, '')) + '</li>').join('') + '</ol>';
+          }
+          return '<p>' + inline(block) + '</p>';
         })
         .join('');
     }
