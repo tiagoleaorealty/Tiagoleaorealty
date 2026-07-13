@@ -50,7 +50,9 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 -L \"https://krainrealestate.com/agent/tiago-leao\")",
       "WebFetch(domain:krainrealestate.com)",
       "Bash(perl -pi -e 's/offers guidance in English and Spanish/offers guidance in English, Spanish, and Portuguese/' llms.txt)",
-      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=id,name,location,price,beds,baths,type&status=eq.active\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")"
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=id,name,location,price,beds,baths,type&status=eq.active\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=name,location,photos&status=eq.active\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")",
+      "Bash(python3 /private/tmp/claude-501/-Users-tiagoleao-Desktop-WEBSITE/bec849c1-aa4a-444a-beed-19b7d0ac00f3/scratchpad/gen_towns.py)"
     ]
   }
 }
