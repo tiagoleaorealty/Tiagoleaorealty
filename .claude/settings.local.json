@@ -49,7 +49,8 @@
       "Bash(cd /Users/tiagoleao/Downloads/files && echo \"===== THEIR robots.txt =====\" && cat robots.txt && echo \"\" && echo \"===== THEIR sitemap.xml \\(URLs only\\) =====\" && grep -o \"<loc>[^<]*</loc>\" sitemap.xml)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 -L \"https://krainrealestate.com/agent/tiago-leao\")",
       "WebFetch(domain:krainrealestate.com)",
-      "Bash(perl -pi -e 's/offers guidance in English and Spanish/offers guidance in English, Spanish, and Portuguese/' llms.txt)"
+      "Bash(perl -pi -e 's/offers guidance in English and Spanish/offers guidance in English, Spanish, and Portuguese/' llms.txt)",
+      "Bash(curl -s \"https://xjliwfmugylwxlrwyvmh.supabase.co/rest/v1/properties?select=id,name,location,price,beds,baths,type&status=eq.active\" -H \"apikey: sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\" -H \"Authorization: Bearer sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum\")"
     ]
   }
 }
