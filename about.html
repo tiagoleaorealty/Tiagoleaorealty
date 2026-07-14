@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d4a4a" />
+  <title>About Tiago Leao | Guanacaste Real Estate Agent, Costa Rica</title>
+  <meta name="description" content="Meet Tiago Leao — a Guanacaste real estate agent with KRAIN Luxury Real Estate. Born from a love of this coast, trilingual, and marketing every listing like a product launch. Read client reviews.">
+  <link rel="canonical" href="https://soldbytiago.com/about.html">
+  <meta property="og:title" content="About Tiago Leao — Guanacaste Real Estate Agent">
+  <meta property="og:description" content="The agent who actually lives here, knows every corner of the market, and answers every message himself — in English, Spanish, or Portuguese.">
+  <meta property="og:url" content="https://soldbytiago.com/about.html">
+  <meta property="og:type" content="profile">
+  <meta property="og:image" content="https://soldbytiago.com/Headshot.jpg">
+  <meta property="og:site_name" content="Tiago Leao Real Estate">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://soldbytiago.com/Headshot.jpg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Tiago Leao",
+      "alternateName": "Sold by Tiago",
+      "jobTitle": "Real Estate Agent",
+      "worksFor": { "@type": "Organization", "name": "KRAIN Luxury Real Estate", "url": "https://krainrealestate.com" },
+      "url": "https://soldbytiago.com",
+      "image": "https://soldbytiago.com/Headshot.jpg",
+      "email": "tiago@soldbytiago.com",
+      "telephone": "+506-8302-8660",
+      "knowsLanguage": ["English", "Spanish", "Portuguese"],
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "University of Florida" },
+      "homeLocation": { "@type": "Place", "name": "Tamarindo, Guanacaste, Costa Rica" },
+      "sameAs": [
+        "https://www.instagram.com/soldbytiago/",
+        "https://www.linkedin.com/in/tiago-leao-643b6b339/",
+        "https://share.google/8hH5U6DUcLnVQqh2Y",
+        "https://krainrealestate.com/agent/tiago-leao"
+      ]
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="fonts.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #fafafa; --charcoal: #fafafa; --stone: #6b7a7a; --sand: #3d4a4a;
+      --cream: #1d2021; --terra: #0d4a4a; --accent: #ffffff;
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--cream); font-family: var(--font); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Nav */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 48px; background: rgba(250,250,250,.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,.06); }
+    .nav-logo { font-size: 18px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-logo-sub { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--terra); font-weight: 400; }
+    .nav-links { display: flex; gap: 34px; list-style: none; white-space: nowrap; }
+    .nav-links a { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+    .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); border-bottom: 1px solid var(--terra); padding-bottom: 2px; transition: color .2s; }
+    .nav-cta:hover { color: var(--terra); }
+    .nav-dd { position: relative; }
+    .nav-dd::after { content: ""; position: absolute; left: -10px; right: -10px; top: 100%; height: 16px; }
+    .nav-dd-toggle { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+    .nav-dd-toggle svg { width: 9px; height: 6px; transition: transform .25s; }
+    .nav-dd:hover .nav-dd-toggle svg, .nav-dd:focus-within .nav-dd-toggle svg { transform: rotate(180deg); }
+    .nav-dd-menu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); list-style: none; margin: 0; padding: 8px; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.12); min-width: 195px; opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s, visibility .2s; }
+    .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #3d4a4a !important; transition: background .15s, color .15s; }
+    .nav-dd-menu li a:hover { background: rgba(13,74,74,.07); color: #0d4a4a !important; }
+
+    /* Intro */
+    .about-hero { max-width: 1080px; margin: 0 auto; padding: 150px 48px 20px; }
+    .about-eyebrow { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); font-weight: 500; margin-bottom: 18px; display: flex; align-items: center; gap: 14px; }
+    .about-eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--terra); }
+    .about-hero h1 { font-size: clamp(38px, 5.5vw, 66px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; color: var(--terra); margin-bottom: 16px; }
+    .about-hero .lead { font-size: clamp(17px, 2vw, 21px); color: var(--sand); line-height: 1.6; max-width: 40ch; }
+
+    /* Bio grid */
+    .bio { max-width: 1080px; margin: 0 auto; padding: 40px 48px 20px; }
+    .bio-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: start; }
+    .bio-photo { position: relative; }
+    .bio-photo img { width: 100%; border-radius: 16px; display: block; aspect-ratio: 4/5; object-fit: cover; object-position: center 20%; }
+    .bio-photo .accent { position: absolute; right: -14px; bottom: -14px; width: 120px; height: 120px; border: 2px solid var(--terra); border-radius: 16px; z-index: -1; }
+    .bio-text p { font-size: 17px; line-height: 1.8; color: var(--sand); margin-bottom: 20px; }
+    .bio-text p strong { color: var(--cream); font-weight: 600; }
+
+    /* Stats — always one line */
+    .stats { max-width: 1080px; margin: 30px auto 0; padding: 34px 48px; }
+    .stats-inner { display: flex; justify-content: flex-start; gap: clamp(24px, 6vw, 72px); border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 34px 0; }
+    .stat-item { flex: 0 0 auto; }
+    .stat-number { font-size: clamp(30px, 5vw, 46px); font-weight: 700; letter-spacing: -0.03em; color: var(--cream); line-height: 1; }
+    .stat-number sup { font-size: 0.5em; color: var(--terra); vertical-align: super; }
+    .stat-label { font-size: clamp(10px, 1.4vw, 12px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); margin-top: 8px; white-space: nowrap; }
+
+    /* How I work */
+    .approach { max-width: 1080px; margin: 0 auto; padding: 50px 48px 20px; }
+    .approach h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.025em; color: var(--terra); margin-bottom: 30px; }
+    .approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .approach-card { background: #fff; border: 1px solid rgba(13,74,74,0.14); border-radius: 14px; padding: 28px 26px; }
+    .approach-card h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 10px; }
+    .approach-card p { font-size: 15px; line-height: 1.65; color: var(--sand); }
+
+    /* Reviews */
+    .reviews { max-width: 1080px; margin: 0 auto; padding: 56px 48px 20px; }
+    .reviews h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.025em; color: var(--terra); margin-bottom: 8px; }
+    .reviews .sub { font-size: 15px; color: var(--stone); margin-bottom: 30px; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .review-card { background: #fff; border: 1px solid rgba(13,74,74,0.14); border-radius: 16px; padding: 30px 30px 28px; display: flex; flex-direction: column; }
+    .review-stars { color: #e0a500; font-size: 15px; letter-spacing: 2px; margin-bottom: 14px; }
+    .review-quote { font-size: 16.5px; line-height: 1.7; color: var(--cream); margin-bottom: 18px; flex: 1; }
+    .review-author { font-size: 14px; font-weight: 600; color: var(--cream); }
+    .review-loc { font-size: 13px; color: var(--stone); margin-top: 2px; }
+    .reviews-loading { color: var(--stone); font-size: 14px; padding: 20px 0; }
+
+    /* CTA */
+    .about-cta { margin: 46px auto 90px; max-width: 984px; padding: 46px 40px; background: var(--terra); border-radius: 16px; text-align: center; color: #fff; }
+    .about-cta h3 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .about-cta p { font-size: 15px; color: rgba(255,255,255,0.78); margin-bottom: 24px; max-width: 52ch; margin-left: auto; margin-right: auto; }
+    .about-cta .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .about-cta a { display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 14px 30px; border-radius: 40px; transition: transform .2s; }
+    .about-cta a.solid { background: #fff; color: var(--terra); }
+    .about-cta a.ghost { border: 1px solid rgba(255,255,255,0.4); color: #fff; }
+    .about-cta a:hover { transform: translateY(-2px); }
+
+    /* Footer */
+    footer { background: #0d4a4a; padding: 80px 48px 40px; }
+    .footer-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 40px; max-width: 1080px; margin-left: auto; margin-right: auto; }
+    .footer-name { font-size: 32px; font-weight: 700; letter-spacing: -.03em; color: #fff; margin-bottom: 6px; }
+    .footer-tagline { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+    .footer-contact { display: flex; flex-direction: column; gap: 14px; }
+    .footer-contact a { font-size: 14px; color: rgba(255,255,255,0.78); border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; width: fit-content; }
+    .footer-contact a:hover { color: #fff; border-color: #fff; }
+    .footer-krain { max-width: 200px; }
+    .footer-krain img { height: 32px; opacity: .9; margin-bottom: 12px; width: auto; }
+    .footer-krain p { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 8px; }
+    .footer-krain a { font-size: 12px; color: rgba(255,255,255,0.78); border-bottom: 1px solid rgba(255,255,255,0.6); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 24px; max-width: 1080px; margin: 0 auto; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.55); }
+    .footer-domain { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: .08em; text-transform: uppercase; }
+    footer a[href="admin.html"] { color: rgba(255,255,255,0.3) !important; }
+
+    /* Mobile nav */
+    .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    nav.nav-open .nav-hamburger span { background: #fff !important; }
+    nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+    nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav-mobile { position: fixed; inset: 0; background: #1d2021; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile.open { opacity: 1; pointer-events: all; }
+    .nav-mobile a { font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 14px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; line-height: 1.2; }
+    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile a:active { color: #fff; }
+    .nav-mobile-cta-btn { margin-top: 22px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #ffffff; color: #1d2021 !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+    .nav-mobile-group { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile-group summary { list-style: none; cursor: pointer; font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.6); padding: 14px 0; letter-spacing: -0.02em; line-height: 1.2; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .nav-mobile-group summary::-webkit-details-marker { display: none; }
+    .nav-mobile-group summary svg { width: 12px; height: 8px; transition: transform .25s; }
+    .nav-mobile-group[open] summary { color: #fff; }
+    .nav-mobile-group[open] summary svg { transform: rotate(180deg); }
+    .nav-mobile-group a { display: block; width: 100%; text-align: center; font-size: 16px !important; padding: 11px 0 !important; color: rgba(255,255,255,0.5) !important; border-bottom: none !important; }
+    .nav-mobile-group a:first-of-type { margin-top: 4px; }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .about-hero { padding: 120px 24px 10px; }
+      .bio, .stats, .approach, .reviews { padding-left: 24px; padding-right: 24px; }
+      .bio-grid { grid-template-columns: 1fr; gap: 30px; }
+      .bio-photo { max-width: 340px; }
+      .bio-photo .accent { display: none; }
+      .approach-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .about-cta { margin: 30px 24px 70px; }
+      footer { padding: 60px 24px 40px; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+    /* Stats stay on ONE line even on the smallest phones */
+    @media (max-width: 600px) {
+      .stats { padding-left: 20px; padding-right: 20px; }
+      .stats-inner { justify-content: space-between; gap: 10px; padding: 26px 0; }
+      .stat-label { letter-spacing: 0.04em; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">Tiago Leao<span class="nav-logo-sub">Real Estate Group</span></a>
+    <ul class="nav-links">
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="communities.html">Communities</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li class="nav-dd">
+        <a class="nav-dd-toggle" tabindex="0">Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></a>
+        <ul class="nav-dd-menu">
+          <li><a href="buyers-guide.html">Buyer's Guide</a></li>
+          <li><a href="sellers-guide.html">Seller's Guide</a></li>
+        </ul>
+      </li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="index.html#form-section">Work With Me</a></li>
+    </ul>
+    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="properties.html">Properties</a>
+    <a href="communities.html">Communities</a>
+    <a href="about.html">About</a>
+    <details class="nav-mobile-group">
+      <summary>Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></summary>
+      <a href="buyers-guide.html">Buyer's Guide</a>
+      <a href="sellers-guide.html">Seller's Guide</a>
+    </details>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#form-section">Work With Me</a>
+    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+  </div>
+
+  <!-- Intro -->
+  <header class="about-hero">
+    <div class="about-eyebrow">About</div>
+    <h1>Tiago Leao</h1>
+    <p class="lead">The agent who actually lives here, knows every corner of this coast, and answers every message himself.</p>
+  </header>
+
+  <!-- Bio -->
+  <section class="bio">
+    <div class="bio-grid">
+      <div class="bio-photo">
+        <img src="Headshot.jpg" alt="Tiago Leao — Guanacaste real estate agent" />
+        <div class="accent"></div>
+      </div>
+      <div class="bio-text">
+        <p>My family moved to Costa Rica 15 years ago, and I grew up here on the Gold Coast of Guanacaste. This isn't a market I studied from a brochure — it's home.</p>
+        <p>I started in real estate at <strong>18, behind the camera</strong>, shooting and marketing high-end homes across Guanacaste. Five years later, after a business degree from the University of Florida, I sell the properties I used to film. That path shaped how I work: I market every listing like a <strong>product launch</strong> — professional video, drone content, and AI-targeted campaigns that reach buyers in the US and Canada who are actively researching Costa Rica.</p>
+        <p>Most of my clients are Americans and Canadians buying a vacation home, relocating, or investing. I live here full time, I speak <strong>English, Spanish, and Portuguese</strong>, and I'm on every call, every showing, and every negotiation myself — no handoffs, no assistants.</p>
+        <p>I'm an agent with <strong>KRAIN Luxury Real Estate</strong>, based in Tamarindo and working across the Gold Coast: Flamingo, Potrero, Brasilito, Conchal, and the surrounding communities. Guanacaste is one of the fastest growing luxury markets in Latin America. Whether you're buying your piece of it or ready to sell yours, let's talk.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">1M<sup>+</sup></div>
+        <div class="stat-label">Video Views</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Years in the Market</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Languages</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How I work -->
+  <section class="approach">
+    <h2>How I work</h2>
+    <div class="approach-grid">
+      <div class="approach-card">
+        <h3>Marketing like a launch</h3>
+        <p>Every listing gets professional drone footage, an edited video walkthrough, and AI-targeted paid ads that reach buyers in the US and Canada already researching Costa Rica. Your property doesn't sit — it finds the right buyer.</p>
+      </div>
+      <div class="approach-card">
+        <h3>Local, full-time, honest</h3>
+        <p>I live in Guanacaste year-round and know the actual closed sale prices, not just asking prices. I'll tell you the truth about each area and each property — including when to walk away.</p>
+      </div>
+      <div class="approach-card">
+        <h3>You get me, every step</h3>
+        <p>Every call, showing, and negotiation is handled by me personally, in English, Spanish, or Portuguese. I also connect you with the attorneys, escrow companies, and lenders that make a Costa Rica deal go smoothly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="reviews" id="reviews">
+    <h2>What clients say</h2>
+    <div class="sub">Real words from buyers and sellers I've worked with on the Gold Coast.</div>
+    <div class="reviews-grid" id="reviews-grid">
+      <div class="reviews-loading">Loading reviews…</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="about-cta">
+    <h3>Let's talk about your move</h3>
+    <p>Buying, selling, or just exploring — tell me what you're thinking and I'll give you an honest, no-pressure read on it.</p>
+    <div class="btns">
+      <a href="https://wa.me/50683028660" target="_blank" rel="noopener" class="solid">WhatsApp Me</a>
+      <a href="index.html#form-section" class="ghost">Send a Message</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-name">Tiago Leao</div>
+        <div class="footer-tagline">Guanacaste Real Estate</div>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+        <a href="https://www.instagram.com/soldbytiago" target="_blank">@soldbytiago</a>
+        <a href="https://www.linkedin.com/in/tiago-leao-643b6b339/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://share.google/8hH5U6DUcLnVQqh2Y" target="_blank" rel="noopener">Google Business Profile</a>
+        <a href="https://soldbytiago.com">soldbytiago.com</a>
+      </div>
+      <div class="footer-krain">
+        <img src="KRAIN LOGO.png" alt="KRAIN Real Estate" />
+        <p>Agent at KRAIN Luxury Real Estate, Costa Rica's most connected luxury network.</p>
+        <a href="https://krainrealestate.com" target="_blank">KRAIN Real Estate &rarr;</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 Tiago Leao. All rights reserved.</span>
+      <a href="admin.html" style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.06em;">Admin</a>
+      <span class="footer-domain">soldbytiago.com</span>
+    </div>
+  </footer>
+
+  <script src="supabase-data.js"></script>
+  <script>
+    // ── Load reviews from Supabase ─────────────────────────────────
+    (async function() {
+      const grid = document.getElementById('reviews-grid');
+      const fallback = `
+        <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">Tiago made buying from abroad feel simple. He answered every question himself, walked properties for us over video, and connected us with an attorney we trusted. We closed without a single surprise.</div><div class="review-author">The Andersons</div><div class="review-loc">Bought in Tamarindo</div></div>
+        <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">We interviewed three agents. Tiago was the only one who knew the closed sale prices and told us the honest truth about each area. His marketing is on another level.</div><div class="review-author">Mark &amp; Julie R.</div><div class="review-loc">Relocated from Toronto</div></div>`;
+      if (typeof TL === 'undefined' || !TL.isConnected()) { grid.innerHTML = fallback; return; }
+      let reviews = null;
+      try { reviews = await TL.getReviews(); } catch (e) {}
+      if (!reviews || reviews.length === 0) { grid.innerHTML = fallback; return; }
+      grid.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="review-stars">${'★'.repeat(Math.max(1, Math.min(5, r.rating || 5)))}</div>
+          <div class="review-quote">${r.quote || ''}</div>
+          <div class="review-author">${r.author || ''}</div>
+          ${r.location ? `<div class="review-loc">${r.location}</div>` : ''}
+        </div>`).join('');
+    })();
+
+    // ── Mobile menu ────────────────────────────────────────────────
+    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+  </script>
+  <a href="https://wa.me/50683028660" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+</body>
+</html>

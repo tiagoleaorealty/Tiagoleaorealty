@@ -800,6 +800,8 @@
       max-width: 480px;
     }
     .about-body p + p { margin-top: 20px; }
+    .about-more { color: var(--terra); font-weight: 600; border-bottom: 1px solid var(--terra); padding-bottom: 1px; transition: opacity 0.2s; }
+    .about-more:hover { opacity: 0.7; }
     .about-stats {
       display: flex;
       gap: 48px;
@@ -1598,8 +1600,9 @@
       .hero-headline { font-size: clamp(32px, 9vw, 48px); letter-spacing: -0.02em; }
       .hero-sub { font-size: 15px; }
       .btn-primary { padding: 14px 28px; font-size: 12px; }
-      .about-stats { flex-wrap: wrap; gap: 28px; }
-      .about-stat { min-width: 100px; }
+      .about-stats { flex-wrap: nowrap; justify-content: space-between; gap: 10px; }
+      .about-stats .stat-number { font-size: clamp(26px, 8vw, 40px); }
+      .about-stats .stat-label { font-size: 10px; letter-spacing: 0.04em; white-space: nowrap; }
       .properties-header { flex-direction: column; align-items: flex-start; gap: 8px; }
       .properties-note { text-align: left; }
       .btn-view-all { width: 100%; justify-content: center; }
@@ -1655,7 +1658,8 @@
     .nav-mobile-group summary svg { width: 12px; height: 8px; transition: transform .25s; }
     .nav-mobile-group[open] summary { color: #fff; }
     .nav-mobile-group[open] summary svg { transform: rotate(180deg); }
-    .nav-mobile-group a { font-size: 16px !important; padding: 11px 0 !important; color: rgba(255,255,255,0.5) !important; border-bottom: none !important; }
+    .nav-mobile-group a { display: block; width: 100%; text-align: center; font-size: 16px !important; padding: 11px 0 !important; color: rgba(255,255,255,0.5) !important; border-bottom: none !important; }
+    .nav-mobile-group a:first-of-type { margin-top: 4px; }
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
   </style>
@@ -1673,7 +1677,7 @@
     <ul class="nav-links">
       <li><a href="properties.html">Properties</a></li>
       <li><a href="communities.html">Communities</a></li>
-      <li><a href="index.html#about">About</a></li>
+      <li><a href="about.html">About</a></li>
       <li class="nav-dd">
         <a class="nav-dd-toggle" tabindex="0">Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></a>
         <ul class="nav-dd-menu">
@@ -1693,7 +1697,7 @@
   <div class="nav-mobile" id="nav-mobile">
     <a href="properties.html">Properties</a>
     <a href="communities.html">Communities</a>
-    <a href="index.html#about">About</a>
+    <a href="about.html">About</a>
     <details class="nav-mobile-group">
       <summary>Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></summary>
       <a href="buyers-guide.html">Buyer's Guide</a>
@@ -1763,10 +1767,9 @@
           <span>Leao</span>
         </div>
         <div class="about-body reveal reveal-delay-2">
-          <p>I'm a real estate agent with KRAIN Luxury Real Estate, based in Tamarindo and working across Guanacaste's Gold Coast: Flamingo, Potrero, Brasilito, Playa Conchal, and the surrounding communities.</p>
-          <p>I started in this market at 18, behind the camera, shooting and marketing high-end homes across Guanacaste. Five years later, after a business degree from the University of Florida, I sell the properties I used to film. That path shaped how I work: I market every listing like a product launch, with professional video, drone content, and AI-targeted campaigns that reach buyers in the US and Canada who are actively researching Costa Rica.</p>
-          <p>Most of my clients are Americans and Canadians buying a vacation home, relocating, or investing. I live here full time, I speak English, Spanish, and Portuguese, and I'm on every call, every showing, and every negotiation myself.</p>
-          <p>Guanacaste is one of the fastest growing luxury markets in Latin America. Whether you're buying your piece of it or ready to sell yours, let's talk.</p>
+          <p>My family moved to Costa Rica 15 years ago, and I grew up here on the Gold Coast. I started in real estate at 18 behind the camera, and after a business degree from the University of Florida, I now sell the properties I used to film — marketing every listing like a product launch.</p>
+          <p>I live here full time, speak English, Spanish, and Portuguese, and I'm on every call, showing, and negotiation myself. Whether you're buying your piece of Guanacaste or ready to sell yours, let's talk.</p>
+          <p><a href="about.html" class="about-more">Read my full story &amp; client reviews &rarr;</a></p>
         </div>
         <div class="about-stats reveal reveal-delay-3">
           <div class="stat-item">

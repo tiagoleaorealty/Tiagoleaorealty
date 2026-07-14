@@ -141,6 +141,16 @@
       border: 0.5px solid var(--border); border-radius: 6px;
       margin-bottom: 8px; transition: box-shadow 0.2s;
     }
+    .item-card.reorderable { grid-template-columns: 40px 100px 1fr auto; }
+    .reorder-controls { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .reorder-btn {
+      width: 26px; height: 20px; border: 0.5px solid var(--border); background: var(--white);
+      color: var(--terra); border-radius: 4px; cursor: pointer; font-size: 9px; line-height: 1;
+      display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+    }
+    .reorder-btn:hover:not(:disabled) { background: rgba(13,74,74,0.08); }
+    .reorder-btn:disabled { opacity: 0.25; cursor: default; }
+    .reorder-pos { font-size: 11px; color: var(--stone); font-weight: 600; }
     .item-card:hover { box-shadow: 0 4px 16px rgba(255,255,255,0.06); }
     .item-thumb { width: 100px; height: 70px; background: #d5dbda; border-radius: 4px; overflow: hidden; }
     .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -346,6 +356,7 @@
     <div class="topbar-brand">Tiago Leao <span>Admin</span></div>
     <div class="topbar-links">
       <a href="#" class="active" data-tab="properties">Properties</a>
+      <a href="#" data-tab="reviews">Reviews</a>
       <a href="#" data-tab="blog">Blog Posts</a>
       <a href="#" data-tab="settings">Settings</a>
       <a href="index.html" style="opacity:0.4;">View Site &rarr;</a>
@@ -364,12 +375,23 @@
     <!-- ══ PROPERTIES TAB ════════════════════════════════════════ -->
     <div class="tab-content active" id="tab-properties">
       <h1 class="page-title">Properties</h1>
-      <p class="page-sub">Manage your property listings. Data syncs to Supabase in real time.</p>
+      <p class="page-sub">Manage your listings. The &#9650;/&#9660; arrows set the order — this controls both the homepage featured order and the Properties page. Each listing's <strong>Community</strong> decides which Communities page it shows on.</p>
       <div class="items-header">
         <span class="items-count" id="prop-count">0 properties</span>
         <button class="btn btn-terra" onclick="openPropertyEditor()">+ Add Property</button>
       </div>
       <div id="properties-list"></div>
+    </div>
+
+    <!-- ══ REVIEWS TAB ═══════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-reviews">
+      <h1 class="page-title">Reviews</h1>
+      <p class="page-sub">Client testimonials shown on your About page. Use the arrows to set the order.</p>
+      <div class="items-header">
+        <span class="items-count" id="review-count">0 reviews</span>
+        <button class="btn btn-terra" onclick="openReviewEditor()">+ Add Review</button>
+      </div>
+      <div id="reviews-list"></div>
     </div>
 
     <!-- ══ BLOG TAB ══════════════════════════════════════════════ -->
@@ -453,7 +475,29 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Location / Area</label><input type="text" id="prop-location" placeholder="e.g. Tamarindo, Guanacaste" /></div>
+        <div class="form-group">
+          <label>Community <span style="color:var(--terra);font-weight:600;">(controls which Communities page it appears on)</span></label>
+          <select id="prop-community" onchange="onCommunityChange()">
+            <option value="" data-kw="">— Select community —</option>
+            <option value="Tamarindo, Guanacaste" data-kw="tamarindo">Tamarindo</option>
+            <option value="Playa Langosta, Tamarindo" data-kw="langosta">Playa Langosta</option>
+            <option value="Playa Grande, Guanacaste" data-kw="playa grande">Playa Grande</option>
+            <option value="Playa Avellanas, Guanacaste" data-kw="avellanas">Playa Avellanas</option>
+            <option value="Hacienda Pinilla, Guanacaste" data-kw="pinilla">Hacienda Pinilla</option>
+            <option value="Playa Conchal, Guanacaste" data-kw="conchal">Playa Conchal</option>
+            <option value="Brasilito, Guanacaste" data-kw="brasilito">Brasilito</option>
+            <option value="Playa Flamingo, Guanacaste" data-kw="flamingo">Playa Flamingo</option>
+            <option value="Potrero, Guanacaste" data-kw="potrero">Potrero</option>
+            <option value="Las Catalinas, Guanacaste" data-kw="catalinas">Las Catalinas</option>
+            <option value="Playas del Coco, Guanacaste" data-kw="coco">Playas del Coco</option>
+            <option value="Marbella, Guanacaste" data-kw="marbella">Marbella</option>
+            <option value="Nosara, Guanacaste" data-kw="nosara">Nosara</option>
+            <option value="__other__" data-kw="">Other / custom…</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Location shown on listing</label><input type="text" id="prop-location" placeholder="e.g. Tamarindo, Guanacaste" /></div>
+      </div>
+      <div class="form-row full">
         <div class="form-group"><label>Address</label><input type="text" id="prop-address" placeholder="Full address or area description" /></div>
       </div>
       <div class="form-row triple">
@@ -556,6 +600,43 @@ Separate paragraphs with a blank line."></textarea>
     </div>
   </div>
 
+  <!-- Review editor modal -->
+  <div class="modal-overlay" id="review-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('review-modal')">&times;</button>
+      <h2 id="review-modal-title">Add Review</h2>
+      <input type="hidden" id="review-edit-id" />
+      <div class="form-row">
+        <div class="form-group"><label>Reviewer Name</label><input type="text" id="review-author" placeholder="e.g. The Andersons" /></div>
+        <div class="form-group"><label>Location / Context</label><input type="text" id="review-location" placeholder="e.g. Bought in Tamarindo" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Rating</label>
+          <select id="review-rating">
+            <option value="5">★★★★★ (5)</option>
+            <option value="4">★★★★ (4)</option>
+            <option value="3">★★★ (3)</option>
+            <option value="2">★★ (2)</option>
+            <option value="1">★ (1)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Status</label>
+          <select id="review-status"><option value="published">Published</option><option value="hidden">Hidden</option></select>
+        </div>
+        <div class="form-group"></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Review Text</label>
+          <textarea class="blog-body-textarea" id="review-quote" style="min-height:120px;" placeholder="What the client said…"></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal('review-modal')">Cancel</button>
+        <button class="btn btn-terra" id="review-save-btn" onclick="saveReview()">Save Review</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   </div><!-- /admin-app -->
@@ -640,6 +721,12 @@ Separate paragraphs with a blank line."></textarea>
 
     function initSupabase() {
       const cfg = getConfig();
+      // The Supabase CDN script may not have finished loading yet.
+      if (typeof supabase === 'undefined' || !supabase.createClient) {
+        document.getElementById('conn-dot').className = 'status-dot disconnected';
+        document.getElementById('conn-text').textContent = 'Loading…';
+        return false;
+      }
       if (cfg.url && cfg.key) {
         try {
           sb = supabase.createClient(cfg.url, cfg.key);
@@ -656,6 +743,33 @@ Separate paragraphs with a blank line."></textarea>
       return false;
     }
 
+    // Recreate the client and refresh data. Used on first load AND whenever the
+    // page is restored from back/forward cache or the tab wakes from sleep —
+    // this is what fixes having to close/reopen the site to use the admin.
+    function reconnectAndRefresh() {
+      if (sessionStorage.getItem(SESSION_KEY) !== '1') return; // not logged in
+      if (initSupabase()) {
+        loadProperties();
+        loadBlogPosts();
+        if (typeof loadReviews === 'function') loadReviews();
+      }
+    }
+
+    // bfcache restore (browser back/forward) — page comes back frozen; re-init.
+    window.addEventListener('pageshow', (e) => { if (e.persisted) reconnectAndRefresh(); });
+    // Tab becomes visible again after being backgrounded/asleep.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && sessionStorage.getItem(SESSION_KEY) === '1' && !sb) {
+        reconnectAndRefresh();
+      }
+    });
+    // Network came back.
+    window.addEventListener('online', reconnectAndRefresh);
+    // If the CDN loads after our first init attempt, connect as soon as it's ready.
+    window.addEventListener('load', () => {
+      if (sessionStorage.getItem(SESSION_KEY) === '1' && !sb) reconnectAndRefresh();
+    });
+
     function saveSupabaseConfig() {
       localStorage.setItem('tl_sb_url', document.getElementById('sb-url-input').value.trim().replace(/\/$/, ''));
       localStorage.setItem('tl_sb_key', document.getElementById('sb-key-input').value.trim());
@@ -663,6 +777,7 @@ Separate paragraphs with a blank line."></textarea>
         showToast('Connected to Supabase');
         loadProperties();
         loadBlogPosts();
+        loadReviews();
       } else {
         showToast('Connection failed — check your URL and key');
       }
@@ -718,8 +833,13 @@ Separate paragraphs with a blank line."></textarea>
         list.innerHTML = `<div class="empty-state"><h3>No properties yet</h3><p>Add your first listing to get started.</p><button class="btn btn-terra" onclick="openPropertyEditor()">+ Add Property</button></div>`;
         return;
       }
-      list.innerHTML = allProperties.map(p => `
-        <div class="item-card">
+      list.innerHTML = allProperties.map((p, i) => `
+        <div class="item-card reorderable">
+          <div class="reorder-controls">
+            <button class="reorder-btn" title="Move up" onclick="moveProperty('${p.id}',-1)" ${i === 0 ? 'disabled' : ''}>&#9650;</button>
+            <span class="reorder-pos">${i + 1}</span>
+            <button class="reorder-btn" title="Move down" onclick="moveProperty('${p.id}',1)" ${i === allProperties.length - 1 ? 'disabled' : ''}>&#9660;</button>
+          </div>
           <div class="item-thumb">${p.photos && p.photos.length > 0 ? `<img src="${p.photos[0]}" alt="${p.name}" />` : ''}</div>
           <div class="item-info">
             <h3>${p.name || 'Untitled'}</h3>
@@ -741,6 +861,52 @@ Separate paragraphs with a blank line."></textarea>
         </div>`).join('');
     }
 
+    // Move a property up/down and persist the new order for the whole list.
+    // Homepage featured + properties page both read `sort_order` ascending,
+    // so this controls the order buyers actually see.
+    let reordering = false;
+    async function moveProperty(id, dir) {
+      if (reordering || !sb) return;
+      const idx = allProperties.findIndex(p => p.id === id);
+      const target = idx + dir;
+      if (idx < 0 || target < 0 || target >= allProperties.length) return;
+      reordering = true;
+      // swap in local array
+      [allProperties[idx], allProperties[target]] = [allProperties[target], allProperties[idx]];
+      renderProperties(); // instant visual feedback
+      // renumber everything 0..n and save the two (or all) that changed
+      const updates = allProperties.map((p, i) => ({ id: p.id, sort_order: i }));
+      try {
+        await Promise.all(updates.map(u => sb.from('properties').update({ sort_order: u.sort_order }).eq('id', u.id)));
+        showToast('Order saved');
+      } catch (e) {
+        showToast('Could not save order — try again');
+      }
+      reordering = false;
+    }
+
+    // When a community is picked, auto-fill the display location (canonical
+    // text the town pages match on). "Other" leaves it free for manual entry.
+    function onCommunityChange() {
+      const sel = document.getElementById('prop-community');
+      const val = sel.value;
+      const loc = document.getElementById('prop-location');
+      if (val === '__other__') { loc.value = ''; loc.focus(); return; }
+      if (val) loc.value = val;
+    }
+
+    // Reverse-map a stored location string back to a community option on edit.
+    function syncCommunityFromLocation(location) {
+      const sel = document.getElementById('prop-community');
+      const hay = (location || '').toLowerCase();
+      let matched = '';
+      for (const opt of sel.options) {
+        const kw = opt.getAttribute('data-kw');
+        if (kw && hay.includes(kw)) { matched = opt.value; break; }
+      }
+      sel.value = matched || (location ? '__other__' : '');
+    }
+
     function openPropertyEditor(data) {
       propPhotos = data ? [...(data.photos || [])] : [];
       document.getElementById('prop-edit-id').value = data ? data.id : '';
@@ -750,6 +916,7 @@ Separate paragraphs with a blank line."></textarea>
       document.getElementById('prop-type').value = data ? data.type || 'home' : 'home';
       document.getElementById('prop-status').value = data ? data.status || 'active' : 'active';
       document.getElementById('prop-location').value = data ? data.location || '' : '';
+      syncCommunityFromLocation(data ? data.location || '' : '');
       document.getElementById('prop-address').value = data ? data.address || '' : '';
       document.getElementById('prop-beds').value = data ? data.beds || '' : '';
       document.getElementById('prop-baths').value = data ? data.baths || '' : '';
@@ -806,7 +973,7 @@ Separate paragraphs with a blank line."></textarea>
       const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
       const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
       if (propMap) propMap.remove();
-      propMap = new mapboxgl.Map({ container: 'prop-map', style: 'mapbox://styles/mapbox/outdoors-v12', center: [lng, lat], zoom: data?.lat ? 14 : 10 });
+      propMap = new mapboxgl.Map({ container: 'prop-map', style: 'mapbox://styles/mapbox/satellite-streets-v12', center: [lng, lat], zoom: data?.lat ? 15 : 10 });
       propMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
       if (data?.lat && data?.lng) {
         propMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(propMap);
@@ -1002,6 +1169,129 @@ Separate paragraphs with a blank line."></textarea>
     }
 
     // ══════════════════════════════════════════════════════════════
+    //  REVIEWS
+    // ══════════════════════════════════════════════════════════════
+    let allReviews = [];
+    let reviewsTableMissing = false;
+
+    async function loadReviews() {
+      if (!sb) return;
+      const { data, error } = await sb.from('reviews').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
+      if (error) {
+        // Most likely the table hasn't been created yet.
+        reviewsTableMissing = /relation|does not exist|not find|schema cache/i.test(error.message);
+        allReviews = [];
+        renderReviews();
+        return;
+      }
+      reviewsTableMissing = false;
+      allReviews = data || [];
+      renderReviews();
+    }
+
+    function renderReviews() {
+      const list = document.getElementById('reviews-list');
+      const countEl = document.getElementById('review-count');
+      if (reviewsTableMissing) {
+        countEl.textContent = 'setup needed';
+        list.innerHTML = `<div class="empty-state"><h3>One-time setup needed</h3><p>Open your Supabase dashboard → SQL Editor, then run the file <strong>supabase-reviews-setup.sql</strong> (in your website folder). Reload this page afterward.</p></div>`;
+        return;
+      }
+      countEl.textContent = allReviews.length + ' review' + (allReviews.length === 1 ? '' : 's');
+      if (allReviews.length === 0) {
+        list.innerHTML = `<div class="empty-state"><h3>No reviews yet</h3><p>Add your first client testimonial.</p><button class="btn btn-terra" onclick="openReviewEditor()">+ Add Review</button></div>`;
+        return;
+      }
+      list.innerHTML = allReviews.map((r, i) => `
+        <div class="item-card reorderable">
+          <div class="reorder-controls">
+            <button class="reorder-btn" title="Move up" onclick="moveReview('${r.id}',-1)" ${i === 0 ? 'disabled' : ''}>&#9650;</button>
+            <span class="reorder-pos">${i + 1}</span>
+            <button class="reorder-btn" title="Move down" onclick="moveReview('${r.id}',1)" ${i === allReviews.length - 1 ? 'disabled' : ''}>&#9660;</button>
+          </div>
+          <div class="item-thumb" style="display:flex;align-items:center;justify-content:center;font-size:18px;color:#e0a500;background:rgba(224,165,0,0.08);">${'★'.repeat(r.rating || 5)}</div>
+          <div class="item-info">
+            <h3>${r.author || 'Anonymous'} ${r.status === 'hidden' ? '<span class="status-badge" style="background:#eee;color:#999;">hidden</span>' : ''}</h3>
+            <div class="item-meta">
+              ${r.location ? `<span class="tag">${r.location}</span>` : ''}
+              <span>"${(r.quote || '').slice(0, 90)}${(r.quote || '').length > 90 ? '…' : ''}"</span>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-outline btn-sm" onclick="editReview('${r.id}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteReview('${r.id}')">Delete</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function openReviewEditor(data) {
+      document.getElementById('review-edit-id').value = data ? data.id : '';
+      document.getElementById('review-modal-title').textContent = data ? 'Edit Review' : 'Add Review';
+      document.getElementById('review-author').value = data ? data.author || '' : '';
+      document.getElementById('review-location').value = data ? data.location || '' : '';
+      document.getElementById('review-rating').value = data ? String(data.rating || 5) : '5';
+      document.getElementById('review-status').value = data ? data.status || 'published' : 'published';
+      document.getElementById('review-quote').value = data ? data.quote || '' : '';
+      openModal('review-modal');
+    }
+
+    function editReview(id) {
+      const r = allReviews.find(x => x.id === id);
+      if (r) openReviewEditor(r);
+    }
+
+    async function saveReview() {
+      if (!sb) { showToast('Connect to Supabase first'); return; }
+      const btn = document.getElementById('review-save-btn');
+      btn.textContent = 'Saving...'; btn.disabled = true;
+      const id = document.getElementById('review-edit-id').value;
+      const row = {
+        author: document.getElementById('review-author').value,
+        location: document.getElementById('review-location').value,
+        rating: parseInt(document.getElementById('review-rating').value) || 5,
+        status: document.getElementById('review-status').value,
+        quote: document.getElementById('review-quote').value,
+      };
+      let error;
+      if (id) {
+        ({ error } = await sb.from('reviews').update(row).eq('id', id));
+      } else {
+        row.sort_order = allReviews.length;
+        ({ error } = await sb.from('reviews').insert([row]));
+      }
+      btn.textContent = 'Save Review'; btn.disabled = false;
+      if (error) { showToast('Error: ' + error.message); return; }
+      closeModal('review-modal');
+      await loadReviews();
+      showToast(id ? 'Review updated' : 'Review added');
+    }
+
+    async function deleteReview(id) {
+      if (!confirm('Delete this review?')) return;
+      if (!sb) return;
+      const { error } = await sb.from('reviews').delete().eq('id', id);
+      if (error) { showToast('Error: ' + error.message); return; }
+      await loadReviews();
+      showToast('Review deleted');
+    }
+
+    let reorderingReview = false;
+    async function moveReview(id, dir) {
+      if (reorderingReview || !sb) return;
+      const idx = allReviews.findIndex(r => r.id === id);
+      const target = idx + dir;
+      if (idx < 0 || target < 0 || target >= allReviews.length) return;
+      reorderingReview = true;
+      [allReviews[idx], allReviews[target]] = [allReviews[target], allReviews[idx]];
+      renderReviews();
+      try {
+        await Promise.all(allReviews.map((r, i) => sb.from('reviews').update({ sort_order: i }).eq('id', r.id)));
+        showToast('Order saved');
+      } catch (e) { showToast('Could not save order'); }
+      reorderingReview = false;
+    }
+
+    // ══════════════════════════════════════════════════════════════
     //  PHOTO UPLOAD (Supabase Storage)
     // ══════════════════════════════════════════════════════════════
     function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); }
@@ -1075,6 +1365,7 @@ Separate paragraphs with a blank line."></textarea>
       if (initSupabase()) {
         loadProperties();
         loadBlogPosts();
+        loadReviews();
       }
     }
   </script>

@@ -58,7 +58,12 @@
       "Bash(mv \"Playa-Langosta.jpg\" langosta.jpg)",
       "Bash(mv \"Marbella.jpg\" __tmp.jpg)",
       "Bash(mv __tmp.jpg marbella.jpg)",
-      "Bash(pkill -f \"http.server 8009\")"
+      "Bash(pkill -f \"http.server 8009\")",
+      "Bash(sed -n '/<ul class=\"nav-links\">/,/<\\\\/ul>/p' index.html)",
+      "Bash(sed -n '/<div class=\"nav-mobile\" id=\"nav-mobile\">/,/<\\\\/div>/p' index.html)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}\\\\n' '__TRACKED_VAR__/rest/v1/reviews?select=id&limit=1' -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
+      "Bash(curl -s '__TRACKED_VAR__/rest/v1/properties?select=name,location,featured,sort_order&order=sort_order.asc' -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
+      "Bash(python3 -c \"import json,sys; [print\\(f\\\\\"{p['sort_order']:>3} | feat={str\\(p['featured']\\):>5} | {p['location'][:18]:<18} | {p['name'][:40]}\\\\\"\\) for p in json.load\\(sys.stdin\\)]\")"
     ]
   }
 }

@@ -109,6 +109,20 @@
       }
     },
 
+    // Load published client reviews (About page)
+    async getReviews() {
+      try {
+        return await sbFetch('reviews', {
+          'status': 'eq.published',
+          'order': 'sort_order.asc,created_at.desc',
+          'select': '*'
+        });
+      } catch (e) {
+        console.error('[Supabase] Failed to load reviews:', e);
+        return null;
+      }
+    },
+
     // Load a single blog post by slug
     async getBlogPost(slug) {
       try {
