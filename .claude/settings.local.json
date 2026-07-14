@@ -63,7 +63,12 @@
       "Bash(sed -n '/<div class=\"nav-mobile\" id=\"nav-mobile\">/,/<\\\\/div>/p' index.html)",
       "Bash(curl -s -o /dev/null -w '%{http_code}\\\\n' '__TRACKED_VAR__/rest/v1/reviews?select=id&limit=1' -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
       "Bash(curl -s '__TRACKED_VAR__/rest/v1/properties?select=name,location,featured,sort_order&order=sort_order.asc' -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
-      "Bash(python3 -c \"import json,sys; [print\\(f\\\\\"{p['sort_order']:>3} | feat={str\\(p['featured']\\):>5} | {p['location'][:18]:<18} | {p['name'][:40]}\\\\\"\\) for p in json.load\\(sys.stdin\\)]\")"
+      "Bash(python3 -c \"import json,sys; [print\\(f\\\\\"{p['sort_order']:>3} | feat={str\\(p['featured']\\):>5} | {p['location'][:18]:<18} | {p['name'][:40]}\\\\\"\\) for p in json.load\\(sys.stdin\\)]\")",
+      "Bash(cd \"/Users/tiagoleao/Desktop/WEBSITE\")",
+      "Bash(echo \"=== storage buckets ===\")",
+      "Bash(curl -s __TRACKED_VAR__/storage/v1/bucket -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
+      "Bash(curl -s -X POST __TRACKED_VAR__/storage/v1/object/list/photos -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -d '{\"prefix\":\"\",\"limit\":100,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}')",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d[:5], indent=2\\) if isinstance\\(d,list\\) else d\\)\")"
     ]
   }
 }

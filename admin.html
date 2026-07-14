@@ -1306,13 +1306,44 @@ Separate paragraphs with a blank line."></textarea>
       e.target.value = '';
     }
 
+    // Resize + compress an image in the browser before upload so photos land
+    // at web size (~200-400 KB) instead of multi-MB camera files. This keeps
+    // Supabase storage + egress low and makes property pages load fast.
+    function compressImage(file, maxDim = 1600, quality = 0.72) {
+      return new Promise((resolve) => {
+        if (!file.type.startsWith('image/') || file.type === 'image/gif') { resolve(file); return; }
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width >= height) { height = Math.round(height * maxDim / width); width = maxDim; }
+            else { width = Math.round(width * maxDim / height); height = maxDim; }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+          canvas.toBlob((blob) => {
+            // Keep whichever is smaller (avoids bloating already-tiny images).
+            if (blob && blob.size < file.size) resolve(blob);
+            else resolve(file);
+          }, 'image/jpeg', quality);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+        img.src = url;
+      });
+    }
+
     async function processPhotos(files, type) {
       if (!sb) { showToast('Connect to Supabase first'); return; }
       const cfg = getConfig();
 
-      for (const file of files) {
-        // Generate unique filename
-        const ext = file.name.split('.').pop();
+      for (const original of files) {
+        // Compress before upload (multi-MB camera photo -> ~300 KB web image)
+        const file = await compressImage(original);
+        // Compressed output is JPEG; keep original ext only if we didn't compress.
+        const ext = (file === original) ? (original.name.split('.').pop() || 'jpg') : 'jpg';
         const filename = `${type}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
 
         // Show uploading state
@@ -1324,6 +1355,7 @@ Separate paragraphs with a blank line."></textarea>
         // Upload to Supabase Storage
         const { data, error } = await sb.storage.from('photos').upload(filename, file, {
           cacheControl: '3600',
+          contentType: file.type || 'image/jpeg',
           upsert: false
         });
 
