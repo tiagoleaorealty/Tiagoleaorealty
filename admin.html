@@ -890,13 +890,23 @@ Separate paragraphs with a blank line."></textarea>
       // swap in local array
       [allProperties[idx], allProperties[target]] = [allProperties[target], allProperties[idx]];
       renderProperties(); // instant visual feedback
-      // renumber everything 0..n and save the two (or all) that changed
-      const updates = allProperties.map((p, i) => ({ id: p.id, sort_order: i }));
-      try {
-        await Promise.all(updates.map(u => sb.from('properties').update({ sort_order: u.sort_order }).eq('id', u.id)));
+      // Renumber everything 0..n. Only send rows whose number actually changed.
+      // supabase-js resolves with { error } instead of throwing, so a failed save
+      // has to be read off the result — a try/catch here would never fire.
+      const updates = allProperties
+        .map((p, i) => ({ id: p.id, from: p.sort_order, sort_order: i }))
+        .filter(u => u.from !== u.sort_order);
+      const results = await Promise.all(
+        updates.map(u => sb.from('properties').update({ sort_order: u.sort_order }).eq('id', u.id))
+      );
+      const failed = results.filter(r => r.error);
+      if (failed.length) {
+        console.error('[admin] reorder failed:', failed.map(f => f.error.message));
+        showToast(`Could not save order (${failed.length} of ${updates.length} failed)`);
+        await loadProperties(); // resync to whatever the database actually holds
+      } else {
+        allProperties.forEach((p, i) => { p.sort_order = i; });
         showToast('Order saved');
-      } catch (e) {
-        showToast('Could not save order — try again');
       }
       reordering = false;
     }

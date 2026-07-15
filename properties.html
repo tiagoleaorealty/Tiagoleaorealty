@@ -1144,6 +1144,9 @@
       }, { threshold: 0.08 });
       grid.querySelectorAll('.reveal').forEach(el => io2.observe(el));
       rebindFilters();
+      // The grid was just rebuilt from Supabase in sort_order, which ignores the
+      // sort dropdown. Re-apply it so the listings match what the dropdown says.
+      applySort();
     })();
 
     // Slides past the first hold their URL in data-src; swap it in the moment
