@@ -339,9 +339,12 @@
   <div id="login-gate">
     <div class="login-box">
       <div class="login-brand">Tiago Leao <span>Admin</span></div>
-      <p class="login-sub">Enter your password to continue.</p>
+      <p class="login-sub">Sign in to continue.</p>
+      <div class="login-field" style="margin-bottom:8px;">
+        <input type="email" id="login-email" placeholder="Email" autocomplete="username" />
+      </div>
       <div class="login-field">
-        <input type="password" id="login-password" placeholder="Password" autocomplete="off" />
+        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
         <button onclick="attemptLogin()">Enter</button>
       </div>
       <p class="login-error" id="login-error"></p>
@@ -433,9 +436,9 @@
 
       <div class="config-card">
         <h3>Change Password</h3>
-        <p>Update the admin login password.</p>
+        <p>Updates your Supabase login password. Minimum 8 characters.</p>
         <div class="config-row">
-          <input type="password" id="new-pass-input" placeholder="New password" />
+          <input type="password" id="new-pass-input" placeholder="New password" autocomplete="new-password" />
           <button class="btn btn-terra btn-sm" onclick="changePassword()">Update</button>
         </div>
       </div>
@@ -645,60 +648,70 @@ Separate paragraphs with a blank line."></textarea>
     // ══════════════════════════════════════════════════════════════
     //  LOGIN
     // ══════════════════════════════════════════════════════════════
-    const SESSION_KEY = 'tl_admin_session';
-
-    async function hashPass(str) {
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+    // Auth is handled by Supabase. The client persists the session itself,
+    // and attaches the logged-in user's token to every read/write it makes —
+    // which is what the "authenticated"-only RLS write policies check against.
+    let loggedIn = false;
 
     async function attemptLogin() {
+      const email = document.getElementById('login-email').value.trim();
       const pw = document.getElementById('login-password').value;
-      if (!pw) return;
-      const hash = await hashPass(pw);
-      const stored = localStorage.getItem('tl_admin_hash');
-      if (!stored) {
-        localStorage.setItem('tl_admin_hash', hash);
-        sessionStorage.setItem(SESSION_KEY, '1');
-        showAdmin();
-        showToast('Password set! This will be required next time.');
+      const err = document.getElementById('login-error');
+      if (!email || !pw) { err.textContent = 'Enter your email and password.'; return; }
+      if (!sb && !initSupabase()) { err.textContent = 'Still connecting — try again in a moment.'; return; }
+
+      err.textContent = 'Signing in…';
+      const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+      document.getElementById('login-password').value = '';
+      if (error) {
+        err.textContent = /invalid login/i.test(error.message)
+          ? 'Incorrect email or password.'
+          : error.message;
+        document.getElementById('login-password').focus();
         return;
       }
-      if (hash === stored) {
-        sessionStorage.setItem(SESSION_KEY, '1');
-        showAdmin();
-      } else {
-        document.getElementById('login-error').textContent = 'Incorrect password.';
-        document.getElementById('login-password').value = '';
-        document.getElementById('login-password').focus();
-      }
+      err.textContent = '';
+      showAdmin();
     }
 
     function showAdmin() {
+      loggedIn = true;
       document.getElementById('login-gate').style.display = 'none';
       document.getElementById('admin-app').style.display = 'block';
       initApp();
     }
 
-    function logout() {
-      sessionStorage.removeItem(SESSION_KEY);
+    async function logout() {
+      loggedIn = false;
+      if (sb) await sb.auth.signOut();
       location.reload();
+    }
+
+    // Restore an existing session on page load, so a refresh doesn't sign you out.
+    async function bootSession() {
+      if (loggedIn) return;
+      if (!sb && !initSupabase()) return; // Supabase CDN not ready yet; retried on load
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) showAdmin();
     }
 
     async function changePassword() {
       const pw = document.getElementById('new-pass-input').value;
       if (!pw) return;
-      localStorage.setItem('tl_admin_hash', await hashPass(pw));
+      if (pw.length < 8) { showToast('Password must be at least 8 characters'); return; }
+      if (!sb) { showToast('Not connected to Supabase'); return; }
+      const { error } = await sb.auth.updateUser({ password: pw });
       document.getElementById('new-pass-input').value = '';
-      showToast('Password updated');
+      showToast(error ? `Could not update: ${error.message}` : 'Password updated');
     }
 
     document.getElementById('prop-featured').addEventListener('change', function() {
       document.getElementById('prop-featured-label').textContent = this.checked ? 'Yes' : 'No';
     });
 
-    if (sessionStorage.getItem(SESSION_KEY) === '1') showAdmin();
+    bootSession();
     document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+    document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-password').focus(); });
 
     // ══════════════════════════════════════════════════════════════
     //  SUPABASE CLIENT
@@ -747,7 +760,7 @@ Separate paragraphs with a blank line."></textarea>
     // page is restored from back/forward cache or the tab wakes from sleep —
     // this is what fixes having to close/reopen the site to use the admin.
     function reconnectAndRefresh() {
-      if (sessionStorage.getItem(SESSION_KEY) !== '1') return; // not logged in
+      if (!loggedIn) return; // not logged in
       if (initSupabase()) {
         loadProperties();
         loadBlogPosts();
@@ -759,7 +772,7 @@ Separate paragraphs with a blank line."></textarea>
     window.addEventListener('pageshow', (e) => { if (e.persisted) reconnectAndRefresh(); });
     // Tab becomes visible again after being backgrounded/asleep.
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && sessionStorage.getItem(SESSION_KEY) === '1' && !sb) {
+      if (document.visibilityState === 'visible' && loggedIn && !sb) {
         reconnectAndRefresh();
       }
     });
@@ -767,7 +780,10 @@ Separate paragraphs with a blank line."></textarea>
     window.addEventListener('online', reconnectAndRefresh);
     // If the CDN loads after our first init attempt, connect as soon as it's ready.
     window.addEventListener('load', () => {
-      if (sessionStorage.getItem(SESSION_KEY) === '1' && !sb) reconnectAndRefresh();
+      // The CDN may have loaded after our first attempt, so retry the session
+      // restore before falling back to a plain reconnect.
+      if (!loggedIn) { bootSession(); return; }
+      if (!sb) reconnectAndRefresh();
     });
 
     function saveSupabaseConfig() {

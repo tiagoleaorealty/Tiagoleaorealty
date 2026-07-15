@@ -21,14 +21,20 @@ ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Public can read reviews" ON reviews;
 CREATE POLICY "Public can read reviews" ON reviews FOR SELECT USING (true);
 
--- Writes (until the auth lockdown in supabase-security.sql is applied,
--- these mirror the existing open policies on your other tables)
+-- Writes: logged-in admin only, matching the lockdown in supabase-security.sql.
+-- (These were previously open to anyone with the public site key. Do not
+-- loosen them back: the admin panel signs in with Supabase Auth, so it counts
+-- as "authenticated" and keeps working.)
 DROP POLICY IF EXISTS "Anyone can insert reviews" ON reviews;
-CREATE POLICY "Anyone can insert reviews" ON reviews FOR INSERT WITH CHECK (true);
 DROP POLICY IF EXISTS "Anyone can update reviews" ON reviews;
-CREATE POLICY "Anyone can update reviews" ON reviews FOR UPDATE USING (true);
 DROP POLICY IF EXISTS "Anyone can delete reviews" ON reviews;
-CREATE POLICY "Anyone can delete reviews" ON reviews FOR DELETE USING (true);
+
+DROP POLICY IF EXISTS "Auth can insert reviews" ON reviews;
+CREATE POLICY "Auth can insert reviews" ON reviews FOR INSERT TO authenticated WITH CHECK (true);
+DROP POLICY IF EXISTS "Auth can update reviews" ON reviews;
+CREATE POLICY "Auth can update reviews" ON reviews FOR UPDATE TO authenticated USING (true);
+DROP POLICY IF EXISTS "Auth can delete reviews" ON reviews;
+CREATE POLICY "Auth can delete reviews" ON reviews FOR DELETE TO authenticated USING (true);
 
 -- Optional: a couple of starter reviews so the section isn't empty.
 -- Edit or delete these in the admin panel afterwards.
