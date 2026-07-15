@@ -79,6 +79,14 @@
     }
     .login-field button:hover { opacity: 0.85; }
     .login-error { font-size: 13px; color: #d44; margin-top: 12px; min-height: 20px; }
+    /* The logged-in admin has "View Site" in its topbar; the login gate had no
+       way out at all. */
+    .login-back {
+      display: inline-block; margin-top: 4px;
+      font-size: 13px; color: var(--stone); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .login-back:hover { color: var(--terra); }
 
     /* ─── Top bar ──────────────────────────────────────────────── */
     .topbar {
@@ -351,6 +359,7 @@
         <button onclick="attemptLogin()">Enter</button>
       </div>
       <p class="login-error" id="login-error"></p>
+      <a href="index.html" class="login-back">&larr; Back to the website</a>
     </div>
   </div>
 
