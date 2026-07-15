@@ -588,6 +588,17 @@
       padding: 4px 10px; color: #fff;
       border-radius: 4px;
     }
+    /* Sold reads as "not available", so it must not wear the same teal as
+       New/Featured, which both mean "look at this". (--cream is the charcoal;
+       the variable names on this site are inverted.) */
+    .prop-badge-sold { background: var(--cream); }
+    /* Desaturate the photo, not the container — .prop-badge lives inside
+       .prop-img, and dimming the parent would fade the Sold badge with it.
+       Filter rather than opacity because the carousel already animates
+       .prop-slide's opacity to switch photos. */
+    .property-card.is-sold .prop-slide { filter: grayscale(55%); }
+    .property-card.is-sold:hover .prop-slide { filter: grayscale(20%); }
+    .property-card.is-sold .prop-price { color: var(--stone); }
     .prop-type-tag {
       position: absolute; top: 10px; right: 10px; z-index: 2;
       background: rgba(0,0,0,0.6);
@@ -1084,7 +1095,9 @@
     // ── Load dynamic properties from Supabase ───────────────────────
     (async function() {
       if (typeof TL === 'undefined' || !TL.isConnected()) return;
-      const props = await TL.getProperties();
+      // This grid is the one place built to show a sold listing honestly —
+      // Sold badge, greyed photo, no "for sale".
+      const props = await TL.getProperties({ includeSold: true });
       if (!props || props.length === 0) return;
 
       const grid = document.getElementById('property-grid');
@@ -1110,14 +1123,16 @@
       }
 
       grid.innerHTML = props.map((p, i) => {
-        const isNew = p.created_at && (Date.now() - new Date(p.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
+        const isSold = p.status === 'sold';
+        const isNew = !isSold && p.created_at && (Date.now() - new Date(p.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
         const isFeatured = p.featured;
         const metaParts = [];
         if (p.beds) metaParts.push(`<span><strong>${p.beds}</strong> bds</span>`);
         if (p.baths) metaParts.push(`<span><strong>${p.baths}</strong> ba</span>`);
         if (p.size) metaParts.push(`<span><strong>${Number(p.size).toLocaleString()}</strong> m²</span>`);
         const typeName = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
-        if (typeName) metaParts.push(`<span>${typeName} for sale</span>`);
+        // "Home for sale" is wrong once it is sold.
+        if (typeName) metaParts.push(`<span>${typeName}${isSold ? '' : ' for sale'}</span>`);
         const photos = (p.photos && p.photos.length > 0) ? p.photos.slice(0, 5) : [];
         // Only the first slide gets a real src. The rest are held in data-src and
         // fetched on first view — the slides sit at opacity:0 on-screen, so the
@@ -1126,10 +1141,12 @@
         const dots = photos.length > 1 ? `<div class="prop-dots">${photos.map((_, di) => `<span class="${di === 0 ? 'dot-active' : ''}"></span>`).join('')}</div>` : '';
         const arrows = photos.length > 1 ? `<button class="prop-arrow prop-arrow-prev" onclick="event.preventDefault();event.stopPropagation();propCarouselStep(this.closest('.prop-img'),-1)">&#8249;</button><button class="prop-arrow prop-arrow-next" onclick="event.preventDefault();event.stopPropagation();propCarouselStep(this.closest('.prop-img'),1)">&#8250;</button>` : '';
         return `
-        <a href="property-detail.html?id=${p.id}" class="property-card visible-card reveal${i > 0 ? ' reveal-delay-' + Math.min(i, 5) : ''}" data-type="${p.type || 'home'}" data-price="${parsePrice(p.price)}" data-location="${locKey(p.location)}" data-beds="${p.beds || 0}" data-keywords="${(p.name || '').toLowerCase() + ' ' + (p.location || '').toLowerCase() + ' ' + ((p.features || []).join(' ')).toLowerCase() + ' ' + (p.short_desc || '').toLowerCase()}" data-lat="${p.lat || ''}" data-lng="${p.lng || ''}" data-created="${p.created_at || ''}">
+        <a href="property-detail.html?id=${p.id}" class="property-card visible-card reveal${i > 0 ? ' reveal-delay-' + Math.min(i, 5) : ''}${isSold ? ' is-sold' : ''}" data-type="${p.type || 'home'}" data-price="${parsePrice(p.price)}" data-status="${p.status || 'active'}" data-location="${locKey(p.location)}" data-beds="${p.beds || 0}" data-keywords="${(p.name || '').toLowerCase() + ' ' + (p.location || '').toLowerCase() + ' ' + ((p.features || []).join(' ')).toLowerCase() + ' ' + (p.short_desc || '').toLowerCase()}" data-lat="${p.lat || ''}" data-lng="${p.lng || ''}" data-created="${p.created_at || ''}">
           <div class="prop-img">
             ${slides}
-            ${isNew ? '<div class="prop-badge">New</div>' : (isFeatured ? '<div class="prop-badge">Featured</div>' : '')}
+            ${isSold ? '<div class="prop-badge prop-badge-sold">Sold</div>'
+              : isNew ? '<div class="prop-badge">New</div>'
+              : isFeatured ? '<div class="prop-badge">Featured</div>' : ''}
             <button class="prop-heart" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('liked')"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             ${arrows}
             ${dots}

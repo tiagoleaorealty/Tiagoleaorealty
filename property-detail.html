@@ -297,7 +297,18 @@
       color: var(--terra);
       letter-spacing: -0.02em;
       margin-bottom: 36px;
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
     }
+    /* Sold listings stay published, so the price has to stop reading as an
+       asking price the moment the house is gone. */
+    .price-sold { color: var(--stone); text-decoration: line-through; text-decoration-thickness: 2px; }
+    .sold-flag {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--cream); color: #fff;
+      padding: 5px 12px; border-radius: 4px; white-space: nowrap;
+    }
+    /* Knock the gallery back so the page reads as an archive, not a listing. */
+    body.listing-sold .gallery-wrap img { filter: grayscale(45%); }
 
     /* Stats row */
     .detail-stats {
@@ -1497,7 +1508,15 @@
           document.getElementById('detail-type').textContent = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
           document.getElementById('detail-title').textContent = p.name || '';
           document.getElementById('detail-location').textContent = p.location || '';
-          document.getElementById('detail-price').textContent = p.price || '';
+          // A sold listing stays up, but the price must not read as an asking
+          // price — a buyer should not be able to miss that it is gone.
+          const priceEl = document.getElementById('detail-price');
+          if (p.status === 'sold') {
+            priceEl.innerHTML = `<span class="price-sold">${p.price || ''}</span><span class="sold-flag">Sold</span>`;
+            document.body.classList.add('listing-sold');
+          } else {
+            priceEl.textContent = p.price || '';
+          }
           document.getElementById('stat-beds').textContent = p.beds || '—';
           document.getElementById('stat-baths').textContent = p.baths || '—';
           document.getElementById('stat-sqft').textContent = p.size ? Number(p.size).toLocaleString() : '—';

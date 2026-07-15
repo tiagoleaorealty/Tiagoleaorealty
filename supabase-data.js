@@ -52,11 +52,15 @@
 
   // ── Expose globally ─────────────────────────────────────────
   window.TL = {
-    // Load all active properties
-    async getProperties() {
+    // Active listings only, by default. Sold ones are opt-in via
+    // getProperties({ includeSold: true }) because most callers — the town
+    // pages, "You Might Also Like", the school pages — render a card that says
+    // "for sale" with no Sold badge. Only the main listings grid is built to
+    // show a sold home honestly.
+    async getProperties(opts = {}) {
       try {
         return await sbFetch('properties', {
-          'status': 'eq.active',
+          'status': opts.includeSold ? 'in.(active,sold)' : 'eq.active',
           'order': 'sort_order.asc,created_at.desc',
           'select': '*'
         });
