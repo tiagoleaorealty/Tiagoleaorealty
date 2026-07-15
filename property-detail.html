@@ -624,20 +624,15 @@
     .back-link svg { width: 14px; height: 14px; }
 
     /* ─── Similar Properties ────────────────────────────────────── */
-    /* ── Getting around + Nearby schools ─────────────────────── */
-    .area-section {
-      padding: 90px 130px;
-      border-top: 1px solid rgba(13,74,74,0.12);
-    }
-    .area-inner { max-width: 1180px; margin: 0 auto; }
-    .area-heading {
-      font-size: 30px; font-weight: 700; letter-spacing: -0.03em;
-      color: var(--cream); margin-bottom: 8px;
-    }
-    .area-sub { font-size: 14px; color: var(--stone); margin-bottom: 26px; }
+    /* ── Getting around + Nearby schools ─────────────────────────
+       These live inside .detail-main (the left column), directly above the
+       location map, so they use .detail-section-title like the sections
+       around them rather than carrying their own full-width band. */
+    .area-block { margin-bottom: 48px; }
+    .area-sub { font-size: 14px; color: var(--stone); margin: -8px 0 20px; }
     .around-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px; margin: 26px 0 60px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 20px;
     }
     .around-tile { display: flex; align-items: center; gap: 16px; }
     .around-icon {
@@ -696,9 +691,8 @@
     }
     .area-all-link:hover { text-decoration: underline; }
     @media (max-width: 900px) {
-      .area-section { padding: 60px 24px; }
-      .area-heading { font-size: 24px; }
-      .around-grid { grid-template-columns: 1fr; gap: 18px; margin-bottom: 44px; }
+      .around-grid { grid-template-columns: 1fr; gap: 18px; }
+      .area-block { margin-bottom: 36px; }
     }
 
     .similar-section {
@@ -1156,7 +1150,25 @@
           <div class="features-grid" id="features-grid"></div>
         </div>
 
-        <!-- Location Map -->
+        <!-- Getting around + Nearby schools. Filled by renderAreaSection();
+             each block hides itself when there is nothing to show. -->
+        <div id="area-section" style="display:none;">
+          <div id="around-block" class="area-block" style="display:none;">
+            <div class="detail-section-title">Getting Around</div>
+            <div class="around-grid" id="around-grid"></div>
+          </div>
+
+          <div id="schools-block" class="area-block" style="display:none;">
+            <div class="detail-section-title">Nearby Schools</div>
+            <p class="area-sub">The closest schools to this home. Distances are straight-line &mdash; the drive is longer.</p>
+            <div class="nearby-schools" id="nearby-schools"></div>
+            <a href="schools.html" class="area-all-link">All schools on the Gold Coast &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Location Map — sits below the schools so the area context reads
+             top to bottom: how you get around, where the schools are, then
+             where the house actually is. -->
         <div class="map-section reveal" id="map-section">
           <div class="detail-section-title">Location</div>
           <div id="property-map">
@@ -1222,24 +1234,6 @@
 
     </div>
   </div>
-
-  <!-- ── Getting Around + Nearby Schools ─────────────────────── -->
-  <!-- Both are filled in by JS and stay hidden if there is nothing to show. -->
-  <section class="area-section" id="area-section" style="display:none;">
-    <div class="area-inner">
-      <div id="around-block" style="display:none;">
-        <h2 class="area-heading">Getting around</h2>
-        <div class="around-grid" id="around-grid"></div>
-      </div>
-
-      <div id="schools-block" style="display:none;">
-        <h2 class="area-heading">Nearby schools</h2>
-        <p class="area-sub">The closest schools to this home. Distances are straight-line &mdash; the drive is longer.</p>
-        <div class="nearby-schools" id="nearby-schools"></div>
-        <a href="schools.html" class="area-all-link">All schools on the Gold Coast &rarr;</a>
-      </div>
-    </div>
-  </section>
 
   <!-- ── Similar Properties ──────────────────────────────────── -->
   <section class="similar-section">
