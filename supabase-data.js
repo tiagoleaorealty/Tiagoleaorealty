@@ -95,6 +95,62 @@
       }
     },
 
+    // Load all published schools
+    async getSchools() {
+      try {
+        return await sbFetch('schools', {
+          'status': 'eq.published',
+          'order': 'sort_order.asc,name.asc',
+          'select': '*'
+        });
+      } catch (e) {
+        console.error('[Supabase] Failed to load schools:', e);
+        return null;
+      }
+    },
+
+    // Load a single published school by slug
+    async getSchool(slug) {
+      try {
+        const data = await sbFetch('schools', {
+          'slug': `eq.${slug}`,
+          'status': 'eq.published',
+          'select': '*'
+        });
+        return data && data.length > 0 ? data[0] : null;
+      } catch (e) {
+        console.error('[Supabase] Failed to load school:', e);
+        return null;
+      }
+    },
+
+    // Straight-line km between two lat/lng points (haversine). Used to pick the
+    // schools nearest a listing. Deliberately not sold as a drive time —
+    // Guanacaste roads bend around rivers and hills, so the real drive is
+    // always longer than this number.
+    distanceKm(lat1, lng1, lat2, lng2) {
+      const R = 6371;
+      const toRad = d => d * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLng = toRad(lng2 - lng1);
+      const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    },
+
+    // The `limit` schools closest to a point, each with a `distance_km` added.
+    // Schools with no pin are skipped rather than treated as 0,0.
+    async getNearbySchools(lat, lng, limit = 3) {
+      if (lat == null || lng == null) return [];
+      const schools = await this.getSchools();
+      if (!schools) return [];
+      return schools
+        .filter(s => s.lat != null && s.lng != null)
+        .map(s => ({ ...s, distance_km: this.distanceKm(+lat, +lng, +s.lat, +s.lng) }))
+        .sort((a, b) => a.distance_km - b.distance_km)
+        .slice(0, limit);
+    },
+
     // Load all published blog posts
     async getBlogPosts() {
       try {

@@ -624,6 +624,63 @@
     .back-link svg { width: 14px; height: 14px; }
 
     /* ─── Similar Properties ────────────────────────────────────── */
+    /* ── Getting around + Nearby schools ─────────────────────── */
+    .area-section {
+      padding: 90px 130px;
+      border-top: 1px solid rgba(13,74,74,0.12);
+    }
+    .area-inner { max-width: 1180px; margin: 0 auto; }
+    .area-heading {
+      font-size: 30px; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--cream); margin-bottom: 8px;
+    }
+    .area-sub { font-size: 14px; color: var(--stone); margin-bottom: 26px; }
+    .around-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px; margin: 26px 0 60px;
+    }
+    .around-tile { display: flex; align-items: center; gap: 16px; }
+    .around-icon {
+      width: 52px; height: 52px; border-radius: 10px; flex-shrink: 0;
+      background: var(--terra); display: flex; align-items: center; justify-content: center;
+    }
+    .around-icon svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .around-label {
+      font-size: 13px; font-weight: 700; color: var(--cream);
+      margin-bottom: 3px; letter-spacing: -0.01em;
+    }
+    .around-value { font-size: 20px; font-weight: 700; color: var(--terra); line-height: 1.2; }
+    .around-value span { font-size: 13px; font-weight: 500; color: var(--stone); }
+    .around-note { font-size: 12px; color: var(--stone); margin-top: 2px; }
+    .nearby-schools {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+    }
+    .nsch-card {
+      display: block; text-decoration: none; color: inherit;
+      background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px;
+      padding: 22px 24px 24px; transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .nsch-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.07); }
+    .nsch-name {
+      font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3;
+      color: var(--cream); margin-bottom: 6px;
+    }
+    .nsch-meta { font-size: 12.5px; color: var(--stone); line-height: 1.5; margin-bottom: 12px; }
+    .nsch-dist {
+      font-size: 12px; font-weight: 700; color: var(--terra);
+      letter-spacing: 0.04em;
+    }
+    .area-all-link {
+      display: inline-block; margin-top: 26px; font-size: 13px; font-weight: 600;
+      color: var(--terra); text-decoration: none; letter-spacing: 0.02em;
+    }
+    .area-all-link:hover { text-decoration: underline; }
+    @media (max-width: 900px) {
+      .area-section { padding: 60px 24px; }
+      .area-heading { font-size: 24px; }
+      .around-grid { grid-template-columns: 1fr; gap: 18px; margin-bottom: 44px; }
+    }
+
     .similar-section {
       padding: 100px 130px;
       border-top: 1px solid rgba(13,74,74,0.12);
@@ -979,6 +1036,7 @@
         <ul class="nav-dd-menu">
           <li><a href="buyers-guide.html">Buyer's Guide</a></li>
           <li><a href="sellers-guide.html">Seller's Guide</a></li>
+          <li><a href="schools.html">Schools</a></li>
         </ul>
       </li>
       <li><a href="blog.html">Blog</a></li>
@@ -995,6 +1053,7 @@
       <summary>Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></summary>
       <a href="buyers-guide.html">Buyer's Guide</a>
       <a href="sellers-guide.html">Seller's Guide</a>
+      <a href="schools.html">Schools</a>
     </details>
     <a href="blog.html">Blog</a>
     <a href="index.html#form-section">Work With Me</a>
@@ -1143,6 +1202,24 @@
 
     </div>
   </div>
+
+  <!-- ── Getting Around + Nearby Schools ─────────────────────── -->
+  <!-- Both are filled in by JS and stay hidden if there is nothing to show. -->
+  <section class="area-section" id="area-section" style="display:none;">
+    <div class="area-inner">
+      <div id="around-block" style="display:none;">
+        <h2 class="area-heading">Getting around</h2>
+        <div class="around-grid" id="around-grid"></div>
+      </div>
+
+      <div id="schools-block" style="display:none;">
+        <h2 class="area-heading">Nearby schools</h2>
+        <p class="area-sub">The closest schools to this home. Distances are straight-line &mdash; the drive is longer.</p>
+        <div class="nearby-schools" id="nearby-schools"></div>
+        <a href="schools.html" class="area-all-link">All schools on the Gold Coast &rarr;</a>
+      </div>
+    </div>
+  </section>
 
   <!-- ── Similar Properties ──────────────────────────────────── -->
   <section class="similar-section">
@@ -1458,6 +1535,7 @@
           prefillForm(p.name);
           initMap(parseFloat(p.lat), parseFloat(p.lng));
           loadSimilarProperties(id);
+          renderAreaSection(p);
           return;
         }
       }
@@ -1465,6 +1543,75 @@
       // No Supabase match: show not-found state
       showNotFound();
     })();
+
+    // ── Getting around + Nearby schools ───────────────────────────
+    // Every tile is optional. A score you have not filled in is absent, not
+    // zero, so the tile is left out rather than claiming "0 min to the beach".
+    async function renderAreaSection(p) {
+      const ICONS = {
+        walk: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 4-2-1-5"/><path d="M13 7l4 2 2 4"/><path d="M10 14l-3-3"/></svg>',
+        beach: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5S16 18 18 18s2-1.5 4-1.5"/><path d="M2 22c2 0 2-1.5 4-1.5S8 22 10 22s2-1.5 4-1.5S16 22 18 22s2-1.5 4-1.5"/><circle cx="12" cy="7" r="4"/></svg>',
+        plane: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5a2.5 2.5 0 000-3.5 2.5 2.5 0 00-3.5 0L12.5 7.5 4.3 5.7a1 1 0 00-1 1.6L8 11l-2 2H3l-1 2 4 1 1 4 2-1v-3l2-2 3.7 4.7a1 1 0 001.6-1z"/></svg>'
+      };
+      const tile = (icon, label, value, unit, note) => `
+        <div class="around-tile">
+          <div class="around-icon">${icon}</div>
+          <div>
+            <div class="around-label">${label}</div>
+            <div class="around-value">${value}${unit ? ` <span>${unit}</span>` : ''}</div>
+            ${note ? `<div class="around-note">${note}</div>` : ''}
+          </div>
+        </div>`;
+
+      const tiles = [];
+      if (p.walk_score != null && p.walk_score !== '') {
+        const ws = parseInt(p.walk_score, 10);
+        // Walk Score's own published bands, so the wording matches the number.
+        const band = ws >= 90 ? "Walker's paradise" : ws >= 70 ? 'Very walkable'
+                   : ws >= 50 ? 'Somewhat walkable' : ws >= 25 ? 'Car dependent' : 'Car required';
+        tiles.push(tile(ICONS.walk, 'Walk Score', ws, '/ 100', band));
+      }
+      if (p.beach_minutes != null && p.beach_minutes !== '') {
+        const mode = (p.beach_mode === 'drive') ? 'drive' : 'walk';
+        tiles.push(tile(ICONS.beach, 'To the beach', p.beach_minutes, 'min', mode === 'drive' ? 'By car' : 'On foot'));
+      }
+      if (p.airport_minutes != null && p.airport_minutes !== '') {
+        tiles.push(tile(ICONS.plane, 'To Liberia (LIR)', p.airport_minutes, 'min', 'By car'));
+      }
+
+      const section = document.getElementById('area-section');
+      const aroundBlock = document.getElementById('around-block');
+      if (tiles.length) {
+        document.getElementById('around-grid').innerHTML = tiles.join('');
+        aroundBlock.style.display = 'block';
+      }
+
+      // Schools nearest this home. Needs a pin on both sides.
+      let schoolsShown = false;
+      if (p.lat != null && p.lng != null && typeof TL !== 'undefined') {
+        const near = await TL.getNearbySchools(p.lat, p.lng, 3);
+        const within = near.filter(s => s.distance_km <= 20);
+        if (within.length) {
+          const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
+          document.getElementById('nearby-schools').innerHTML = within.map(s => {
+            const meta = [s.grades, s.curriculum].filter(Boolean).join(' · ');
+            const d = s.distance_km < 1
+              ? Math.round(s.distance_km * 1000) + ' m away'
+              : s.distance_km.toFixed(1) + ' km away';
+            return `
+              <a href="school.html?slug=${encodeURIComponent(decode(s.slug))}" class="nsch-card">
+                <div class="nsch-name">${s.name}</div>
+                ${meta ? `<div class="nsch-meta">${meta}</div>` : ''}
+                <div class="nsch-dist">${d}</div>
+              </a>`;
+          }).join('');
+          document.getElementById('schools-block').style.display = 'block';
+          schoolsShown = true;
+        }
+      }
+
+      if (tiles.length || schoolsShown) section.style.display = 'block';
+    }
 
     // ── Hamburger ─────────────────────────────────────────────────
     (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();

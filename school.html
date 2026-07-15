@@ -9,21 +9,14 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
-  <title>Guanacaste Real Estate Blog | Tiago Leao</title>
-  <meta name="description" content="Expert insights on buying and selling real estate in Guanacaste, Costa Rica. Market updates, neighborhood guides, and tips for American and Canadian buyers from local agent Tiago Leao.">
-  <link rel="canonical" href="https://soldbytiago.com/blog.html">
-  <meta property="og:title" content="Guanacaste Real Estate Blog | Tiago Leao">
-  <meta property="og:description" content="Market updates, neighborhood guides, and buying tips for Costa Rica's Gold Coast — from a local agent.">
-  <meta property="og:url" content="https://soldbytiago.com/blog.html">
-  <meta property="og:type" content="website">
+  <title>School | Tiago Leao Real Estate</title>
+  <meta name="description" content="Schools on Costa Rica's Gold Coast — grades, curriculum, languages and location.">
+  <link rel="canonical" href="https://soldbytiago.com/schools.html">
+  <meta property="og:type" content="article">
   <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
-  <meta property="og:site_name" content="Tiago Leao Real Estate">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://soldbytiago.com/og-image.jpg">
-  
-  
   <link rel="stylesheet" href="fonts.css" />
-
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -267,11 +260,80 @@
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
   </style>
+  <style>
+    /* ── School detail ─────────────────────────────────────────── */
+    .sch-wrap { max-width: 1100px; margin: 0 auto; padding: 0 60px 100px; }
+    .sch-crumb { font-size: 13px; color: var(--stone); padding: 30px 0 18px; }
+    .sch-crumb a { color: var(--stone); text-decoration: none; }
+    .sch-crumb a:hover { color: var(--terra); }
+    .sch-hero {
+      height: 340px; border-radius: 12px; overflow: hidden; margin-bottom: 34px;
+      background: linear-gradient(135deg, #0b2b2b, #0d4a4a);
+      background-size: cover; background-position: center;
+    }
+    .sch-town {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--terra); margin-bottom: 10px;
+    }
+    .sch-title {
+      font-size: 44px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--cream); margin-bottom: 14px;
+    }
+    .sch-excerpt { font-size: 17px; line-height: 1.65; color: var(--sand); max-width: 720px; margin-bottom: 40px; }
+    .sch-cols { display: grid; grid-template-columns: 1fr 320px; gap: 50px; align-items: start; }
+    .sch-body p { font-size: 16px; line-height: 1.8; color: var(--sand); margin-bottom: 18px; }
+    .sch-body h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); margin: 34px 0 14px; }
+    .sch-body h3 { font-size: 19px; font-weight: 700; color: var(--cream); margin: 26px 0 10px; }
+    .sch-body ul, .sch-body ol { margin: 0 0 18px 20px; }
+    .sch-body li { font-size: 16px; line-height: 1.8; color: var(--sand); margin-bottom: 6px; }
+    .sch-body .body-link { color: var(--terra); }
+    .sch-body .body-hr { border: none; border-top: 1px solid rgba(0,0,0,0.08); margin: 32px 0; }
+    .sch-empty { font-size: 15px; line-height: 1.7; color: var(--stone); font-style: italic; }
+    .sch-facts {
+      background: #fff; border: 1px solid rgba(0,0,0,0.07); border-radius: 10px;
+      padding: 26px 26px 10px; position: sticky; top: 100px;
+    }
+    .sch-facts h3 {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 18px;
+    }
+    .sch-fact { margin-bottom: 16px; }
+    .sch-fact-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 4px;
+    }
+    .sch-fact-value { font-size: 14px; line-height: 1.55; color: var(--cream); font-weight: 500; }
+    .sch-fact-value a { color: var(--terra); text-decoration: none; word-break: break-word; }
+    .sch-map { height: 300px; border-radius: 10px; overflow: hidden; margin-top: 40px; }
+    .sch-section-title {
+      font-size: 26px; font-weight: 700; letter-spacing: -0.025em; color: var(--cream);
+      margin: 60px 0 8px;
+    }
+    .sch-section-sub { font-size: 14px; color: var(--stone); margin-bottom: 24px; }
+    .sch-listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+    .sch-listing {
+      text-decoration: none; color: inherit; background: #fff;
+      border: 1px solid rgba(0,0,0,0.07); border-radius: 10px; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .sch-listing:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .sch-listing-photo { height: 150px; background: #e8e5df; background-size: cover; background-position: center; }
+    .sch-listing-body { padding: 16px 18px 20px; }
+    .sch-listing-price { font-size: 16px; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
+    .sch-listing-name { font-size: 13px; color: var(--stone); line-height: 1.45; }
+    .sch-listing-dist { font-size: 11px; font-weight: 700; color: var(--terra); margin-top: 8px; letter-spacing: 0.04em; }
+    .sch-loading { text-align: center; padding: 80px 20px; color: var(--stone); font-size: 14px; }
+    @media (max-width: 900px) {
+      .sch-wrap { padding: 0 24px 70px; }
+      .sch-cols { grid-template-columns: 1fr; gap: 34px; }
+      .sch-facts { position: static; }
+      .sch-title { font-size: 32px; }
+      .sch-hero { height: 220px; }
+    }
+  </style>
 </head>
-
 <body>
 
-  <!-- Nav -->
   <nav>
     <a href="index.html" class="nav-logo">Tiago Leao<span class="nav-logo-sub">Real Estate Group</span></a>
     <ul class="nav-links">
@@ -286,12 +348,13 @@
           <li><a href="schools.html">Schools</a></li>
         </ul>
       </li>
-      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="index.html#form-section">Work With Me</a></li>
     </ul>
     <a href="index.html#form-section" class="nav-cta">Get Started</a>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
+
   <div class="nav-mobile" id="nav-mobile">
     <a href="properties.html">Properties</a>
     <a href="communities.html">Communities</a>
@@ -307,15 +370,9 @@
     <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
   </div>
 
-  <!-- Header -->
-  <div class="page-header">
-    <h1>Guanacaste Real Estate Insights.</h1>
-    <p>Local knowledge, market updates, and everything you need to know before buying or selling in Costa Rica.</p>
-  </div>
 
-  <!-- Blog Grid (populated from Supabase) -->
-  <div class="blog-grid">
-    <div class="blog-loading" style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">Loading articles&hellip;</div>
+  <div class="sch-wrap" id="school-container">
+    <div class="sch-loading">Loading&hellip;</div>
   </div>
 
   <!-- Footer -->
@@ -345,61 +402,182 @@
     </div>
   </footer>
 
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <script src="supabase-data.js"></script>
   <script>
-    // Load blog posts from Supabase
-    // Posts with a custom-designed landing page link there instead of the markdown template.
-    const CUSTOM_PAGES = {
-      'el-chante-tamarindo-villas': 'blog-el-chante-tamarindo.html'
-    };
-    (async function() {
-      const grid = document.querySelector('.blog-grid');
-      if (typeof TL === 'undefined' || !TL.isConnected()) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">Articles are loading. Please check back shortly.</div>';
-        return;
+    // Same markdown subset the blog uses: ## h2, ### h3, **bold**, *italic*,
+    // [links](url), "- " bullets, "1. " numbers, --- dividers.
+    function parseBody(text) {
+      if (!text) return '';
+      function inline(t) {
+        t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" class="body-link" target="_blank" rel="noopener">$1</a>');
+        t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        return t;
       }
-      const posts = await TL.getBlogPosts();
-      if (!posts || posts.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">New articles coming soon.</div>';
-        return;
-      }
-
-      grid.innerHTML = posts.map(p => {
-        const href = CUSTOM_PAGES[p.slug] || ('blog-post.html?slug=' + p.slug);
-        return `
-        <a href="${href}" class="blog-card">
-          <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
-          <div class="blog-card-body">
-            <div class="blog-card-tag">${(p.category || 'market').charAt(0).toUpperCase() + (p.category || 'market').slice(1)}</div>
-            <div class="blog-card-title">${p.title || ''}</div>
-            <div class="blog-card-excerpt">${p.excerpt || ''}</div>
-            <div class="blog-card-meta">${p.readtime || ''}</div>
-            <span class="blog-card-link">Read More &rarr;</span>
-          </div>
-        </a>`;
+      return text.split('\n\n').filter(Boolean).map(block => {
+        block = block.trim();
+        if (block === '---') return '<hr class="body-hr" />';
+        if (block.startsWith('### ')) return '<h3>' + inline(block.slice(4)) + '</h3>';
+        if (block.startsWith('## ')) return '<h2>' + inline(block.slice(3)) + '</h2>';
+        const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+        if (lines.length > 1 && lines.every(l => l.startsWith('- ')))
+          return '<ul>' + lines.map(l => '<li>' + inline(l.slice(2)) + '</li>').join('') + '</ul>';
+        if (lines.length > 1 && lines.every(l => /^\d+\.\s/.test(l)))
+          return '<ol>' + lines.map(l => '<li>' + inline(l.replace(/^\d+\.\s/, '')) + '</li>').join('') + '</ol>';
+        return '<p>' + inline(block) + '</p>';
       }).join('');
+    }
 
-      // ItemList structured data so search engines & AI crawlers see the article catalog
-      function decode(s) { const ta = document.createElement('textarea'); ta.innerHTML = s || ''; return ta.value; }
-      const ld = document.createElement('script');
-      ld.type = 'application/ld+json';
-      ld.textContent = JSON.stringify({
+    // Only towns that actually have a community page. An unmapped town simply
+    // renders as plain text rather than linking to a 404.
+    const TOWN_PAGES = {
+      'Tamarindo': 'tamarindo.html',
+      'Brasilito': 'conchal.html',
+      'Nosara': 'nosara.html',
+      'Playas del Coco': 'playas-del-coco.html'
+    };
+
+    (async function () {
+      const container = document.getElementById('school-container');
+      const slug = new URLSearchParams(location.search).get('slug');
+      const notFound = '<div class="sch-loading">School not found. <a href="schools.html" style="color:var(--terra);">All schools &rarr;</a></div>';
+
+      if (!slug || typeof TL === 'undefined' || !TL.isConnected()) { container.innerHTML = notFound; return; }
+      const s = await TL.getSchool(slug);
+      if (!s) { container.innerHTML = notFound; return; }
+
+      // Strings arrive HTML-escaped from supabase-data.js — safe for innerHTML
+      // as-is. decode() is only for plain-text slots: title, meta, JSON-LD.
+      const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
+      const plainName = decode(s.name);
+      const plainDesc = decode(s.meta_desc || s.excerpt || '');
+      const pageUrl = 'https://soldbytiago.com/school.html?slug=' + encodeURIComponent(decode(s.slug));
+
+      document.title = plainName + ' | Schools in Guanacaste | Tiago Leao';
+      const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.setAttribute('content', val); };
+      setMeta('meta[name="description"]', plainDesc);
+      setMeta('meta[property="og:title"]', plainName);
+      setMeta('meta[property="og:description"]', plainDesc);
+      setMeta('meta[property="og:url"]', pageUrl);
+      if (s.cover_url) setMeta('meta[property="og:image"]', decode(s.cover_url));
+      const canon = document.querySelector('link[rel="canonical"]');
+      if (canon) canon.href = pageUrl;
+
+      const fact = (label, value) => value
+        ? `<div class="sch-fact"><div class="sch-fact-label">${label}</div><div class="sch-fact-value">${value}</div></div>` : '';
+      const townLink = TOWN_PAGES[decode(s.town)]
+        ? `<a href="${TOWN_PAGES[decode(s.town)]}" style="color:var(--terra);text-decoration:none;">${s.town}</a>`
+        : s.town;
+
+      container.innerHTML = `
+        <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="schools.html">Schools</a> &rsaquo; ${s.name}</div>
+        <div class="sch-hero"${s.cover_url ? ` style="background-image:url('${s.cover_url}')"` : ''}></div>
+        ${s.town ? `<div class="sch-town">${s.town}</div>` : ''}
+        <h1 class="sch-title">${s.name}</h1>
+        ${s.excerpt ? `<p class="sch-excerpt">${s.excerpt}</p>` : ''}
+        <div class="sch-cols">
+          <div class="sch-body" id="sch-body">
+            ${s.body ? parseBody(s.body)
+              : `<p class="sch-empty">A full write-up of this school is on the way. In the meantime, the details opposite come straight from the school, and their website has the most current information.</p>`}
+          </div>
+          <aside class="sch-facts">
+            <h3>The Details</h3>
+            ${fact('Town', townLink)}
+            ${fact('Grades', s.grades)}
+            ${fact('Curriculum', s.curriculum)}
+            ${fact('Languages', s.languages)}
+            ${fact('Accreditation', s.accreditation)}
+            ${fact('Tuition', s.tuition)}
+            ${fact('Founded', s.founded)}
+            ${fact('Address', s.address)}
+            ${fact('Website', s.website ? `<a href="${s.website}" target="_blank" rel="noopener">${decode(s.website).replace(/^https?:\/\//, '').replace(/\/$/, '')}</a>` : '')}
+          </aside>
+        </div>
+        ${s.lat && s.lng ? '<div class="sch-map" id="sch-map"></div>' : ''}
+        <div id="sch-nearby"></div>
+      `;
+
+      // Map
+      if (s.lat && s.lng) {
+        const key = TL.getMapboxKey();
+        if (key && typeof mapboxgl !== 'undefined') {
+          mapboxgl.accessToken = key;
+          const map = new mapboxgl.Map({
+            container: 'sch-map', style: 'mapbox://styles/mapbox/light-v11',
+            center: [+s.lng, +s.lat], zoom: 13
+          });
+          map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+          new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([+s.lng, +s.lat]).addTo(map);
+        }
+      }
+
+      // Listings nearest this school
+      const props = await TL.getProperties();
+      if (props && props.length && s.lat && s.lng) {
+        // Cap the radius: padding to 3 would otherwise surface a home 27 km away
+        // as "near this school", which no parent would call a school run.
+        const MAX_KM = 20;
+        const near = props
+          .filter(p => p.lat != null && p.lng != null)
+          .map(p => ({ ...p, d: TL.distanceKm(+s.lat, +s.lng, +p.lat, +p.lng) }))
+          .filter(p => p.d <= MAX_KM)
+          .sort((a, b) => a.d - b.d)
+          .slice(0, 3);
+        if (near.length) {
+          document.getElementById('sch-nearby').innerHTML = `
+            <h2 class="sch-section-title">Homes near ${s.name}</h2>
+            <p class="sch-section-sub">Straight-line distance &mdash; the drive is longer.</p>
+            <div class="sch-listings">
+              ${near.map(p => `
+                <a href="property-detail.html?id=${encodeURIComponent(decode(p.id))}" class="sch-listing">
+                  <div class="sch-listing-photo"${p.photos && p.photos[0] ? ` style="background-image:url('${p.photos[0]}')"` : ''}></div>
+                  <div class="sch-listing-body">
+                    <div class="sch-listing-price">${p.price || ''}</div>
+                    <div class="sch-listing-name">${p.name || ''}</div>
+                    <div class="sch-listing-dist">${p.d < 1 ? Math.round(p.d * 1000) + ' m away' : p.d.toFixed(1) + ' km away'}</div>
+                  </div>
+                </a>`).join('')}
+            </div>`;
+        }
+      }
+
+      // Schema: School + breadcrumbs. Only assert fields the school publishes.
+      const ld = {
         '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        'itemListElement': posts.map((p, i) => ({
-          '@type': 'ListItem',
-          'position': i + 1,
-          'name': decode(p.title),
-          'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog-post.html?slug=' + encodeURIComponent(decode(p.slug))))
-        }))
-      });
-      document.head.appendChild(ld);
-    })();
+        '@type': 'School',
+        'name': plainName,
+        'url': pageUrl,
+        'address': { '@type': 'PostalAddress', 'addressRegion': 'Guanacaste', 'addressCountry': 'CR' }
+      };
+      if (plainDesc) ld.description = plainDesc;
+      if (s.website) ld.sameAs = [decode(s.website)];
+      if (s.address) ld.address.streetAddress = decode(s.address);
+      if (s.town) ld.address.addressLocality = decode(s.town);
+      if (s.lat && s.lng) ld.geo = { '@type': 'GeoCoordinates', 'latitude': +s.lat, 'longitude': +s.lng };
+      if (s.cover_url) ld.image = decode(s.cover_url);
 
-    // ── Hamburger ─────────────────────────────────────────────────
+      const crumbs = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://soldbytiago.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Schools', 'item': 'https://soldbytiago.com/schools.html' },
+          { '@type': 'ListItem', 'position': 3, 'name': plainName, 'item': pageUrl }
+        ]
+      };
+      [ld, crumbs].forEach(obj => {
+        const tag = document.createElement('script');
+        tag.type = 'application/ld+json';
+        tag.textContent = JSON.stringify(obj);
+        document.head.appendChild(tag);
+      });
+    })();
+  </script>
+
+  <script>
     (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
   </script>
 
-  <a href="https://wa.me/50683028660" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 </body>
 </html>
