@@ -174,7 +174,14 @@
           'select': '*'
         });
       } catch (e) {
-        console.error('[Supabase] Failed to load reviews:', e);
+        // A 404 means the reviews table has not been created yet — an expected
+        // state, not a failure. about.html falls back to its built-in reviews.
+        // Only shout about errors that are actually wrong.
+        if (/404/.test(e.message)) {
+          console.info('[Supabase] No reviews table yet — using the built-in reviews.');
+        } else {
+          console.error('[Supabase] Failed to load reviews:', e);
+        }
         return null;
       }
     },

@@ -1330,12 +1330,18 @@
       // Warm pink/cream tones to match website (only for the "colored" style)
       map.on('style.load', () => {
         if (detailMapStyle !== 'colored') return;
+        // Mapbox renames layers between style versions. A missing layer does not
+        // throw — setPaintProperty fires the map's own error event, which the old
+        // try/catch could not suppress. Skip layers that are not in the style.
+        const paint = (id, prop, value) => {
+          if (map.getLayer(id)) map.setPaintProperty(id, prop, value);
+        };
         // Land — warm cream
-        map.setPaintProperty('land', 'background-color', '#eef1f0');
+        paint('land', 'background-color', '#eef1f0');
         // Water — soft blue
-        try { map.setPaintProperty('water', 'fill-color', '#c0d8ef'); } catch(e){}
+        paint('water', 'fill-color', '#c0d8ef');
         // Parks / greenspace — muted sage
-        try { map.setPaintProperty('landuse', 'fill-color', [
+        paint('landuse', 'fill-color', [
           'match', ['get', 'class'],
           'park', '#d6e2e0',
           'cemetery', '#d6e2e0',
@@ -1345,23 +1351,18 @@
           'commercial_area', '#e9eeed',
           'industrial', '#e9eeed',
           '#e9eeed'
-        ]); } catch(e){}
+        ]);
         // Roads — warm grey/blush
-        const roadLayers = ['road-street', 'road-minor', 'road-major', 'road-motorway', 'road-primary', 'road-secondary', 'road-tertiary', 'road-trunk',
-          'road-street-case', 'road-minor-case', 'road-major-case', 'road-motorway-case', 'road-primary-case', 'road-secondary-case', 'road-tertiary-case', 'road-trunk-case'];
-        roadLayers.forEach(layer => {
-          try { map.setPaintProperty(layer, 'line-color', '#ccd6d4'); } catch(e){}
-        });
+        ['road-street', 'road-minor', 'road-major', 'road-motorway', 'road-primary', 'road-secondary', 'road-tertiary', 'road-trunk',
+         'road-street-case', 'road-minor-case', 'road-major-case', 'road-motorway-case', 'road-primary-case', 'road-secondary-case', 'road-tertiary-case', 'road-trunk-case']
+          .forEach(l => paint(l, 'line-color', '#ccd6d4'));
         // Buildings — soft blush
-        try { map.setPaintProperty('building', 'fill-color', '#e2e8e7'); } catch(e){}
+        paint('building', 'fill-color', '#e2e8e7');
         // Road labels — muted
-        ['road-label', 'road-number-shield'].forEach(l => {
-          try { map.setPaintProperty(l, 'text-color', '#75807f'); } catch(e){}
-        });
+        ['road-label', 'road-number-shield'].forEach(l => paint(l, 'text-color', '#75807f'));
         // Place labels — warm dark
-        ['settlement-major-label', 'settlement-minor-label', 'settlement-subdivision-label', 'poi-label'].forEach(l => {
-          try { map.setPaintProperty(l, 'text-color', '#4a5454'); } catch(e){}
-        });
+        ['settlement-major-label', 'settlement-minor-label', 'settlement-subdivision-label', 'poi-label']
+          .forEach(l => paint(l, 'text-color', '#4a5454'));
       });
 
       const markerEl = document.createElement('div');

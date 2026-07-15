@@ -30,7 +30,10 @@
       --terra: #0d4a4a;
       --accent: #7fd0c8;
       --white: #fff;
-      --border: rgba(255,255,255,0.1);
+      /* Dark-theme leftover: this was white-on-dark. The admin is light now,
+         so a white border was invisible against #fafafa and every input,
+         button and card looked like it had no edge at all. */
+      --border: rgba(0,0,0,0.14);
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -151,7 +154,7 @@
     .reorder-btn:hover:not(:disabled) { background: rgba(13,74,74,0.08); }
     .reorder-btn:disabled { opacity: 0.25; cursor: default; }
     .reorder-pos { font-size: 11px; color: var(--stone); font-weight: 600; }
-    .item-card:hover { box-shadow: 0 4px 16px rgba(255,255,255,0.06); }
+    .item-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
     .item-thumb { width: 100px; height: 70px; background: #d5dbda; border-radius: 4px; overflow: hidden; }
     .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .item-info h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
@@ -171,8 +174,8 @@
     .status-badge { display: inline-block; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
     .status-active { background: rgba(46,160,67,0.1); color: #2ea043; }
     .status-pending { background: rgba(227,179,65,0.15); color: #b08800; }
-    .status-sold { background: rgba(255,255,255,0.06); color: var(--stone); }
-    .status-draft { background: rgba(255,255,255,0.06); color: var(--stone); }
+    .status-sold { background: rgba(0,0,0,0.06); color: var(--stone); }
+    .status-draft { background: rgba(0,0,0,0.06); color: var(--stone); }
     .status-published { background: rgba(46,160,67,0.1); color: #2ea043; }
 
     /* ─── Modal / Editor ───────────────────────────────────────── */

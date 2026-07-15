@@ -1490,22 +1490,24 @@
 
       propertiesMap.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
 
-      // Warm pink/cream style overrides (only for the "colored" style)
+      // Warm pink/cream style overrides (only for the "colored" style).
+      // Mapbox renames layers between style versions, so a layer that is gone
+      // must be skipped rather than caught: setPaintProperty does not throw on
+      // a missing layer, it fires the map's own error event, which try/catch
+      // cannot suppress — that is what filled the console with red.
       propertiesMap.on('style.load', () => {
         if (currentMapStyle !== 'colored') return;
-        try {
-          propertiesMap.setPaintProperty('land', 'background-color', '#eceeee');
-          propertiesMap.setPaintProperty('water', 'fill-color', '#b8d4e3');
-          propertiesMap.setPaintProperty('landcover', 'fill-color', '#d6e2e0');
-          propertiesMap.setPaintProperty('national-park', 'fill-color', '#cbdeda');
-        } catch(e) {}
-        try {
-          const roadLayers = ['road-street','road-minor','road-major-link','road-motorway-trunk','road-primary','road-secondary-tertiary','bridge-primary','bridge-secondary-tertiary','bridge-motorway-trunk'];
-          roadLayers.forEach(id => {
-            try { propertiesMap.setPaintProperty(id, 'line-color', '#ccd6d4'); } catch(e){}
-          });
-        } catch(e) {}
-        try { propertiesMap.setPaintProperty('building', 'fill-color', '#dfe6e4'); } catch(e){}
+        const paint = (id, prop, value) => {
+          if (propertiesMap.getLayer(id)) propertiesMap.setPaintProperty(id, prop, value);
+        };
+        paint('land', 'background-color', '#eceeee');
+        paint('water', 'fill-color', '#b8d4e3');
+        paint('landcover', 'fill-color', '#d6e2e0');
+        paint('national-park', 'fill-color', '#cbdeda');
+        ['road-street','road-minor','road-major-link','road-motorway-trunk','road-primary',
+         'road-secondary-tertiary','bridge-primary','bridge-secondary-tertiary','bridge-motorway-trunk']
+          .forEach(id => paint(id, 'line-color', '#ccd6d4'));
+        paint('building', 'fill-color', '#dfe6e4');
       });
 
       propertiesMap.on('load', () => {
