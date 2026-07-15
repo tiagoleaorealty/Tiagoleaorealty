@@ -361,6 +361,7 @@
       <a href="#" class="active" data-tab="properties">Properties</a>
       <a href="#" data-tab="reviews">Reviews</a>
       <a href="#" data-tab="blog">Blog Posts</a>
+      <a href="#" data-tab="schools">Schools</a>
       <a href="#" data-tab="settings">Settings</a>
       <a href="index.html" style="opacity:0.4;">View Site &rarr;</a>
       <a href="#" onclick="logout()" style="opacity:0.4;">Log Out</a>
@@ -406,6 +407,17 @@
         <button class="btn btn-terra" onclick="openBlogEditor()">+ New Post</button>
       </div>
       <div id="blog-list"></div>
+    </div>
+
+    <!-- ══ SCHOOLS TAB ═══════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-schools">
+      <h1 class="page-title">Schools</h1>
+      <p class="page-sub">Each school needs a map pin — listings show the nearest schools, and an unpinned school is skipped.</p>
+      <div class="items-header">
+        <span class="items-count" id="school-count">0 schools</span>
+        <button class="btn btn-terra" onclick="openSchoolEditor()">+ New School</button>
+      </div>
+      <div id="school-list"></div>
     </div>
 
     <!-- ══ SETTINGS TAB ══════════════════════════════════════════ -->
@@ -521,6 +533,18 @@
         <div class="form-group"><label>Features (comma-separated)</label><input type="text" id="prop-features" placeholder="e.g. Pool, Ocean View, Gated Community, A/C" /></div>
       </div>
 
+      <div class="form-section-title">Getting Around — leave blank to hide a tile</div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Walk Score (0–100)</label><input type="number" id="prop-walk-score" placeholder="e.g. 82" min="0" max="100" /></div>
+        <div class="form-group"><label>To the beach (minutes)</label><input type="number" id="prop-beach-minutes" placeholder="e.g. 4" min="0" /></div>
+        <div class="form-group"><label>Beach: walk or drive?</label>
+          <select id="prop-beach-mode"><option value="walk">Walk</option><option value="drive">Drive</option></select>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>To Liberia Airport, LIR (minutes drive)</label><input type="number" id="prop-airport-minutes" placeholder="e.g. 75" min="0" /></div>
+      </div>
+
       <div class="form-section-title">Photos</div>
       <div class="photo-upload-area" id="prop-photo-upload"
            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
@@ -599,6 +623,83 @@ Separate paragraphs with a blank line."></textarea>
       <div class="modal-actions">
         <button class="btn btn-outline" onclick="closeModal('blog-modal')">Cancel</button>
         <button class="btn btn-terra" id="blog-save-btn" onclick="saveBlogPost()">Save Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- School editor modal -->
+  <div class="modal-overlay" id="school-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('school-modal')">&times;</button>
+      <h2 id="school-modal-title">New School</h2>
+      <input type="hidden" id="school-edit-id" />
+
+      <div class="form-row">
+        <div class="form-group"><label>School Name</label><input type="text" id="school-name" placeholder="e.g. Journey School of Costa Rica — Tamarindo" /></div>
+        <div class="form-group"><label>URL Slug</label><input type="text" id="school-slug" placeholder="auto-generated-from-name" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Town</label><input type="text" id="school-town" placeholder="e.g. Tamarindo" /></div>
+        <div class="form-group"><label>Status</label>
+          <select id="school-status"><option value="published">Published</option><option value="draft">Draft</option></select>
+        </div>
+        <div class="form-group"><label>Order</label><input type="number" id="school-sort-order" placeholder="1" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Address</label><input type="text" id="school-address" placeholder="As the school writes it" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Grades</label><input type="text" id="school-grades" placeholder="e.g. PreK – 12" /></div>
+        <div class="form-group"><label>Curriculum</label><input type="text" id="school-curriculum" placeholder="e.g. International Baccalaureate (IB)" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Languages</label><input type="text" id="school-languages" placeholder="e.g. English and Spanish" /></div>
+        <div class="form-group"><label>Accreditation</label><input type="text" id="school-accreditation" placeholder="e.g. IB World School; MEP" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Tuition</label><input type="text" id="school-tuition" placeholder="Leave blank if not published" /></div>
+        <div class="form-group"><label>Founded</label><input type="text" id="school-founded" placeholder="e.g. 2000" /></div>
+        <div class="form-group"><label>Website</label><input type="text" id="school-website" placeholder="https://" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Excerpt (for cards)</label><input type="text" id="school-excerpt" placeholder="One line shown on the schools index" maxlength="200" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Meta Description (SEO)</label><input type="text" id="school-meta-desc" placeholder="Description for search engines" maxlength="160" /></div>
+      </div>
+
+      <div class="form-section-title">Location — click the map to pin the campus</div>
+      <div class="form-row">
+        <div class="form-group"><label>Latitude</label><input type="text" id="school-lat" placeholder="Click the map" /></div>
+        <div class="form-group"><label>Longitude</label><input type="text" id="school-lng" placeholder="Click the map" /></div>
+      </div>
+      <div class="map-container" id="school-map"></div>
+
+      <div class="form-section-title">Cover Image</div>
+      <div class="photo-upload-area" id="school-photo-upload"
+           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+           ondrop="handlePhotoDrop(event, 'school')" onclick="document.getElementById('school-photo-input').click()">
+        <p>Drop a cover image here or click to upload</p>
+        <span class="upload-hint">Recommended: 1200 x 630px</span>
+        <input type="file" id="school-photo-input" accept="image/*" onchange="handlePhotoSelect(event, 'school')" />
+      </div>
+      <div class="photo-grid" id="school-photo-grid"></div>
+
+      <div class="form-section-title">About This School</div>
+      <div class="editor-toolbar">
+        <button onclick="insertMarkdown('## ', '', 'school-body')" title="Heading">H2</button>
+        <button onclick="insertMarkdown('### ', '', 'school-body')" title="Subheading">H3</button>
+        <button onclick="insertMarkdown('**', '**', 'school-body')" title="Bold">B</button>
+        <button onclick="insertMarkdown('*', '*', 'school-body')" title="Italic">I</button>
+      </div>
+      <textarea class="blog-body-textarea" id="school-body" placeholder="Write about this school...
+
+Use ## for headings, **text** for bold, *text* for italic.
+Separate paragraphs with a blank line."></textarea>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal('school-modal')">Cancel</button>
+        <button class="btn btn-terra" id="school-save-btn" onclick="saveSchool()">Save School</button>
       </div>
     </div>
   </div>
@@ -764,6 +865,7 @@ Separate paragraphs with a blank line."></textarea>
       if (initSupabase()) {
         loadProperties();
         loadBlogPosts();
+        loadSchools();
         if (typeof loadReviews === 'function') loadReviews();
       }
     }
@@ -951,6 +1053,11 @@ Separate paragraphs with a blank line."></textarea>
       document.getElementById('prop-short-desc').value = data ? data.short_desc || '' : '';
       document.getElementById('prop-desc').value = data ? data.description || '' : '';
       document.getElementById('prop-features').value = data ? (data.features || []).join(', ') : '';
+      // ?? '' rather than || '' so a legitimate 0 (e.g. Walk Score 0) survives.
+      document.getElementById('prop-walk-score').value = data ? data.walk_score ?? '' : '';
+      document.getElementById('prop-beach-minutes').value = data ? data.beach_minutes ?? '' : '';
+      document.getElementById('prop-beach-mode').value = data ? data.beach_mode || 'walk' : 'walk';
+      document.getElementById('prop-airport-minutes').value = data ? data.airport_minutes ?? '' : '';
       document.getElementById('prop-lat').value = data ? data.lat || '' : '';
       document.getElementById('prop-lng').value = data ? data.lng || '' : '';
       document.getElementById('prop-featured').checked = data ? !!data.featured : false;
@@ -1012,6 +1119,14 @@ Separate paragraphs with a blank line."></textarea>
       });
     }
 
+    // Empty field -> null (not measured). A typed 0 is kept as 0.
+    function numOrNull(id) {
+      const v = document.getElementById(id).value.trim();
+      if (v === '') return null;
+      const n = parseInt(v, 10);
+      return Number.isNaN(n) ? null : n;
+    }
+
     async function saveProperty() {
       if (!sb) { showToast('Connect to Supabase first'); return; }
       const btn = document.getElementById('prop-save-btn');
@@ -1036,6 +1151,12 @@ Separate paragraphs with a blank line."></textarea>
         lat: parseFloat(document.getElementById('prop-lat').value) || null,
         lng: parseFloat(document.getElementById('prop-lng').value) || null,
         featured: document.getElementById('prop-featured').checked,
+        // Blank must stay NULL, not 0 — the property page hides a tile that has
+        // no value, and "0 minutes to the beach" is a different claim entirely.
+        walk_score: numOrNull('prop-walk-score'),
+        beach_minutes: numOrNull('prop-beach-minutes'),
+        beach_mode: document.getElementById('prop-beach-mode').value || null,
+        airport_minutes: numOrNull('prop-airport-minutes'),
       };
 
       let error;
@@ -1122,6 +1243,187 @@ Separate paragraphs with a blank line."></textarea>
       openModal('blog-modal');
     }
 
+    // ══════════════════════════════════════════════════════════════
+    //  SCHOOLS
+    // ══════════════════════════════════════════════════════════════
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Strips accents before dropping non-alphanumerics, so "Pacífico" becomes
+    // "pacifico" rather than "pacfico".
+    function slugify(s) {
+      return String(s || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 60);
+    }
+
+    let allSchools = [];
+    let schoolCoverUrl = '';
+    let schoolMap = null, schoolMarker = null;
+
+    async function loadSchools() {
+      if (!sb) return;
+      const { data, error } = await sb.from('schools').select('*').order('sort_order', { ascending: true }).order('name', { ascending: true });
+      const list = document.getElementById('school-list');
+      if (error) {
+        list.innerHTML = `<div class="empty-state"><h3>Schools table not found</h3><p>Run supabase-schools-setup.sql in the Supabase SQL Editor first.</p></div>`;
+        document.getElementById('school-count').textContent = '0 schools';
+        return;
+      }
+      allSchools = data || [];
+      document.getElementById('school-count').textContent = `${allSchools.length} school${allSchools.length === 1 ? '' : 's'}`;
+      if (!allSchools.length) {
+        list.innerHTML = `<div class="empty-state"><h3>No schools yet</h3><p>Add the first one.</p><button class="btn btn-terra" onclick="openSchoolEditor()">+ New School</button></div>`;
+        return;
+      }
+      const unpinned = allSchools.filter(s => s.lat === null || s.lng === null).length;
+      list.innerHTML = (unpinned
+        ? `<div class="empty-state" style="text-align:left;padding:12px 16px;margin-bottom:12px;">
+             <p style="margin:0;"><strong>${unpinned} school${unpinned === 1 ? '' : 's'} still ${unpinned === 1 ? 'has' : 'have'} no map pin.</strong>
+             Listings show the nearest schools by distance, so an unpinned school never appears. Open it and click its campus on the map.</p>
+           </div>`
+        : '') + allSchools.map(s => `
+        <div class="item-card">
+          <div>
+            <strong>${esc(s.name)}</strong>
+            <div style="font-size:12px;color:var(--stone);margin-top:2px;">
+              ${esc(s.town || 'No town')} ·
+              ${s.lat && s.lng ? 'Pinned' : '<span style="color:#d44;">Not pinned</span>'}
+              ${s.status === 'draft' ? ' · Draft' : ''}
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-outline btn-sm" onclick="openSchoolEditor(allSchools.find(x => x.id === '${s.id}'))">Edit</button>
+            <button class="btn btn-outline btn-sm" onclick="deleteSchool('${s.id}')">Delete</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function openSchoolEditor(data) {
+      document.getElementById('school-modal-title').textContent = data ? 'Edit School' : 'New School';
+      document.getElementById('school-edit-id').value = data ? data.id : '';
+      const set = (id, v) => document.getElementById(id).value = v ?? '';
+      set('school-name', data?.name);
+      set('school-slug', data?.slug);
+      set('school-town', data?.town);
+      set('school-status', data?.status || 'published');
+      set('school-sort-order', data?.sort_order);
+      set('school-address', data?.address);
+      set('school-grades', data?.grades);
+      set('school-curriculum', data?.curriculum);
+      set('school-languages', data?.languages);
+      set('school-accreditation', data?.accreditation);
+      set('school-tuition', data?.tuition);
+      set('school-founded', data?.founded);
+      set('school-website', data?.website);
+      set('school-excerpt', data?.excerpt);
+      set('school-meta-desc', data?.meta_desc);
+      set('school-body', data?.body);
+      set('school-lat', data?.lat);
+      set('school-lng', data?.lng);
+      schoolCoverUrl = data?.cover_url || '';
+      renderSchoolCover();
+      openModal('school-modal');
+      // Mapbox needs the container to have a size, which it only gets once the
+      // modal is visible — same reason initPropMap is deferred.
+      setTimeout(() => initSchoolMap(data), 100);
+    }
+
+    function initSchoolMap(data) {
+      const key = getConfig().mapbox;
+      const container = document.getElementById('school-map');
+      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8e5df;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings to enable maps</div>'; return; }
+      mapboxgl.accessToken = key;
+      const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
+      const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
+      if (schoolMap) schoolMap.remove();
+      schoolMap = new mapboxgl.Map({ container: 'school-map', style: 'mapbox://styles/mapbox/satellite-streets-v12', center: [lng, lat], zoom: data?.lat ? 15 : 10 });
+      schoolMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      if (data?.lat && data?.lng) {
+        schoolMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(schoolMap);
+      }
+      schoolMap.on('click', (e) => {
+        document.getElementById('school-lat').value = e.lngLat.lat.toFixed(6);
+        document.getElementById('school-lng').value = e.lngLat.lng.toFixed(6);
+        if (schoolMarker) schoolMarker.remove();
+        schoolMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(schoolMap);
+      });
+    }
+
+    function renderSchoolCover() {
+      const grid = document.getElementById('school-photo-grid');
+      grid.innerHTML = schoolCoverUrl ? `
+        <div class="photo-item">
+          <img src="${schoolCoverUrl}" alt="Cover" />
+          <span class="photo-badge">Cover</span>
+          <button class="photo-remove" onclick="schoolCoverUrl='';renderSchoolCover();">&times;</button>
+        </div>` : '';
+    }
+
+    async function saveSchool() {
+      if (!sb) { showToast('Connect to Supabase first'); return; }
+      const btn = document.getElementById('school-save-btn');
+      const val = id => document.getElementById(id).value.trim();
+      const name = val('school-name');
+      if (!name) { showToast('School needs a name'); return; }
+
+      btn.textContent = 'Saving...'; btn.disabled = true;
+      const id = document.getElementById('school-edit-id').value;
+      const latRaw = val('school-lat'), lngRaw = val('school-lng');
+      const row = {
+        name,
+        slug: val('school-slug') || slugify(name),
+        town: val('school-town'),
+        address: val('school-address'),
+        grades: val('school-grades'),
+        curriculum: val('school-curriculum'),
+        languages: val('school-languages'),
+        accreditation: val('school-accreditation'),
+        tuition: val('school-tuition'),
+        founded: val('school-founded'),
+        website: val('school-website'),
+        excerpt: val('school-excerpt'),
+        meta_desc: val('school-meta-desc'),
+        body: val('school-body'),
+        cover_url: schoolCoverUrl,
+        status: val('school-status'),
+        sort_order: parseInt(val('school-sort-order')) || 0,
+        // Empty means "not pinned", which must stay NULL rather than becoming 0 —
+        // 0,0 is a real coordinate in the Atlantic and would break distance sorting.
+        lat: latRaw ? parseFloat(latRaw) : null,
+        lng: lngRaw ? parseFloat(lngRaw) : null
+      };
+
+      const { error } = id
+        ? await sb.from('schools').update(row).eq('id', id)
+        : await sb.from('schools').insert(row);
+      btn.textContent = 'Save School'; btn.disabled = false;
+      if (error) {
+        console.error('[admin] save school failed:', error);
+        showToast(`Could not save: ${error.message}`);
+        return;
+      }
+      closeModal('school-modal');
+      showToast('School saved');
+      loadSchools();
+    }
+
+    async function deleteSchool(id) {
+      const school = allSchools.find(s => s.id === id);
+      if (!confirm(`Delete ${school ? school.name : 'this school'}? This cannot be undone.`)) return;
+      const { error } = await sb.from('schools').delete().eq('id', id);
+      if (error) { showToast(`Could not delete: ${error.message}`); return; }
+      showToast('School deleted');
+      loadSchools();
+    }
+
     function renderBlogCover() {
       const grid = document.getElementById('blog-photo-grid');
       grid.innerHTML = blogCoverUrl ? `
@@ -1138,8 +1440,16 @@ Separate paragraphs with a blank line."></textarea>
       }
     });
 
-    function insertMarkdown(before, after) {
-      const ta = document.getElementById('blog-body');
+    // Only auto-fill the slug for new schools — changing a published school's
+    // slug would break its URL and any links pointing at it.
+    document.getElementById('school-name').addEventListener('input', function() {
+      if (!document.getElementById('school-edit-id').value) {
+        document.getElementById('school-slug').value = slugify(this.value);
+      }
+    });
+
+    function insertMarkdown(before, after, targetId) {
+      const ta = document.getElementById(targetId || 'blog-body');
       const start = ta.selectionStart, end = ta.selectionEnd;
       const selected = ta.value.substring(start, end);
       ta.value = ta.value.substring(0, start) + before + selected + (after || '') + ta.value.substring(end);
@@ -1403,6 +1713,9 @@ Separate paragraphs with a blank line."></textarea>
           if (idx >= 0) propPhotos[idx] = publicUrl;
           else propPhotos.push(publicUrl);
           renderPropPhotos();
+        } else if (type === 'school') {
+          schoolCoverUrl = publicUrl;
+          renderSchoolCover();
         } else {
           blogCoverUrl = publicUrl;
           renderBlogCover();
@@ -1423,6 +1736,7 @@ Separate paragraphs with a blank line."></textarea>
       if (initSupabase()) {
         loadProperties();
         loadBlogPosts();
+        loadSchools();
         loadReviews();
       }
     }
