@@ -512,22 +512,55 @@
         }
       }
 
-      // Listings nearest this school
+      // Listings nearest this school, by real driving time.
+      // Straight-line was wrong here for the same reason it was wrong on the
+      // property pages: the Tamarindo estuary makes homes look close that are
+      // 30+ minutes around by road.
       const props = await TL.getProperties();
       if (props && props.length && s.lat && s.lng) {
-        // Cap the radius: padding to 3 would otherwise surface a home 27 km away
-        // as "near this school", which no parent would call a school run.
-        const MAX_KM = 20;
-        const near = props
-          .filter(p => p.lat != null && p.lng != null)
+        const withPins = props.filter(p => p.lat != null && p.lng != null);
+        // Shortlist by straight line first — Matrix caps at 25 coordinates.
+        const shortlist = withPins
           .map(p => ({ ...p, d: TL.distanceKm(+s.lat, +s.lng, +p.lat, +p.lng) }))
-          .filter(p => p.d <= MAX_KM)
           .sort((a, b) => a.d - b.d)
-          .slice(0, 3);
+          .slice(0, 24);
+
+        let near = shortlist.filter(p => p.d <= 20).slice(0, 3);
+        let routed = false;
+        const key = TL.getMapboxKey();
+        if (key && shortlist.length) {
+          try {
+            const coords = [[+s.lng, +s.lat], ...shortlist.map(p => [+p.lng, +p.lat])]
+              .map(c => c.join(',')).join(';');
+            const res = await fetch(
+              `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${encodeURIComponent(coords)}`
+              + `?sources=0&annotations=duration,distance&access_token=${key}`);
+            if (res.ok) {
+              const data = await res.json();
+              const dur = (data.durations && data.durations[0] || []).slice(1);
+              const dist = (data.distances && data.distances[0] || []).slice(1);
+              if (dur.length === shortlist.length) {
+                near = shortlist
+                  .map((p, i) => ({ ...p,
+                    mins: dur[i] == null ? null : Math.round(dur[i] / 60),
+                    roadKm: dist[i] == null ? null : dist[i] / 1000 }))
+                  .filter(p => p.mins != null && p.mins <= 45)
+                  .sort((a, b) => a.mins - b.mins)
+                  .slice(0, 3);
+                routed = true;
+              }
+            }
+          } catch (e) {
+            console.info('[Mapbox] Drive times unavailable, using straight-line distance:', e.message);
+          }
+        }
+
         if (near.length) {
           document.getElementById('sch-nearby').innerHTML = `
             <h2 class="sch-section-title">Homes near ${s.name}</h2>
-            <p class="sch-section-sub">Straight-line distance &mdash; the drive is longer.</p>
+            <p class="sch-section-sub">${routed
+              ? 'Driving time to this school, by road.'
+              : 'Closest listings to this school.'}</p>
             <div class="sch-listings">
               ${near.map(p => `
                 <a href="property-detail.html?id=${encodeURIComponent(decode(p.id))}" class="sch-listing">
@@ -535,7 +568,9 @@
                   <div class="sch-listing-body">
                     <div class="sch-listing-price">${p.price || ''}</div>
                     <div class="sch-listing-name">${p.name || ''}</div>
-                    <div class="sch-listing-dist">${p.d < 1 ? Math.round(p.d * 1000) + ' m away' : p.d.toFixed(1) + ' km away'}</div>
+                    <div class="sch-listing-dist">${routed
+                      ? `${p.mins} min drive`
+                      : (p.d < 1 ? Math.round(p.d * 1000) + ' m away' : p.d.toFixed(1) + ' km away')}</div>
                   </div>
                 </a>`).join('')}
             </div>`;

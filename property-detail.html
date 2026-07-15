@@ -687,9 +687,11 @@
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     .nsch-dist {
-      font-size: 12px; font-weight: 700; color: var(--terra);
+      font-size: 13px; font-weight: 700; color: var(--terra);
       letter-spacing: 0.02em; flex-shrink: 0; text-align: right;
+      line-height: 1.25;
     }
+    .nsch-sub { font-size: 11px; font-weight: 500; color: var(--stone); letter-spacing: 0; }
     .nsch-arrow { width: 7px; height: 12px; stroke: rgba(0,0,0,0.2); fill: none; stroke-width: 2; flex-shrink: 0; }
     @media (max-width: 600px) {
       .nsch-row { padding: 16px 16px; gap: 12px; }
@@ -1620,22 +1622,32 @@
         aroundBlock.style.display = 'block';
       }
 
-      // Schools nearest this home. Needs a pin on both sides.
+      // Schools nearest this home, ranked by real driving time. Needs a pin on
+      // both sides. Crow-flies ranking was wrong here: from Playa Grande the
+      // Tamarindo schools look 5 km away but sit across an estuary you cannot
+      // drive across, so the real trip is 20 km around it.
       let schoolsShown = false;
       if (p.lat != null && p.lng != null && typeof TL !== 'undefined') {
-        const near = await TL.getNearbySchools(p.lat, p.lng, 3);
-        const within = near.filter(s => s.distance_km <= 20);
+        const near = await TL.getNearbySchoolsByDrive(p.lat, p.lng, 3);
+        // 45 minutes is about the outer edge of a school run anyone sustains
+        // twice a day. Falls back to a km cap if routing was unavailable.
+        const within = near.filter(s => s.drive_minutes != null
+          ? s.drive_minutes <= 45
+          : s.distance_km <= 20);
         if (within.length) {
           const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
           const PIN = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>';
           const ARROW = '<svg class="nsch-arrow" viewBox="0 0 8 14" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l6 6-6 6"/></svg>';
+          const routed = within.some(s => s.drive_minutes != null);
           document.getElementById('nearby-schools').innerHTML = within.map(s => {
             // Grades + town only. Curriculum runs to 60 characters on some
             // schools and belongs on the school page, not in a one-line row.
             const meta = [s.grades, s.town].filter(Boolean).join(' · ');
-            const d = s.distance_km < 1
-              ? Math.round(s.distance_km * 1000) + ' m'
-              : s.distance_km.toFixed(1) + ' km';
+            const d = s.drive_minutes != null
+              ? `${s.drive_minutes} min`
+              : (s.distance_km < 1 ? Math.round(s.distance_km * 1000) + ' m' : s.distance_km.toFixed(1) + ' km');
+            const sub = s.drive_minutes != null && s.road_km != null
+              ? `<div class="nsch-sub">${s.road_km.toFixed(1)} km</div>` : '';
             return `
               <a href="school.html?slug=${encodeURIComponent(decode(s.slug))}" class="nsch-row">
                 <div class="nsch-pin">${PIN}</div>
@@ -1643,10 +1655,13 @@
                   <div class="nsch-name">${s.name}</div>
                   ${meta ? `<div class="nsch-meta">${meta}</div>` : ''}
                 </div>
-                <div class="nsch-dist">${d}</div>
+                <div class="nsch-dist">${d}${sub}</div>
                 ${ARROW}
               </a>`;
           }).join('');
+          document.querySelector('#schools-block .area-sub').textContent = routed
+            ? 'Driving time from this home, by road.'
+            : 'Closest schools to this home.';
           document.getElementById('schools-block').style.display = 'block';
           schoolsShown = true;
         }

@@ -144,6 +144,10 @@
 
     // The `limit` schools closest to a point, each with a `distance_km` added.
     // Schools with no pin are skipped rather than treated as 0,0.
+    //
+    // Straight-line only — see getNearbySchoolsByDrive, which is what the
+    // property pages actually use. Kept as the fallback when the routing call
+    // fails, and used to shortlist candidates before routing them.
     async getNearbySchools(lat, lng, limit = 3) {
       if (lat == null || lng == null) return [];
       const schools = await this.getSchools();
@@ -153,6 +157,63 @@
         .map(s => ({ ...s, distance_km: this.distanceKm(+lat, +lng, +s.lat, +s.lng) }))
         .sort((a, b) => a.distance_km - b.distance_km)
         .slice(0, limit);
+    },
+
+    // The `limit` schools nearest by ACTUAL DRIVING TIME.
+    //
+    // Straight-line distance is wrong on this coast, and not by a little. From
+    // Playa Grande, TIDE Academy is 5.7 km away across the Tamarindo estuary —
+    // which you cannot drive across. The real trip is 21 km and 38 minutes
+    // around it. Ranking by crow-flies put TIDE 2nd when it is really 5th, and
+    // buried CRIA, which is genuinely the closest school by road.
+    //
+    // One Mapbox Matrix request covers every school at once. Falls back to
+    // straight-line if routing is unavailable, so the section never breaks.
+    async getNearbySchoolsByDrive(lat, lng, limit = 3) {
+      if (lat == null || lng == null) return [];
+      const all = await this.getSchools();
+      if (!all) return [];
+      const pinned = all.filter(s => s.lat != null && s.lng != null);
+      if (!pinned.length) return [];
+
+      // Matrix caps at 25 coordinates per request, so shortlist by straight
+      // line first. 24 is far more than the 3 we show, and cheap insurance
+      // against the school list growing.
+      const shortlist = pinned
+        .map(s => ({ ...s, distance_km: this.distanceKm(+lat, +lng, +s.lat, +s.lng) }))
+        .sort((a, b) => a.distance_km - b.distance_km)
+        .slice(0, 24);
+
+      const key = this.getMapboxKey();
+      const byLine = () => shortlist.slice(0, limit);
+      if (!key) return byLine();
+
+      try {
+        const coords = [[+lng, +lat], ...shortlist.map(s => [+s.lng, +s.lat])]
+          .map(c => c.join(',')).join(';');
+        const url = `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${encodeURIComponent(coords)}`
+                  + `?sources=0&annotations=duration,distance&access_token=${key}`;
+        const res = await fetch(url);
+        if (!res.ok) return byLine();
+        const data = await res.json();
+        const durations = (data.durations && data.durations[0] || []).slice(1);
+        const distances = (data.distances && data.distances[0] || []).slice(1);
+        if (durations.length !== shortlist.length) return byLine();
+
+        return shortlist
+          .map((s, i) => ({
+            ...s,
+            // null duration = Mapbox found no road route at all.
+            drive_minutes: durations[i] == null ? null : Math.round(durations[i] / 60),
+            road_km: distances[i] == null ? null : distances[i] / 1000
+          }))
+          .filter(s => s.drive_minutes != null)
+          .sort((a, b) => a.drive_minutes - b.drive_minutes)
+          .slice(0, limit);
+      } catch (e) {
+        console.info('[Mapbox] Drive times unavailable, using straight-line distance:', e.message);
+        return byLine();
+      }
     },
 
     // Load all published blog posts
