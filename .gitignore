@@ -1,0 +1,17 @@
+# Secrets — never commit these.
+# The repo is public: anything committed here is readable by anyone, and bots
+# scan public repos for keys within minutes of a push.
+.env
+.env.*
+!.env.example
+*.key
+secrets.json
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp

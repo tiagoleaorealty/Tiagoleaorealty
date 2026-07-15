@@ -652,23 +652,43 @@
     .around-value { font-size: 20px; font-weight: 700; color: var(--terra); line-height: 1.2; }
     .around-value span { font-size: 13px; font-weight: 500; color: var(--stone); }
     .around-note { font-size: 12px; color: var(--stone); margin-top: 2px; }
+    /* A row list rather than a card grid: school names and curriculum strings
+       vary from 0 to 60 characters, which made equal-height cards ragged. */
     .nearby-schools {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+      background: #fff; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 10px; overflow: hidden; max-width: 720px;
     }
-    .nsch-card {
-      display: block; text-decoration: none; color: inherit;
-      background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px;
-      padding: 22px 24px 24px; transition: transform 0.25s, box-shadow 0.25s;
+    .nsch-row {
+      display: flex; align-items: center; gap: 18px;
+      padding: 18px 22px; text-decoration: none; color: inherit;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: background 0.2s;
     }
-    .nsch-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.07); }
+    .nsch-row:last-child { border-bottom: none; }
+    .nsch-row:hover { background: rgba(13,74,74,0.03); }
+    .nsch-pin {
+      width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+      background: rgba(13,74,74,0.08); display: flex; align-items: center; justify-content: center;
+    }
+    .nsch-pin svg { width: 19px; height: 19px; stroke: var(--terra); fill: none; stroke-width: 1.7; }
+    .nsch-main { flex: 1; min-width: 0; }
     .nsch-name {
-      font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3;
-      color: var(--cream); margin-bottom: 6px;
+      font-size: 15px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.35;
+      color: var(--cream); margin-bottom: 2px;
     }
-    .nsch-meta { font-size: 12.5px; color: var(--stone); line-height: 1.5; margin-bottom: 12px; }
+    .nsch-meta {
+      font-size: 12.5px; color: var(--stone); line-height: 1.4;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     .nsch-dist {
       font-size: 12px; font-weight: 700; color: var(--terra);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em; flex-shrink: 0; text-align: right;
+    }
+    .nsch-arrow { width: 7px; height: 12px; stroke: rgba(0,0,0,0.2); fill: none; stroke-width: 2; flex-shrink: 0; }
+    @media (max-width: 600px) {
+      .nsch-row { padding: 16px 16px; gap: 12px; }
+      .nsch-pin { display: none; }
+      .nsch-name { font-size: 14px; }
     }
     .area-all-link {
       display: inline-block; margin-top: 26px; font-size: 13px; font-weight: 600;
@@ -1593,16 +1613,24 @@
         const within = near.filter(s => s.distance_km <= 20);
         if (within.length) {
           const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
+          const PIN = '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>';
+          const ARROW = '<svg class="nsch-arrow" viewBox="0 0 8 14" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l6 6-6 6"/></svg>';
           document.getElementById('nearby-schools').innerHTML = within.map(s => {
-            const meta = [s.grades, s.curriculum].filter(Boolean).join(' · ');
+            // Grades + town only. Curriculum runs to 60 characters on some
+            // schools and belongs on the school page, not in a one-line row.
+            const meta = [s.grades, s.town].filter(Boolean).join(' · ');
             const d = s.distance_km < 1
-              ? Math.round(s.distance_km * 1000) + ' m away'
-              : s.distance_km.toFixed(1) + ' km away';
+              ? Math.round(s.distance_km * 1000) + ' m'
+              : s.distance_km.toFixed(1) + ' km';
             return `
-              <a href="school.html?slug=${encodeURIComponent(decode(s.slug))}" class="nsch-card">
-                <div class="nsch-name">${s.name}</div>
-                ${meta ? `<div class="nsch-meta">${meta}</div>` : ''}
+              <a href="school.html?slug=${encodeURIComponent(decode(s.slug))}" class="nsch-row">
+                <div class="nsch-pin">${PIN}</div>
+                <div class="nsch-main">
+                  <div class="nsch-name">${s.name}</div>
+                  ${meta ? `<div class="nsch-meta">${meta}</div>` : ''}
+                </div>
                 <div class="nsch-dist">${d}</div>
+                ${ARROW}
               </a>`;
           }).join('');
           document.getElementById('schools-block').style.display = 'block';
