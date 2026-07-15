@@ -1111,7 +1111,10 @@
         const typeName = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
         if (typeName) metaParts.push(`<span>${typeName} for sale</span>`);
         const photos = (p.photos && p.photos.length > 0) ? p.photos.slice(0, 5) : [];
-        const slides = photos.map((url, di) => `<img class="prop-slide${di === 0 ? ' active' : ''}" src="${url}" alt="Photo ${di+1}" loading="lazy" />`).join('');
+        // Only the first slide gets a real src. The rest are held in data-src and
+        // fetched on first view — the slides sit at opacity:0 on-screen, so the
+        // browser would otherwise download all 5 full-size photos per card.
+        const slides = photos.map((url, di) => `<img class="prop-slide${di === 0 ? ' active' : ''}" ${di === 0 ? `src="${url}"` : `data-src="${url}"`} alt="Photo ${di+1}" loading="lazy" />`).join('');
         const dots = photos.length > 1 ? `<div class="prop-dots">${photos.map((_, di) => `<span class="${di === 0 ? 'dot-active' : ''}"></span>`).join('')}</div>` : '';
         const arrows = photos.length > 1 ? `<button class="prop-arrow prop-arrow-prev" onclick="event.preventDefault();event.stopPropagation();propCarouselStep(this.closest('.prop-img'),-1)">&#8249;</button><button class="prop-arrow prop-arrow-next" onclick="event.preventDefault();event.stopPropagation();propCarouselStep(this.closest('.prop-img'),1)">&#8250;</button>` : '';
         return `
@@ -1143,6 +1146,15 @@
       rebindFilters();
     })();
 
+    // Slides past the first hold their URL in data-src; swap it in the moment
+    // the slide is actually needed, plus the next one so it is ready in advance.
+    function propSlideLoad(img) {
+      if (img && img.dataset.src) {
+        img.src = img.dataset.src;
+        delete img.dataset.src;
+      }
+    }
+
     function propCarouselStep(imgDiv, dir) {
       const slides = imgDiv.querySelectorAll('.prop-slide');
       const dots   = imgDiv.querySelectorAll('.prop-dots span');
@@ -1151,6 +1163,8 @@
       slides[cur].classList.remove('active');
       dots[cur] && dots[cur].classList.remove('dot-active');
       cur = (cur + dir + slides.length) % slides.length;
+      propSlideLoad(slides[cur]);
+      propSlideLoad(slides[(cur + dir + slides.length) % slides.length]);
       slides[cur].classList.add('active');
       dots[cur] && dots[cur].classList.add('dot-active');
     }
