@@ -1488,33 +1488,19 @@
       mapboxgl.accessToken = key;
       propertiesMap = new mapboxgl.Map({
         container: 'properties-map',
-        style: 'mapbox://styles/mapbox/light-v11',
+        // streets-v12, not light-v11. light-v11 is Mapbox's backdrop style for
+        // data overlays: minimal roads, faint labels, almost no colour. On a
+        // coast where buyers are trying to work out where a town actually is,
+        // that reads as a blank grey sheet. streets-v12 keeps road hierarchy,
+        // town names and beaches legible. The old code then desaturated
+        // light-v11 even further, which is what made it unreadable.
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: [-85.80, 10.30],
         zoom: 9.5,
         attributionControl: false
       });
 
       propertiesMap.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
-
-      // Warm pink/cream style overrides (only for the "colored" style).
-      // Mapbox renames layers between style versions, so a layer that is gone
-      // must be skipped rather than caught: setPaintProperty does not throw on
-      // a missing layer, it fires the map's own error event, which try/catch
-      // cannot suppress — that is what filled the console with red.
-      propertiesMap.on('style.load', () => {
-        if (currentMapStyle !== 'colored') return;
-        const paint = (id, prop, value) => {
-          if (propertiesMap.getLayer(id)) propertiesMap.setPaintProperty(id, prop, value);
-        };
-        paint('land', 'background-color', '#eceeee');
-        paint('water', 'fill-color', '#b8d4e3');
-        paint('landcover', 'fill-color', '#d6e2e0');
-        paint('national-park', 'fill-color', '#cbdeda');
-        ['road-street','road-minor','road-major-link','road-motorway-trunk','road-primary',
-         'road-secondary-tertiary','bridge-primary','bridge-secondary-tertiary','bridge-motorway-trunk']
-          .forEach(id => paint(id, 'line-color', '#ccd6d4'));
-        paint('building', 'fill-color', '#dfe6e4');
-      });
 
       propertiesMap.on('load', () => {
         mapInitialized = true;
@@ -1532,7 +1518,7 @@
             styleToggle.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
             propertiesMap.setStyle(choice === 'satellite'
               ? 'mapbox://styles/mapbox/satellite-streets-v12'
-              : 'mapbox://styles/mapbox/light-v11');
+              : 'mapbox://styles/mapbox/streets-v12');
             propertiesMap.once('styledata', () => syncMarkers());
           });
         });
