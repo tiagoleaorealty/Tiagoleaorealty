@@ -99,6 +99,34 @@
       }
     },
 
+    // Liberia international airport (Daniel Oduber Quirós, LIR) — the fixed
+    // point every "how far to the airport" question is really asking about.
+    LIR: { lat: 10.5933, lng: -85.5444 },
+
+    // Driving minutes from one point to another, via Mapbox. Returns null if
+    // there is no key, no route, or the request fails — callers fall back to a
+    // manual value or hide the tile. This is what makes airport time automatic:
+    // the pin is the only input.
+    async getDriveMinutes(fromLat, fromLng, toLat, toLng) {
+      const key = this.getMapboxKey();
+      if (key == null || fromLat == null || fromLng == null) return null;
+      try {
+        // Directions, not Matrix: Matrix rejects a single A→B (it needs a 2+
+        // element grid). Directions is the point-to-point route.
+        const coords = `${fromLng},${fromLat};${toLng},${toLat}`;
+        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${encodeURIComponent(coords)}`
+                  + `?overview=false&access_token=${key}`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const data = await res.json();
+        const sec = data.routes && data.routes[0] && data.routes[0].duration;
+        return sec == null ? null : Math.round(sec / 60);
+      } catch (e) {
+        console.info('[Mapbox] Drive time unavailable:', e.message);
+        return null;
+      }
+    },
+
     // Load all published schools
     async getSchools() {
       try {

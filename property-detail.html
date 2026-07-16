@@ -1611,8 +1611,16 @@
         const mode = (p.beach_mode === 'drive') ? 'drive' : 'walk';
         tiles.push(tile(ICONS.beach, 'To the beach', p.beach_minutes, 'min', mode === 'drive' ? 'By car' : 'On foot'));
       }
-      if (p.airport_minutes != null && p.airport_minutes !== '') {
-        tiles.push(tile(ICONS.plane, 'To Liberia (LIR)', p.airport_minutes, 'min', 'By car'));
+      // Airport time is automatic: a typed value wins (local knowledge of a
+      // faster route), otherwise it is computed from the pin to LIR. Either way
+      // the agent never has to look it up.
+      let airportMin = (p.airport_minutes != null && p.airport_minutes !== '')
+        ? parseInt(p.airport_minutes, 10) : null;
+      if (airportMin == null && p.lat != null && p.lng != null && typeof TL !== 'undefined') {
+        airportMin = await TL.getDriveMinutes(+p.lat, +p.lng, TL.LIR.lat, TL.LIR.lng);
+      }
+      if (airportMin != null) {
+        tiles.push(tile(ICONS.plane, 'To Liberia (LIR)', airportMin, 'min', 'By car'));
       }
 
       const section = document.getElementById('area-section');
