@@ -178,8 +178,7 @@ def ld_script(obj, baked=True):
 
 # ── properties ───────────────────────────────────────────────────
 
-def build_properties(tpl):
-    rows = fetch("properties?select=*&status=in.(active,sold)&order=sort_order.asc,created_at.desc")
+def build_properties(tpl, rows):
     if not rows:
         raise SystemExit("BUILD FAILED: zero properties returned")
     urls = []
@@ -313,8 +312,7 @@ def build_properties(tpl):
 
 # ── schools ──────────────────────────────────────────────────────
 
-def build_schools(tpl):
-    rows = fetch("schools?select=*&status=eq.published&order=sort_order.asc")
+def build_schools(tpl, rows):
     if not rows:
         raise SystemExit("BUILD FAILED: zero schools returned")
     urls = []
@@ -400,8 +398,7 @@ def build_schools(tpl):
 
 # ── blog posts ───────────────────────────────────────────────────
 
-def build_posts(tpl):
-    rows = fetch("blog_posts?select=*&status=eq.published&order=created_at.desc")
+def build_posts(tpl, rows):
     if not rows:
         raise SystemExit("BUILD FAILED: zero blog posts returned")
     urls = []
@@ -452,6 +449,128 @@ def build_posts(tpl):
         write_page(f"blog/{slug}", doc)
         urls.append((f"/blog/{slug}/", upd, "0.7", "monthly"))
     return urls
+
+
+# ── root pages ───────────────────────────────────────────────────
+# The index/properties/blog/schools grids are also client-rendered, so a
+# crawler used to see "Loading…" placeholders and stale hardcoded counts.
+# Real cards are injected between BAKE marker comments (which persist, so
+# the injection is idempotent); the client JS still re-renders on load.
+
+def inject(fname, start, end, content, label):
+    path = os.path.join(ROOT, fname)
+    with open(path, encoding="utf-8") as f:
+        src = f.read()
+    pat = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
+    if not pat.search(src):
+        raise SystemExit(f"BUILD FAILED: markers '{label}' missing in {fname}")
+    src = pat.sub(lambda m: start + "\n" + content + "\n" + end, src, count=1)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(src)
+    return src
+
+
+def _prop_card(p):
+    sold = p.get("status") == "sold"
+    photos = [u for u in (p.get("photos") or []) if u]
+    name = esc(p.get("name") or "")
+    img = ('<img class="prop-slide active" src="' + esc(photos[0]) + '" alt="' + name + '" />') if photos else ""
+    badge = ('<div class="prop-badge prop-badge-sold">Sold</div>' if sold
+             else ('<div class="prop-badge">Featured</div>' if p.get("featured") else ""))
+    meta = []
+    if p.get("beds"):
+        meta.append("<span><strong>" + fmt_num(p["beds"]) + "</strong> bds</span>")
+    if p.get("baths"):
+        meta.append("<span><strong>" + fmt_num(p["baths"]) + "</strong> ba</span>")
+    if p.get("size"):
+        meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2;</span>")
+    tname = esc((p.get("type") or "home").capitalize())
+    meta.append("<span>" + tname + ("" if sold else " for sale") + "</span>")
+    meta_html = '<span class="meta-divider">|</span>'.join(meta)
+    price_num = re.sub(r"[^0-9]", "", str(p.get("price") or "")) or "0"
+    loc = esc(p.get("location") or "")
+    cls = "property-card visible-card" + (" is-sold" if sold else "")
+    return ('<a href="/property/' + p["id"] + '/" class="' + cls + '"'
+            + ' data-type="' + esc(p.get("type") or "home") + '" data-price="' + price_num + '"'
+            + ' data-status="' + esc(p.get("status") or "active") + '" data-beds="' + (fmt_num(p.get("beds")) or "0") + '"'
+            + ' data-lat="' + str(p.get("lat") or "") + '" data-lng="' + str(p.get("lng") or "") + '"'
+            + ' data-created="' + esc((p.get("created_at") or ""))
+            + '"><div class="prop-img">' + img + badge + '</div>'
+            + '<div class="prop-info"><div class="prop-price">' + esc(p.get("price") or "") + '</div>'
+            + '<div class="prop-meta">' + meta_html + '</div>'
+            + '<div class="prop-name">' + name + (", " + loc if loc else "") + '</div></div></a>')
+
+
+def _featured_card(p):
+    photos = [u for u in (p.get("photos") or []) if u]
+    bg = (' style="background-image:url(' + "'" + esc(photos[0]) + "'" + ');background-size:cover;background-position:center;"') if photos else ""
+    tname = esc((p.get("type") or "home").capitalize())
+    meta = []
+    if p.get("beds"):
+        meta.append("<span><strong>" + fmt_num(p["beds"]) + "</strong> Beds</span>")
+    if p.get("baths"):
+        meta.append("<span><strong>" + fmt_num(p["baths"]) + "</strong> Baths</span>")
+    if p.get("size"):
+        meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2;</span>")
+    return ('<a href="/property/' + p["id"] + '/" class="property-card">'
+            + '<div class="property-img-placeholder"' + bg + '>'
+            + '<div class="property-badge">Featured</div>'
+            + '<div class="property-type-tag">' + tname + '</div></div>'
+            + '<div class="property-info"><div class="property-name">' + esc(p.get("name") or "") + '</div>'
+            + '<div class="property-location">' + esc(p.get("location") or "") + '</div>'
+            + '<div class="property-price">' + esc(p.get("price") or "") + '</div>'
+            + '<div class="property-meta">' + "".join(meta) + '</div></div></a>')
+
+
+def _blog_card(p):
+    href = ("blog-el-chante-tamarindo.html" if p["slug"] in CUSTOM_BLOG_PAGES
+            else "/blog/" + p["slug"] + "/")
+    cover = (' style="background-image:url(' + "'" + esc(p["cover_url"]) + "'" + ');background-size:cover;background-position:center;"') if p.get("cover_url") else ""
+    cat = esc((p.get("category") or "market").capitalize())
+    return ('<a href="' + href + '" class="blog-card">'
+            + '<div class="blog-card-img"' + cover + '></div>'
+            + '<div class="blog-card-body"><div class="blog-card-tag">' + cat + '</div>'
+            + '<div class="blog-card-title">' + esc(p.get("title") or "") + '</div>'
+            + '<div class="blog-card-excerpt">' + esc(p.get("excerpt") or "") + '</div>'
+            + '<div class="blog-card-meta">' + esc(p.get("readtime") or "") + '</div>'
+            + '<span class="blog-card-link">Read More &rarr;</span></div></a>')
+
+
+def _school_card(s):
+    photo = (' style="background-image:url(' + "'" + esc(s["cover_url"]) + "'" + ')"') if s.get("cover_url") else ""
+    tags = "".join('<span class="school-tag">' + esc(t) + "</span>"
+                   for t in (s.get("grades"), s.get("curriculum"), s.get("languages")) if t)
+    town = ('<div class="school-card-town">' + esc(s["town"]) + '</div>') if s.get("town") else ""
+    return ('<a href="/school/' + s["slug"] + '/" class="school-card">'
+            + '<div class="school-card-photo"' + photo + '></div>'
+            + '<div class="school-card-body">' + town
+            + '<div class="school-card-name">' + esc(s.get("name") or "") + '</div>'
+            + '<div class="school-card-excerpt">' + esc(s.get("excerpt") or "") + '</div>'
+            + ('<div class="school-card-tags">' + tags + '</div>' if tags else "") + '</div></a>')
+
+
+def bake_roots(props, schools, posts):
+    inject("properties.html", "<!--BAKE:LISTINGS-->", "<!--/BAKE:LISTINGS-->",
+           "".join(_prop_card(p) for p in props), "listings")
+    # The shell used to hardcode "6 results" and "0 results"; keep both counts real.
+    path = os.path.join(ROOT, "properties.html")
+    with open(path, encoding="utf-8") as f:
+        src = f.read()
+    n = str(len(props))
+    src, c1 = re.subn(r'<span id="visible-count">[^<]*</span>', '<span id="visible-count">' + n + "</span>", src)
+    src, c2 = re.subn(r'<span id="list-count">[^<]*</span>', '<span id="list-count">' + n + "</span>", src)
+    if c1 != 1 or c2 != 1:
+        raise SystemExit("BUILD FAILED: result-count spans not found in properties.html")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(src)
+
+    featured = [p for p in props if p.get("featured") and p.get("status") == "active"]
+    inject("index.html", "<!--BAKE:FEATURED-->", "<!--/BAKE:FEATURED-->",
+           "".join(_featured_card(p) for p in featured), "featured")
+    inject("blog.html", "<!--BAKE:POSTS-->", "<!--/BAKE:POSTS-->",
+           "".join(_blog_card(p) for p in posts), "posts")
+    inject("schools.html", "<!--BAKE:SCHOOLS-->", "<!--/BAKE:SCHOOLS-->",
+           "".join(_school_card(s) for s in schools), "schools")
 
 
 # ── sitemap ──────────────────────────────────────────────────────
@@ -510,10 +629,15 @@ def main():
         with open(os.path.join(ROOT, name), encoding="utf-8") as f:
             return f.read()
 
+    props = fetch("properties?select=*&status=in.(active,sold)&order=sort_order.asc,created_at.desc")
+    schools = fetch("schools?select=*&status=eq.published&order=sort_order.asc")
+    posts = fetch("blog_posts?select=*&status=eq.published&order=created_at.desc")
+
     urls = []
-    urls += build_properties(read("property-detail.html"))
-    urls += build_schools(read("school.html"))
-    urls += build_posts(read("blog-post.html"))
+    urls += build_properties(read("property-detail.html"), props)
+    urls += build_schools(read("school.html"), schools)
+    urls += build_posts(read("blog-post.html"), posts)
+    bake_roots(props, schools, posts)
     total = write_sitemap(urls)
 
     n_prop = sum(1 for u in urls if u[0].startswith("/property/"))
