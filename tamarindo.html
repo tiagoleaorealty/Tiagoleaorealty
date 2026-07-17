@@ -326,7 +326,7 @@
         <h2>Everyday Practicalities</h2>
         <p>Beachside Clinic in nearby Huacas handles most medical needs, with private hospitals about an hour away in Liberia and major care in San José. Liberia International Airport (LIR) is roughly 1 hour 15 minutes with direct flights across the US and Canada. Fiber internet is standard in town, and the road network is fully paved. Rainy-season living here is easy — this corner of Guanacaste is one of the driest, sunniest regions in the country.</p>
         <h2>The Real Estate Market</h2>
-        <p>Tamarindo is the most liquid market on the coast: the buyer pool never dries up, so well-priced properties simply sell. Condos start around $200K, town-walkable homes run $400K–$900K, and ocean-view homes climb past $2 million. Short-term rental performance is the strongest in the region — walkability is the multiplier. I've written a full breakdown of <a class="inline" href="blog-post.html?slug=tamarindo-house-prices-2026">what homes actually cost in Tamarindo in 2026</a>.</p>
+        <p>Tamarindo is the most liquid market on the coast: the buyer pool never dries up, so well-priced properties simply sell. Condos start around $200K, town-walkable homes run $400K–$900K, and ocean-view homes climb past $2 million. Short-term rental performance is the strongest in the region — walkability is the multiplier. I've written a full breakdown of <a class="inline" href="blog/tamarindo-house-prices-2026/">what homes actually cost in Tamarindo in 2026</a>.</p>
       </div>
       <aside class="facts-card">
         <h3>Tamarindo at a Glance</h3>
@@ -438,7 +438,7 @@
         const img = p.photos && p.photos.length ? ` style="background-image:url('${p.photos[0]}')"` : '';
         const price = (p.price || '').toString().trim();
         const priceLabel = price ? (price.startsWith('$') ? price : '$' + price) : 'Price on request';
-        return `<a class="pcard" href="property-detail.html?id=${p.id}">
+        return `<a class="pcard" href="/property/${p.id}/">
           <div class="pcard-img"${img}></div>
           <div class="pcard-info">
             <div class="pcard-price">${priceLabel}</div>

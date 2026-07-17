@@ -365,7 +365,7 @@
       }
 
       grid.innerHTML = posts.map(p => {
-        const href = CUSTOM_PAGES[p.slug] || ('blog-post.html?slug=' + p.slug);
+        const href = CUSTOM_PAGES[p.slug] || ('/blog/' + p.slug + '/');
         return `
         <a href="${href}" class="blog-card">
           <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
@@ -390,7 +390,7 @@
           '@type': 'ListItem',
           'position': i + 1,
           'name': decode(p.title),
-          'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog-post.html?slug=' + encodeURIComponent(decode(p.slug))))
+          'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog/' + encodeURIComponent(decode(p.slug + '/'))))
         }))
       });
       document.head.appendChild(ld);

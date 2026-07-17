@@ -1454,7 +1454,7 @@
 
     // ── Similar Properties ────────────────────────────────────────
     function renderSimCard(id, price, beds, baths, sqft, name, type, imgUrl) {
-      return `<a href="property-detail.html?id=${id}" class="sim-card">
+      return `<a href="/property/${id}/" class="sim-card">
         <div class="sim-img">
           ${imgUrl ? `<img src="${imgUrl}" alt="${name}" />` : ''}
           <span class="sim-type">${type}</span>
@@ -1501,7 +1501,9 @@
     // Try Supabase first, fall back to static data
     (async function() {
       const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
+      // Pre-rendered pages live at /property/<id>/ — read the id from the
+      // path first; ?id= keeps working for old links.
+      const id = (location.pathname.match(/\/property\/([^\/]+)/) || [])[1] || params.get('id');
 
       if (typeof TL !== 'undefined' && TL.isConnected() && id) {
         const p = await TL.getProperty(id);
@@ -1657,7 +1659,7 @@
             const sub = s.drive_minutes != null && s.road_km != null
               ? `<div class="nsch-sub">${s.road_km.toFixed(1)} km</div>` : '';
             return `
-              <a href="school.html?slug=${encodeURIComponent(decode(s.slug))}" class="nsch-row">
+              <a href="/school/${encodeURIComponent(decode(s.slug))}/" class="nsch-row">
                 <div class="nsch-pin">${PIN}</div>
                 <div class="nsch-main">
                   <div class="nsch-name">${s.name}</div>

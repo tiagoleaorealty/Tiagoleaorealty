@@ -2,248 +2,326 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://soldbytiago.com/</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-17</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://soldbytiago.com/properties.html</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-17</lastmod>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://soldbytiago.com/communities.html</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-17</lastmod>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/about.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/playas-del-coco.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/potrero.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/las-catalinas.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/flamingo.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/conchal.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/playa-grande.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/tamarindo.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/langosta.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/avellanas.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/marbella.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/nosara.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/property-detail.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog.html</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
     <loc>https://soldbytiago.com/buyers-guide.html</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-17</lastmod>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://soldbytiago.com/sellers-guide.html</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-17</lastmod>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/blog-el-chante-tamarindo.html</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://soldbytiago.com/about.html</loc>
+    <lastmod>2026-07-17</lastmod>
     <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=schools-guanacaste-gold-coast-guide</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=buying-property-costa-rica-foreigners-guide</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=costa-rica-closing-costs-taxes</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=titled-vs-concession-beachfront-costa-rica</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=guanacaste-gold-coast-towns-guide</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=guanacaste-real-estate-investment-2026</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=costa-rica-vacation-rental-income-guanacaste</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=costa-rica-residency-property-buyers</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=tamarindo-vs-nosara-real-estate</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://soldbytiago.com/blog-post.html?slug=tamarindo-house-prices-2026</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://soldbytiago.com/schools.html</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-07-17</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=costa-rica-international-academy</loc>
+    <loc>https://soldbytiago.com/blog.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog-el-chante-tamarindo.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/playas-del-coco.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/potrero.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/las-catalinas.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/flamingo.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/conchal.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/playa-grande.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/tamarindo.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/langosta.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/avellanas.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/marbella.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/nosara.html</loc>
+    <lastmod>2026-07-17</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/e4f7876f-6226-4e3b-b576-3def68102ca4/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/843a8b0b-910d-4bc7-91cb-e78fb71870a5/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/f785fcd1-a6e9-4191-97b4-5be64cbb4c57/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/47978e51-8443-46c7-9ed9-9c647c9a63ae/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/29562190-c1b0-483c-974b-3014656d3df5/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/7239fe66-32d5-4b90-a21f-44f3c749d39f/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/56bb618c-5571-4cce-ad83-04b82026e0f9/</loc>
+    <lastmod>2026-06-28</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/f46ee5c9-f438-44d6-a22b-c852eea40500/</loc>
+    <lastmod>2026-06-07</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/00ad65c3-5ec2-44a7-ac76-ee933af9b3ee/</loc>
+    <lastmod>2026-06-07</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/12fcb6c9-4088-404b-9092-a061cf067e16/</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/37bf40df-3bbf-4aff-8566-76fbcbcf9303/</loc>
+    <lastmod>2026-05-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/adef907b-5eff-4c56-814e-079adb714c36/</loc>
+    <lastmod>2026-06-06</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/e6552762-7495-459f-8bdb-7ccc0fbca9c0/</loc>
+    <lastmod>2026-05-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/262abf92-5ce0-4514-89e1-1d49996c2288/</loc>
+    <lastmod>2026-05-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/school/costa-rica-international-academy/</loc>
     <lastmod>2026-07-16</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=la-paz-community-school-cabo-velas</loc>
+    <loc>https://soldbytiago.com/school/la-paz-community-school-cabo-velas/</loc>
+    <lastmod>2026-07-15</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/school/la-paz-community-school-tempisque/</loc>
+    <lastmod>2026-07-15</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/school/journey-school-tamarindo/</loc>
+    <lastmod>2026-07-15</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/school/del-mar-academy/</loc>
     <lastmod>2026-07-16</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=la-paz-community-school-tempisque</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://soldbytiago.com/school/educarte/</loc>
+    <lastmod>2026-07-15</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=journey-school-tamarindo</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://soldbytiago.com/school/lakeside-international-school/</loc>
+    <lastmod>2026-07-15</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=del-mar-academy</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://soldbytiago.com/school/pacifico-internacional/</loc>
+    <lastmod>2026-07-15</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=educarte</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://soldbytiago.com/school/tide-academy/</loc>
+    <lastmod>2026-07-15</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=lakeside-international-school</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://soldbytiago.com/school/dolphins-academy/</loc>
+    <lastmod>2026-07-15</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=pacifico-internacional</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.6</priority>
+    <loc>https://soldbytiago.com/blog/schools-guanacaste-gold-coast-guide/</loc>
+    <lastmod>2026-07-15</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=tide-academy</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.6</priority>
+    <loc>https://soldbytiago.com/blog/tamarindo-house-prices-2026/</loc>
+    <lastmod>2026-07-11</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soldbytiago.com/school.html?slug=dolphins-academy</loc>
-    <lastmod>2026-07-16</lastmod>
-    <priority>0.6</priority>
+    <loc>https://soldbytiago.com/blog/buying-property-costa-rica-foreigners-guide/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/costa-rica-closing-costs-taxes/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/titled-vs-concession-beachfront-costa-rica/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/guanacaste-gold-coast-towns-guide/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/guanacaste-real-estate-investment-2026/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/costa-rica-vacation-rental-income-guanacaste/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/costa-rica-residency-property-buyers/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/tamarindo-vs-nosara-real-estate/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
 </urlset>

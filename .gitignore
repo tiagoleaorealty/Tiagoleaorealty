@@ -7,6 +7,12 @@
 *.key
 secrets.json
 
+# Build artifacts — build.py regenerates these on every Vercel deploy.
+# They are output, not source; committing them would just go stale.
+/property/
+/school/
+/blog/
+
 # macOS
 .DS_Store
 **/.DS_Store

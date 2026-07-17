@@ -258,8 +258,11 @@
 
     (async function() {
       const params = new URLSearchParams(window.location.search);
-      const slug = params.get('slug');
+      // Pre-rendered pages live at /blog/<slug>/ — path first, ?slug= fallback.
+      const slug = (location.pathname.match(/\/blog\/([^\/]+)/) || [])[1] || params.get('slug');
       const container = document.getElementById('article-container');
+      // Baked pages already carry static JSON-LD; skip the runtime duplicates.
+      const hasBakedLd = !!document.querySelector('script[type="application/ld+json"][data-baked]');
 
       if (!slug || typeof TL === 'undefined' || !TL.isConnected()) {
         container.innerHTML = '<div class="loading">Article not found. <a href="blog.html" style="color:var(--terra);">Back to blog &rarr;</a></div>';
@@ -281,7 +284,7 @@
       }
       const plainTitle = decode(post.title);
       const plainDesc = decode(post.meta_desc || post.excerpt || '');
-      const pageUrl = 'https://soldbytiago.com/blog-post.html?slug=' + encodeURIComponent(slug);
+      const pageUrl = 'https://soldbytiago.com/blog/' + encodeURIComponent(slug) + '/';
 
       document.title = plainTitle + ' | Tiago Leao Real Estate';
       if (plainDesc) {
@@ -322,7 +325,7 @@
         'author': { '@type': 'Person', 'name': 'Tiago Leao', 'url': 'https://soldbytiago.com' },
         'publisher': { '@type': 'Organization', 'name': 'Tiago Leao Real Estate', 'url': 'https://soldbytiago.com' }
       });
-      document.head.appendChild(ld);
+      if (!hasBakedLd) document.head.appendChild(ld);
 
       // Breadcrumb trail (Home > Blog > Article) for search engines
       const bc = document.createElement('script');
@@ -336,7 +339,7 @@
           { '@type': 'ListItem', 'position': 3, 'name': plainTitle, 'item': pageUrl }
         ]
       });
-      document.head.appendChild(bc);
+      if (!hasBakedLd) document.head.appendChild(bc);
 
       const cat = (post.category || 'market').charAt(0).toUpperCase() + (post.category || 'market').slice(1);
 

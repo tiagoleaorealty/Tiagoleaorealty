@@ -2073,7 +2073,7 @@
       if (!featured || featured.length === 0) { grid.innerHTML = fallbackMsg; return; }
 
       grid.innerHTML = featured.map((p, i) => `
-        <a href="property-detail.html?id=${p.id}" class="property-card reveal${i > 0 ? ' reveal-delay-' + Math.min(i, 5) : ''}">
+        <a href="/property/${p.id}/" class="property-card reveal${i > 0 ? ' reveal-delay-' + Math.min(i, 5) : ''}">
           <div class="property-img-placeholder" ${p.photos && p.photos.length > 0 ? `style="background-image:url('${p.photos[0]}');background-size:cover;background-position:center;"` : ''}>
             <div class="property-badge">Featured</div>
             <div class="property-type-tag">${(p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1)}</div>

@@ -440,7 +440,9 @@
 
     (async function () {
       const container = document.getElementById('school-container');
-      const slug = new URLSearchParams(location.search).get('slug');
+      // Pre-rendered pages live at /school/<slug>/ — path first, ?slug= fallback.
+      const slug = (location.pathname.match(/\/school\/([^\/]+)/) || [])[1]
+        || new URLSearchParams(location.search).get('slug');
       const notFound = '<div class="sch-loading">School not found. <a href="schools.html" style="color:var(--terra);">All schools &rarr;</a></div>';
 
       if (!slug || typeof TL === 'undefined' || !TL.isConnected()) { container.innerHTML = notFound; return; }
@@ -452,7 +454,7 @@
       const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
       const plainName = decode(s.name);
       const plainDesc = decode(s.meta_desc || s.excerpt || '');
-      const pageUrl = 'https://soldbytiago.com/school.html?slug=' + encodeURIComponent(decode(s.slug));
+      const pageUrl = 'https://soldbytiago.com/school/' + encodeURIComponent(decode(s.slug)) + '/';
 
       document.title = plainName + ' | Schools in Guanacaste | Tiago Leao';
       const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.setAttribute('content', val); };
@@ -563,7 +565,7 @@
               : 'Closest listings to this school.'}</p>
             <div class="sch-listings">
               ${near.map(p => `
-                <a href="property-detail.html?id=${encodeURIComponent(decode(p.id))}" class="sch-listing">
+                <a href="/property/${encodeURIComponent(decode(p.id))}/" class="sch-listing">
                   <div class="sch-listing-photo"${p.photos && p.photos[0] ? ` style="background-image:url('${p.photos[0]}')"` : ''}></div>
                   <div class="sch-listing-body">
                     <div class="sch-listing-price">${p.price || ''}</div>
@@ -601,12 +603,15 @@
           { '@type': 'ListItem', 'position': 3, 'name': plainName, 'item': pageUrl }
         ]
       };
-      [ld, crumbs].forEach(obj => {
-        const tag = document.createElement('script');
-        tag.type = 'application/ld+json';
-        tag.textContent = JSON.stringify(obj);
-        document.head.appendChild(tag);
-      });
+      // Baked pages already carry static JSON-LD; skip the runtime duplicates.
+      if (!document.querySelector('script[type="application/ld+json"][data-baked]')) {
+        [ld, crumbs].forEach(obj => {
+          const tag = document.createElement('script');
+          tag.type = 'application/ld+json';
+          tag.textContent = JSON.stringify(obj);
+          document.head.appendChild(tag);
+        });
+      }
     })();
   </script>
 

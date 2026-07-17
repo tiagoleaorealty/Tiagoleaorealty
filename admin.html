@@ -468,6 +468,19 @@
       </div>
 
       <div class="config-card">
+        <h3>Publish Site</h3>
+        <p>Search engines and AI read pre-built pages, rebuilt on each deploy. After adding or editing listings, schools, or posts, click Publish so those pages refresh (live in ~1 minute). One-time setup: in Vercel &rarr; Settings &rarr; Git &rarr; Deploy Hooks, create a hook and paste its URL here. The URL stays on this device only.</p>
+        <div class="config-row">
+          <input type="text" id="deploy-hook-input" placeholder="https://api.vercel.com/v1/integrations/deploy/..." />
+          <button class="btn btn-terra btn-sm" onclick="saveDeployHook()">Save</button>
+        </div>
+        <div style="margin-top:10px;">
+          <button class="btn btn-outline" onclick="publishSite()">Publish site now</button>
+          <span id="publish-status" style="font-size:13px;color:var(--stone);margin-left:10px;"></span>
+        </div>
+      </div>
+
+      <div class="config-card">
         <h3>Database Setup</h3>
         <p>Run this SQL in your Supabase SQL Editor to create the required tables and storage bucket.</p>
         <button class="btn btn-outline" onclick="window.open('supabase-setup.sql')">View Setup SQL</button>
@@ -816,6 +829,33 @@ Separate paragraphs with a blank line."></textarea>
       const { error } = await sb.auth.updateUser({ password: pw });
       document.getElementById('new-pass-input').value = '';
       showToast(error ? `Could not update: ${error.message}` : 'Password updated');
+    }
+
+    // ── Publish (Vercel deploy hook) ─────────────────────────────
+    // The hook URL lives in localStorage only — the repo is public, so it must
+    // never be committed. Anyone with the URL could trigger builds (not code
+    // changes), which is why it stays per-device like the other keys here.
+    function saveDeployHook() {
+      const url = document.getElementById('deploy-hook-input').value.trim();
+      if (url && !/^https:\/\/api\.vercel\.com\/v1\/integrations\/deploy\//.test(url)) {
+        showToast('That does not look like a Vercel deploy hook URL'); return;
+      }
+      localStorage.setItem('tl_deploy_hook', url);
+      showToast(url ? 'Deploy hook saved' : 'Deploy hook cleared');
+    }
+
+    async function publishSite() {
+      const url = localStorage.getItem('tl_deploy_hook');
+      const status = document.getElementById('publish-status');
+      if (!url) { status.textContent = 'Save your deploy hook URL first.'; return; }
+      status.textContent = 'Triggering build…';
+      try {
+        // no-cors: the hook accepts the POST but the response is opaque.
+        await fetch(url, { method: 'POST', mode: 'no-cors' });
+        status.textContent = 'Build triggered — changes live in about a minute.';
+      } catch (e) {
+        status.textContent = 'Could not reach Vercel — check the URL.';
+      }
     }
 
     document.getElementById('prop-featured').addEventListener('change', function() {
@@ -1744,6 +1784,7 @@ Separate paragraphs with a blank line."></textarea>
       document.getElementById('sb-url-input').value = cfg.url;
       document.getElementById('sb-key-input').value = cfg.key;
       document.getElementById('mapbox-key-input').value = cfg.mapbox;
+      document.getElementById('deploy-hook-input').value = localStorage.getItem('tl_deploy_hook') || '';
 
       if (initSupabase()) {
         loadProperties();

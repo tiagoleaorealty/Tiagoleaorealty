@@ -414,7 +414,7 @@
         const photo = s.cover_url
           ? ` style="background-image:url('${s.cover_url}')"` : '';
         return `
-        <a href="school.html?slug=${encodeURIComponent(decode(s.slug))}" class="school-card">
+        <a href="/school/${encodeURIComponent(decode(s.slug))}/" class="school-card">
           <div class="school-card-photo"${photo}></div>
           <div class="school-card-body">
             ${s.town ? `<div class="school-card-town">${s.town}</div>` : ''}
@@ -434,7 +434,7 @@
         'itemListElement': schools.map((s, i) => ({
           '@type': 'ListItem',
           'position': i + 1,
-          'url': 'https://soldbytiago.com/school.html?slug=' + encodeURIComponent(decode(s.slug)),
+          'url': 'https://soldbytiago.com/school/' + encodeURIComponent(decode(s.slug)) + '/',
           'name': decode(s.name)
         }))
       };
