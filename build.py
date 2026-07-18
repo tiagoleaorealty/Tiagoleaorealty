@@ -839,11 +839,13 @@ def _related_card(p):
             + '<div class="related-card-meta">' + esc(p.get("readtime") or "") + '</div></div></a>')
 
 
-def _blog_card(p):
+def _blog_card(p, extra=False):
     href = _blog_href(p)
     cover = (' style="background-image:url(' + "'" + esc(p["cover_url"]) + "'" + ');background-size:cover;background-position:center;"') if p.get("cover_url") else ""
     cat = esc(_BLOG_CAT_NAMES[blog_cat(p)])
-    return ('<a href="' + href + '" class="blog-card">'
+    open_tag = ('<a href="' + href + '" class="blog-card blog-card-extra" style="display:none">'
+                if extra else '<a href="' + href + '" class="blog-card">')
+    return (open_tag
             + '<div class="blog-card-img"' + cover + '></div>'
             + '<div class="blog-card-body"><div class="blog-card-tag">' + cat + '</div>'
             + '<div class="blog-card-title">' + esc(p.get("title") or "") + '</div>'
@@ -888,9 +890,17 @@ def bake_roots(props, schools, posts, devs=None):
     inject("blog.html", "<!--BAKE:FEATURED-POST-->", "<!--/BAKE:FEATURED-POST-->",
            _featured_card(featured) if featured else "", "featured post")
     rest = posts[1:]
-    for key, _name in BLOG_CATS:
+    for key, name in BLOG_CATS:
+        mine = [p for p in rest if blog_cat(p) == key]
+        # Cap each topic at 6 visible cards; the rest bake hidden (still real
+        # links for crawlers) behind a "See all" reveal button.
+        cards = "".join(_blog_card(p) for p in mine[:6])
+        if len(mine) > 6:
+            cards += "".join(_blog_card(p, extra=True) for p in mine[6:])
+            cards += ('<div class="blog-see-all-wrap"><button type="button" class="blog-see-all">'
+                      f'See all {len(mine)} {esc(name)} articles</button></div>')
         inject("blog.html", f"<!--BAKE:POSTS-{key.upper()}-->", f"<!--/BAKE:POSTS-{key.upper()}-->",
-               "".join(_blog_card(p) for p in rest if blog_cat(p) == key), f"posts {key}")
+               cards, f"posts {key}")
     inject("blog.html", "<!--BAKE:BLOG-LD-->", "<!--/BAKE:BLOG-LD-->",
            ld_script({
                "@context": "https://schema.org",
