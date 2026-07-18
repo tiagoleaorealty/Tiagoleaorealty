@@ -1,5 +1,6 @@
 -- ═══════════════════════════════════════════════════════════════
---  RESIDENTIAL DEVELOPMENTS — table + 10 researched seeds
+--  RESIDENTIAL DEVELOPMENTS — table + 8 researched seeds
+--  (Pacifico and Reserva de Golf were dropped from the lineup.)
 --  Run once in Supabase SQL Editor. Safe to re-run (idempotent-ish).
 --  Facts sidebar fields (HOA, rental rules, construction, title,
 --  price range) are BLANK on purpose: they are rarely published and
@@ -74,7 +75,7 @@ Distances inside the property are real — you will drive to the Beach Club and 
 
 ## Alternatives to compare
 
-Reserva Conchal for a more hotel-anchored resort feel, Mar Vista for larger lots at lower entry prices, Reserva de Golf for a smaller footprint inside Pinilla itself.', 1)
+Reserva Conchal for a more hotel-anchored resort feel, Mar Vista for larger lots at lower entry prices.', 1)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, town = EXCLUDED.town, match_location = EXCLUDED.match_location,
   established = EXCLUDED.established, excerpt = EXCLUDED.excerpt, body = EXCLUDED.body,
@@ -256,56 +257,6 @@ Density is the point, so privacy is architectural rather than spatial. Rental an
 Nothing directly comparable exists here. Flamingo offers walkable-ish beach living with cars; Senderos offers gated hillside living near a real town.
 
 There is a fuller town guide on my [Las Catalinas community page](https://soldbytiago.com/las-catalinas.html).', 8)
-ON CONFLICT (slug) DO UPDATE SET
-  name = EXCLUDED.name, town = EXCLUDED.town, match_location = EXCLUDED.match_location,
-  established = EXCLUDED.established, excerpt = EXCLUDED.excerpt, body = EXCLUDED.body,
-  sort_order = EXCLUDED.sort_order;
-
-INSERT INTO developments (name, slug, town, match_location, established, excerpt, body, sort_order)
-VALUES ('Pacifico', 'pacifico-playas-del-coco', 'Playas del Coco', 'Pacifico', '2009', 'Playas del Coco''s flagship community — 400+ condos, townhomes and homesites with a beachfront club, boat club, and the north coast''s best amenity stack.', 'Pacifico is the community that changed how people think about Playas del Coco — a full resort-style neighborhood of more than 400 residences established in 2009, with the most complete amenity stack on the northern coast.
-
-The mix runs from the Na Umi seaside condominiums (the community''s first ocean-view condo buildings) through townhomes and the Bosque Tropic Village four-bedroom homes, up to the Mira estate homesites at the community''s highest point. At the entrance sit the Village Shops — about 25,000 square feet of cafés, restaurants and a full US-style supermarket — and ownership includes access to the beachfront Pacifico Beach Club with shuttle service, a sports complex, pools, pickleball, and the NIMBU boat club.
-
-## What makes it different
-
-Completeness and price accessibility. Condos have been advertised from around the low $200,000s with homesites from under $100,000 (asking prices; verify current phases) — meaningful entry points for a gated community with a private beach club. And Coco itself is the most practical town on the coast: 25–30 minutes from Liberia airport, real services, year-round life.
-
-## Who it fits
-
-Rental-focused buyers — Coco''s proximity to the airport and the beach club make Pacifico one of the strongest turnkey rental setups in the region — plus first-time buyers and anyone prioritizing convenience over seclusion.
-
-## Honest considerations
-
-This is a large, active community: expect neighbors, rental guests and HOA structure that reflects the scale of shared amenities. Fee schedules vary by sub-development; I confirm current figures per unit before any offer.
-
-## Alternatives to compare
-
-Las Catalinas for walkability with more architectural character, Reserva Conchal for hotel-anchored resort living, Catalina Cove for land at lower density.', 9)
-ON CONFLICT (slug) DO UPDATE SET
-  name = EXCLUDED.name, town = EXCLUDED.town, match_location = EXCLUDED.match_location,
-  established = EXCLUDED.established, excerpt = EXCLUDED.excerpt, body = EXCLUDED.body,
-  sort_order = EXCLUDED.sort_order;
-
-INSERT INTO developments (name, slug, town, match_location, established, excerpt, body, sort_order)
-VALUES ('Reserva de Golf', 'reserva-de-golf-hacienda-pinilla', 'Hacienda Pinilla', 'Reserva de Golf', '', 'The golf-course neighborhood inside Hacienda Pinilla — 136 lots along holes 4, 5 and 6, walking distance to both Avellanas and Langosta.', 'Reserva de Golf is a neighborhood inside Hacienda Pinilla rather than a standalone community — 136 lots wrapped around holes 4, 5 and 6 of the golf course, with its own gated entry, central park and established homeowners association.
-
-Its geography is the quiet superpower: it sits almost exactly between Playa Avellanas to the south and Playa Langosta to the north, close enough to walk to either — a combination almost nothing else in Pinilla offers.
-
-## What makes it different
-
-Inside-the-resort economics with neighborhood scale. You get every Pinilla amenity — golf, Beach Club, equestrian, tennis, trails — while buying into a defined 136-lot community with stable, established dues rather than estate-scale costs. And unlike some sections of the resort, Reserva de Golf has no time restriction on building: land buyers can build immediately or hold.
-
-## Who it fits
-
-Golfers first, obviously — the fairway frontage is the point. But also buyers who want Pinilla''s infrastructure at a more contained scale, and investors who like the neighborhood''s rental track record: it is one of the most consistently rented sections of the resort.
-
-## Honest considerations
-
-You are subject to two layers of governance — the neighborhood HOA and the master resort — so understand both fee schedules and rule sets before committing; I put current numbers in front of every buyer. Homes here are also spread across two decades of construction vintages, so condition varies more than in a new development.
-
-## Alternatives to compare
-
-Elsewhere in Hacienda Pinilla for beachfront or estate lots, Senderos for build-new near Tamarindo, Reserva Conchal for hotel-resort amenities.', 10)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, town = EXCLUDED.town, match_location = EXCLUDED.match_location,
   established = EXCLUDED.established, excerpt = EXCLUDED.excerpt, body = EXCLUDED.body,
