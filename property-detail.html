@@ -332,6 +332,7 @@
       letter-spacing: -0.02em;
       display: block;
     }
+    .detail-stat-alt { display: block; font-size: 11px; font-weight: 500; color: var(--stone); margin-top: 2px; letter-spacing: 0; text-transform: none; }
     .detail-stat-label {
       font-size: 11px;
       letter-spacing: 0.12em;
@@ -1143,11 +1144,11 @@
           </div>
           <div class="detail-stat">
             <span class="detail-stat-value" id="stat-sqft">&mdash;</span>
-            <span class="detail-stat-label">m&sup2; Built</span>
+            <span class="detail-stat-label">Built</span>
           </div>
           <div class="detail-stat">
             <span class="detail-stat-value" id="stat-lot">&mdash;</span>
-            <span class="detail-stat-label">m&sup2; Lot</span>
+            <span class="detail-stat-label">Lot</span>
           </div>
         </div>
 
@@ -1523,8 +1524,10 @@
           }
           document.getElementById('stat-beds').textContent = p.beds || '—';
           document.getElementById('stat-baths').textContent = p.baths || '—';
-          document.getElementById('stat-sqft').textContent = p.size ? Number(p.size).toLocaleString() : '—';
-          document.getElementById('stat-lot').textContent = p.lot ? Number(p.lot).toLocaleString() : '—';
+          // Area is stored in m² and shown in both systems — buyers here use both.
+          const areaBoth = v => Number(v).toLocaleString() + ' m²<span class="detail-stat-alt">' + Math.round(Number(v)*10.7639).toLocaleString() + ' ft²</span>';
+          document.getElementById('stat-sqft').innerHTML = p.size ? areaBoth(p.size) : '—';
+          document.getElementById('stat-lot').innerHTML = p.lot ? areaBoth(p.lot) : '—';
 
           const desc = document.getElementById('detail-description');
           desc.innerHTML = (p.description || '').split('\n\n').filter(Boolean).map(t => '<p>' + t + '</p>').join('');

@@ -1131,7 +1131,7 @@
         const metaParts = [];
         if (p.beds) metaParts.push(`<span><strong>${p.beds}</strong> bds</span>`);
         if (p.baths) metaParts.push(`<span><strong>${p.baths}</strong> ba</span>`);
-        if (p.size) metaParts.push(`<span><strong>${Number(p.size).toLocaleString()}</strong> m²</span>`);
+        if (p.size) metaParts.push(`<span><strong>${Number(p.size).toLocaleString()}</strong> m² / ${Math.round(Number(p.size)*10.7639).toLocaleString()} ft²</span>`);
         const typeName = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
         // "Home for sale" is wrong once it is sold.
         if (typeName) metaParts.push(`<span>${typeName}${isSold ? '' : ' for sale'}</span>`);

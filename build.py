@@ -117,6 +117,15 @@ def fmt_num(v):
     return str(int(f)) if f.is_integer() else str(f)
 
 
+def area_both(v):
+    """Area stored in m², rendered in both systems (buyers here use both)."""
+    if not v:
+        return None
+    m2 = int(float(v))
+    sf = format(round(m2 * 10.7639), ",")
+    return format(m2, ",") + ' m&sup2;<span class="detail-stat-alt">' + sf + " ft&sup2;</span>"
+
+
 def write_page(rel_dir, content):
     d = os.path.join(ROOT, rel_dir)
     os.makedirs(d, exist_ok=True)
@@ -271,8 +280,8 @@ def build_properties(tpl, rows):
         for stat, val in (
             ("stat-beds", fmt_num(p.get("beds"))),
             ("stat-baths", fmt_num(p.get("baths"))),
-            ("stat-sqft", f"{int(float(p['size'])):,}" if p.get("size") else None),
-            ("stat-lot", f"{int(float(p['lot'])):,}" if p.get("lot") else None),
+            ("stat-sqft", area_both(p.get("size"))),
+            ("stat-lot", area_both(p.get("lot"))),
         ):
             doc = sub_once(
                 doc, rf'<span class="detail-stat-value" id="{stat}">&mdash;</span>',
@@ -483,7 +492,8 @@ def _prop_card(p):
     if p.get("baths"):
         meta.append("<span><strong>" + fmt_num(p["baths"]) + "</strong> ba</span>")
     if p.get("size"):
-        meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2;</span>")
+        meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2; / "
+                    + format(round(float(p["size"]) * 10.7639), ",") + " ft&sup2;</span>")
     tname = esc((p.get("type") or "home").capitalize())
     meta.append("<span>" + tname + ("" if sold else " for sale") + "</span>")
     meta_html = '<span class="meta-divider">|</span>'.join(meta)
@@ -511,7 +521,8 @@ def _featured_card(p):
     if p.get("baths"):
         meta.append("<span><strong>" + fmt_num(p["baths"]) + "</strong> Baths</span>")
     if p.get("size"):
-        meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2;</span>")
+        meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2; / "
+                    + format(round(float(p["size"]) * 10.7639), ",") + " ft&sup2;</span>")
     return ('<a href="/property/' + p["id"] + '/" class="property-card">'
             + '<div class="property-img-placeholder"' + bg + '>'
             + '<div class="property-badge">Featured</div>'
