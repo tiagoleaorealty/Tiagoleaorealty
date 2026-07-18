@@ -4,7 +4,7 @@
     {
       "name": "static-site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-c", "import os,http.server,socketserver; os.chdir('/Users/tiagoleao/Desktop/WEBSITE'); h=http.server.SimpleHTTPRequestHandler; socketserver.TCPServer(('',8000),h).serve_forever()"],
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "/Users/tiagoleao/Desktop/WEBSITE"],
       "port": 8000
     }
   ]

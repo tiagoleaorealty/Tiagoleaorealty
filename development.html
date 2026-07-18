@@ -517,24 +517,29 @@
       }
 
       // Homes for sale IN this community (location match), with drive-time
-      // proximity as the fallback when nothing matches by name.
-      const props = await TL.getProperties();
+      // proximity as the fallback when nothing matches by name. Sold homes
+      // appear only in the in-community list, where the card labels them.
+      const props = await TL.getProperties({ includeSold: true });
       let inDev = [];
       if (props && props.length && s.match_location) {
         const key = decode(s.match_location).toLowerCase();
-        inDev = props.filter(p => (decode(p.location || '')).toLowerCase().includes(key));
+        inDev = props
+          .filter(p => (decode(p.location || '')).toLowerCase().includes(key))
+          .sort((a, b) => (a.status === 'sold') - (b.status === 'sold'));
       }
-      if (props && props.length && s.lat && s.lng) {
-        const withPins = props.filter(p => p.lat != null && p.lng != null);
+      let near = [];
+      let routed = false;
+      if (inDev.length) {
+        near = inDev.slice(0, 6);
+      } else if (props && props.length && s.lat && s.lng) {
+        const forSale = props.filter(p => p.status !== 'sold' && p.lat != null && p.lng != null);
         // Shortlist by straight line first — Matrix caps at 25 coordinates.
-        const shortlist = withPins
+        const shortlist = forSale
           .map(p => ({ ...p, d: TL.distanceKm(+s.lat, +s.lng, +p.lat, +p.lng) }))
           .sort((a, b) => a.d - b.d)
           .slice(0, 24);
 
-        let near = shortlist.filter(p => p.d <= 20).slice(0, 3);
-        if (inDev.length) { near = inDev.slice(0, 6); routed = false; }
-        let routed = false;
+        near = shortlist.filter(p => p.d <= 20).slice(0, 3);
         const key = TL.getMapboxKey();
         if (key && shortlist.length) {
           try {
@@ -562,8 +567,9 @@
             console.info('[Mapbox] Drive times unavailable, using straight-line distance:', e.message);
           }
         }
+      }
 
-        if (near.length) {
+      if (near.length) {
           document.getElementById('sch-nearby').innerHTML = `
             <h2 class="sch-section-title">${inDev.length ? `Homes for sale in ${s.name}` : `Homes near ${s.name}`}</h2>
             <p class="sch-section-sub">${inDev.length ? 'Current listings from my portfolio in this community.' : routed ? 'Driving time to this community, by road.' : 'Closest listings to this community.'}</p>
@@ -580,7 +586,6 @@
                   </div>
                 </a>`).join('')}
             </div>`;
-        }
       }
 
       // Schema: School + breadcrumbs. Only assert fields the school publishes.
