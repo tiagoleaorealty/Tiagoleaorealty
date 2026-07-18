@@ -437,6 +437,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; color: var(--stone); letter-spacing: 0.08em;
     }
+    .map-location-line { font-size: 15px; color: var(--sand); margin: -8px 0 16px; }
     .map-marker {
       width: 36px; height: 36px;
       background: var(--terra);
@@ -1016,7 +1017,6 @@
     #footer .footer-bottom { border-top-color: rgba(255,255,255,0.15); }
     #footer .footer-copy { color: rgba(255,255,255,0.55); }
     #footer .footer-domain { color: rgba(255,255,255,0.35); }
-    #footer a[href="admin.html"] { color: rgba(255,255,255,0.3) !important; }
   
   
     /* Resources dropdown */
@@ -1200,9 +1200,10 @@
              where the house actually is. -->
         <div class="map-section reveal" id="map-section">
           <div class="detail-section-title">Location</div>
-          <div id="property-map">
-            <div class="map-placeholder">Map loading…</div>
-          </div>
+          <!-- Written location summary stays even if the interactive map
+               cannot load; the map div starts empty (no placeholder text). -->
+          <p class="map-location-line" id="map-location-line"></p>
+          <div id="property-map"></div>
         </div>
 
       </div>
@@ -1264,8 +1265,9 @@
     </div>
   </div>
 
-  <!-- ── Similar Properties ──────────────────────────────────── -->
-  <section class="similar-section">
+  <!-- ── Similar Properties — hidden until cards actually render, so
+       crawlers and no-JS visitors never see an empty shell ──────── -->
+  <section class="similar-section" id="similar-section" style="display:none;">
     <div class="similar-label">Similar Properties</div>
     <h2 class="similar-heading">You Might Also Like</h2>
     <div class="similar-grid" id="similar-grid">
@@ -1333,7 +1335,8 @@
     function initMap(lat, lng) {
       const mapKey = (typeof TL !== 'undefined') ? TL.getMapboxKey() : '';
       if (!mapKey || !lat || !lng) {
-        document.getElementById('property-map').innerHTML = '<div class="map-placeholder">Location map unavailable</div>';
+        // No map possible — the written location line above still gives context.
+        document.getElementById('property-map').style.display = 'none';
         return;
       }
       mapboxgl.accessToken = mapKey;
@@ -1469,7 +1472,7 @@
 
     // ── Similar Properties ────────────────────────────────────────
     function renderSimCard(id, price, beds, baths, sqft, name, type, imgUrl) {
-      return `<a href="/property/${p.slug || p.id}/" class="sim-card">
+      return `<a href="/property/${encodeURIComponent(id)}/" class="sim-card">
         <div class="sim-img">
           ${imgUrl ? `<img src="${imgUrl}" alt="${name}" />` : ''}
           <span class="sim-type">${type}</span>
@@ -1493,24 +1496,27 @@
         try {
           const all = await TL.getProperties();
           if (all && all.length > 0) {
-            const others = all.filter(p => String(p.id) !== currentIdStr).slice(0, 3);
+            const others = all.filter(p => String(p.id) !== currentIdStr && String(p.slug) !== currentIdStr).slice(0, 3);
             if (others.length > 0) {
               grid.innerHTML = others.map(p => renderSimCard(
-                p.id, p.price || '—',
+                p.slug || p.id, p.price || '—',
                 p.beds || '—', p.baths || '—',
                 p.size ? Number(p.size).toLocaleString() : '—',
                 p.name || '', (p.type || 'property').charAt(0).toUpperCase() + (p.type || 'property').slice(1),
                 p.photos && p.photos[0] ? p.photos[0] : ''
               )).join('');
+              document.getElementById('similar-section').style.display = '';
               return;
             }
           }
         } catch(e) {}
       }
 
-      // No data: hide the similar-properties section
-      const section = grid.closest('.similar-section') || grid.parentElement;
-      if (section) section.style.display = 'none';
+      // No fresh data: hide the section only when nothing was baked into it.
+      if (!grid.children.length) {
+        const section = grid.closest('.similar-section') || grid.parentElement;
+        if (section) section.style.display = 'none';
+      }
     }
 
     // Try Supabase first, fall back to static data
@@ -1527,6 +1533,7 @@
           document.getElementById('detail-type').textContent = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
           document.getElementById('detail-title').textContent = p.name || '';
           document.getElementById('detail-location').textContent = p.location || '';
+          document.getElementById('map-location-line').textContent = p.location || '';
           // A sold listing stays up, but the price must not read as an asking
           // price — a buyer should not be able to miss that it is gone.
           const priceEl = document.getElementById('detail-price');

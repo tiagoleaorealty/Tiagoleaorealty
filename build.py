@@ -215,6 +215,57 @@ def ld_script(obj, baked=True):
 
 # ── properties ───────────────────────────────────────────────────
 
+# SVGs and band wording mirror renderAreaSection() in property-detail.html —
+# keep the two in sync so the runtime re-render is pixel-identical.
+_AROUND_ICONS = {
+    "walk": '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l3-7 4-2-1-5"/><path d="M13 7l4 2 2 4"/><path d="M10 14l-3-3"/></svg>',
+    "beach": '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5S16 18 18 18s2-1.5 4-1.5"/><path d="M2 22c2 0 2-1.5 4-1.5S8 22 10 22s2-1.5 4-1.5S16 22 18 22s2-1.5 4-1.5"/><circle cx="12" cy="7" r="4"/></svg>',
+    "plane": '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5a2.5 2.5 0 000-3.5 2.5 2.5 0 00-3.5 0L12.5 7.5 4.3 5.7a1 1 0 00-1 1.6L8 11l-2 2H3l-1 2 4 1 1 4 2-1v-3l2-2 3.7 4.7a1 1 0 001.6-1z"/></svg>',
+}
+
+
+def _around_tile(icon, label, value, unit, note):
+    return ('<div class="around-tile"><div class="around-icon">' + _AROUND_ICONS[icon]
+            + '</div><div><div class="around-label">' + label
+            + '</div><div class="around-value">' + str(value)
+            + (' <span>' + unit + '</span>' if unit else '')
+            + '</div>' + ('<div class="around-note">' + note + '</div>' if note else '')
+            + '</div></div>')
+
+
+def _around_tiles(p):
+    tiles = []
+    ws = p.get("walk_score")
+    if ws is not None and ws != "":
+        ws = int(ws)
+        band = ("Walker's paradise" if ws >= 90 else "Very walkable" if ws >= 70
+                else "Somewhat walkable" if ws >= 50 else "Car dependent" if ws >= 25 else "Car required")
+        tiles.append(_around_tile("walk", "Walk Score", ws, "/ 100", band))
+    bm = p.get("beach_minutes")
+    if bm is not None and bm != "":
+        drive = p.get("beach_mode") == "drive"
+        tiles.append(_around_tile("beach", "To the beach", bm, "min", "By car" if drive else "On foot"))
+    am = p.get("airport_minutes")
+    if am is not None and am != "":
+        tiles.append(_around_tile("plane", "To Liberia (LIR)", am, "min", "By car"))
+    return "".join(tiles)
+
+
+def _sim_card(o):
+    slug = o.get("slug") or o["id"]
+    name = esc(o.get("name") or "")
+    img = ('<img src="' + esc(o["photos"][0]) + '" alt="' + name + '" />') if o.get("photos") else ""
+    typ = (o.get("type") or "property").capitalize()
+    size = f'{int(o["size"]):,}' if o.get("size") else "&mdash;"
+    return ('<a href="/property/' + slug + '/" class="sim-card"><div class="sim-img">' + img
+            + '<span class="sim-type">' + esc(typ) + '</span></div><div class="sim-info">'
+            + '<div class="sim-price">' + esc(o.get("price") or "&mdash;") + '</div>'
+            + '<div class="sim-meta"><strong>' + str(o.get("beds") or "&mdash;") + '</strong> bd'
+            + '<span class="meta-div">|</span><strong>' + str(o.get("baths") or "&mdash;") + '</strong> ba'
+            + '<span class="meta-div">|</span><strong>' + size + '</strong> m&sup2;</div>'
+            + '<div class="sim-name">' + name + '</div></div></a>')
+
+
 def build_properties(tpl, rows):
     if not rows:
         raise SystemExit("BUILD FAILED: zero properties returned")
@@ -343,6 +394,37 @@ def build_properties(tpl, rows):
                 '<div class="features-grid" id="features-grid" style="display:none"></div>',
                 "features (empty, heading dropped)", flags=re.S,
             )
+
+        # Written location summary under the Location heading (survives a
+        # failed map load, and gives crawlers real text instead of a shell).
+        doc = sub_once(
+            doc, r'<p class="map-location-line" id="map-location-line"></p>',
+            f'<p class="map-location-line" id="map-location-line">{esc(loc)}</p>',
+            "map location line",
+        )
+
+        # Getting Around: bake the tiles whenever the data exists, mirroring
+        # the runtime renderAreaSection() markup exactly (JS re-renders the
+        # same values, so there is no flash of different content).
+        around = _around_tiles(p)
+        if around:
+            doc = sub_once(doc, r'<div id="area-section" style="display:none;">',
+                           '<div id="area-section">', "area-section unhide")
+            doc = sub_once(doc, r'<div id="around-block" class="area-block" style="display:none;">',
+                           '<div id="around-block" class="area-block" style="display:block;">', "around-block unhide")
+            doc = sub_once(doc, r'<div class="around-grid" id="around-grid"></div>',
+                           f'<div class="around-grid" id="around-grid">{around}</div>', "around tiles")
+
+        # Similar properties: bake three real cards (internal links crawlers
+        # can follow) and unhide the section only when cards exist.
+        others = [o for o in rows if o["id"] != p["id"] and o.get("status") == "active"][:3]
+        if others:
+            cards = "".join(_sim_card(o) for o in others)
+            doc = sub_once(doc, r'<section class="similar-section" id="similar-section" style="display:none;">',
+                           '<section class="similar-section" id="similar-section">', "similar unhide")
+            doc = sub_once(doc, r'<div class="similar-grid" id="similar-grid">\s*<!-- Injected by JS -->\s*</div>',
+                           f'<div class="similar-grid" id="similar-grid">{cards}</div>',
+                           "similar cards", flags=re.S)
         NA = "Available on request"
         def _atext(v):
             m2 = int(float(v))
