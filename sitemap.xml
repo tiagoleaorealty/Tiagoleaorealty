@@ -309,4 +309,52 @@
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
+  <url>
+    <loc>https://soldbytiago.com/development/hacienda-pinilla/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/reserva-conchal/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/senderos-tamarindo/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/tamarindo-park/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/las-ventanas-playa-grande/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/mar-vista/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/catalina-cove/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/development/las-catalinas/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>

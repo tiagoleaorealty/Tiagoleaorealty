@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d4a4a" />
+  <title>Catalina Cove | Guanacaste Communities | Tiago Leao</title>
+  <meta name="description" content="An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry pri…">
+  <link rel="canonical" href="https://soldbytiago.com/development/catalina-cove/">
+  <meta property="og:title" content="Catalina Cove">
+  <meta property="og:description" content="An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry pri…">
+  <meta property="og:url" content="https://soldbytiago.com/development/catalina-cove/">
+  <meta name="twitter:image" content="https://soldbytiago.com/og-image.jpg">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="fonts.css" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #fafafa;
+      --charcoal: #fafafa;
+      --stone:    #6b7a7a;
+      --sand:     #3d4a4a;
+      --cream:    #1d2021;
+      --terra:    #0d4a4a;
+      --accent:   #ffffff;
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 48px;
+      background: rgba(250,250,250,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .nav-logo {
+      font-size: 18px; font-weight: 500; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--cream);
+      display: flex; flex-direction: column; line-height: 1.2;
+    }
+    .nav-logo-sub {
+      font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--terra); font-weight: 400;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+    .nav-cta { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--cream); border-bottom: 1px solid var(--terra); padding-bottom: 2px; transition: color .2s; }
+    .nav-cta:hover { color: var(--terra); }
+
+    /* Page header */
+    .page-header {
+      padding: 160px 48px 60px;
+      max-width: 900px;
+    }
+    .page-header h1 {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+    .page-header p {
+      font-size: 16px;
+      color: var(--stone);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* Blog grid */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      padding: 0 48px 80px;
+    }
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--black);
+      border: 0.5px solid rgba(0,0,0,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    .blog-card:hover {
+      border-color: rgba(0,0,0,0.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .blog-card-img {
+      height: 200px;
+      background: #dde3e2;
+    }
+    .blog-card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .blog-card-tag {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terra);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .blog-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .blog-card-excerpt {
+      font-size: 14px;
+      color: var(--stone);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .blog-card-meta {
+      font-size: 12px;
+      color: var(--stone);
+      margin-bottom: 12px;
+    }
+    .blog-card-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--terra);
+      letter-spacing: 0.02em;
+      transition: opacity 0.2s;
+    }
+    .blog-card-link:hover { opacity: 0.7; }
+
+    /* Footer */
+    footer {
+      background: var(--black);
+      padding: 80px 48px 40px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+    .footer-name { font-size: 32px; font-weight: 700; letter-spacing: -.03em; color: var(--cream); margin-bottom: 6px; }
+    .footer-tagline { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); }
+    .footer-contact { display: flex; flex-direction: column; gap: 14px; }
+    .footer-contact a { font-size: 14px; color: var(--sand); border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; width: fit-content; }
+    .footer-contact a:hover { color: var(--cream); border-color: var(--terra); }
+    .footer-krain { max-width: 200px; }
+    .footer-krain img { height: 32px; opacity: .7; margin-bottom: 12px; width: auto; filter: invert(1); }
+    .footer-krain p { font-size: 12px; color: var(--stone); line-height: 1.6; margin-bottom: 8px; }
+    .footer-krain a { font-size: 12px; color: var(--sand); border-bottom: 1px solid var(--terra); transition: color .2s; }
+    .footer-krain a:hover { color: var(--cream); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(0,0,0,0.06); padding-top: 24px;
+    }
+    .footer-copy { font-size: 12px; color: var(--stone); }
+    .footer-domain { font-size: 12px; color: rgba(0,0,0,.25); letter-spacing: .08em; text-transform: uppercase; }
+
+    /* Hamburger & Mobile Nav */
+    .nav-hamburger { display: none; flex-direction: column; justify-content: center; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; z-index: 201; flex-shrink: 0; }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    nav.nav-open .nav-hamburger span { background: #fff !important; }
+    nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+    nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .nav-mobile { position: fixed; inset: 0; background: #1d2021; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile.open { opacity: 1; pointer-events: all; }
+    .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
+    .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile a:hover, .nav-mobile a:active { color: #fff; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #ffffff; color: #1d2021 !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .page-header { padding: 110px 24px 48px; }
+      .blog-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+      footer { padding: 60px 24px 40px; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .page-header h1 { font-size: 32px; }
+    }
+  
+    /* ── Footer: brand teal with white text ───────────────────── */
+    footer { background: #0d4a4a; }
+    footer .footer-top { border-bottom-color: rgba(255,255,255,0.15); }
+    footer .footer-name { color: #fff; }
+    footer .footer-tagline { color: rgba(255,255,255,0.55); }
+    footer .footer-contact a { color: rgba(255,255,255,0.78); }
+    footer .footer-contact a:hover { color: #fff; border-color: #ffffff; }
+    footer .footer-krain p { color: rgba(255,255,255,0.55); }
+    footer .footer-krain a { color: rgba(255,255,255,0.78); border-bottom-color: rgba(255,255,255,0.6); }
+    footer .footer-krain a:hover { color: #fff; }
+    footer .footer-krain img { filter: none !important; opacity: 0.9 !important; }
+    footer .footer-bottom { border-top-color: rgba(255,255,255,0.15); }
+    footer .footer-copy { color: rgba(255,255,255,0.55); }
+    footer .footer-domain { color: rgba(255,255,255,0.35); }
+    footer a[href="admin.html"] { color: rgba(255,255,255,0.3) !important; }
+  
+  
+    /* Resources dropdown */
+    .nav-dd { position: relative; }
+    .nav-dd::after { content: ""; position: absolute; left: -10px; right: -10px; top: 100%; height: 16px; }
+    .nav-dd-toggle { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+    .nav-dd-toggle svg { width: 9px; height: 6px; transition: transform .25s; }
+    .nav-dd:hover .nav-dd-toggle svg, .nav-dd:focus-within .nav-dd-toggle svg { transform: rotate(180deg); }
+    .nav-dd-menu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); list-style: none; margin: 0; padding: 8px; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.12); min-width: 195px; opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s, visibility .2s; }
+    .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #3d4a4a !important; transition: background .15s, color .15s; }
+    .nav-dd-menu li a:hover { background: rgba(13,74,74,.07); color: #0d4a4a !important; }
+  
+  
+    /* ── Nav v2: consistent items + mobile Resources group ────── */
+    .nav-links { gap: 34px; white-space: nowrap; }
+    .nav-mobile a { font-size: 20px; padding: 14px 0; }
+    .nav-mobile a.nav-mobile-cta-btn { font-size: 13px !important; padding: 14px 36px !important; margin-top: 22px; }
+    .nav-mobile-group { width: 100%; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .nav-mobile-group summary {
+      list-style: none; cursor: pointer;
+      font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.6);
+      padding: 14px 0; letter-spacing: -0.02em; line-height: 1.2;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: color .2s;
+    }
+    .nav-mobile-group summary::-webkit-details-marker { display: none; }
+    .nav-mobile-group summary svg { width: 12px; height: 8px; transition: transform .25s; }
+    .nav-mobile-group[open] summary { color: #fff; }
+    .nav-mobile-group[open] summary svg { transform: rotate(180deg); }
+    .nav-mobile-group a { display: block; width: 100%; text-align: center; font-size: 16px !important; padding: 11px 0 !important; color: rgba(255,255,255,0.5) !important; border-bottom: none !important; }
+    .nav-mobile-group a:first-of-type { margin-top: 4px; }
+    .nav-mobile-group[open] { padding-bottom: 10px; }
+  
+  </style>
+  <style>
+    /* ── School detail ─────────────────────────────────────────── */
+    .sch-wrap { max-width: 1100px; margin: 0 auto; padding: 0 60px 100px; }
+    .sch-crumb { font-size: 13px; color: var(--stone); padding: 30px 0 18px; }
+    .sch-crumb a { color: var(--stone); text-decoration: none; }
+    .sch-crumb a:hover { color: var(--terra); }
+    .sch-hero {
+      height: 340px; border-radius: 12px; overflow: hidden; margin-bottom: 34px;
+      background: linear-gradient(135deg, #0b2b2b, #0d4a4a);
+      background-size: cover; background-position: center;
+    }
+    .sch-town {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--terra); margin-bottom: 10px;
+    }
+    .sch-title {
+      font-size: 44px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.1;
+      color: var(--cream); margin-bottom: 14px;
+    }
+    .sch-excerpt { font-size: 17px; line-height: 1.65; color: var(--sand); max-width: 720px; margin-bottom: 40px; }
+    .sch-cols { display: grid; grid-template-columns: 1fr 320px; gap: 50px; align-items: start; }
+    .sch-body p { font-size: 16px; line-height: 1.8; color: var(--sand); margin-bottom: 18px; }
+    .sch-body h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); margin: 34px 0 14px; }
+    .sch-body h3 { font-size: 19px; font-weight: 700; color: var(--cream); margin: 26px 0 10px; }
+    .sch-body ul, .sch-body ol { margin: 0 0 18px 20px; }
+    .sch-body li { font-size: 16px; line-height: 1.8; color: var(--sand); margin-bottom: 6px; }
+    .sch-body .body-link { color: var(--terra); }
+    .sch-body .body-hr { border: none; border-top: 1px solid rgba(0,0,0,0.08); margin: 32px 0; }
+    .sch-empty { font-size: 15px; line-height: 1.7; color: var(--stone); font-style: italic; }
+    .sch-facts {
+      background: #fff; border: 1px solid rgba(0,0,0,0.07); border-radius: 10px;
+      padding: 26px 26px 10px; position: sticky; top: 100px;
+    }
+    .sch-facts h3 {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 18px;
+    }
+    .sch-fact { margin-bottom: 16px; }
+    .sch-fact-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 4px;
+    }
+    .sch-fact-value { font-size: 14px; line-height: 1.55; color: var(--cream); font-weight: 500; }
+    .sch-fact-value a { color: var(--terra); text-decoration: none; word-break: break-word; }
+    .sch-map { height: 300px; border-radius: 10px; overflow: hidden; margin-top: 40px; }
+    .sch-section-title {
+      font-size: 26px; font-weight: 700; letter-spacing: -0.025em; color: var(--cream);
+      margin: 60px 0 8px;
+    }
+    .sch-section-sub { font-size: 14px; color: var(--stone); margin-bottom: 24px; }
+    .sch-listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+    .sch-listing {
+      text-decoration: none; color: inherit; background: #fff;
+      border: 1px solid rgba(0,0,0,0.07); border-radius: 10px; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .sch-listing:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .sch-listing-photo { height: 150px; background: #e8e5df; background-size: cover; background-position: center; }
+    .sch-listing-body { padding: 16px 18px 20px; }
+    .sch-listing-price { font-size: 16px; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
+    .sch-listing-name { font-size: 13px; color: var(--stone); line-height: 1.45; }
+    .sch-listing-dist { font-size: 11px; font-weight: 700; color: var(--terra); margin-top: 8px; letter-spacing: 0.04em; }
+    .sch-loading { text-align: center; padding: 80px 20px; color: var(--stone); font-size: 14px; }
+    @media (max-width: 900px) {
+      .sch-wrap { padding: 0 24px 70px; }
+      .sch-cols { grid-template-columns: 1fr; gap: 34px; }
+      .sch-facts { position: static; }
+      .sch-title { font-size: 32px; }
+      .sch-hero { height: 220px; }
+    }
+  </style>
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "Residence",
+  "name": "Catalina Cove",
+  "url": "https://soldbytiago.com/development/catalina-cove/",
+  "description": "An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry pri…",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Brasilito",
+    "addressRegion": "Guanacaste",
+    "addressCountry": "CR"
+  }
+}
+</script>
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://soldbytiago.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Communities",
+      "item": "https://soldbytiago.com/developments.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Catalina Cove",
+      "item": "https://soldbytiago.com/development/catalina-cove/"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Tiago Leao<span class="nav-logo-sub">Guanacaste Real Estate</span></a>
+    <ul class="nav-links">
+      <li><a href="properties.html">Properties</a></li>
+      <li><a href="communities.html">Communities</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dd">
+        <a class="nav-dd-toggle" tabindex="0">Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></a>
+        <ul class="nav-dd-menu">
+          <li><a href="buyers-guide.html">Buyer's Guide</a></li>
+          <li><a href="sellers-guide.html">Seller's Guide</a></li>
+          <li><a href="schools.html">Schools</a></li>
+          <li><a href="developments.html">Developments</a></li>
+        </ul>
+      </li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="index.html#form-section">Work With Me</a></li>
+    </ul>
+    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="properties.html">Properties</a>
+    <a href="communities.html">Communities</a>
+    <a href="about.html">About</a>
+    <details class="nav-mobile-group">
+      <summary>Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></summary>
+      <a href="buyers-guide.html">Buyer's Guide</a>
+      <a href="sellers-guide.html">Seller's Guide</a>
+      <a href="schools.html">Schools</a>
+      <a href="developments.html">Developments</a>
+    </details>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#form-section">Work With Me</a>
+    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+  </div>
+
+
+  <div class="sch-wrap" id="school-container">
+    <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; Catalina Cove</div><div class="sch-hero"></div><div class="sch-town">Brasilito</div><h1 class="sch-title">Catalina Cove</h1><p class="sch-excerpt">An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry prices behind this coastline.</p><div class="sch-cols"><div class="sch-body"><p>Catalina Cove is the quiet achiever of the Brasilito corridor — established in 2005, roughly 40 hectares, and organized around genuinely oversized lots: about 73 parcels averaging 5,000 m² plus 29 more around 2,000 m².</p><p>Twenty years of growth means mature trees, settled roads, and a real mix of full-time residents alongside vacation homes — the kind of lived-in feel new developments spend a decade chasing.</p><h2>What makes it different</h2><p>Accessibility, in both senses. It is walking-to-short-drive distance from Playa Brasilito, minutes from Conchal and Flamingo — and its entry prices are among the lowest of any gated community in this corridor, with lots recently advertised from around $60,000 and homes from the low $200s (asking prices; verify current availability). For a coast where gated communities often start at seven figures, that is a different market entirely.</p><h2>Who it fits</h2><p>First-time Costa Rica buyers who want gated security and land without resort pricing; builders who want a large flat-ish lot in an established neighborhood; and buyers priced out of Flamingo or Conchal who still want that ten-minute circle.</p><h2>Honest considerations</h2><p>There is no beach club, golf course or resort amenity stack here — this is a residential neighborhood, full stop. The HOA is functioning and fees are modest by coastal standards, but as always I confirm current dues and any build guidelines before an offer.</p><h2>Alternatives to compare</h2><p>Mar Vista for grander infrastructure and the school, Potrero&#x27;s Surfside area for beach-walk proximity, Las Ventanas for view acreage.</p></div><aside class="sch-facts"><h3>The Details</h3><div class="sch-fact"><div class="sch-fact-label">Town</div><div class="sch-fact-value">Brasilito</div></div><div class="sch-fact"><div class="sch-fact-label">Established</div><div class="sch-fact-value">2005</div></div></aside></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-name">Tiago Leao</div>
+        <div class="footer-tagline">Guanacaste Real Estate</div>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+        <a href="https://www.instagram.com/soldbytiago" target="_blank">@soldbytiago</a>
+        <a href="https://www.linkedin.com/in/tiago-leao-643b6b339/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://share.google/8hH5U6DUcLnVQqh2Y" target="_blank" rel="noopener">Google Business Profile</a>
+        <a href="https://soldbytiago.com">soldbytiago.com</a>
+      </div>
+      <div class="footer-krain">
+        <img src="KRAIN LOGO.png" alt="KRAIN Real Estate" />
+        <p>Agent at KRAIN Luxury Real Estate, Costa Rica's most connected luxury network.</p>
+        <a href="https://krainrealestate.com" target="_blank">KRAIN Real Estate &rarr;</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 Tiago Leao. All rights reserved.</span>
+      <span class="footer-domain">soldbytiago.com</span>
+    </div>
+  </footer>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <script src="supabase-data.js"></script>
+  <script>
+    // Same markdown subset the blog uses: ## h2, ### h3, **bold**, *italic*,
+    // [links](url), "- " bullets, "1. " numbers, --- dividers.
+    function parseBody(text) {
+      if (!text) return '';
+      function inline(t) {
+        t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g, '<a href="$2" class="body-link" target="_blank" rel="noopener">$1</a>');
+        t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        return t;
+      }
+      return text.split('\n\n').filter(Boolean).map(block => {
+        block = block.trim();
+        if (block === '---') return '<hr class="body-hr" />';
+        if (block.startsWith('### ')) return '<h3>' + inline(block.slice(4)) + '</h3>';
+        if (block.startsWith('## ')) return '<h2>' + inline(block.slice(3)) + '</h2>';
+        const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+        if (lines.length > 1 && lines.every(l => l.startsWith('- ')))
+          return '<ul>' + lines.map(l => '<li>' + inline(l.slice(2)) + '</li>').join('') + '</ul>';
+        if (lines.length > 1 && lines.every(l => /^\d+\.\s/.test(l)))
+          return '<ol>' + lines.map(l => '<li>' + inline(l.replace(/^\d+\.\s/, '')) + '</li>').join('') + '</ol>';
+        return '<p>' + inline(block) + '</p>';
+      }).join('');
+    }
+
+    // Only towns that actually have a community page. An unmapped town simply
+    // renders as plain text rather than linking to a 404.
+    const TOWN_PAGES = {
+      'Tamarindo': 'tamarindo.html',
+      'Brasilito': 'conchal.html',
+      'Nosara': 'nosara.html',
+      'Playas del Coco': 'playas-del-coco.html'
+    };
+
+    (async function () {
+      const container = document.getElementById('school-container');
+      // Pre-rendered pages live at /school/<slug>/ — path first, ?slug= fallback.
+      const slug = (location.pathname.match(/\/development\/([^\/]+)/) || [])[1]
+        || new URLSearchParams(location.search).get('slug');
+      const notFound = '<div class="sch-loading">Community not found. <a href="developments.html" style="color:var(--terra);">All communities &rarr;</a></div>';
+
+      if (!slug || typeof TL === 'undefined' || !TL.isConnected()) { container.innerHTML = notFound; return; }
+      const s = await TL.getDevelopment(slug);
+      if (!s) { container.innerHTML = notFound; return; }
+
+      // Strings arrive HTML-escaped from supabase-data.js — safe for innerHTML
+      // as-is. decode() is only for plain-text slots: title, meta, JSON-LD.
+      const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
+      const plainName = decode(s.name);
+      const plainDesc = decode(s.meta_desc || s.excerpt || '');
+      const pageUrl = 'https://soldbytiago.com/development/' + encodeURIComponent(decode(s.slug)) + '/';
+
+      document.title = plainName + ' | Guanacaste Communities | Tiago Leao';
+      const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.setAttribute('content', val); };
+      setMeta('meta[name="description"]', plainDesc);
+      setMeta('meta[property="og:title"]', plainName);
+      setMeta('meta[property="og:description"]', plainDesc);
+      setMeta('meta[property="og:url"]', pageUrl);
+      if (s.cover_url) setMeta('meta[property="og:image"]', decode(s.cover_url));
+      const canon = document.querySelector('link[rel="canonical"]');
+      if (canon) canon.href = pageUrl;
+
+      const fact = (label, value) => value
+        ? `<div class="sch-fact"><div class="sch-fact-label">${label}</div><div class="sch-fact-value">${value}</div></div>` : '';
+      const townLink = TOWN_PAGES[decode(s.town)]
+        ? `<a href="${TOWN_PAGES[decode(s.town)]}" style="color:var(--terra);text-decoration:none;">${s.town}</a>`
+        : s.town;
+
+      container.innerHTML = `
+        <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; ${s.name}</div>
+        <div class="sch-hero"${s.cover_url ? ` style="background-image:url('${s.cover_url}')"` : ''}></div>
+        ${s.town ? `<div class="sch-town">${s.town}</div>` : ''}
+        <h1 class="sch-title">${s.name}</h1>
+        ${s.excerpt ? `<p class="sch-excerpt">${s.excerpt}</p>` : ''}
+        <div class="sch-cols">
+          <div class="sch-body" id="sch-body">
+            ${s.body ? parseBody(s.body)
+              : `<p class="sch-empty">A full write-up of this school is on the way. In the meantime, the details opposite come straight from the school, and their website has the most current information.</p>`}
+          </div>
+          <aside class="sch-facts"><h3>The Details</h3>
+            ${fact('Town', townLink)}
+            ${fact('Established', s.established)}
+            ${fact('Typical asking range', s.price_range)}
+            ${fact('HOA fees', s.hoa_fees)}
+            ${fact('Amenities', s.amenities)}
+            ${fact('Beach access', s.beach_access)}
+            ${fact('Rental rules', s.rental_rules)}
+            ${fact('Construction', s.construction_rules)}
+            ${fact('Title structure', s.title_structure)}
+            ${fact('Best for', s.best_for)}
+          </aside>
+        </div>
+        ${s.lat && s.lng ? '<div class="sch-map" id="sch-map"></div>' : ''}
+        <div id="sch-nearby"></div>
+      `;
+
+      // Map
+      if (s.lat && s.lng) {
+        const key = TL.getMapboxKey();
+        if (key && typeof mapboxgl !== 'undefined') {
+          mapboxgl.accessToken = key;
+          const map = new mapboxgl.Map({
+            container: 'sch-map', style: 'mapbox://styles/mapbox/light-v11',
+            center: [+s.lng, +s.lat], zoom: 13
+          });
+          map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+          new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([+s.lng, +s.lat]).addTo(map);
+        }
+      }
+
+      // Homes for sale IN this community (location match), with drive-time
+      // proximity as the fallback when nothing matches by name.
+      const props = await TL.getProperties();
+      let inDev = [];
+      if (props && props.length && s.match_location) {
+        const key = decode(s.match_location).toLowerCase();
+        inDev = props.filter(p => (decode(p.location || '')).toLowerCase().includes(key));
+      }
+      if (props && props.length && s.lat && s.lng) {
+        const withPins = props.filter(p => p.lat != null && p.lng != null);
+        // Shortlist by straight line first — Matrix caps at 25 coordinates.
+        const shortlist = withPins
+          .map(p => ({ ...p, d: TL.distanceKm(+s.lat, +s.lng, +p.lat, +p.lng) }))
+          .sort((a, b) => a.d - b.d)
+          .slice(0, 24);
+
+        let near = shortlist.filter(p => p.d <= 20).slice(0, 3);
+        if (inDev.length) { near = inDev.slice(0, 6); routed = false; }
+        let routed = false;
+        const key = TL.getMapboxKey();
+        if (key && shortlist.length) {
+          try {
+            const coords = [[+s.lng, +s.lat], ...shortlist.map(p => [+p.lng, +p.lat])]
+              .map(c => c.join(',')).join(';');
+            const res = await fetch(
+              `https://api.mapbox.com/directions-matrix/v1/mapbox/driving/${encodeURIComponent(coords)}`
+              + `?sources=0&annotations=duration,distance&access_token=${key}`);
+            if (res.ok) {
+              const data = await res.json();
+              const dur = (data.durations && data.durations[0] || []).slice(1);
+              const dist = (data.distances && data.distances[0] || []).slice(1);
+              if (dur.length === shortlist.length) {
+                near = shortlist
+                  .map((p, i) => ({ ...p,
+                    mins: dur[i] == null ? null : Math.round(dur[i] / 60),
+                    roadKm: dist[i] == null ? null : dist[i] / 1000 }))
+                  .filter(p => p.mins != null && p.mins <= 45)
+                  .sort((a, b) => a.mins - b.mins)
+                  .slice(0, 3);
+                routed = true;
+              }
+            }
+          } catch (e) {
+            console.info('[Mapbox] Drive times unavailable, using straight-line distance:', e.message);
+          }
+        }
+
+        if (near.length) {
+          document.getElementById('sch-nearby').innerHTML = `
+            <h2 class="sch-section-title">${inDev.length ? `Homes for sale in ${s.name}` : `Homes near ${s.name}`}</h2>
+            <p class="sch-section-sub">${inDev.length ? 'Current listings from my portfolio in this community.' : routed ? 'Driving time to this community, by road.' : 'Closest listings to this community.'}</p>
+            <div class="sch-listings">
+              ${near.map(p => `
+                <a href="/property/${encodeURIComponent(decode(p.slug || p.id))}/" class="sch-listing">
+                  <div class="sch-listing-photo"${p.photos && p.photos[0] ? ` style="background-image:url('${p.photos[0]}')"` : ''}></div>
+                  <div class="sch-listing-body">
+                    <div class="sch-listing-price">${p.price || ''}</div>
+                    <div class="sch-listing-name">${p.name || ''}</div>
+                    <div class="sch-listing-dist">${inDev.length ? (p.status === 'sold' ? 'Sold' : 'For sale') : routed
+                      ? `${p.mins} min drive`
+                      : (p.d < 1 ? Math.round(p.d * 1000) + ' m away' : p.d.toFixed(1) + ' km away')}</div>
+                  </div>
+                </a>`).join('')}
+            </div>`;
+        }
+      }
+
+      // Schema: School + breadcrumbs. Only assert fields the school publishes.
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'Residence',
+        'name': plainName,
+        'url': pageUrl,
+        'address': { '@type': 'PostalAddress', 'addressRegion': 'Guanacaste', 'addressCountry': 'CR' }
+      };
+      if (plainDesc) ld.description = plainDesc;
+      if (s.website) ld.sameAs = [decode(s.website)];
+      if (s.address) ld.address.streetAddress = decode(s.address);
+      if (s.town) ld.address.addressLocality = decode(s.town);
+      if (s.lat && s.lng) ld.geo = { '@type': 'GeoCoordinates', 'latitude': +s.lat, 'longitude': +s.lng };
+      if (s.cover_url) ld.image = decode(s.cover_url);
+
+      const crumbs = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://soldbytiago.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Communities', 'item': 'https://soldbytiago.com/developments.html' },
+          { '@type': 'ListItem', 'position': 3, 'name': plainName, 'item': pageUrl }
+        ]
+      };
+      // Baked pages already carry static JSON-LD; skip the runtime duplicates.
+      if (!document.querySelector('script[type="application/ld+json"][data-baked]')) {
+        [ld, crumbs].forEach(obj => {
+          const tag = document.createElement('script');
+          tag.type = 'application/ld+json';
+          tag.textContent = JSON.stringify(obj);
+          document.head.appendChild(tag);
+        });
+      }
+    })();
+  </script>
+
+  <script>
+    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
+  </script>
+
+</body>
+</html>
