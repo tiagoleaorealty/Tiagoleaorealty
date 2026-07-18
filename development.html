@@ -10,9 +10,9 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
-  <title>School | Tiago Leao | Guanacaste Real Estate</title>
-  <meta name="description" content="Schools in Guanacaste, Costa Rica — grades, curriculum, languages and location.">
-  <link rel="canonical" href="https://soldbytiago.com/schools.html">
+  <title>Community | Tiago Leao | Guanacaste Real Estate</title>
+  <meta name="description" content="Gated communities and residential developments in Guanacaste, Costa Rica — amenities, beach access, and current homes for sale.">
+  <link rel="canonical" href="https://soldbytiago.com/developments.html">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -443,12 +443,12 @@
     (async function () {
       const container = document.getElementById('school-container');
       // Pre-rendered pages live at /school/<slug>/ — path first, ?slug= fallback.
-      const slug = (location.pathname.match(/\/school\/([^\/]+)/) || [])[1]
+      const slug = (location.pathname.match(/\/development\/([^\/]+)/) || [])[1]
         || new URLSearchParams(location.search).get('slug');
-      const notFound = '<div class="sch-loading">School not found. <a href="schools.html" style="color:var(--terra);">All schools &rarr;</a></div>';
+      const notFound = '<div class="sch-loading">Community not found. <a href="developments.html" style="color:var(--terra);">All communities &rarr;</a></div>';
 
       if (!slug || typeof TL === 'undefined' || !TL.isConnected()) { container.innerHTML = notFound; return; }
-      const s = await TL.getSchool(slug);
+      const s = await TL.getDevelopment(slug);
       if (!s) { container.innerHTML = notFound; return; }
 
       // Strings arrive HTML-escaped from supabase-data.js — safe for innerHTML
@@ -456,9 +456,9 @@
       const decode = v => { const ta = document.createElement('textarea'); ta.innerHTML = v || ''; return ta.value; };
       const plainName = decode(s.name);
       const plainDesc = decode(s.meta_desc || s.excerpt || '');
-      const pageUrl = 'https://soldbytiago.com/school/' + encodeURIComponent(decode(s.slug)) + '/';
+      const pageUrl = 'https://soldbytiago.com/development/' + encodeURIComponent(decode(s.slug)) + '/';
 
-      document.title = plainName + ' | Schools in Guanacaste | Tiago Leao';
+      document.title = plainName + ' | Guanacaste Communities | Tiago Leao';
       const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el && val) el.setAttribute('content', val); };
       setMeta('meta[name="description"]', plainDesc);
       setMeta('meta[property="og:title"]', plainName);
@@ -470,12 +470,13 @@
 
       const fact = (label, value) => value
         ? `<div class="sch-fact"><div class="sch-fact-label">${label}</div><div class="sch-fact-value">${value}</div></div>` : '';
+      const NA = '<span style="color:var(--stone);font-weight:500;">Available on request</span>';
       const townLink = TOWN_PAGES[decode(s.town)]
         ? `<a href="${TOWN_PAGES[decode(s.town)]}" style="color:var(--terra);text-decoration:none;">${s.town}</a>`
         : s.town;
 
       container.innerHTML = `
-        <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="schools.html">Schools</a> &rsaquo; ${s.name}</div>
+        <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; ${s.name}</div>
         <div class="sch-hero"${s.cover_url ? ` style="background-image:url('${s.cover_url}')"` : ''}></div>
         ${s.town ? `<div class="sch-town">${s.town}</div>` : ''}
         <h1 class="sch-title">${s.name}</h1>
@@ -485,17 +486,17 @@
             ${s.body ? parseBody(s.body)
               : `<p class="sch-empty">A full write-up of this school is on the way. In the meantime, the details opposite come straight from the school, and their website has the most current information.</p>`}
           </div>
-          <aside class="sch-facts">
-            <h3>The Details</h3>
+          <aside class="sch-facts"><h3>The Details</h3>
             ${fact('Town', townLink)}
-            ${fact('Grades', s.grades)}
-            ${fact('Curriculum', s.curriculum)}
-            ${fact('Languages', s.languages)}
-            ${fact('Accreditation', s.accreditation)}
-            ${fact('Tuition', s.tuition)}
-            ${fact('Founded', s.founded)}
-            ${fact('Address', s.address)}
-            ${fact('Website', s.website ? `<a href="${s.website}" target="_blank" rel="noopener">${decode(s.website).replace(/^https?:\/\//, '').replace(/\/$/, '')}</a>` : '')}
+            ${fact('Established', s.established)}
+            ${fact('Typical asking range', s.price_range || NA)}
+            ${fact('HOA fees', s.hoa_fees || NA)}
+            ${fact('Amenities', s.amenities)}
+            ${fact('Beach access', s.beach_access)}
+            ${fact('Rental rules', s.rental_rules || NA)}
+            ${fact('Construction', s.construction_rules || NA)}
+            ${fact('Title structure', s.title_structure || NA)}
+            ${fact('Best for', s.best_for)}
           </aside>
         </div>
         ${s.lat && s.lng ? '<div class="sch-map" id="sch-map"></div>' : ''}
@@ -516,11 +517,14 @@
         }
       }
 
-      // Listings nearest this school, by real driving time.
-      // Straight-line was wrong here for the same reason it was wrong on the
-      // property pages: the Tamarindo estuary makes homes look close that are
-      // 30+ minutes around by road.
+      // Homes for sale IN this community (location match), with drive-time
+      // proximity as the fallback when nothing matches by name.
       const props = await TL.getProperties();
+      let inDev = [];
+      if (props && props.length && s.match_location) {
+        const key = decode(s.match_location).toLowerCase();
+        inDev = props.filter(p => (decode(p.location || '')).toLowerCase().includes(key));
+      }
       if (props && props.length && s.lat && s.lng) {
         const withPins = props.filter(p => p.lat != null && p.lng != null);
         // Shortlist by straight line first — Matrix caps at 25 coordinates.
@@ -530,6 +534,7 @@
           .slice(0, 24);
 
         let near = shortlist.filter(p => p.d <= 20).slice(0, 3);
+        if (inDev.length) { near = inDev.slice(0, 6); routed = false; }
         let routed = false;
         const key = TL.getMapboxKey();
         if (key && shortlist.length) {
@@ -561,10 +566,8 @@
 
         if (near.length) {
           document.getElementById('sch-nearby').innerHTML = `
-            <h2 class="sch-section-title">Homes near ${s.name}</h2>
-            <p class="sch-section-sub">${routed
-              ? 'Driving time to this school, by road.'
-              : 'Closest listings to this school.'}</p>
+            <h2 class="sch-section-title">${inDev.length ? `Homes for sale in ${s.name}` : `Homes near ${s.name}`}</h2>
+            <p class="sch-section-sub">${inDev.length ? 'Current listings from my portfolio in this community.' : routed ? 'Driving time to this community, by road.' : 'Closest listings to this community.'}</p>
             <div class="sch-listings">
               ${near.map(p => `
                 <a href="/property/${encodeURIComponent(decode(p.slug || p.id))}/" class="sch-listing">
@@ -572,7 +575,7 @@
                   <div class="sch-listing-body">
                     <div class="sch-listing-price">${p.price || ''}</div>
                     <div class="sch-listing-name">${p.name || ''}</div>
-                    <div class="sch-listing-dist">${routed
+                    <div class="sch-listing-dist">${inDev.length ? (p.status === 'sold' ? 'Sold' : 'For sale') : routed
                       ? `${p.mins} min drive`
                       : (p.d < 1 ? Math.round(p.d * 1000) + ' m away' : p.d.toFixed(1) + ' km away')}</div>
                   </div>
@@ -584,7 +587,7 @@
       // Schema: School + breadcrumbs. Only assert fields the school publishes.
       const ld = {
         '@context': 'https://schema.org',
-        '@type': 'School',
+        '@type': 'Residence',
         'name': plainName,
         'url': pageUrl,
         'address': { '@type': 'PostalAddress', 'addressRegion': 'Guanacaste', 'addressCountry': 'CR' }
@@ -601,7 +604,7 @@
         '@type': 'BreadcrumbList',
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://soldbytiago.com/' },
-          { '@type': 'ListItem', 'position': 2, 'name': 'Schools', 'item': 'https://soldbytiago.com/schools.html' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Communities', 'item': 'https://soldbytiago.com/developments.html' },
           { '@type': 'ListItem', 'position': 3, 'name': plainName, 'item': pageUrl }
         ]
       };

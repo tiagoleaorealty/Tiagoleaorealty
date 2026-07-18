@@ -36,6 +36,11 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://soldbytiago.com/developments.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://soldbytiago.com/blog.html</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>

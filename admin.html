@@ -374,6 +374,7 @@
       <a href="#" data-tab="reviews">Reviews</a>
       <a href="#" data-tab="blog">Blog Posts</a>
       <a href="#" data-tab="schools">Schools</a>
+      <a href="#" data-tab="developments">Communities</a>
       <a href="#" data-tab="settings">Settings</a>
       <a href="index.html" style="opacity:0.4;">View Site &rarr;</a>
       <a href="#" onclick="logout()" style="opacity:0.4;">Log Out</a>
@@ -430,6 +431,17 @@
         <button class="btn btn-terra" onclick="openSchoolEditor()">+ New School</button>
       </div>
       <div id="school-list"></div>
+    </div>
+
+    <!-- ══ DEVELOPMENTS TAB ══════════════════════════════════════ -->
+    <div class="tab-content" id="tab-developments">
+      <h1 class="page-title">Communities &amp; Developments</h1>
+      <p class="page-sub">Gated communities. Pin each on the map; fill HOA/rules facts as you verify them — blank facts show "Available on request" on the site.</p>
+      <div class="items-header">
+        <span class="items-count" id="dev-count">0 communities</span>
+        <button class="btn btn-terra" onclick="openDevEditor()">+ New Community</button>
+      </div>
+      <div id="dev-list"></div>
     </div>
 
     <!-- ══ SETTINGS TAB ══════════════════════════════════════════ -->
@@ -648,6 +660,79 @@ Separate paragraphs with a blank line."></textarea>
       <div class="modal-actions">
         <button class="btn btn-outline" onclick="closeModal('blog-modal')">Cancel</button>
         <button class="btn btn-terra" id="blog-save-btn" onclick="saveBlogPost()">Save Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Development editor modal -->
+  <div class="modal-overlay" id="dev-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('dev-modal')">&times;</button>
+      <h2 id="dev-modal-title">New Community</h2>
+      <input type="hidden" id="dev-edit-id" />
+      <div class="form-row">
+        <div class="form-group"><label>Name</label><input type="text" id="dev-name" placeholder="e.g. Hacienda Pinilla" /></div>
+        <div class="form-group"><label>URL Slug</label><input type="text" id="dev-slug" placeholder="auto-generated" /></div>
+      </div>
+      <div class="form-row triple">
+        <div class="form-group"><label>Town</label><input type="text" id="dev-town" placeholder="e.g. Avellanas" /></div>
+        <div class="form-group"><label>Status</label>
+          <select id="dev-status"><option value="published">Published</option><option value="draft">Draft</option></select>
+        </div>
+        <div class="form-group"><label>Order</label><input type="number" id="dev-sort-order" placeholder="1" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Listing match text (matches property Location field)</label><input type="text" id="dev-match" placeholder="e.g. Hacienda Pinilla" /></div>
+        <div class="form-group"><label>Established (year)</label><input type="text" id="dev-established" placeholder="e.g. 2005" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Typical asking range</label><input type="text" id="dev-price-range" placeholder="e.g. $400K – $3M+" /></div>
+        <div class="form-group"><label>HOA fees</label><input type="text" id="dev-hoa" placeholder="e.g. ~$400/mo — varies by section" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Amenities</label><input type="text" id="dev-amenities" placeholder="e.g. Golf, beach club, tennis" /></div>
+        <div class="form-group"><label>Beach access</label><input type="text" id="dev-beach" placeholder="e.g. Private beach club on Playa Conchal" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Rental rules</label><input type="text" id="dev-rental" placeholder="e.g. Short-term allowed; register with HOA" /></div>
+        <div class="form-group"><label>Construction rules</label><input type="text" id="dev-construction" placeholder="e.g. Design review; height limits" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Title structure</label><input type="text" id="dev-title-structure" placeholder="e.g. Fee-simple titled lots" /></div>
+        <div class="form-group"><label>Best for</label><input type="text" id="dev-best-for" placeholder="e.g. Golfers, relocating families" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Excerpt (for cards)</label><input type="text" id="dev-excerpt" maxlength="200" /></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Meta Description (SEO)</label><input type="text" id="dev-meta-desc" maxlength="160" /></div>
+      </div>
+      <div class="form-section-title">Location — click the map to pin the community entrance</div>
+      <div class="form-row">
+        <div class="form-group"><label>Latitude</label><input type="text" id="dev-lat" placeholder="Click the map" /></div>
+        <div class="form-group"><label>Longitude</label><input type="text" id="dev-lng" placeholder="Click the map" /></div>
+      </div>
+      <div class="map-container" id="dev-map"></div>
+      <div class="form-section-title">Cover Image</div>
+      <div class="photo-upload-area" id="dev-photo-upload"
+           ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+           ondrop="handlePhotoDrop(event, 'dev')" onclick="document.getElementById('dev-photo-input').click()">
+        <p>Drop a cover image here or click to upload</p>
+        <span class="upload-hint">Recommended: 1200 x 630px</span>
+        <input type="file" id="dev-photo-input" accept="image/*" onchange="handlePhotoSelect(event, 'dev')" />
+      </div>
+      <div class="photo-grid" id="dev-photo-grid"></div>
+      <div class="form-section-title">The Write-Up</div>
+      <div class="editor-toolbar">
+        <button onclick="insertMarkdown('## ', '', 'dev-body')" title="Heading">H2</button>
+        <button onclick="insertMarkdown('### ', '', 'dev-body')" title="Subheading">H3</button>
+        <button onclick="insertMarkdown('**', '**', 'dev-body')" title="Bold">B</button>
+        <button onclick="insertMarkdown('*', '*', 'dev-body')" title="Italic">I</button>
+      </div>
+      <textarea class="blog-body-textarea" id="dev-body" placeholder="The definitive write-up: what it is, who it fits, honest considerations, alternatives."></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal('dev-modal')">Cancel</button>
+        <button class="btn btn-terra" id="dev-save-btn" onclick="saveDevelopment()">Save Community</button>
       </div>
     </div>
   </div>
@@ -918,6 +1003,7 @@ Separate paragraphs with a blank line."></textarea>
         loadProperties();
         loadBlogPosts();
         loadSchools();
+        loadDevelopments();
         if (typeof loadReviews === 'function') loadReviews();
       }
     }
@@ -1306,6 +1392,140 @@ Separate paragraphs with a blank line."></textarea>
       renderBlogCover();
       openModal('blog-modal');
     }
+
+    // ══════════════════════════════════════════════════════════════
+    //  DEVELOPMENTS (gated communities)
+    // ══════════════════════════════════════════════════════════════
+    let allDevs = [];
+    let devCoverUrl = '';
+    let devMap = null, devMarker = null;
+
+    async function loadDevelopments() {
+      if (!sb) return;
+      const { data, error } = await sb.from('developments').select('*').order('sort_order', { ascending: true });
+      const list = document.getElementById('dev-list');
+      if (error) {
+        list.innerHTML = `<div class="empty-state"><h3>Developments table not found</h3><p>Run supabase-developments-setup.sql in the Supabase SQL Editor first.</p></div>`;
+        document.getElementById('dev-count').textContent = '0 communities';
+        return;
+      }
+      allDevs = data || [];
+      document.getElementById('dev-count').textContent = `${allDevs.length} communit${allDevs.length === 1 ? 'y' : 'ies'}`;
+      if (!allDevs.length) {
+        list.innerHTML = `<div class="empty-state"><h3>No communities yet</h3><button class="btn btn-terra" onclick="openDevEditor()">+ New Community</button></div>`;
+        return;
+      }
+      const unpinned = allDevs.filter(d => d.lat === null || d.lng === null).length;
+      list.innerHTML = (unpinned
+        ? `<div class="empty-state" style="text-align:left;padding:12px 16px;margin-bottom:12px;"><p style="margin:0;"><strong>${unpinned} not pinned yet.</strong> Pin each community entrance so distances and maps work.</p></div>` : '')
+        + allDevs.map(d => `
+        <div class="item-card">
+          <div>
+            <strong>${esc(d.name)}</strong>
+            <div style="font-size:12px;color:var(--stone);margin-top:2px;">
+              ${esc(d.town || 'No town')} · ${d.lat && d.lng ? 'Pinned' : '<span style="color:#d44;">Not pinned</span>'}
+              ${d.hoa_fees ? '' : ' · <span style="color:#b08800;">HOA fee blank</span>'}${d.status === 'draft' ? ' · Draft' : ''}
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-outline btn-sm" onclick="openDevEditor(allDevs.find(x => x.id === '${d.id}'))">Edit</button>
+            <button class="btn btn-outline btn-sm" onclick="deleteDevelopment('${d.id}')">Delete</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function openDevEditor(data) {
+      document.getElementById('dev-modal-title').textContent = data ? 'Edit Community' : 'New Community';
+      document.getElementById('dev-edit-id').value = data ? data.id : '';
+      const set = (id, v) => document.getElementById(id).value = v ?? '';
+      set('dev-name', data?.name); set('dev-slug', data?.slug); set('dev-town', data?.town);
+      set('dev-status', data?.status || 'published'); set('dev-sort-order', data?.sort_order);
+      set('dev-match', data?.match_location); set('dev-established', data?.established);
+      set('dev-price-range', data?.price_range); set('dev-hoa', data?.hoa_fees);
+      set('dev-amenities', data?.amenities); set('dev-beach', data?.beach_access);
+      set('dev-rental', data?.rental_rules); set('dev-construction', data?.construction_rules);
+      set('dev-title-structure', data?.title_structure); set('dev-best-for', data?.best_for);
+      set('dev-excerpt', data?.excerpt); set('dev-meta-desc', data?.meta_desc);
+      set('dev-body', data?.body); set('dev-lat', data?.lat); set('dev-lng', data?.lng);
+      devCoverUrl = data?.cover_url || '';
+      renderDevCover();
+      openModal('dev-modal');
+      setTimeout(() => initDevMap(data), 100);
+    }
+
+    function initDevMap(data) {
+      const key = getConfig().mapbox;
+      const container = document.getElementById('dev-map');
+      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8e5df;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings</div>'; return; }
+      mapboxgl.accessToken = key;
+      const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
+      const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
+      if (devMap) devMap.remove();
+      devMap = new mapboxgl.Map({ container: 'dev-map', style: 'mapbox://styles/mapbox/satellite-streets-v12', center: [lng, lat], zoom: data?.lat ? 14 : 10 });
+      devMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      if (data?.lat && data?.lng) devMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(devMap);
+      devMap.on('click', (e) => {
+        document.getElementById('dev-lat').value = e.lngLat.lat.toFixed(6);
+        document.getElementById('dev-lng').value = e.lngLat.lng.toFixed(6);
+        if (devMarker) devMarker.remove();
+        devMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(devMap);
+      });
+    }
+
+    function renderDevCover() {
+      document.getElementById('dev-photo-grid').innerHTML = devCoverUrl ? `
+        <div class="photo-item"><img src="${devCoverUrl}" alt="Cover" /><span class="photo-badge">Cover</span>
+        <button class="photo-remove" onclick="devCoverUrl='';renderDevCover();">&times;</button></div>` : '';
+    }
+
+    async function saveDevelopment() {
+      if (!sb) { showToast('Connect to Supabase first'); return; }
+      const val = id => document.getElementById(id).value.trim();
+      const name = val('dev-name');
+      if (!name) { showToast('Community needs a name'); return; }
+      const btn = document.getElementById('dev-save-btn');
+      btn.textContent = 'Saving...'; btn.disabled = true;
+      const id = document.getElementById('dev-edit-id').value;
+      const latRaw = val('dev-lat'), lngRaw = val('dev-lng');
+      const row = {
+        name, slug: val('dev-slug') || slugify(name),
+        town: val('dev-town'), match_location: val('dev-match'), established: val('dev-established'),
+        price_range: val('dev-price-range'), hoa_fees: val('dev-hoa'),
+        amenities: val('dev-amenities'), beach_access: val('dev-beach'),
+        rental_rules: val('dev-rental'), construction_rules: val('dev-construction'),
+        title_structure: val('dev-title-structure'), best_for: val('dev-best-for'),
+        excerpt: val('dev-excerpt'), meta_desc: val('dev-meta-desc'), body: val('dev-body'),
+        cover_url: devCoverUrl, status: val('dev-status'),
+        sort_order: parseInt(val('dev-sort-order')) || 0,
+        lat: latRaw ? parseFloat(latRaw) : null,
+        lng: lngRaw ? parseFloat(lngRaw) : null
+      };
+      const { error } = id
+        ? await sb.from('developments').update(row).eq('id', id)
+        : await sb.from('developments').insert(row);
+      btn.textContent = 'Save Community'; btn.disabled = false;
+      if (error) { showToast(`Could not save: ${error.message}`); return; }
+      closeModal('dev-modal');
+      showToast('Community saved — click Publish Site to rebuild pages');
+      loadDevelopments();
+    }
+
+    async function deleteDevelopment(id) {
+      const d = allDevs.find(x => x.id === id);
+      if (!confirm(`Delete ${d ? d.name : 'this community'}? This cannot be undone.`)) return;
+      const { error } = await sb.from('developments').delete().eq('id', id);
+      if (error) { showToast(`Could not delete: ${error.message}`); return; }
+      showToast('Community deleted');
+      loadDevelopments();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const dn = document.getElementById('dev-name');
+      if (dn) dn.addEventListener('input', function() {
+        if (!document.getElementById('dev-edit-id').value)
+          document.getElementById('dev-slug').value = slugify(this.value);
+      });
+    });
 
     // ══════════════════════════════════════════════════════════════
     //  SCHOOLS
@@ -1780,6 +2000,9 @@ Separate paragraphs with a blank line."></textarea>
         } else if (type === 'school') {
           schoolCoverUrl = publicUrl;
           renderSchoolCover();
+        } else if (type === 'dev') {
+          devCoverUrl = publicUrl;
+          renderDevCover();
         } else {
           blogCoverUrl = publicUrl;
           renderBlogCover();
@@ -1802,6 +2025,7 @@ Separate paragraphs with a blank line."></textarea>
         loadProperties();
         loadBlogPosts();
         loadSchools();
+        loadDevelopments();
         loadReviews();
       }
     }

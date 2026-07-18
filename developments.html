@@ -9,21 +9,16 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
-  <title>Guanacaste Real Estate Blog | Tiago Leao</title>
-  <meta name="description" content="Expert insights on buying and selling real estate in Guanacaste, Costa Rica. Market updates, neighborhood guides, and tips for American and Canadian buyers from local agent Tiago Leao.">
-  <link rel="canonical" href="https://soldbytiago.com/blog.html">
-  <meta property="og:title" content="Guanacaste Real Estate Blog | Tiago Leao">
-  <meta property="og:description" content="Market updates, neighborhood guides, and buying tips for Guanacaste — from a local agent.">
-  <meta property="og:url" content="https://soldbytiago.com/blog.html">
+  <title>Gated Communities &amp; Developments in Guanacaste, Costa Rica | Tiago Leao</title>
+  <meta name="description" content="The definitive guide to Guanacaste's gated communities — Hacienda Pinilla, Reserva Conchal, Senderos, Mar Vista, Las Catalinas, Pacifico and more. What each offers, who it fits, and homes for sale in each.">
+  <link rel="canonical" href="https://soldbytiago.com/developments.html">
+  <meta property="og:title" content="Gated Communities &amp; Developments in Guanacaste, Costa Rica">
+  <meta property="og:description" content="Guanacaste's gated communities and resort developments — what each one offers, who it fits, and the homes for sale there now.">
+  <meta property="og:url" content="https://soldbytiago.com/developments.html">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
-  <meta property="og:site_name" content="Tiago Leao | Guanacaste Real Estate">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://soldbytiago.com/og-image.jpg">
-  
-  
   <link rel="stylesheet" href="fonts.css" />
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -267,11 +262,52 @@
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
   </style>
+  <style>
+    /* ── Schools index ─────────────────────────────────────────── */
+    .schools-intro {
+      max-width: 1400px; margin: 0 auto; padding: 0 60px 40px;
+    }
+    .schools-intro p {
+      font-size: 16px; line-height: 1.7; color: var(--sand); max-width: 760px; margin-bottom: 14px;
+    }
+    .schools-grid {
+      max-width: 1400px; margin: 0 auto; padding: 0 60px 100px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px;
+    }
+    .school-card {
+      display: flex; flex-direction: column;
+      background: #fff; border: 1px solid rgba(0,0,0,0.07); border-radius: 10px;
+      overflow: hidden; text-decoration: none; color: inherit;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .school-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+    .school-card-photo {
+      height: 170px; background: linear-gradient(135deg, #0b2b2b, #0d4a4a);
+      background-size: cover; background-position: center; flex-shrink: 0;
+    }
+    .school-card-body { padding: 22px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+    .school-card-town {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--terra); margin-bottom: 8px;
+    }
+    .school-card-name {
+      font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25;
+      color: var(--cream); margin-bottom: 10px;
+    }
+    .school-card-excerpt { font-size: 14px; line-height: 1.6; color: var(--stone); flex: 1; }
+    .school-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .school-tag {
+      font-size: 11px; font-weight: 600; color: var(--sand);
+      background: rgba(13,74,74,0.07); border-radius: 4px; padding: 4px 9px;
+    }
+    @media (max-width: 900px) {
+      .schools-intro { padding: 0 24px 30px; }
+      .schools-grid { padding: 0 24px 70px; grid-template-columns: 1fr; gap: 22px; }
+    }
+  </style>
 </head>
-
 <body>
 
-  <!-- Nav -->
   <nav>
     <a href="index.html" class="nav-logo">Tiago Leao<span class="nav-logo-sub">Guanacaste Real Estate</span></a>
     <ul class="nav-links">
@@ -287,12 +323,13 @@
           <li><a href="developments.html">Developments</a></li>
         </ul>
       </li>
-      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="blog.html">Blog</a></li>
       <li><a href="index.html#form-section">Work With Me</a></li>
     </ul>
     <a href="index.html#form-section" class="nav-cta">Get Started</a>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
+
   <div class="nav-mobile" id="nav-mobile">
     <a href="properties.html">Properties</a>
     <a href="communities.html">Communities</a>
@@ -309,17 +346,21 @@
     <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
   </div>
 
+
   <!-- Header -->
   <div class="page-header">
-    <h1>Guanacaste Real Estate Insights.</h1>
-    <p>Local knowledge, market updates, and everything you need to know before buying or selling in Costa Rica.</p>
+    <h1>Guanacaste's Communities &amp; Developments.</h1>
+    <p>The gated communities and resort developments where people actually buy — what each offers, who it fits, and the homes for sale in each right now.</p>
   </div>
 
-  <!-- Blog Grid (populated from Supabase) -->
-  <div class="blog-grid">
-    <!--BAKE:POSTS-->
-<a href="/blog/schools-guanacaste-gold-coast-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784220692567-9n5qn0.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Lifestyle</div><div class="blog-card-title">Schools in Guanacaste: A Guide for Relocating Families</div><div class="blog-card-excerpt">Every international, bilingual and private school in Guanacaste — IB, Montessori, Waldorf and bilingual — plus the things that actually decide it: the drive, the waitlist, and why there are no school ratings in Costa Rica.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/tamarindo-house-prices-2026/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market</div><div class="blog-card-title">How Much Does a House in Tamarindo Cost? (2026 Prices)</div><div class="blog-card-excerpt">Real 2026 numbers: condos from ~$200K, homes from ~$400K, ocean-view estates past $2M — and the two factors that move Tamarindo prices most.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="blog-el-chante-tamarindo.html" class="blog-card"><div class="blog-card-img" style="background-image:url('CasaChante.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Lifestyle</div><div class="blog-card-title">Best Airbnb in Tamarindo</div><div class="blog-card-excerpt">Eight private villas above town, one infinity pool, and the kind of ocean view that ends the scroll. Book your stay — or own a piece of this coast.</div><div class="blog-card-meta">El Chante · Tamarindo</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/buying-property-costa-rica-foreigners-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Costa Rica.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">How Foreigners Buy Property in Costa Rica: The Complete 2026 Guide</div><div class="blog-card-excerpt">Foreigners can own property in Costa Rica with the exact same rights as citizens. Here is how the process actually works, from offer to closing.</div><div class="blog-card-meta">9 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-closing-costs-taxes/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">Costa Rica Real Estate Closing Costs &amp; Taxes: What Buyers Actually Pay</div><div class="blog-card-excerpt">Transfer tax, stamps, legal fees, annual property tax, the luxury home tax, and capital gains — a clear breakdown of the real numbers.</div><div class="blog-card-meta">7 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/titled-vs-concession-beachfront-costa-rica/" class="blog-card"><div class="blog-card-img" style="background-image:url('Sun set.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">Titled vs. Concession Beachfront in Costa Rica: The Maritime Zone Explained</div><div class="blog-card-excerpt">The single most important thing to understand before buying near the beach in Costa Rica — the difference between titled and concession land.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/guanacaste-gold-coast-towns-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('Waterfall.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Lifestyle</div><div class="blog-card-title">Guanacaste&#x27;s Beach Towns: Tamarindo, Flamingo, Conchal, Potrero &amp; Nosara</div><div class="blog-card-excerpt">A local&#x27;s guide to the towns of Guanacaste — the vibe, the buyer, and the real estate market in each.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/guanacaste-real-estate-investment-2026/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Costa Rica.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Investment</div><div class="blog-card-title">Is Guanacaste Real Estate a Good Investment in 2026?</div><div class="blog-card-excerpt">An honest look at appreciation, rental yields, the drivers behind the boom, and the risks worth knowing before you buy in Guanacaste.</div><div class="blog-card-meta">7 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-vacation-rental-income-guanacaste/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Investment</div><div class="blog-card-title">What Vacation Rental Income Really Looks Like in Guanacaste</div><div class="blog-card-excerpt">Occupancy, nightly rates, expenses, management, and the rules — a realistic picture of short-term rental income in Guanacaste.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-residency-property-buyers/" class="blog-card"><div class="blog-card-img" style="background-image:url('Sun set.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">How Americans and Canadians Can Get Residency in Costa Rica: The Complete 2026 Guide</div><div class="blog-card-excerpt">The three residency paths — Pensionado, Rentista, and Inversionista — what each costs, how healthcare and taxes actually work, and how buying property fits in. From someone who went through the process himself.</div><div class="blog-card-meta">12 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/tamarindo-vs-nosara-real-estate/" class="blog-card"><div class="blog-card-img" style="background-image:url('Waterfall.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market</div><div class="blog-card-title">Tamarindo vs. Nosara: Which Should You Buy Real Estate In?</div><div class="blog-card-excerpt">The two most talked-about markets in Guanacaste are fundamentally different places. Here is how to know which one is yours.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a>
-<!--/BAKE:POSTS-->
+  <div class="schools-intro">
+    <p>Town pages tell you where to live; these pages tell you what you are actually buying into. Every community below is one I show and sell in. HOA fees, rental rules and construction guidelines change and are rarely published, so where a number matters I confirm the current figure directly rather than quoting a stale one.</p>
+  </div>
+  <!-- Schools grid (populated from Supabase) -->
+  <div class="schools-grid" id="schools-grid">
+    <!--BAKE:DEVS-->
+<a href="/school/costa-rica-international-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Costa Rica International Academy (CRIA)</div><div class="school-card-excerpt">U.S.-accredited bilingual school on a 32-acre campus near Reserva Conchal, serving this coast since 2000.</div><div class="school-card-tags"><span class="school-tag">Early Years – Secondary</span><span class="school-tag">U.S.-accredited bilingual</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/la-paz-community-school-cabo-velas/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">La Paz Community School — Cabo Velas Campus</div><div class="school-card-excerpt">IB World School between Flamingo and Brasilito, built around dual-language immersion and experiential learning.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">International Baccalaureate (IB), experiential learning</span><span class="school-tag">Bilingual dual-language immersion</span></div></div></a><a href="/school/la-paz-community-school-tempisque/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Palmira</div><div class="school-card-name">La Paz Community School — Tempisque Campus</div><div class="school-card-excerpt">La Paz&#x27;s second campus, inland near Palmira in Carrillo, running the same IB dual-language program.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">International Baccalaureate (IB), experiential learning</span><span class="school-tag">Bilingual dual-language immersion</span></div></div></a><a href="/school/journey-school-tamarindo/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Journey School of Costa Rica — Tamarindo</div><div class="school-card-excerpt">Authorized IB World School in Tamarindo offering the IB Diploma Programme with project-based learning.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">International Baccalaureate (IB), project-based learning</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/del-mar-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Nosara</div><div class="school-card-name">Del Mar Academy</div><div class="school-card-excerpt">Nosara IB World School on an 11-acre campus, running Montessori in the early years into the IB Diploma.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">Montessori through IB Diploma Programme</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/educarte/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Huacas</div><div class="school-card-name">Educarte</div><div class="school-card-excerpt">Bilingual MEP-certified school near Huacas, and the only school on this list that publishes its tuition.</div><div class="school-card-tags"><span class="school-tag">Preescolar – Secundaria</span><span class="school-tag">Bilingual, MEP-certified</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/lakeside-international-school/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Sardinal</div><div class="school-card-name">Lakeside International School</div><div class="school-card-excerpt">Bilingual PreK–12 school inland from Playas del Coco, built on an integrated Multiple Intelligences curriculum.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">Integrated curriculum, Multiple Intelligences model</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/pacifico-internacional/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Villareal</div><div class="school-card-name">Pacífico Internacional</div><div class="school-card-excerpt">Waldorf-inspired school in the hills at Cañafistula, just inland from Tamarindo.</div><div class="school-card-tags"><span class="school-tag">Preschool – middle school</span><span class="school-tag">Waldorf-inspired</span><span class="school-tag">Bilingual</span></div></div></a><a href="/school/tide-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">TIDE Academy</div><div class="school-card-excerpt">Pre-K through 12 in Tamarindo on a personalized US curriculum — around 80 students from 17 countries at an 8:1 ratio, with high school accredited via Middle States through North Atlantic Regional High School.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">Personalized US curriculum</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/dolphins-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Playas del Coco</div><div class="school-card-name">Dolphin&#x27;s Academy</div><div class="school-card-excerpt">Bilingual elementary school in Playas del Coco, with curricula developed in alliance with Oxford and Cambridge.</div><div class="school-card-tags"><span class="school-tag">Elementary</span><span class="school-tag">Bilingual</span><span class="school-tag">Bilingual</span></div></div></a>
+<!--/BAKE:DEVS-->
   </div>
 
   <!-- Footer -->
@@ -350,59 +391,64 @@
 
   <script src="supabase-data.js"></script>
   <script>
-    // Load blog posts from Supabase
-    // Posts with a custom-designed landing page link there instead of the markdown template.
-    const CUSTOM_PAGES = {
-      'el-chante-tamarindo-villas': 'blog-el-chante-tamarindo.html'
-    };
-    (async function() {
-      const grid = document.querySelector('.blog-grid');
+    (async function () {
+      const grid = document.getElementById('schools-grid');
+      const msg = t => `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">${t}</div>`;
       if (typeof TL === 'undefined' || !TL.isConnected()) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">Articles are loading. Please check back shortly.</div>';
+        grid.innerHTML = msg('Communities are loading. Please check back shortly.');
         return;
       }
-      const posts = await TL.getBlogPosts();
-      if (!posts || posts.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">New articles coming soon.</div>';
-        return;
-      }
+      const schools = await TL.getDevelopments();
+      if (!schools || !schools.length) { grid.innerHTML = msg('Community guide coming soon.'); return; }
 
-      grid.innerHTML = posts.map(p => {
-        const href = CUSTOM_PAGES[p.slug] || ('/blog/' + p.slug + '/');
+      // supabase-data.js already HTML-escapes every string it returns, so these
+      // interpolate straight into innerHTML. Escaping again would render the
+      // entity itself ("Dolphin&#39;s Academy"). decode() is for plain-text
+      // contexts only — JSON-LD, document.title, meta tags.
+      const decode = s => { const ta = document.createElement('textarea'); ta.innerHTML = s || ''; return ta.value; };
+
+      grid.innerHTML = schools.map(s => {
+        // Only render a tag for a field the school actually publishes.
+        const tags = [s.established ? 'Est. ' + decode(s.established) : '', s.best_for]
+          .filter(Boolean)
+          .map(t => `<span class="school-tag">${t}</span>`).join('');
+        const photo = s.cover_url
+          ? ` style="background-image:url('${s.cover_url}')"` : '';
         return `
-        <a href="${href}" class="blog-card">
-          <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
-          <div class="blog-card-body">
-            <div class="blog-card-tag">${(p.category || 'market').charAt(0).toUpperCase() + (p.category || 'market').slice(1)}</div>
-            <div class="blog-card-title">${p.title || ''}</div>
-            <div class="blog-card-excerpt">${p.excerpt || ''}</div>
-            <div class="blog-card-meta">${p.readtime || ''}</div>
-            <span class="blog-card-link">Read More &rarr;</span>
+        <a href="/school/${encodeURIComponent(decode(s.slug))}/" class="school-card">
+          <div class="school-card-photo"${photo}></div>
+          <div class="school-card-body">
+            ${s.town ? `<div class="school-card-town">${s.town}</div>` : ''}
+            <div class="school-card-name">${s.name}</div>
+            <div class="school-card-excerpt">${s.excerpt}</div>
+            ${tags ? `<div class="school-card-tags">${tags}</div>` : ''}
           </div>
         </a>`;
       }).join('');
 
-      // ItemList structured data so search engines & AI crawlers see the article catalog
-      function decode(s) { const ta = document.createElement('textarea'); ta.innerHTML = s || ''; return ta.value; }
-      const ld = document.createElement('script');
-      ld.type = 'application/ld+json';
-      ld.textContent = JSON.stringify({
+      // ItemList schema so the set of schools is machine-readable as a group,
+      // with each school's own detail living on its page.
+      const ld = {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
-        'itemListElement': posts.map((p, i) => ({
+        'name': 'Gated Communities in Guanacaste',
+        'itemListElement': schools.map((s, i) => ({
           '@type': 'ListItem',
           'position': i + 1,
-          'name': decode(p.title),
-          'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog/' + encodeURIComponent(decode(p.slug + '/'))))
+          'url': 'https://soldbytiago.com/development/' + encodeURIComponent(decode(s.slug)) + '/',
+          'name': decode(s.name)
         }))
-      });
-      document.head.appendChild(ld);
+      };
+      const tag = document.createElement('script');
+      tag.type = 'application/ld+json';
+      tag.textContent = JSON.stringify(ld);
+      document.head.appendChild(tag);
     })();
+  </script>
 
-    // ── Hamburger ─────────────────────────────────────────────────
+  <script>
     (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
   </script>
 
-  <a href="https://wa.me/50683028660" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 </body>
 </html>

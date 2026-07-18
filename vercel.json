@@ -74,6 +74,10 @@
     {
       "source": "/blog/:seg*",
       "destination": "/blog-post.html"
+    },
+    {
+      "source": "/development/:seg*",
+      "destination": "/development.html"
     }
   ]
 }

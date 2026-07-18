@@ -448,6 +448,83 @@ def build_schools(tpl, rows):
     return urls
 
 
+def _dev_card(s):
+    photo = (' style="background-image:url(' + "'" + esc(s["cover_url"]) + "'" + ')"') if s.get("cover_url") else ""
+    tags = "".join('<span class="school-tag">' + esc(t) + "</span>"
+                   for t in ((("Est. " + s["established"]) if s.get("established") else ""), s.get("best_for")) if t)
+    town = ('<div class="school-card-town">' + esc(s["town"]) + "</div>") if s.get("town") else ""
+    return ('<a href="/development/' + s["slug"] + '/" class="school-card">'
+            + '<div class="school-card-photo"' + photo + "></div>"
+            + '<div class="school-card-body">' + town
+            + '<div class="school-card-name">' + esc(s.get("name") or "") + "</div>"
+            + '<div class="school-card-excerpt">' + esc(s.get("excerpt") or "") + "</div>"
+            + ('<div class="school-card-tags">' + tags + "</div>" if tags else "") + "</div></a>")
+
+
+def build_developments(tpl, rows):
+    urls = []
+    for s in rows:
+        slug = s["slug"]
+        name = s.get("name") or "Community"
+        canon = f"{SITE}/development/{slug}/"
+        desc = one_line(s.get("meta_desc") or s.get("excerpt") or f"{name} - gated community in Guanacaste, Costa Rica.")
+        title = f"{name} | Guanacaste Communities | Tiago Leao"
+        og_image = s.get("cover_url") or f"{SITE}/og-image.jpg"
+        doc = head_common(tpl, title, desc, canon, name, desc, og_image)
+
+        NA = '<span style="color:#6b7a7a;font-weight:500;">Available on request</span>'
+        facts = ""
+        for label, value in (
+            ("Town", esc(s.get("town"))),
+            ("Established", esc(s.get("established"))),
+            ("Typical asking range", esc(s.get("price_range")) or NA),
+            ("HOA fees", esc(s.get("hoa_fees")) or NA),
+            ("Amenities", esc(s.get("amenities"))),
+            ("Beach access", esc(s.get("beach_access"))),
+            ("Rental rules", esc(s.get("rental_rules")) or NA),
+            ("Construction", esc(s.get("construction_rules")) or NA),
+            ("Title structure", esc(s.get("title_structure")) or NA),
+            ("Best for", esc(s.get("best_for"))),
+        ):
+            if value:
+                facts += ('<div class="sch-fact"><div class="sch-fact-label">' + label
+                          + '</div><div class="sch-fact-value">' + value + "</div></div>")
+        body_html = parse_body(s.get("body")) or ""
+        hero_style = (' style="background-image:url(' + "'" + esc(s["cover_url"]) + "'" + ')"') if s.get("cover_url") else ""
+        town_div = ('<div class="sch-town">' + esc(s["town"]) + "</div>") if s.get("town") else ""
+        exc_p = ('<p class="sch-excerpt">' + esc(s["excerpt"]) + "</p>") if s.get("excerpt") else ""
+        baked = ('<div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; '
+                 '<a href="developments.html">Communities</a> &rsaquo; ' + esc(name) + "</div>"
+                 + '<div class="sch-hero"' + hero_style + "></div>"
+                 + town_div
+                 + '<h1 class="sch-title">' + esc(name) + "</h1>"
+                 + exc_p
+                 + '<div class="sch-cols"><div class="sch-body">' + body_html + "</div>"
+                 + '<aside class="sch-facts"><h3>The Details</h3>' + facts + "</aside></div>")
+        doc = sub_once(doc, r'<div class="sch-loading">Loading&hellip;</div>',
+                       lambda m, b=baked: b, "dev content")
+
+        ld = {
+            "@context": "https://schema.org",
+            "@type": "Residence",
+            "name": name, "url": canon, "description": desc,
+            "address": {"@type": "PostalAddress", "addressLocality": s.get("town") or None,
+                        "addressRegion": "Guanacaste", "addressCountry": "CR"},
+        }
+        ld["address"] = {k: v for k, v in ld["address"].items() if v}
+        if s.get("lat") is not None and s.get("lng") is not None:
+            ld["geo"] = {"@type": "GeoCoordinates", "latitude": s["lat"], "longitude": s["lng"]}
+        crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList",
+                  "itemListElement": [
+                      {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
+                      {"@type": "ListItem", "position": 2, "name": "Communities", "item": SITE + "/developments.html"},
+                      {"@type": "ListItem", "position": 3, "name": name, "item": canon}]}
+        doc = sub_once(doc, r"</head>", ld_script(ld) + "\n" + ld_script(crumbs) + "\n</head>", "dev ld insert")
+        write_page(f"development/{slug}", doc)
+        urls.append((f"/development/{slug}/", (s.get("updated_at") or TODAY)[:10], "0.7", "monthly"))
+    return urls
+
+
 # ── blog posts ───────────────────────────────────────────────────
 
 def build_posts(tpl, rows):
@@ -614,7 +691,7 @@ def _school_card(s):
             + ('<div class="school-card-tags">' + tags + '</div>' if tags else "") + '</div></a>')
 
 
-def bake_roots(props, schools, posts):
+def bake_roots(props, schools, posts, devs=None):
     inject("properties.html", "<!--BAKE:LISTINGS-->", "<!--/BAKE:LISTINGS-->",
            "".join(_prop_card(p) for p in props), "listings")
     # The shell used to hardcode "6 results" and "0 results"; keep both counts real.
@@ -636,6 +713,9 @@ def bake_roots(props, schools, posts):
            "".join(_blog_card(p) for p in posts), "posts")
     inject("schools.html", "<!--BAKE:SCHOOLS-->", "<!--/BAKE:SCHOOLS-->",
            "".join(_school_card(s) for s in schools), "schools")
+    if devs:
+        inject("developments.html", "<!--BAKE:DEVS-->", "<!--/BAKE:DEVS-->",
+               "".join(_dev_card(d) for d in devs), "developments")
 
 
 # ── sitemap ──────────────────────────────────────────────────────
@@ -648,6 +728,7 @@ STATIC_PAGES = [
     ("/sellers-guide.html", "0.9", "monthly"),
     ("/about.html", "0.8", "monthly"),
     ("/schools.html", "0.8", "monthly"),
+    ("/developments.html", "0.9", "weekly"),
     ("/blog.html", "0.8", "weekly"),
     ("/blog-el-chante-tamarindo.html", "0.8", "monthly"),
     ("/playas-del-coco.html", "0.8", "monthly"),
@@ -735,6 +816,10 @@ def main():
     props = fetch("properties?select=*&status=in.(active,sold)&order=sort_order.asc,created_at.desc")
     schools = fetch("schools?select=*&status=eq.published&order=sort_order.asc")
     posts = fetch("blog_posts?select=*&status=eq.published&order=created_at.desc")
+    try:
+        devs = fetch("developments?select=*&status=eq.published&order=sort_order.asc")
+    except Exception:
+        devs = []  # table not created yet; site builds without development pages
 
     validate(props, schools, posts)
 
@@ -742,7 +827,9 @@ def main():
     urls += build_properties(read("property-detail.html"), props)
     urls += build_schools(read("school.html"), schools)
     urls += build_posts(read("blog-post.html"), posts)
-    bake_roots(props, schools, posts)
+    if devs:
+        urls += build_developments(read("development.html"), devs)
+    bake_roots(props, schools, posts, devs)
     import glob as _g
     for f in _g.glob(os.path.join(ROOT, "blog", "*", "index.html")) + _g.glob(os.path.join(ROOT, "school", "*", "index.html")):
         body = open(f, encoding="utf-8").read()

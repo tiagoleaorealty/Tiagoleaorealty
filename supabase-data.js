@@ -143,6 +143,35 @@
       }
     },
 
+    // Load all published developments (gated communities)
+    async getDevelopments() {
+      try {
+        return await sbFetch('developments', {
+          'status': 'eq.published',
+          'order': 'sort_order.asc,name.asc',
+          'select': '*'
+        });
+      } catch (e) {
+        console.error('[Supabase] Failed to load developments:', e);
+        return null;
+      }
+    },
+
+    // Load a single published development by slug
+    async getDevelopment(slug) {
+      try {
+        const data = await sbFetch('developments', {
+          'slug': `eq.${slug}`,
+          'status': 'eq.published',
+          'select': '*'
+        });
+        return data && data.length > 0 ? data[0] : null;
+      } catch (e) {
+        console.error('[Supabase] Failed to load development:', e);
+        return null;
+      }
+    },
+
     // Load a single published school by slug
     async getSchool(slug) {
       try {
