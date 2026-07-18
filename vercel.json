@@ -4,6 +4,16 @@
   "outputDirectory": ".",
   "redirects": [
     {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/el-chante-tamarindo-villas/",
+      "destination": "/blog-el-chante-tamarindo.html",
+      "permanent": true
+    },
+    {
       "source": "/blog-post.html",
       "has": [
         {

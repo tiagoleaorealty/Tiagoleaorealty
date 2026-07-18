@@ -67,7 +67,7 @@ def sub_once(doc, pattern, replacement, label, count=1, flags=0):
 def inline_md(t):
     """Inline markdown → HTML. Input must already be HTML-escaped."""
     t = re.sub(
-        r"\[([^\]]+)\]\((https?://[^\s)]+)\)",
+        r"\[([^\]]+)\]\((https?://[^\s)]+|mailto:[^\s)]+)\)",
         r'<a href="\2" class="body-link" target="_blank" rel="noopener">\1</a>',
         t,
     )
@@ -304,11 +304,18 @@ def build_properties(tpl, rows):
         feats = "".join(
             f'<div class="feature-item">{feat_svg}{esc(f)}</div>' for f in (p.get("features") or [])
         )
-        doc = sub_once(
-            doc, r'<div class="features-grid" id="features-grid"></div>',
-            f'<div class="features-grid" id="features-grid">{feats}</div>',
-            "features",
-        )
+        if feats:
+            doc = sub_once(
+                doc, r'<div class="features-grid" id="features-grid"></div>',
+                f'<div class="features-grid" id="features-grid">{feats}</div>',
+                "features",
+            )
+        else:
+            doc = sub_once(
+                doc, r'<div class="detail-section-title">Features &amp; Amenities</div>\s*<div class="features-grid" id="features-grid"></div>',
+                '<div class="features-grid" id="features-grid" style="display:none"></div>',
+                "features (empty, heading dropped)", flags=re.S,
+            )
         NA = "Available on request"
         def _atext(v):
             m2 = int(float(v))
@@ -331,6 +338,8 @@ def build_properties(tpl, rows):
             doc = sub_once(doc, r'<p class="prop-summary-updated" id="prop-summary-updated"></p>',
                            f'<p class="prop-summary-updated" id="prop-summary-updated">Listing details last updated {upd}.</p>',
                            "summary updated")
+        doc = doc.replace('<div class="map-placeholder">Map loading…</div>',
+                          f'<div class="map-placeholder">Located in {esc(loc)}, Guanacaste, Costa Rica.</div>')
         if photos:
             doc = sub_once(
                 doc, r'<span class="gallery-placeholder-label">Photo 1</span>',
@@ -463,11 +472,13 @@ def build_posts(tpl, rows):
         except ValueError:
             nice_date = upd
         disclaimer = ""
-        if (p.get("category") or "") in ("guide", "investment", "market"):
+        body_low = (p.get("body") or "").lower()
+        if (p.get("category") or "") in ("guide", "investment", "market") and "not constitute legal" not in body_low and "not legal, tax" not in body_low:
             disclaimer = ('<p style="margin-top:32px;font-size:13px;line-height:1.6;color:#6b7a7a;">'
                           'This article is general information, not legal, tax, immigration, or financial advice. '
                           'Rules and figures change; confirm your situation with qualified Costa Rican professionals '
                           'before making decisions.</p>')
+        sources = '<div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(0,0,0,0.08);"><p style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#0d4a4a;margin-bottom:8px;">Sources &amp; verification</p><p style="font-size:12.5px;line-height:1.8;color:#6b7a7a;">Official references for the rules and figures discussed: <a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">Registro Nacional</a> &middot; <a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">Ministerio de Hacienda</a> &middot; <a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">Migraci&oacute;n</a> &middot; <a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">SUGEF</a> &middot; <a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">ICT</a> &middot; <a href="https://www.ccss.sa.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">CCSS/CAJA</a>. Verify current requirements directly &mdash; rules change. Last reviewed: July 2026.</p></div>' if (p.get("category") or "") in ("guide", "investment", "market") else ""
         byline = (f'By <a href="about.html" style="color:inherit;text-decoration:underline;">Tiago Leao</a> &middot; '
                   f"KRAIN Luxury Real Estate &middot; Updated {nice_date}"
                   + (f" &middot; {esc(p['readtime'])}" if p.get("readtime") else ""))
@@ -479,6 +490,7 @@ def build_posts(tpl, rows):
       {parse_body(p.get("body"))}
       <div class="article-cta"><p>Interested in learning more?</p><a href="index.html#form-section">Get in Touch &rarr;</a></div>
       {disclaimer}
+      {sources}
     </div>"""
         doc = sub_once(doc, r'<div class="loading">Loading article\.\.\.</div>', baked, "article content")
 
@@ -731,6 +743,17 @@ def main():
     urls += build_schools(read("school.html"), schools)
     urls += build_posts(read("blog-post.html"), posts)
     bake_roots(props, schools, posts)
+    import glob as _g
+    for f in _g.glob(os.path.join(ROOT, "blog", "*", "index.html")) + _g.glob(os.path.join(ROOT, "school", "*", "index.html")):
+        body = open(f, encoding="utf-8").read()
+        marker = 'class="article-body"' if "/blog/" in f.replace(os.sep, "/") else 'class="sch-body"'
+        if marker not in body:
+            continue
+        # Rendered content only — stop at the first script so the page's own
+        # markdown-parser source can never false-positive the scan.
+        seg = body.split(marker, 1)[1].split("<script", 1)[0]
+        if re.search(r"\]\((https?:|mailto:)", seg) or "**" in seg:
+            print(f"  WARN raw markdown leaked in {os.path.relpath(f, ROOT)}")
     total = write_sitemap(urls)
 
     n_prop = sum(1 for u in urls if u[0].startswith("/property/"))
