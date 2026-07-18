@@ -26,3 +26,10 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - All community price ranges, occupancy/rental figures, construction cost/ft² (now labeled asking-price observations, July 2026)
 - El Chante: disclose any referral/compensation relationship if one exists (nothing added — unknown)
 - DB article bodies still contain a few strong phrases (e.g., Tamarindo/Nosara post) — editable in admin when reviewed
+
+## Blog: due diligence / water letter / title / land checklist (added 2026-07-18) — verify with a CR real-estate attorney
+- Due-diligence checklist article: registry study contents, annotation types, escrow sequence, corporate-purchase framing
+- Water letter article: letter types and permit-grade distinction; ~1-year validity + limited renewals; issuer roles (AyA/ASADA/municipal/private concession)
+- Title/plano article: folio real & certificacion literal contents; discrepancy-resolution process framing
+- Land checklist: Ley Forestal 7575 protection distances (10m/15m/50m rivers, 100m/200m springs); permit chain order (uso de suelo -> CFIA/APC -> institutional -> municipal + INS); SETENA screening framing; 0.25% property tax reference
+- All four carry on-page "general education, not legal advice" disclaimers + Sources & Verification blocks; developer/community claims in the six community blogs are attributed to developer or brokerage materials
