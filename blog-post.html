@@ -153,6 +153,20 @@
     .nav-mobile-group a:first-of-type { margin-top: 4px; }
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
+    /* Related articles */
+    .related-sec { background: #fff; border-top: 1px solid rgba(0,0,0,0.06); padding: 64px 48px 76px; }
+    .related-inner { max-width: 1080px; margin: 0 auto; }
+    .related-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); margin-bottom: 24px; }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .related-card { background: var(--black); border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; overflow: hidden; transition: box-shadow .3s, border-color .3s; display: flex; flex-direction: column; }
+    .related-card:hover { border-color: rgba(0,0,0,0.15); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .related-card-img { height: 150px; background: #dde3e2; background-size: cover; background-position: center; }
+    .related-card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .related-card-tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--terra); font-weight: 600; }
+    .related-card-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--cream); }
+    .related-card-meta { font-size: 12px; color: var(--stone); margin-top: auto; }
+    @media (max-width: 800px) { .related-sec { padding: 50px 24px 60px; } .related-grid { grid-template-columns: 1fr; } }
+
   </style>
 </head>
 
@@ -200,6 +214,14 @@
   <div class="article-wrap" id="article-container">
     <div class="loading">Loading article...</div>
   </div>
+
+  <!-- Related articles — baked per post for crawlers; runtime fills fallback slugs -->
+  <section class="related-sec" id="related-sec" style="display:none;">
+    <div class="related-inner">
+      <h2 class="related-title">Keep Reading</h2>
+      <div class="related-grid" id="related-grid"></div>
+    </div>
+  </section>
 
   <footer>
     <div class="footer-top">
@@ -344,7 +366,11 @@
       });
       if (!hasBakedLd) document.head.appendChild(bc);
 
-      const cat = (post.category || 'market').charAt(0).toUpperCase() + (post.category || 'market').slice(1);
+      // Topic taxonomy — keep in sync with BLOG_CATS in build.py / blog.html.
+      const CAT_NAMES = { buying: 'Buying & Due Diligence', communities: 'Communities & Towns', market: 'Market & Investment', living: 'Living in Guanacaste' };
+      const CAT_ALIAS = { guide: 'buying', investment: 'market', lifestyle: 'living', news: 'living' };
+      const catKey = c => { c = (c || 'market').toLowerCase(); c = CAT_ALIAS[c] || c; return CAT_NAMES[c] ? c : 'market'; };
+      const cat = CAT_NAMES[catKey(post.category)];
 
       // Visible publish/update date — freshness signal for readers, search & AI engines
       const dateSrc = post.updated_at || post.created_at;
@@ -363,6 +389,31 @@
           </div>
         </div>
       `;
+
+      // Related articles: same topic first, then newest others. Baked pages
+      // already carry these cards — only fill when the grid arrived empty.
+      const relGrid = document.getElementById('related-grid');
+      if (relGrid && !relGrid.children.length) {
+        const all = await TL.getBlogPosts();
+        if (all && all.length) {
+          const CUSTOM = { 'el-chante-tamarindo-villas': 'blog-el-chante-tamarindo.html' };
+          const others = all.filter(x => x.slug !== post.slug);
+          const same = others.filter(x => catKey(x.category) === catKey(post.category));
+          const picks = same.concat(others.filter(x => !same.includes(x))).slice(0, 3);
+          if (picks.length) {
+            relGrid.innerHTML = picks.map(x => `
+              <a href="${CUSTOM[x.slug] || ('/blog/' + x.slug + '/')}" class="related-card">
+                <div class="related-card-img" ${x.cover_url ? `style="background-image:url('${x.cover_url}')"` : ''}></div>
+                <div class="related-card-body">
+                  <div class="related-card-tag">${CAT_NAMES[catKey(x.category)]}</div>
+                  <div class="related-card-title">${x.title || ''}</div>
+                  <div class="related-card-meta">${x.readtime || ''}</div>
+                </div>
+              </a>`).join('');
+            document.getElementById('related-sec').style.display = '';
+          }
+        }
+      }
     })();
     (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
   </script>

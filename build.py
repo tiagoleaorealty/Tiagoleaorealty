@@ -702,6 +702,18 @@ def build_posts(tpl, rows):
         }
         doc = sub_once(doc, r"</head>", ld_script(ld) + "\n</head>", "article ld insert")
 
+        # Related articles: same topic first, then newest others — baked as
+        # real internal links for crawlers; the runtime skips filled grids.
+        others = [o for o in rows if o["slug"] != slug]
+        same = [o for o in others if blog_cat(o) == blog_cat(p)]
+        picks = (same + [o for o in others if o not in same])[:3]
+        if picks:
+            cards = "".join(_related_card(o) for o in picks)
+            doc = sub_once(doc, r'<section class="related-sec" id="related-sec" style="display:none;">',
+                           '<section class="related-sec" id="related-sec">', "related unhide")
+            doc = sub_once(doc, r'<div class="related-grid" id="related-grid"></div>',
+                           f'<div class="related-grid" id="related-grid">{cards}</div>', "related cards")
+
         write_page(f"blog/{slug}", doc)
         urls.append((f"/blog/{slug}/", upd, "0.7", "monthly"))
     return urls
@@ -780,11 +792,57 @@ def _featured_card(p):
             + '<div class="property-meta">' + "".join(meta) + '</div></div></a>')
 
 
-def _blog_card(p):
-    href = ("blog-el-chante-tamarindo.html" if p["slug"] in CUSTOM_BLOG_PAGES
+# Blog taxonomy — keep in sync with BLOG_CATS in blog.html's runtime script.
+# Legacy category values alias into the four canonical sections so the hub
+# renders correctly even before/without the category-cleanup SQL.
+BLOG_CATS = [
+    ("buying", "Buying & Due Diligence"),
+    ("communities", "Communities & Towns"),
+    ("market", "Market & Investment"),
+    ("living", "Living in Guanacaste"),
+]
+BLOG_CAT_ALIAS = {"guide": "buying", "investment": "market", "lifestyle": "living", "news": "living"}
+_BLOG_CAT_KEYS = {k for k, _ in BLOG_CATS}
+_BLOG_CAT_NAMES = dict(BLOG_CATS)
+
+
+def blog_cat(p):
+    c = (p.get("category") or "market").lower()
+    c = BLOG_CAT_ALIAS.get(c, c)
+    return c if c in _BLOG_CAT_KEYS else "market"
+
+
+def _blog_href(p):
+    return ("blog-el-chante-tamarindo.html" if p["slug"] in CUSTOM_BLOG_PAGES
             else "/blog/" + p["slug"] + "/")
+
+
+def _featured_card(p):
+    cover = (' style="background-image:url(' + "'" + esc(p["cover_url"]) + "'" + ');"') if p.get("cover_url") else ""
+    return ('<a href="' + _blog_href(p) + '" class="featured-card">'
+            + '<div class="featured-img"' + cover + '></div>'
+            + '<div class="featured-body">'
+            + '<div class="featured-tags">' + esc(_BLOG_CAT_NAMES[blog_cat(p)])
+            + ' <span class="rt">' + esc(p.get("readtime") or "") + '</span></div>'
+            + '<div class="featured-title">' + esc(p.get("title") or "") + '</div>'
+            + '<div class="featured-excerpt">' + esc(p.get("excerpt") or "") + '</div>'
+            + '<span class="featured-btn">Read Article &rarr;</span></div></a>')
+
+
+def _related_card(p):
+    cover = (' style="background-image:url(' + "'" + esc(p["cover_url"]) + "'" + ')"') if p.get("cover_url") else ""
+    return ('<a href="' + _blog_href(p) + '" class="related-card">'
+            + '<div class="related-card-img"' + cover + '></div>'
+            + '<div class="related-card-body">'
+            + '<div class="related-card-tag">' + esc(_BLOG_CAT_NAMES[blog_cat(p)]) + '</div>'
+            + '<div class="related-card-title">' + esc(p.get("title") or "") + '</div>'
+            + '<div class="related-card-meta">' + esc(p.get("readtime") or "") + '</div></div></a>')
+
+
+def _blog_card(p):
+    href = _blog_href(p)
     cover = (' style="background-image:url(' + "'" + esc(p["cover_url"]) + "'" + ');background-size:cover;background-position:center;"') if p.get("cover_url") else ""
-    cat = esc((p.get("category") or "market").capitalize())
+    cat = esc(_BLOG_CAT_NAMES[blog_cat(p)])
     return ('<a href="' + href + '" class="blog-card">'
             + '<div class="blog-card-img"' + cover + '></div>'
             + '<div class="blog-card-body"><div class="blog-card-tag">' + cat + '</div>'
@@ -825,8 +883,28 @@ def bake_roots(props, schools, posts, devs=None):
     featured = [p for p in props if p.get("featured") and p.get("status") == "active"]
     inject("index.html", "<!--BAKE:FEATURED-->", "<!--/BAKE:FEATURED-->",
            "".join(_featured_card(p) for p in featured), "featured")
-    inject("blog.html", "<!--BAKE:POSTS-->", "<!--/BAKE:POSTS-->",
-           "".join(_blog_card(p) for p in posts), "posts")
+    # Blog hub: featured hero (newest post) + one grid per topic section.
+    featured = posts[0] if posts else None
+    inject("blog.html", "<!--BAKE:FEATURED-POST-->", "<!--/BAKE:FEATURED-POST-->",
+           _featured_card(featured) if featured else "", "featured post")
+    rest = posts[1:]
+    for key, _name in BLOG_CATS:
+        inject("blog.html", f"<!--BAKE:POSTS-{key.upper()}-->", f"<!--/BAKE:POSTS-{key.upper()}-->",
+               "".join(_blog_card(p) for p in rest if blog_cat(p) == key), f"posts {key}")
+    inject("blog.html", "<!--BAKE:BLOG-LD-->", "<!--/BAKE:BLOG-LD-->",
+           ld_script({
+               "@context": "https://schema.org",
+               "@type": "ItemList",
+               "name": "Guanacaste Real Estate Articles",
+               "numberOfItems": len(posts),
+               "itemListElement": [
+                   {"@type": "ListItem", "position": i + 1,
+                    "name": p.get("title") or "",
+                    "url": SITE + ("/blog-el-chante-tamarindo.html" if p["slug"] in CUSTOM_BLOG_PAGES
+                                    else f"/blog/{p['slug']}/")}
+                   for i, p in enumerate(posts)
+               ],
+           }), "blog itemlist ld")
     inject("schools.html", "<!--BAKE:SCHOOLS-->", "<!--/BAKE:SCHOOLS-->",
            "".join(_school_card(s) for s in schools), "schools")
     if devs:

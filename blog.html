@@ -93,6 +93,26 @@
     }
 
     /* Blog grid */
+    /* Featured article */
+    .blog-featured { max-width: 1200px; margin: 0 auto 30px; padding: 0 48px; }
+    .featured-card { display: grid; grid-template-columns: 1.05fr 1fr; background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; transition: box-shadow .3s; }
+    .featured-card:hover { box-shadow: 0 12px 34px rgba(0,0,0,0.08); }
+    .featured-img { min-height: 340px; background: #dde3e2; background-size: cover; background-position: center; }
+    .featured-body { padding: 44px 42px; display: flex; flex-direction: column; justify-content: center; }
+    .featured-tags { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--terra); font-weight: 600; }
+    .featured-tags .rt { color: var(--stone); font-weight: 500; letter-spacing: .06em; text-transform: none; }
+    .featured-title { font-size: clamp(24px, 2.6vw, 34px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--cream); margin-bottom: 14px; }
+    .featured-excerpt { font-size: 15px; line-height: 1.7; color: var(--sand); margin-bottom: 26px; }
+    .featured-btn { align-self: flex-start; background: var(--terra); color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 13px 26px; border-radius: 40px; transition: opacity .2s, transform .2s; }
+    .featured-btn:hover { opacity: .9; transform: translateY(-2px); }
+
+    /* Topic sections */
+    .blog-section { max-width: 1200px; margin: 0 auto; padding: 26px 48px 8px; }
+    .blog-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 18px; flex-wrap: wrap; }
+    .blog-section-head h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: var(--cream); }
+    .blog-section-head p { font-size: 13px; color: var(--stone); }
+    .blog-section .blog-grid { padding: 0 0 26px; max-width: none; }
+
     .blog-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -209,6 +229,11 @@
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
       .page-header { padding: 110px 24px 48px; }
+      .blog-featured { padding: 0 24px; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-img { min-height: 220px; }
+      .featured-body { padding: 28px 24px; }
+      .blog-section { padding: 18px 24px 4px; }
       .blog-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
       footer { padding: 60px 24px 40px; }
       .footer-top { grid-template-columns: 1fr; }
@@ -266,6 +291,144 @@
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
   </style>
+  <!--BAKE:BLOG-LD-->
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Guanacaste Real Estate Articles",
+  "numberOfItems": 21,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Costa Rica Property Due-Diligence Checklist for Foreign Buyers",
+      "url": "https://soldbytiago.com/blog/costa-rica-property-due-diligence-checklist/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Mar Vista (Flamingo/Brasilito) Real Estate and Community Guide",
+      "url": "https://soldbytiago.com/blog/mar-vista-flamingo-real-estate-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "What Is a Water Letter in Costa Rica Real Estate?",
+      "url": "https://soldbytiago.com/blog/costa-rica-property-water-letter-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Costa Rica Property Title, Survey Plan and Cadastral Map, Explained",
+      "url": "https://soldbytiago.com/blog/costa-rica-property-title-plano-catastrado-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Buying Land in Guanacaste: Zoning, Water, Access and Building Checklist",
+      "url": "https://soldbytiago.com/blog/buying-land-guanacaste-zoning-water-building-checklist/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Senderos Tamarindo: Property, Amenities and Location Guide",
+      "url": "https://soldbytiago.com/blog/senderos-tamarindo-real-estate-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Las Ventanas de Playa Grande: Community and Property Guide",
+      "url": "https://soldbytiago.com/blog/las-ventanas-playa-grande-real-estate-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Hacienda Pinilla Communities and Amenities: The Complete Buyer's Guide",
+      "url": "https://soldbytiago.com/blog/hacienda-pinilla-communities-amenities-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "name": "Tamarindo Park Real Estate: A Buyer's Guide to the New Community",
+      "url": "https://soldbytiago.com/blog/tamarindo-park-real-estate-buyers-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "Reserva Conchal Real Estate: Residential Communities, Golf and Beach Club Guide",
+      "url": "https://soldbytiago.com/blog/reserva-conchal-real-estate-communities-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "name": "Schools in Guanacaste: A Guide for Relocating Families",
+      "url": "https://soldbytiago.com/blog/schools-guanacaste-gold-coast-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "name": "How Much Does a House in Tamarindo Cost? (2026 Prices)",
+      "url": "https://soldbytiago.com/blog/tamarindo-house-prices-2026/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "name": "Best Airbnb in Tamarindo",
+      "url": "https://soldbytiago.com/blog-el-chante-tamarindo.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "name": "How Foreigners Buy Property in Costa Rica: The Complete 2026 Guide",
+      "url": "https://soldbytiago.com/blog/buying-property-costa-rica-foreigners-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "name": "Costa Rica Real Estate Closing Costs & Taxes: What Buyers Actually Pay",
+      "url": "https://soldbytiago.com/blog/costa-rica-closing-costs-taxes/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "name": "Titled vs. Concession Beachfront in Costa Rica: The Maritime Zone Explained",
+      "url": "https://soldbytiago.com/blog/titled-vs-concession-beachfront-costa-rica/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "name": "Guanacaste's Beach Towns: Tamarindo, Flamingo, Conchal, Potrero & Nosara",
+      "url": "https://soldbytiago.com/blog/guanacaste-gold-coast-towns-guide/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 18,
+      "name": "Is Guanacaste Real Estate a Good Investment in 2026?",
+      "url": "https://soldbytiago.com/blog/guanacaste-real-estate-investment-2026/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
+      "name": "What Vacation Rental Income Really Looks Like in Guanacaste",
+      "url": "https://soldbytiago.com/blog/costa-rica-vacation-rental-income-guanacaste/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 20,
+      "name": "How Americans and Canadians Can Get Residency in Costa Rica: The Complete 2026 Guide",
+      "url": "https://soldbytiago.com/blog/costa-rica-residency-property-buyers/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 21,
+      "name": "Tamarindo vs. Nosara: Which Should You Buy Real Estate In?",
+      "url": "https://soldbytiago.com/blog/tamarindo-vs-nosara-real-estate/"
+    }
+  ]
+}
+</script>
+<!--/BAKE:BLOG-LD-->
 </head>
 
 <body>
@@ -316,12 +479,49 @@
     <p>Local knowledge, market updates, and everything you need to know before buying or selling in Costa Rica.</p>
   </div>
 
-  <!-- Blog Grid (populated from Supabase) -->
-  <div class="blog-grid">
-    <!--BAKE:POSTS-->
-<a href="/blog/schools-guanacaste-gold-coast-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784220692567-9n5qn0.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Lifestyle</div><div class="blog-card-title">Schools in Guanacaste: A Guide for Relocating Families</div><div class="blog-card-excerpt">Every international, bilingual and private school in Guanacaste — IB, Montessori, Waldorf and bilingual — plus the things that actually decide it: the drive, the waitlist, and why there are no school ratings in Costa Rica.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/tamarindo-house-prices-2026/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market</div><div class="blog-card-title">How Much Does a House in Tamarindo Cost? (2026 Prices)</div><div class="blog-card-excerpt">Real 2026 numbers: condos from ~$200K, homes from ~$400K, ocean-view estates past $2M — and the two factors that move Tamarindo prices most.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="blog-el-chante-tamarindo.html" class="blog-card"><div class="blog-card-img" style="background-image:url('CasaChante.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Lifestyle</div><div class="blog-card-title">Best Airbnb in Tamarindo</div><div class="blog-card-excerpt">Eight private villas above town, one infinity pool, and the kind of ocean view that ends the scroll. Book your stay — or own a piece of this coast.</div><div class="blog-card-meta">El Chante · Tamarindo</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/buying-property-costa-rica-foreigners-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Costa Rica.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">How Foreigners Buy Property in Costa Rica: The Complete 2026 Guide</div><div class="blog-card-excerpt">Foreigners can own property in Costa Rica with the exact same rights as citizens. Here is how the process actually works, from offer to closing.</div><div class="blog-card-meta">9 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-closing-costs-taxes/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">Costa Rica Real Estate Closing Costs &amp; Taxes: What Buyers Actually Pay</div><div class="blog-card-excerpt">Transfer tax, stamps, legal fees, annual property tax, the luxury home tax, and capital gains — a clear breakdown of the real numbers.</div><div class="blog-card-meta">7 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/titled-vs-concession-beachfront-costa-rica/" class="blog-card"><div class="blog-card-img" style="background-image:url('Sun set.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">Titled vs. Concession Beachfront in Costa Rica: The Maritime Zone Explained</div><div class="blog-card-excerpt">The single most important thing to understand before buying near the beach in Costa Rica — the difference between titled and concession land.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/guanacaste-gold-coast-towns-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('Waterfall.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Lifestyle</div><div class="blog-card-title">Guanacaste&#x27;s Beach Towns: Tamarindo, Flamingo, Conchal, Potrero &amp; Nosara</div><div class="blog-card-excerpt">A local&#x27;s guide to the towns of Guanacaste — the vibe, the buyer, and the real estate market in each.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/guanacaste-real-estate-investment-2026/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Costa Rica.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Investment</div><div class="blog-card-title">Is Guanacaste Real Estate a Good Investment in 2026?</div><div class="blog-card-excerpt">An honest look at appreciation, rental yields, the drivers behind the boom, and the risks worth knowing before you buy in Guanacaste.</div><div class="blog-card-meta">7 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-vacation-rental-income-guanacaste/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Investment</div><div class="blog-card-title">What Vacation Rental Income Really Looks Like in Guanacaste</div><div class="blog-card-excerpt">Occupancy, nightly rates, expenses, management, and the rules — a realistic picture of short-term rental income in Guanacaste.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-residency-property-buyers/" class="blog-card"><div class="blog-card-img" style="background-image:url('Sun set.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Guide</div><div class="blog-card-title">How Americans and Canadians Can Get Residency in Costa Rica: The Complete 2026 Guide</div><div class="blog-card-excerpt">The three residency paths — Pensionado, Rentista, and Inversionista — what each costs, how healthcare and taxes actually work, and how buying property fits in. From someone who went through the process himself.</div><div class="blog-card-meta">12 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/tamarindo-vs-nosara-real-estate/" class="blog-card"><div class="blog-card-img" style="background-image:url('Waterfall.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market</div><div class="blog-card-title">Tamarindo vs. Nosara: Which Should You Buy Real Estate In?</div><div class="blog-card-excerpt">The two most talked-about markets in Guanacaste are fundamentally different places. Here is how to know which one is yours.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a>
-<!--/BAKE:POSTS-->
+  <!-- Featured article (newest post) -->
+  <div class="blog-featured" id="blog-featured">
+    <!--BAKE:FEATURED-POST-->
+<a href="/blog/costa-rica-property-due-diligence-checklist/" class="featured-card"><div class="featured-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784407963798-t0qsy1.jpg');"></div><div class="featured-body"><div class="featured-tags">Buying &amp; Due Diligence <span class="rt">4 min read</span></div><div class="featured-title">Costa Rica Property Due-Diligence Checklist for Foreign Buyers</div><div class="featured-excerpt">The document-by-document checklist attorneys work through before a Costa Rica closing: registry study, liens, survey plan, taxes, land use, water, access, HOA, permits and corporate records.</div><span class="featured-btn">Read Article &rarr;</span></div></a>
+<!--/BAKE:FEATURED-POST-->
   </div>
+
+  <!-- Topic sections -->
+  <section class="blog-section" id="blog-sec-buying">
+    <div class="blog-section-head"><h2>Buying &amp; Due Diligence</h2><p>The process, the taxes, and the documents that protect you.</p></div>
+    <div class="blog-grid" id="blog-grid-buying">
+      <!--BAKE:POSTS-BUYING-->
+<a href="/blog/mar-vista-flamingo-real-estate-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784407901839-alcni7.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Mar Vista (Flamingo/Brasilito) Real Estate and Community Guide</div><div class="blog-card-excerpt">Mar Vista&#x27;s residential areas, clubhouse, onsite school and infrastructure between Brasilito and Flamingo, per the developer&#x27;s published materials - with construction and HOA questions to verify.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-property-water-letter-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408225660-nngr0l.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">What Is a Water Letter in Costa Rica Real Estate?</div><div class="blog-card-excerpt">The carta de disponibilidad de agua explained: who issues it (AyA, ASADAs, municipalities), why you cannot build without it, how long it lasts, and why a meter is not the same thing.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-property-title-plano-catastrado-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408036343-elzxvz.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Costa Rica Property Title, Survey Plan and Cadastral Map, Explained</div><div class="blog-card-excerpt">Folio real, certificación literal, plano catastrado: what each document shows, why title area and survey area can differ, and which documents to request before closing.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/buying-land-guanacaste-zoning-water-building-checklist/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408002157-5rojy7.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Buying Land in Guanacaste: Zoning, Water, Access and Building Checklist</div><div class="blog-card-excerpt">The full pre-offer checklist for Guanacaste land: title type, land use, water letter, electricity, legal access, topography, soils, setbacks, environmental review, permits and HOA rules.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/senderos-tamarindo-real-estate-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408114770-urkdxf.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Senderos Tamarindo: Property, Amenities and Location Guide</div><div class="blog-card-excerpt">What the Senderos development publishes about its homesites, Natural Modern architecture, Puerta de Sal beach club and location above Tamarindo - plus what buyers should request before offering.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/las-ventanas-playa-grande-real-estate-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408169458-jjllar.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Las Ventanas de Playa Grande: Community and Property Guide</div><div class="blog-card-excerpt">The nine subdivisions, private water system and amenities of Las Ventanas de Playa Grande, per the community&#x27;s published materials - with the HOA and building questions buyers should verify.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/hacienda-pinilla-communities-amenities-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408193879-iyki9m.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Hacienda Pinilla Communities and Amenities: The Complete Buyer&#x27;s Guide</div><div class="blog-card-excerpt">Every amenity, beach and property type inside the 4,500-acre Hacienda Pinilla resort south of Tamarindo - compiled from the resort&#x27;s own published materials, with the questions buyers should verify before purchasing.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/tamarindo-park-real-estate-buyers-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408142913-2rt5pf.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Tamarindo Park Real Estate: A Buyer&#x27;s Guide to the New Community</div><div class="blog-card-excerpt">What the Tamarindo Park developer publishes about the Hilltop phase, Richard Müller homes, sustainability commitments and amenities - and the documents buyers should request in a young development.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/reserva-conchal-real-estate-communities-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408074381-4b3fz6.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Reserva Conchal Real Estate: Residential Communities, Golf and Beach Club Guide</div><div class="blog-card-excerpt">The seventeen residential communities of Reserva Conchal, the golf course, Beach Club, Westin and W hotels, and the questions buyers should verify before purchasing - sourced from the resort&#x27;s official materials.</div><div class="blog-card-meta">4 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/buying-property-costa-rica-foreigners-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408367796-3i4dkx.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">How Foreigners Buy Property in Costa Rica: The Complete 2026 Guide</div><div class="blog-card-excerpt">Foreigners can own property in Costa Rica with the exact same rights as citizens. Here is how the process actually works, from offer to closing.</div><div class="blog-card-meta">9 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-closing-costs-taxes/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408343780-yj5s42.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Costa Rica Real Estate Closing Costs &amp; Taxes: What Buyers Actually Pay</div><div class="blog-card-excerpt">Transfer tax, stamps, legal fees, annual property tax, the luxury home tax, and capital gains — a clear breakdown of the real numbers.</div><div class="blog-card-meta">7 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/titled-vs-concession-beachfront-costa-rica/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408301832-4rlmdn.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">Titled vs. Concession Beachfront in Costa Rica: The Maritime Zone Explained</div><div class="blog-card-excerpt">The single most important thing to understand before buying near the beach in Costa Rica — the difference between titled and concession land.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-residency-property-buyers/" class="blog-card"><div class="blog-card-img" style="background-image:url('Sun set.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Buying &amp; Due Diligence</div><div class="blog-card-title">How Americans and Canadians Can Get Residency in Costa Rica: The Complete 2026 Guide</div><div class="blog-card-excerpt">The three residency paths — Pensionado, Rentista, and Inversionista — what each costs, how healthcare and taxes actually work, and how buying property fits in. From someone who went through the process himself.</div><div class="blog-card-meta">12 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a>
+<!--/BAKE:POSTS-BUYING-->
+    </div>
+  </section>
+
+  <section class="blog-section" id="blog-sec-communities">
+    <div class="blog-section-head"><h2>Communities &amp; Towns</h2><p>Deep guides to the gated communities and beach towns of this coast.</p></div>
+    <div class="blog-grid" id="blog-grid-communities">
+      <!--BAKE:POSTS-COMMUNITIES-->
+
+<!--/BAKE:POSTS-COMMUNITIES-->
+    </div>
+  </section>
+
+  <section class="blog-section" id="blog-sec-market">
+    <div class="blog-section-head"><h2>Market &amp; Investment</h2><p>Prices, comparisons and honest numbers from the local market.</p></div>
+    <div class="blog-grid" id="blog-grid-market">
+      <!--BAKE:POSTS-MARKET-->
+<a href="/blog/tamarindo-house-prices-2026/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408403471-dw90ct.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market &amp; Investment</div><div class="blog-card-title">How Much Does a House in Tamarindo Cost? (2026 Prices)</div><div class="blog-card-excerpt">Real 2026 numbers: condos from ~$200K, homes from ~$400K, ocean-view estates past $2M — and the two factors that move Tamarindo prices most.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/guanacaste-real-estate-investment-2026/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408458619-f2k0he.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market &amp; Investment</div><div class="blog-card-title">Is Guanacaste Real Estate a Good Investment in 2026?</div><div class="blog-card-excerpt">An honest look at appreciation, rental yields, the drivers behind the boom, and the risks worth knowing before you buy in Guanacaste.</div><div class="blog-card-meta">7 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/costa-rica-vacation-rental-income-guanacaste/" class="blog-card"><div class="blog-card-img" style="background-image:url('Real Estate Photo.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market &amp; Investment</div><div class="blog-card-title">What Vacation Rental Income Really Looks Like in Guanacaste</div><div class="blog-card-excerpt">Occupancy, nightly rates, expenses, management, and the rules — a realistic picture of short-term rental income in Guanacaste.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/tamarindo-vs-nosara-real-estate/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784408257999-tq4slz.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Market &amp; Investment</div><div class="blog-card-title">Tamarindo vs. Nosara: Which Should You Buy Real Estate In?</div><div class="blog-card-excerpt">The two most talked-about markets in Guanacaste are fundamentally different places. Here is how to know which one is yours.</div><div class="blog-card-meta">6 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a>
+<!--/BAKE:POSTS-MARKET-->
+    </div>
+  </section>
+
+  <section class="blog-section" id="blog-sec-living">
+    <div class="blog-section-head"><h2>Living in Guanacaste</h2><p>Schools, residency and what daily life here actually looks like.</p></div>
+    <div class="blog-grid" id="blog-grid-living">
+      <!--BAKE:POSTS-LIVING-->
+<a href="/blog/schools-guanacaste-gold-coast-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/blog/1784220692567-9n5qn0.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Living in Guanacaste</div><div class="blog-card-title">Schools in Guanacaste: A Guide for Relocating Families</div><div class="blog-card-excerpt">Every international, bilingual and private school in Guanacaste — IB, Montessori, Waldorf and bilingual — plus the things that actually decide it: the drive, the waitlist, and why there are no school ratings in Costa Rica.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="blog-el-chante-tamarindo.html" class="blog-card"><div class="blog-card-img" style="background-image:url('CasaChante.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Living in Guanacaste</div><div class="blog-card-title">Best Airbnb in Tamarindo</div><div class="blog-card-excerpt">Eight private villas above town, one infinity pool, and the kind of ocean view that ends the scroll. Book your stay — or own a piece of this coast.</div><div class="blog-card-meta">El Chante · Tamarindo</div><span class="blog-card-link">Read More &rarr;</span></div></a><a href="/blog/guanacaste-gold-coast-towns-guide/" class="blog-card"><div class="blog-card-img" style="background-image:url('Waterfall.jpg');background-size:cover;background-position:center;"></div><div class="blog-card-body"><div class="blog-card-tag">Living in Guanacaste</div><div class="blog-card-title">Guanacaste&#x27;s Beach Towns: Tamarindo, Flamingo, Conchal, Potrero &amp; Nosara</div><div class="blog-card-excerpt">A local&#x27;s guide to the towns of Guanacaste — the vibe, the buyer, and the real estate market in each.</div><div class="blog-card-meta">8 min read</div><span class="blog-card-link">Read More &rarr;</span></div></a>
+<!--/BAKE:POSTS-LIVING-->
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -351,57 +551,85 @@
 
   <script src="supabase-data.js"></script>
   <script>
-    // Load blog posts from Supabase
-    // Posts with a custom-designed landing page link there instead of the markdown template.
+    // Blog hub renderer. Baked HTML already carries everything for crawlers;
+    // this re-renders from Supabase so admin edits appear without a redeploy.
+    // Posts with a custom-designed landing page link there instead of the template.
     const CUSTOM_PAGES = {
       'el-chante-tamarindo-villas': 'blog-el-chante-tamarindo.html'
     };
-    (async function() {
-      const grid = document.querySelector('.blog-grid');
-      if (typeof TL === 'undefined' || !TL.isConnected()) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">Articles are loading. Please check back shortly.</div>';
-        return;
-      }
-      const posts = await TL.getBlogPosts();
-      if (!posts || posts.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone);font-size:14px;">New articles coming soon.</div>';
-        return;
-      }
+    // Keep in sync with BLOG_CATS in build.py.
+    const BLOG_CATS = [
+      ['buying', 'Buying & Due Diligence'],
+      ['communities', 'Communities & Towns'],
+      ['market', 'Market & Investment'],
+      ['living', 'Living in Guanacaste']
+    ];
+    const CAT_ALIAS = { guide: 'buying', investment: 'market', lifestyle: 'living', news: 'living' };
+    const catOf = p => {
+      const c = (p.category || 'market').toLowerCase();
+      const canon = CAT_ALIAS[c] || c;
+      return BLOG_CATS.some(([k]) => k === canon) ? canon : 'market';
+    };
+    const catName = k => (BLOG_CATS.find(([key]) => key === k) || [k, k])[1];
 
-      grid.innerHTML = posts.map(p => {
-        const href = CUSTOM_PAGES[p.slug] || ('/blog/' + p.slug + '/');
-        return `
-        <a href="${href}" class="blog-card">
+    (async function() {
+      if (typeof TL === 'undefined' || !TL.isConnected()) return;
+      const posts = await TL.getBlogPosts();
+      if (!posts || posts.length === 0) return;
+
+      const href = p => CUSTOM_PAGES[p.slug] || ('/blog/' + p.slug + '/');
+      const card = p => `
+        <a href="${href(p)}" class="blog-card">
           <div class="blog-card-img" ${p.cover_url ? `style="background-image:url('${p.cover_url}');background-size:cover;background-position:center;"` : ''}></div>
           <div class="blog-card-body">
-            <div class="blog-card-tag">${(p.category || 'market').charAt(0).toUpperCase() + (p.category || 'market').slice(1)}</div>
+            <div class="blog-card-tag">${catName(catOf(p))}</div>
             <div class="blog-card-title">${p.title || ''}</div>
             <div class="blog-card-excerpt">${p.excerpt || ''}</div>
             <div class="blog-card-meta">${p.readtime || ''}</div>
             <span class="blog-card-link">Read More &rarr;</span>
           </div>
         </a>`;
-      }).join('');
 
-      // ItemList structured data so search engines & AI crawlers see the article catalog
-      function decode(s) { const ta = document.createElement('textarea'); ta.innerHTML = s || ''; return ta.value; }
-      const ld = document.createElement('script');
-      ld.type = 'application/ld+json';
-      ld.textContent = JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        'itemListElement': posts.map((p, i) => ({
-          '@type': 'ListItem',
-          'position': i + 1,
-          'name': decode(p.title),
-          'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog/' + encodeURIComponent(decode(p.slug + '/'))))
-        }))
-      });
-      document.head.appendChild(ld);
+      // Featured = newest post; it does not repeat inside its section.
+      const featured = posts[0];
+      document.getElementById('blog-featured').innerHTML = `
+        <a href="${href(featured)}" class="featured-card">
+          <div class="featured-img" ${featured.cover_url ? `style="background-image:url('${featured.cover_url}');"` : ''}></div>
+          <div class="featured-body">
+            <div class="featured-tags">${catName(catOf(featured))} <span class="rt">${featured.readtime || ''}</span></div>
+            <div class="featured-title">${featured.title || ''}</div>
+            <div class="featured-excerpt">${featured.excerpt || ''}</div>
+            <span class="featured-btn">Read Article &rarr;</span>
+          </div>
+        </a>`;
+
+      const rest = posts.slice(1);
+      for (const [key] of BLOG_CATS) {
+        const mine = rest.filter(p => catOf(p) === key);
+        const sec = document.getElementById('blog-sec-' + key);
+        if (!mine.length) { if (sec) sec.style.display = 'none'; continue; }
+        if (sec) sec.style.display = '';
+        document.getElementById('blog-grid-' + key).innerHTML = mine.map(card).join('');
+      }
+
+      // ItemList structured data — skip when the baked version is already in the head.
+      if (!document.querySelector('script[type="application/ld+json"][data-baked]')) {
+        function decode(s) { const ta = document.createElement('textarea'); ta.innerHTML = s || ''; return ta.value; }
+        const ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          'itemListElement': posts.map((p, i) => ({
+            '@type': 'ListItem',
+            'position': i + 1,
+            'name': decode(p.title),
+            'url': 'https://soldbytiago.com/' + (CUSTOM_PAGES[p.slug] || ('blog/' + encodeURIComponent(decode(p.slug)) + '/'))
+          }))
+        });
+        document.head.appendChild(ld);
+      }
     })();
-
-    // ── Hamburger ─────────────────────────────────────────────────
-    (function(){const b=document.getElementById('nav-hamburger'),m=document.getElementById('nav-mobile'),n=document.querySelector('nav');if(!b||!m)return;function o(){m.classList.add('open');n.classList.add('nav-open');document.body.style.overflow='hidden';}function c(){m.classList.remove('open');n.classList.remove('nav-open');document.body.style.overflow='';}b.addEventListener('click',()=>m.classList.contains('open')?c():o());m.querySelectorAll('a').forEach(a=>a.addEventListener('click',c));})();
   </script>
 
   <a href="https://wa.me/50683028660" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
