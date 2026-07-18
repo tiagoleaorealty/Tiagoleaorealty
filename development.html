@@ -470,7 +470,6 @@
 
       const fact = (label, value) => value
         ? `<div class="sch-fact"><div class="sch-fact-label">${label}</div><div class="sch-fact-value">${value}</div></div>` : '';
-      const NA = '<span style="color:var(--stone);font-weight:500;">Available on request</span>';
       const townLink = TOWN_PAGES[decode(s.town)]
         ? `<a href="${TOWN_PAGES[decode(s.town)]}" style="color:var(--terra);text-decoration:none;">${s.town}</a>`
         : s.town;
@@ -489,13 +488,13 @@
           <aside class="sch-facts"><h3>The Details</h3>
             ${fact('Town', townLink)}
             ${fact('Established', s.established)}
-            ${fact('Typical asking range', s.price_range || NA)}
-            ${fact('HOA fees', s.hoa_fees || NA)}
+            ${fact('Typical asking range', s.price_range)}
+            ${fact('HOA fees', s.hoa_fees)}
             ${fact('Amenities', s.amenities)}
             ${fact('Beach access', s.beach_access)}
-            ${fact('Rental rules', s.rental_rules || NA)}
-            ${fact('Construction', s.construction_rules || NA)}
-            ${fact('Title structure', s.title_structure || NA)}
+            ${fact('Rental rules', s.rental_rules)}
+            ${fact('Construction', s.construction_rules)}
+            ${fact('Title structure', s.title_structure)}
             ${fact('Best for', s.best_for)}
           </aside>
         </div>

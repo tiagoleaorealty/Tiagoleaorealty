@@ -472,18 +472,17 @@ def build_developments(tpl, rows):
         og_image = s.get("cover_url") or f"{SITE}/og-image.jpg"
         doc = head_common(tpl, title, desc, canon, name, desc, og_image)
 
-        NA = '<span style="color:#6b7a7a;font-weight:500;">Available on request</span>'
         facts = ""
         for label, value in (
             ("Town", esc(s.get("town"))),
             ("Established", esc(s.get("established"))),
-            ("Typical asking range", esc(s.get("price_range")) or NA),
-            ("HOA fees", esc(s.get("hoa_fees")) or NA),
+            ("Typical asking range", esc(s.get("price_range"))),
+            ("HOA fees", esc(s.get("hoa_fees"))),
             ("Amenities", esc(s.get("amenities"))),
             ("Beach access", esc(s.get("beach_access"))),
-            ("Rental rules", esc(s.get("rental_rules")) or NA),
-            ("Construction", esc(s.get("construction_rules")) or NA),
-            ("Title structure", esc(s.get("title_structure")) or NA),
+            ("Rental rules", esc(s.get("rental_rules"))),
+            ("Construction", esc(s.get("construction_rules"))),
+            ("Title structure", esc(s.get("title_structure"))),
             ("Best for", esc(s.get("best_for"))),
         ):
             if value:
