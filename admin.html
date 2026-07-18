@@ -528,26 +528,40 @@
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Community <span style="color:var(--terra);font-weight:600;">(controls which Communities page it appears on)</span></label>
+          <label>Community <span style="color:var(--terra);font-weight:600;">(controls which town &amp; community pages it appears on)</span></label>
+          <!-- Options with a community keyword must come before plain town options:
+               the reverse-mapper picks the FIRST option whose data-kw matches. -->
           <select id="prop-community" onchange="onCommunityChange()">
             <option value="" data-kw="">— Select community —</option>
-            <option value="Tamarindo, Guanacaste" data-kw="tamarindo">Tamarindo</option>
-            <option value="Playa Langosta, Tamarindo" data-kw="langosta">Playa Langosta</option>
-            <option value="Playa Grande, Guanacaste" data-kw="playa grande">Playa Grande</option>
-            <option value="Playa Avellanas, Guanacaste" data-kw="avellanas">Playa Avellanas</option>
-            <option value="Hacienda Pinilla, Guanacaste" data-kw="pinilla">Hacienda Pinilla</option>
-            <option value="Playa Conchal, Guanacaste" data-kw="conchal">Playa Conchal</option>
-            <option value="Brasilito, Guanacaste" data-kw="brasilito">Brasilito</option>
-            <option value="Playa Flamingo, Guanacaste" data-kw="flamingo">Playa Flamingo</option>
-            <option value="Potrero, Guanacaste" data-kw="potrero">Potrero</option>
-            <option value="Las Catalinas, Guanacaste" data-kw="catalinas">Las Catalinas</option>
-            <option value="Playas del Coco, Guanacaste" data-kw="coco">Playas del Coco</option>
-            <option value="Marbella, Guanacaste" data-kw="marbella">Marbella</option>
-            <option value="Nosara, Guanacaste" data-kw="nosara">Nosara</option>
+            <optgroup label="Gated communities &amp; developments">
+              <option value="Hacienda Pinilla, Guanacaste" data-kw="pinilla">Hacienda Pinilla</option>
+              <option value="Reserva Conchal, Guanacaste" data-kw="reserva conchal">Reserva Conchal</option>
+              <option value="Senderos, Tamarindo" data-kw="senderos">Senderos</option>
+              <option value="Tamarindo Park, Guanacaste" data-kw="tamarindo park">Tamarindo Park</option>
+              <option value="Las Ventanas, Playa Grande" data-kw="las ventanas">Las Ventanas de Playa Grande</option>
+              <option value="Mar Vista, Brasilito" data-kw="mar vista">Mar Vista</option>
+              <option value="Catalina Cove, Brasilito" data-kw="catalina cove">Catalina Cove</option>
+              <option value="Las Catalinas, Guanacaste" data-kw="catalinas">Las Catalinas</option>
+            </optgroup>
+            <optgroup label="Towns &amp; beaches">
+              <option value="Tamarindo, Guanacaste" data-kw="tamarindo">Tamarindo</option>
+              <option value="Playa Langosta, Tamarindo" data-kw="langosta">Playa Langosta</option>
+              <option value="Playa Grande, Guanacaste" data-kw="playa grande">Playa Grande</option>
+              <option value="Playa Avellanas, Guanacaste" data-kw="avellanas">Playa Avellanas</option>
+              <option value="Playa Conchal, Guanacaste" data-kw="conchal">Playa Conchal</option>
+              <option value="Brasilito, Guanacaste" data-kw="brasilito">Brasilito</option>
+              <option value="Playa Flamingo, Guanacaste" data-kw="flamingo">Playa Flamingo</option>
+              <option value="Potrero, Guanacaste" data-kw="potrero">Potrero</option>
+              <option value="Playas del Coco, Guanacaste" data-kw="coco">Playas del Coco</option>
+              <option value="Marbella, Guanacaste" data-kw="marbella">Marbella</option>
+              <option value="Nosara, Guanacaste" data-kw="nosara">Nosara</option>
+            </optgroup>
             <option value="__other__" data-kw="">Other / custom…</option>
           </select>
         </div>
-        <div class="form-group"><label>Location shown on listing</label><input type="text" id="prop-location" placeholder="e.g. Tamarindo, Guanacaste" /></div>
+        <div class="form-group"><label>Location shown on listing</label><input type="text" id="prop-location" placeholder="e.g. Tamarindo, Guanacaste" />
+          <div id="prop-location-hint" style="font-size:12px;margin-top:6px;line-height:1.5;"></div>
+        </div>
       </div>
       <div class="form-row full">
         <div class="form-group"><label>Address</label><input type="text" id="prop-address" placeholder="Full address or area description" /></div>
@@ -1157,9 +1171,56 @@ Separate paragraphs with a blank line."></textarea>
       const sel = document.getElementById('prop-community');
       const val = sel.value;
       const loc = document.getElementById('prop-location');
-      if (val === '__other__') { loc.value = ''; loc.focus(); return; }
+      if (val === '__other__') { loc.value = ''; updateLocationHint(); loc.focus(); return; }
       if (val) loc.value = val;
+      updateLocationHint();
     }
+
+    // Keep in sync with the TOWNS array duplicated across the town pages
+    // (avellanas.html etc.) — same keys, same first-match-wins priority.
+    const TOWN_PAGES = [
+      ['Las Catalinas',   ['catalinas', 'danta']],
+      ['Playa Langosta',  ['langosta']],
+      ['Playa Grande',    ['playa grande', 'las baulas']],
+      ['Avellanas',       ['avellanas', 'pinilla']],
+      ['Conchal',         ['conchal', 'brasilito']],
+      ['Flamingo',        ['flamingo']],
+      ['Potrero',         ['potrero', 'surfside']],
+      ['Playas del Coco', ['coco', 'ocotal', 'playa hermosa', 'papagayo']],
+      ['Marbella',        ['marbella', 'san juanillo', 'junquillal']],
+      ['Nosara',          ['guiones', 'nosara', 'pelada']],
+      ['Tamarindo',       ['tamarindo']]
+    ];
+
+    // Live preview of every page this listing will attach to. Town pages
+    // match on location + name; community pages match on location only.
+    function updateLocationHint() {
+      const hint = document.getElementById('prop-location-hint');
+      if (!hint) return;
+      const loc = (document.getElementById('prop-location').value || '').toLowerCase();
+      const name = (document.getElementById('prop-name').value || '').toLowerCase();
+      if (!loc.trim()) { hint.textContent = ''; return; }
+      const hay = loc + ' ' + name;
+      let town = null;
+      for (const [t, keys] of TOWN_PAGES) {
+        if (keys.some(k => hay.includes(k))) { town = t; break; }
+      }
+      const devs = (allDevs || [])
+        .filter(d => d.match_location && loc.includes(d.match_location.toLowerCase()))
+        .map(d => d.name);
+      const spots = [];
+      if (town) spots.push(town + ' town page');
+      devs.forEach(n => spots.push(n + ' community page'));
+      if (spots.length) {
+        hint.style.color = '#5a7a5f';
+        hint.textContent = '✓ Will appear on: ' + spots.join(' + ');
+      } else {
+        hint.style.color = '#d44';
+        hint.textContent = '⚠ This location doesn\'t match any town or community page — the listing will only show on the main Properties page. Pick from the Community dropdown or check the spelling.';
+      }
+    }
+    document.getElementById('prop-location').addEventListener('input', updateLocationHint);
+    document.getElementById('prop-name').addEventListener('input', updateLocationHint);
 
     // Reverse-map a stored location string back to a community option on edit.
     function syncCommunityFromLocation(location) {
@@ -1183,6 +1244,7 @@ Separate paragraphs with a blank line."></textarea>
       document.getElementById('prop-status').value = data ? data.status || 'active' : 'active';
       document.getElementById('prop-location').value = data ? data.location || '' : '';
       syncCommunityFromLocation(data ? data.location || '' : '');
+      updateLocationHint();
       document.getElementById('prop-address').value = data ? data.address || '' : '';
       document.getElementById('prop-beds').value = data ? data.beds || '' : '';
       document.getElementById('prop-baths').value = data ? data.baths || '' : '';
