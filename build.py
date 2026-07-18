@@ -198,9 +198,11 @@ def build_properties(tpl, rows):
         price = p.get("price") or ""
         sold = p.get("status") == "sold"
         photos = [u for u in (p.get("photos") or []) if u]
-        canon = f"{SITE}/property/{pid}/"
+        slug = (p.get("slug") or "").strip()
+        seg = slug or pid
+        canon = f"{SITE}/property/{seg}/"
         desc = one_line(p.get("short_desc") or p.get("description") or f"{name} in {loc}.")
-        title = f"{name} | Tiago Leao — Guanacaste Real Estate"
+        title = f"{name} | Tiago Leao | Guanacaste Real Estate"
         og_title = f"{name} — Sold" if sold else (f"{name} — {price}" if price else name)
         og_image = photos[0] if photos else f"{SITE}/og-image.jpg"
 
@@ -306,6 +308,28 @@ def build_properties(tpl, rows):
             f'<div class="features-grid" id="features-grid">{feats}</div>',
             "features",
         )
+        NA = "Available on request"
+        def _atext(v):
+            m2 = int(float(v))
+            return format(m2, ",") + " m&sup2; / " + format(round(m2 * 10.7639), ",") + " ft&sup2;"
+        srows = [
+            ("Location", esc(loc) if p.get("location") else NA),
+            ("Asking price", "Sold" if sold else (esc(price) or NA)),
+            ("Property type", esc((p.get("type") or "home").capitalize())),
+            ("Bedrooms", fmt_num(p.get("beds")) or NA),
+            ("Bathrooms", fmt_num(p.get("baths")) or NA),
+            ("Built area", _atext(p["size"]) if p.get("size") else NA),
+            ("Lot area", _atext(p["lot"]) if p.get("lot") else NA),
+            ("Status", "Sold" if sold else "For sale"),
+        ]
+        sum_html = "".join(f'<div class="ps-row"><dt>{k}</dt><dd>{v}</dd></div>' for k, v in srows)
+        doc = sub_once(doc, r'<dl class="prop-summary" id="prop-summary-list"></dl>',
+                       f'<dl class="prop-summary" id="prop-summary-list">{sum_html}</dl>', "summary list")
+        upd = (p.get("updated_at") or "")[:10]
+        if upd:
+            doc = sub_once(doc, r'<p class="prop-summary-updated" id="prop-summary-updated"></p>',
+                           f'<p class="prop-summary-updated" id="prop-summary-updated">Listing details last updated {upd}.</p>',
+                           "summary updated")
         if photos:
             doc = sub_once(
                 doc, r'<span class="gallery-placeholder-label">Photo 1</span>',
@@ -314,8 +338,17 @@ def build_properties(tpl, rows):
                 "gallery main photo",
             )
 
-        write_page(f"property/{pid}", doc)
-        urls.append((f"/property/{pid}/", (p.get("updated_at") or TODAY)[:10], "0.7", "weekly"))
+        write_page(f"property/{seg}", doc)
+        if slug:
+            # The old uuid URL redirects permanently to the descriptive slug,
+            # so nothing ever breaks and only one URL gets indexed.
+            write_page(f"property/{pid}",
+                '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
+                + f'<title>{esc(name)}</title><link rel="canonical" href="{canon}">'
+                + f'<meta http-equiv="refresh" content="0;url={canon}">'
+                + f'<script>location.replace("{canon}")</script></head>'
+                + f'<body><a href="{canon}">{esc(name)}</a></body></html>')
+        urls.append((f"/property/{seg}/", (p.get("updated_at") or TODAY)[:10], "0.7", "weekly"))
     return urls
 
 
@@ -420,7 +453,7 @@ def build_posts(tpl, rows):
         desc = one_line(p.get("meta_desc") or p.get("excerpt") or title_txt)
         og_image = p.get("cover_url") or f"{SITE}/og-image.jpg"
 
-        doc = head_common(tpl, f"{title_txt} | Tiago Leao Real Estate", desc, canon, title_txt, desc, og_image)
+        doc = head_common(tpl, f"{title_txt} | Tiago Leao | Guanacaste Real Estate", desc, canon, title_txt, desc, og_image)
 
         upd = (p.get("updated_at") or p.get("created_at") or TODAY)[:10]
         try:
@@ -428,7 +461,14 @@ def build_posts(tpl, rows):
             nice_date = f"{date(y, m, d):%B} {d}, {y}"
         except ValueError:
             nice_date = upd
-        byline = (f"By Tiago Leao &middot; KRAIN Luxury Real Estate &middot; Updated {nice_date}"
+        disclaimer = ""
+        if (p.get("category") or "") in ("guide", "investment", "market"):
+            disclaimer = ('<p style="margin-top:32px;font-size:13px;line-height:1.6;color:#6b7a7a;">'
+                          'This article is general information, not legal, tax, immigration, or financial advice. '
+                          'Rules and figures change; confirm your situation with qualified Costa Rican professionals '
+                          'before making decisions.</p>')
+        byline = (f'By <a href="about.html" style="color:inherit;text-decoration:underline;">Tiago Leao</a> &middot; '
+                  f"KRAIN Luxury Real Estate &middot; Updated {nice_date}"
                   + (f" &middot; {esc(p['readtime'])}" if p.get("readtime") else ""))
         baked = f"""<a href="blog.html" class="article-back">&larr; All Articles</a>
     <div class="article-tag">{esc((p.get("category") or "guide").capitalize())}</div>
@@ -437,6 +477,7 @@ def build_posts(tpl, rows):
     <div class="article-body">
       {parse_body(p.get("body"))}
       <div class="article-cta"><p>Interested in learning more?</p><a href="index.html#form-section">Get in Touch &rarr;</a></div>
+      {disclaimer}
     </div>"""
         doc = sub_once(doc, r'<div class="loading">Loading article\.\.\.</div>', baked, "article content")
 
@@ -449,8 +490,8 @@ def build_posts(tpl, rows):
             "datePublished": (p.get("created_at") or TODAY)[:10],
             "dateModified": upd,
             "image": og_image,
-            "author": {"@type": "Person", "name": "Tiago Leao", "url": f"{SITE}/about.html"},
-            "publisher": {"@type": "RealEstateAgent", "name": "Tiago Leao Real Estate", "url": SITE},
+            "author": {"@type": "Person", "@id": f"{SITE}/#person", "name": "Tiago Leao", "url": f"{SITE}/about.html"},
+            "publisher": {"@type": "RealEstateAgent", "name": "Tiago Leao | Guanacaste Real Estate", "url": SITE},
             "mainEntityOfPage": canon,
         }
         doc = sub_once(doc, r"</head>", ld_script(ld) + "\n</head>", "article ld insert")
@@ -500,7 +541,7 @@ def _prop_card(p):
     price_num = re.sub(r"[^0-9]", "", str(p.get("price") or "")) or "0"
     loc = esc(p.get("location") or "")
     cls = "property-card visible-card" + (" is-sold" if sold else "")
-    return ('<a href="/property/' + p["id"] + '/" class="' + cls + '"'
+    return ('<a href="/property/' + (p.get("slug") or p["id"]) + '/" class="' + cls + '"'
             + ' data-type="' + esc(p.get("type") or "home") + '" data-price="' + price_num + '"'
             + ' data-status="' + esc(p.get("status") or "active") + '" data-beds="' + (fmt_num(p.get("beds")) or "0") + '"'
             + ' data-lat="' + str(p.get("lat") or "") + '" data-lng="' + str(p.get("lng") or "") + '"'
@@ -523,7 +564,7 @@ def _featured_card(p):
     if p.get("size"):
         meta.append("<span><strong>" + format(int(float(p["size"])), ",") + "</strong> m&sup2; / "
                     + format(round(float(p["size"]) * 10.7639), ",") + " ft&sup2;</span>")
-    return ('<a href="/property/' + p["id"] + '/" class="property-card">'
+    return ('<a href="/property/' + (p.get("slug") or p["id"]) + '/" class="property-card">'
             + '<div class="property-img-placeholder"' + bg + '>'
             + '<div class="property-badge">Featured</div>'
             + '<div class="property-type-tag">' + tname + '</div></div>'
@@ -612,15 +653,18 @@ STATIC_PAGES = [
 
 def write_sitemap(dynamic_urls):
     entries = []
+    # Static pages get no lastmod — faking "modified today" on every build
+    # teaches crawlers to ignore the field. Dynamic rows use real updated_at.
     for path, prio, freq in STATIC_PAGES:
-        entries.append((path, TODAY, prio, freq))
+        entries.append((path, None, prio, freq))
     entries.extend(dynamic_urls)
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for path, mod, prio, freq in entries:
         xml.append("  <url>")
         xml.append(f"    <loc>{SITE}{path}</loc>")
-        xml.append(f"    <lastmod>{mod}</lastmod>")
+        if mod:
+            xml.append(f"    <lastmod>{mod}</lastmod>")
         xml.append(f"    <priority>{prio}</priority>")
         xml.append(f"    <changefreq>{freq}</changefreq>")
         xml.append("  </url>")
@@ -631,6 +675,41 @@ def write_sitemap(dynamic_urls):
 
 
 # ── main ─────────────────────────────────────────────────────────
+
+def validate(props, schools, posts):
+    """Data-consistency audit: warns loudly, never blocks the deploy."""
+    warn = []
+    names = {}
+    for p in props:
+        n = p.get("name") or ""
+        names[n] = names.get(n, 0) + 1
+        m = re.search(r"(\d+)[- ]Bedroom", n)
+        if m and p.get("beds") and int(float(p["beds"])) != int(m.group(1)):
+            warn.append(f"{n[:42]}: name says {m.group(1)} bedrooms, beds field says {fmt_num(p['beds'])}")
+        if p.get("size") and p.get("lot") and float(p["size"]) > float(p["lot"]):
+            warn.append(f"{n[:42]}: built {p['size']} m2 exceeds lot {p['lot']} m2")
+        if p.get("size") and float(p["size"]) > 1500:
+            warn.append(f"{n[:42]}: built area {p['size']} m2 looks like square feet")
+        if not (p.get("slug") or "").strip():
+            warn.append(f"{n[:42]}: no slug yet (uuid URL in use)")
+        if not p.get("price"):
+            warn.append(f"{n[:42]}: missing price")
+        if not (p.get("photos") or []):
+            warn.append(f"{n[:42]}: no photos")
+    for n, c in names.items():
+        if c > 1:
+            warn.append(f"duplicate listing name x{c}: {n[:42]}")
+    for b in posts:
+        if not b.get("meta_desc"):
+            warn.append(f"post '{(b.get('title') or '')[:38]}': no meta description")
+    for s in schools:
+        if s.get("lat") is None:
+            warn.append(f"school '{(s.get('name') or '')[:38]}': no map pin")
+    if warn:
+        print(f"AUDIT: {len(warn)} data warning(s) — review, build continues:")
+        for w in warn:
+            print("  WARN", w)
+
 
 def main():
     for d in ("property", "school", "blog"):
@@ -643,6 +722,8 @@ def main():
     props = fetch("properties?select=*&status=in.(active,sold)&order=sort_order.asc,created_at.desc")
     schools = fetch("schools?select=*&status=eq.published&order=sort_order.asc")
     posts = fetch("blog_posts?select=*&status=eq.published&order=created_at.desc")
+
+    validate(props, schools, posts)
 
     urls = []
     urls += build_properties(read("property-detail.html"), props)

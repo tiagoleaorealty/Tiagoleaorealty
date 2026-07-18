@@ -85,11 +85,13 @@
       }
     },
 
-    // Load a single property by ID
-    async getProperty(id) {
+    // Load a single property by uuid OR descriptive slug — pretty URLs use
+    // the slug; old uuid URLs keep working forever.
+    async getProperty(key) {
+      const isId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(key);
       try {
         const data = await sbFetch('properties', {
-          'id': `eq.${id}`,
+          [isId ? 'id' : 'slug']: `eq.${key}`,
           'select': '*'
         });
         return data && data.length > 0 ? data[0] : null;

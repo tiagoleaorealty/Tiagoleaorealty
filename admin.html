@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Admin | Tiago Leao Real Estate</title>
+  <title>Admin | Tiago Leao | Guanacaste Real Estate</title>
   
   
   <link rel="stylesheet" href="fonts.css" />
@@ -1203,6 +1203,11 @@ Separate paragraphs with a blank line."></textarea>
         lat: parseFloat(document.getElementById('prop-lat').value) || null,
         lng: parseFloat(document.getElementById('prop-lng').value) || null,
         featured: document.getElementById('prop-featured').checked,
+        // Descriptive URL slug: generated once from name+location, then kept
+        // stable forever so a rename never breaks the property's URL.
+        slug: (allProperties.find(x => x.id === id) || {}).slug
+          || slugify(document.getElementById('prop-name').value.split(':')[0].split('|')[0]
+                     + ' ' + document.getElementById('prop-location').value),
         // Blank must stay NULL, not 0 — the property page hides a tile that has
         // no value, and "0 minutes to the beach" is a different claim entirely.
         walk_score: numOrNull('prop-walk-score'),

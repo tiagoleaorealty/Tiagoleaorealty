@@ -9,7 +9,7 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
-  <title>School | Tiago Leao Real Estate</title>
+  <title>School | Tiago Leao | Guanacaste Real Estate</title>
   <meta name="description" content="Schools in Guanacaste, Costa Rica — grades, curriculum, languages and location.">
   <link rel="canonical" href="https://soldbytiago.com/schools.html">
   <meta property="og:type" content="article">
@@ -565,7 +565,7 @@
               : 'Closest listings to this school.'}</p>
             <div class="sch-listings">
               ${near.map(p => `
-                <a href="/property/${encodeURIComponent(decode(p.id))}/" class="sch-listing">
+                <a href="/property/${encodeURIComponent(decode(p.slug || p.id))}/" class="sch-listing">
                   <div class="sch-listing-photo"${p.photos && p.photos[0] ? ` style="background-image:url('${p.photos[0]}')"` : ''}></div>
                   <div class="sch-listing-body">
                     <div class="sch-listing-price">${p.price || ''}</div>

@@ -9,7 +9,7 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
-  <title>Luxury Property in Guanacaste Costa Rica | Tiago Leao Real Estate</title>
+  <title>Luxury Property in Guanacaste Costa Rica | Tiago Leao | Guanacaste Real Estate</title>
   <meta name="description" content="View this luxury property for sale in Guanacaste, Costa Rica. Contact Tiago Leao at KRAIN Luxury Real Estate for more information or to schedule a showing.">
   <link rel="canonical" href="https://soldbytiago.com/property-detail.html">
   <meta property="og:title" content="Luxury Property in Guanacaste | Tiago Leao">
@@ -26,7 +26,7 @@
     "description": "Luxury real estate for sale in Guanacaste, Costa Rica listed by Tiago Leao at KRAIN Luxury Real Estate.",
     "brand": {
       "@type": "Brand",
-      "name": "Tiago Leao Real Estate"
+      "name": "Tiago Leao | Guanacaste Real Estate"
     },
     "offers": {
       "@type": "Offer",
@@ -332,6 +332,12 @@
       letter-spacing: -0.02em;
       display: block;
     }
+    .prop-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 36px; margin: 0 0 10px; }
+    .ps-row { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 8px; font-size: 14px; }
+    .ps-row dt { color: var(--stone); }
+    .ps-row dd { color: var(--cream); font-weight: 600; text-align: right; margin: 0; }
+    .prop-summary-updated { font-size: 12px; color: var(--stone); margin: 0 0 40px; }
+    @media (max-width: 700px) { .prop-summary { grid-template-columns: 1fr; } }
     .detail-stat-alt { display: block; font-size: 11px; font-weight: 500; color: var(--stone); margin-top: 2px; letter-spacing: 0; text-transform: none; }
     .detail-stat-label {
       font-size: 11px;
@@ -1154,6 +1160,10 @@
 
         <!-- Description -->
         <div class="reveal">
+          <div class="detail-section-title">Property Summary</div>
+          <dl class="prop-summary" id="prop-summary-list"></dl>
+          <p class="prop-summary-updated" id="prop-summary-updated"></p>
+
           <div class="detail-section-title">About This Property</div>
           <div class="detail-description" id="detail-description"></div>
         </div>
@@ -1443,7 +1453,7 @@
 
     // ── Not-found state (no static demo data; listings live in Supabase) ──
     function showNotFound() {
-      document.title = 'Property Not Found | Tiago Leao — Guanacaste Real Estate';
+      document.title = 'Property Not Found | Tiago Leao | Guanacaste Real Estate';
       document.getElementById('detail-type').textContent = 'Not Found';
       document.getElementById('detail-title').textContent = 'This property is no longer available';
       document.getElementById('detail-location').innerHTML = '<a href="properties.html" style="color:var(--terra);">Browse all current listings &rarr;</a>';
@@ -1455,7 +1465,7 @@
 
     // ── Similar Properties ────────────────────────────────────────
     function renderSimCard(id, price, beds, baths, sqft, name, type, imgUrl) {
-      return `<a href="/property/${id}/" class="sim-card">
+      return `<a href="/property/${p.slug || p.id}/" class="sim-card">
         <div class="sim-img">
           ${imgUrl ? `<img src="${imgUrl}" alt="${name}" />` : ''}
           <span class="sim-type">${type}</span>
@@ -1509,7 +1519,7 @@
       if (typeof TL !== 'undefined' && TL.isConnected() && id) {
         const p = await TL.getProperty(id);
         if (p) {
-          document.title = p.name + ' | Tiago Leao — Guanacaste Real Estate';
+          document.title = p.name + ' | Tiago Leao | Guanacaste Real Estate';
           document.getElementById('detail-type').textContent = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
           document.getElementById('detail-title').textContent = p.name || '';
           document.getElementById('detail-location').textContent = p.location || '';
@@ -1528,6 +1538,28 @@
           const areaBoth = v => Number(v).toLocaleString() + ' m²<span class="detail-stat-alt">' + Math.round(Number(v)*10.7639).toLocaleString() + ' ft²</span>';
           document.getElementById('stat-sqft').innerHTML = p.size ? areaBoth(p.size) : '—';
           document.getElementById('stat-lot').innerHTML = p.lot ? areaBoth(p.lot) : '—';
+
+          // Property summary — the same facts, as a labeled list bots and
+          // buyers can read at a glance. Missing values say so honestly.
+          const areaText = v => Number(v).toLocaleString() + ' m\u00B2 / ' + Math.round(Number(v)*10.7639).toLocaleString() + ' ft\u00B2';
+          const NA = 'Available on request';
+          const sumRows = [
+            ['Location', p.location || NA],
+            ['Asking price', p.status === 'sold' ? 'Sold' : (p.price || NA)],
+            ['Property type', (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1)],
+            ['Bedrooms', p.beds || NA],
+            ['Bathrooms', p.baths || NA],
+            ['Built area', p.size ? areaText(p.size) : NA],
+            ['Lot area', p.lot ? areaText(p.lot) : NA],
+            ['Status', p.status === 'sold' ? 'Sold' : 'For sale']
+          ];
+          const sumEl = document.getElementById('prop-summary-list');
+          if (sumEl) sumEl.innerHTML = sumRows.map(r => '<div class="ps-row"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('');
+          const updEl = document.getElementById('prop-summary-updated');
+          if (updEl && p.updated_at) {
+            const d = new Date(p.updated_at);
+            updEl.textContent = 'Listing details last updated ' + d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + '.';
+          }
 
           const desc = document.getElementById('detail-description');
           desc.innerHTML = (p.description || '').split('\n\n').filter(Boolean).map(t => '<p>' + t + '</p>').join('');
