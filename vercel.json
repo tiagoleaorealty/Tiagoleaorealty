@@ -64,19 +64,19 @@
   ],
   "rewrites": [
     {
-      "source": "/property/:seg*",
+      "source": "/property/(.*)",
       "destination": "/property-detail.html"
     },
     {
-      "source": "/school/:seg*",
+      "source": "/school/(.*)",
       "destination": "/school.html"
     },
     {
-      "source": "/blog/:seg*",
+      "source": "/blog/(.*)",
       "destination": "/blog-post.html"
     },
     {
-      "source": "/development/:seg*",
+      "source": "/development/(.*)",
       "destination": "/development.html"
     }
   ]
