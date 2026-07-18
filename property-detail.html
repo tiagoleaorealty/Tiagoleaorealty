@@ -13,6 +13,10 @@
   <title>Luxury Property in Guanacaste Costa Rica | Tiago Leao | Guanacaste Real Estate</title>
   <meta name="description" content="View this luxury property for sale in Guanacaste, Costa Rica. Contact Tiago Leao at KRAIN Luxury Real Estate for more information or to schedule a showing.">
   <link rel="canonical" href="https://soldbytiago.com/property-detail.html">
+  <!-- Template ships noindex: baked property pages strip it at build time, and
+       the runtime removes it when a real listing loads. Unknown/invalid ids
+       therefore never enter the index. -->
+  <meta name="robots" content="noindex">
   <meta property="og:title" content="Luxury Property in Guanacaste | Tiago Leao">
   <meta property="og:type" content="product">
   <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
@@ -1529,6 +1533,12 @@
       if (typeof TL !== 'undefined' && TL.isConnected() && id) {
         const p = await TL.getProperty(id);
         if (p) {
+          // Real listing loaded: make the page indexable at its clean URL.
+          // (Unknown ids keep the template's noindex and never enter the index.)
+          const robotsMeta = document.querySelector('meta[name="robots"][content="noindex"]');
+          if (robotsMeta) robotsMeta.remove();
+          const canonEl = document.querySelector('link[rel="canonical"]');
+          if (canonEl) canonEl.href = 'https://soldbytiago.com/property/' + encodeURIComponent(p.slug || p.id) + '/';
           document.title = p.name + ' | Tiago Leao | Guanacaste Real Estate';
           document.getElementById('detail-type').textContent = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
           document.getElementById('detail-title').textContent = p.name || '';

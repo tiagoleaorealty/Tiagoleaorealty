@@ -333,6 +333,10 @@ def build_properties(tpl, rows):
         if sold:
             doc = sub_once(doc, r"<body>", '<body class="listing-sold">', "<body> sold class")
 
+        # Baked pages are the canonical, indexable versions — strip the
+        # template's default noindex (kept only for unknown-id fallbacks).
+        doc = sub_once(doc, r'\s*<!-- Template ships noindex[^>]*>\s*<meta name="robots" content="noindex">', "", "strip template noindex", flags=re.S)
+
         # Visible content into the containers the JS later re-renders.
         doc = sub_once(
             doc, r'<div class="detail-eyebrow reveal" id="detail-type">Property</div>',
