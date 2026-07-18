@@ -11,14 +11,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
   <title>Tamarindo Park | Guanacaste Communities | Tiago Leao</title>
-  <meta name="description" content="The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.">
+  <meta name="description" content="Tamarindo Park guide: the new Richard Müller-designed gated community between Tamarindo and Langosta - Hilltop phase, amenities, lots and honest trade-off…">
   <link rel="canonical" href="https://soldbytiago.com/development/tamarindo-park/">
   <meta property="og:title" content="Tamarindo Park">
-  <meta property="og:description" content="The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.">
+  <meta property="og:description" content="Tamarindo Park guide: the new Richard Müller-designed gated community between Tamarindo and Langosta - Hilltop phase, amenities, lots and honest trade-off…">
   <meta property="og:url" content="https://soldbytiago.com/development/tamarindo-park/">
-  <meta name="twitter:image" content="https://soldbytiago.com/og-image.jpg">
+  <meta name="twitter:image" content="https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391623711-2qdsdm.jpg">
   <meta property="og:type" content="article">
-  <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
+  <meta property="og:image" content="https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391623711-2qdsdm.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="fonts.css" />
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
@@ -268,6 +268,22 @@
   <style>
     /* ── School detail ─────────────────────────────────────────── */
     .sch-wrap { max-width: 1100px; margin: 0 auto; padding: 0 60px 100px; }
+
+    /* Closing CTA */
+    .sch-cta { background: var(--terra); margin-top: 40px; padding: 76px 48px; text-align: center; }
+    .sch-cta-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,250,250,.65); margin-bottom: 16px; font-weight: 600; }
+    .sch-cta-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; color: #fafafa; max-width: 720px; margin: 0 auto 18px; }
+    .sch-cta-text { max-width: 640px; margin: 0 auto 32px; font-size: 15px; line-height: 1.75; color: rgba(250,250,250,.88); }
+    .sch-cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .sch-cta-btn { display: inline-block; padding: 14px 28px; border: 1px solid rgba(250,250,250,.4); border-radius: 100px; color: #fafafa; font-size: 14px; font-weight: 500; transition: background .25s, border-color .25s, opacity .25s; }
+    .sch-cta-btn:hover { background: rgba(250,250,250,.12); border-color: #fafafa; }
+    .sch-cta-btn.primary { background: #fafafa; color: var(--terra); border-color: #fafafa; font-weight: 600; }
+    .sch-cta-btn.primary:hover { opacity: .88; }
+    .sch-cta-note { font-size: 12.5px; color: rgba(250,250,250,.55); margin: 0; }
+    @media (max-width: 640px) {
+      .sch-cta { padding: 56px 24px; }
+      .sch-cta-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+    }
     .sch-crumb { font-size: 13px; color: var(--stone); padding: 30px 0 18px; }
     .sch-crumb a { color: var(--stone); text-decoration: none; }
     .sch-crumb a:hover { color: var(--terra); }
@@ -342,12 +358,17 @@
   "@type": "Residence",
   "name": "Tamarindo Park",
   "url": "https://soldbytiago.com/development/tamarindo-park/",
-  "description": "The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.",
+  "description": "Tamarindo Park guide: the new Richard Müller-designed gated community between Tamarindo and Langosta - Hilltop phase, amenities, lots and honest trade-off…",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Tamarindo",
     "addressRegion": "Guanacaste",
     "addressCountry": "CR"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 10.292359,
+    "longitude": -85.841232
   }
 }
 </script>
@@ -375,6 +396,23 @@
       "item": "https://soldbytiago.com/development/tamarindo-park/"
     }
   ]
+}
+</script>
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "@id": "https://soldbytiago.com/#agent",
+  "name": "Tiago Leao",
+  "url": "https://soldbytiago.com",
+  "telephone": "+506-8302-8660",
+  "email": "tiago@soldbytiago.com",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "KRAIN Luxury Real Estate"
+  },
+  "areaServed": "Guanacaste, Costa Rica",
+  "knowsAbout": "Tamarindo Park, Guanacaste, Costa Rica"
 }
 </script>
 </head>
@@ -420,8 +458,22 @@
 
 
   <div class="sch-wrap" id="school-container">
-    <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; Tamarindo Park</div><div class="sch-hero"></div><div class="sch-town">Tamarindo</div><h1 class="sch-title">Tamarindo Park</h1><p class="sch-excerpt">The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.</p><div class="sch-cols"><div class="sch-body"><p>Tamarindo Park is the newest of Tamarindo&#x27;s gated communities, carved into the reforested hillside that connects Tamarindo to Playa Langosta.</p><p>The master plan calls for around 220 tropical-contemporary homes designed under Richard Müller — one of Costa Rica&#x27;s most established architects — with a spa and wellness center, sports club, hiking trails and paddle courts. Phase I, the Hilltop, launched with 32 homes and a first release of lots.</p><h2>What makes it different</h2><p>Position and design pedigree. The site sits between the two beaches, so you are minutes from both Tamarindo&#x27;s energy and Langosta&#x27;s quiet. And because it is a ground-up master plan rather than an accumulation of lots, the architectural consistency will be closer to Senderos or Las Catalinas than to an older subdivision.</p><h2>Who it fits</h2><p>Early buyers who want new construction at pre-build-out pricing in a location that cannot be replicated — there is no more undeveloped hillside between Tamarindo and Langosta. Also buyers comfortable with a community that is still becoming itself.</p><h2>Honest considerations</h2><p>This is a young development: amenities arrive in phases, and you are betting on execution. That bet has upside — early phases of successful communities on this coast have historically been rewarded — but it is a different risk profile from buying into a 20-year-old neighborhood. Delivery timelines, HOA structure and rental rules come from the current developer documents; I walk through them with buyers before any commitment.</p><h2>Alternatives to compare</h2><p>Senderos for a more established version of the same idea, Langosta itself for finished beachside homes, Hacienda Pinilla for resort-scale maturity.</p></div><aside class="sch-facts"><h3>The Details</h3><div class="sch-fact"><div class="sch-fact-label">Town</div><div class="sch-fact-value">Tamarindo</div></div></aside></div>
+    <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; Tamarindo Park</div><div class="sch-hero" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391623711-2qdsdm.jpg')"></div><div class="sch-town">Tamarindo</div><h1 class="sch-title">Tamarindo Park</h1><p class="sch-excerpt">The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.</p><div class="sch-cols"><div class="sch-body"><p>Tamarindo Park is the newest of Tamarindo&#x27;s gated communities, carved into the reforested hillside that connects Tamarindo to Playa Langosta - the last large piece of undeveloped land between the two.</p><p>The site covers about 37 hectares (91 acres), and the developer has committed to keeping roughly 75% of it natural, leaning on reforestation, permaculture and regenerative-agriculture practices rather than maximum-density planning. The master plan calls for around 220 tropical-contemporary homes, delivered in phases.</p><h2>The Hilltop - Phase I</h2><p>The first phase sits at the community&#x27;s entrance, perched on a hilltop with ocean views and about a ten-minute walk from the beach and downtown Tamarindo. It launched with 32 homes plus a first release of building lots, and the developer reports the first thirteen homes already delivered.</p><p>Every house is designed under Richard Müller, one of Costa Rica&#x27;s most established residential architects. His homes here run four to eight bedrooms and are tailored to each homesite - often designed around existing trees rather than through them. KRAIN, my brokerage, has represented turnkey homes in the Hilltop collection, so I have seen the build quality up close.</p><h2>Amenities - phased</h2><p>The plan includes a wellness and fitness center, a sports club, an ocean-view sunset club, paddle courts, a community garden, hiking and mountain-bike trails, and a small commercial space. As with any young community, these arrive in stages - my advice is always to buy on what is delivered plus what is contractually committed, not on renderings.</p><h2>What makes it different</h2><p>Position and design pedigree. The site sits between the two beaches, so you are minutes from both Tamarindo&#x27;s energy and Langosta&#x27;s quiet - and because it is a ground-up master plan under a single architect rather than an accumulation of lots, the finished community will have an architectural consistency closer to Senderos or Las Catalinas than to an older subdivision. The 75% preservation commitment is also unusual at this scale.</p><h2>Who it fits</h2><p>Early buyers who want new construction at pre-build-out pricing in a location that cannot be replicated - there is no more undeveloped hillside between Tamarindo and Langosta. Also buyers who care about the sustainability posture, and families: Tamarindo&#x27;s international schools, <a href="https://soldbytiago.com/school/educarte/" class="body-link" target="_blank" rel="noopener">Educarte</a> and <a href="https://soldbytiago.com/school/journey-school-tamarindo/" class="body-link" target="_blank" rel="noopener">Journey School</a>, are both a short drive away.</p><h2>Honest considerations</h2><p>This is a young development: you are betting on execution. That bet has upside - early phases of successful communities on this coast have historically been rewarded - but it is a different risk profile from buying into a 20-year-old neighborhood. Delivery timelines, HOA structure and rental rules come from the current developer documents; I walk through them with buyers before any commitment.</p><h2>Alternatives to compare</h2><p><a href="https://soldbytiago.com/development/senderos-tamarindo/" class="body-link" target="_blank" rel="noopener">Senderos</a> for the more established version of the same idea, Playa Langosta itself for finished beachside homes, <a href="https://soldbytiago.com/development/hacienda-pinilla/" class="body-link" target="_blank" rel="noopener">Hacienda Pinilla</a> for resort-scale maturity.</p></div><aside class="sch-facts"><h3>The Details</h3><div class="sch-fact"><div class="sch-fact-label">Town</div><div class="sch-fact-value">Tamarindo</div></div><div class="sch-fact"><div class="sch-fact-label">Established</div><div class="sch-fact-value">2020s</div></div><div class="sch-fact"><div class="sch-fact-label">Amenities</div><div class="sch-fact-value">Planned in phases: wellness &amp; fitness center, sports club, ocean-view sunset club, paddle courts, community garden, hiking and mountain-bike trails</div></div><div class="sch-fact"><div class="sch-fact-label">Beach access</div><div class="sch-fact-value">About a 10-minute walk from the Hilltop to Tamarindo beach and town</div></div><div class="sch-fact"><div class="sch-fact-label">Construction</div><div class="sch-fact-value">Richard Müller-designed homes; developer plan keeps ~75% of the site natural</div></div><div class="sch-fact"><div class="sch-fact-label">Best for</div><div class="sch-fact-value">Early buyers who want new construction between two beaches</div></div></aside></div>
   </div>
+
+  <!-- Closing CTA — the name spans are filled per community (baked at build
+       time for crawlers; runtime JS fills them on fallback slugs). -->
+  <section class="sch-cta">
+    <div class="sch-cta-label">The Next Step</div>
+    <h2 class="sch-cta-title">Thinking about buying in <span class="cta-name">Tamarindo Park</span>?</h2>
+    <p class="sch-cta-text">I'm Tiago Leao, a luxury real estate agent with KRAIN Luxury Real Estate in Guanacaste, Costa Rica. I can confirm current asking prices, HOA fees and rental rules for homes in <span class="cta-name">Tamarindo Park</span>, arrange private showings in person or by video, and tell you honestly whether it fits what you're looking for — or which community does.</p>
+    <div class="sch-cta-actions">
+      <a class="sch-cta-btn primary" href="https://wa.me/50683028660" target="_blank" rel="noopener">WhatsApp Tiago</a>
+      <a class="sch-cta-btn" href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+      <a class="sch-cta-btn" href="properties.html">Browse current listings</a>
+    </div>
+    <p class="sch-cta-note">Every message goes straight to my phone — no team inbox, no handoff.</p>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -562,24 +614,29 @@
       }
 
       // Homes for sale IN this community (location match), with drive-time
-      // proximity as the fallback when nothing matches by name.
-      const props = await TL.getProperties();
+      // proximity as the fallback when nothing matches by name. Sold homes
+      // appear only in the in-community list, where the card labels them.
+      const props = await TL.getProperties({ includeSold: true });
       let inDev = [];
       if (props && props.length && s.match_location) {
         const key = decode(s.match_location).toLowerCase();
-        inDev = props.filter(p => (decode(p.location || '')).toLowerCase().includes(key));
+        inDev = props
+          .filter(p => (decode(p.location || '')).toLowerCase().includes(key))
+          .sort((a, b) => (a.status === 'sold') - (b.status === 'sold'));
       }
-      if (props && props.length && s.lat && s.lng) {
-        const withPins = props.filter(p => p.lat != null && p.lng != null);
+      let near = [];
+      let routed = false;
+      if (inDev.length) {
+        near = inDev.slice(0, 6);
+      } else if (props && props.length && s.lat && s.lng) {
+        const forSale = props.filter(p => p.status !== 'sold' && p.lat != null && p.lng != null);
         // Shortlist by straight line first — Matrix caps at 25 coordinates.
-        const shortlist = withPins
+        const shortlist = forSale
           .map(p => ({ ...p, d: TL.distanceKm(+s.lat, +s.lng, +p.lat, +p.lng) }))
           .sort((a, b) => a.d - b.d)
           .slice(0, 24);
 
-        let near = shortlist.filter(p => p.d <= 20).slice(0, 3);
-        if (inDev.length) { near = inDev.slice(0, 6); routed = false; }
-        let routed = false;
+        near = shortlist.filter(p => p.d <= 20).slice(0, 3);
         const key = TL.getMapboxKey();
         if (key && shortlist.length) {
           try {
@@ -607,8 +664,9 @@
             console.info('[Mapbox] Drive times unavailable, using straight-line distance:', e.message);
           }
         }
+      }
 
-        if (near.length) {
+      if (near.length) {
           document.getElementById('sch-nearby').innerHTML = `
             <h2 class="sch-section-title">${inDev.length ? `Homes for sale in ${s.name}` : `Homes near ${s.name}`}</h2>
             <p class="sch-section-sub">${inDev.length ? 'Current listings from my portfolio in this community.' : routed ? 'Driving time to this community, by road.' : 'Closest listings to this community.'}</p>
@@ -625,8 +683,10 @@
                   </div>
                 </a>`).join('')}
             </div>`;
-        }
       }
+
+      // Fill the closing CTA with this community's name.
+      document.querySelectorAll('.cta-name').forEach(el => el.textContent = plainName);
 
       // Schema: School + breadcrumbs. Only assert fields the school publishes.
       const ld = {
@@ -652,9 +712,24 @@
           { '@type': 'ListItem', 'position': 3, 'name': plainName, 'item': pageUrl }
         ]
       };
+      // Same entity as the homepage #agent node — consistent @id + fields let
+      // search engines and AI assistants merge them into one knowledge-graph entity.
+      const agent = {
+        '@context': 'https://schema.org',
+        '@type': 'RealEstateAgent',
+        '@id': 'https://soldbytiago.com/#agent',
+        'name': 'Tiago Leao',
+        'url': 'https://soldbytiago.com',
+        'telephone': '+506-8302-8660',
+        'email': 'tiago@soldbytiago.com',
+        'worksFor': { '@type': 'Organization', 'name': 'KRAIN Luxury Real Estate' },
+        'areaServed': 'Guanacaste, Costa Rica',
+        'knowsAbout': plainName + ', Guanacaste, Costa Rica'
+      };
+
       // Baked pages already carry static JSON-LD; skip the runtime duplicates.
       if (!document.querySelector('script[type="application/ld+json"][data-baked]')) {
-        [ld, crumbs].forEach(obj => {
+        [ld, crumbs, agent].forEach(obj => {
           const tag = document.createElement('script');
           tag.type = 'application/ld+json';
           tag.textContent = JSON.stringify(obj);

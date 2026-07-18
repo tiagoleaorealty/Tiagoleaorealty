@@ -264,6 +264,22 @@
   <style>
     /* ── School detail ─────────────────────────────────────────── */
     .sch-wrap { max-width: 1100px; margin: 0 auto; padding: 0 60px 100px; }
+
+    /* Closing CTA */
+    .sch-cta { background: var(--terra); margin-top: 40px; padding: 76px 48px; text-align: center; }
+    .sch-cta-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,250,250,.65); margin-bottom: 16px; font-weight: 600; }
+    .sch-cta-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; color: #fafafa; max-width: 720px; margin: 0 auto 18px; }
+    .sch-cta-text { max-width: 640px; margin: 0 auto 32px; font-size: 15px; line-height: 1.75; color: rgba(250,250,250,.88); }
+    .sch-cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .sch-cta-btn { display: inline-block; padding: 14px 28px; border: 1px solid rgba(250,250,250,.4); border-radius: 100px; color: #fafafa; font-size: 14px; font-weight: 500; transition: background .25s, border-color .25s, opacity .25s; }
+    .sch-cta-btn:hover { background: rgba(250,250,250,.12); border-color: #fafafa; }
+    .sch-cta-btn.primary { background: #fafafa; color: var(--terra); border-color: #fafafa; font-weight: 600; }
+    .sch-cta-btn.primary:hover { opacity: .88; }
+    .sch-cta-note { font-size: 12.5px; color: rgba(250,250,250,.55); margin: 0; }
+    @media (max-width: 640px) {
+      .sch-cta { padding: 56px 24px; }
+      .sch-cta-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+    }
     .sch-crumb { font-size: 13px; color: var(--stone); padding: 30px 0 18px; }
     .sch-crumb a { color: var(--stone); text-decoration: none; }
     .sch-crumb a:hover { color: var(--terra); }
@@ -377,6 +393,20 @@
   <div class="sch-wrap" id="school-container">
     <div class="sch-loading">Loading&hellip;</div>
   </div>
+
+  <!-- Closing CTA — the name spans are filled per school (baked at build
+       time for crawlers; runtime JS fills them on fallback slugs). -->
+  <section class="sch-cta">
+    <div class="sch-cta-label">Planning A Move?</div>
+    <h2 class="sch-cta-title">House-hunting around <span class="cta-name">this school</span>?</h2>
+    <p class="sch-cta-text">I'm Tiago Leao, a luxury real estate agent with KRAIN Luxury Real Estate in Guanacaste, Costa Rica. Every listing on this site shows real driving times to nearby schools, and I can shortlist homes within an easy run of <span class="cta-name">this school</span> — then tell you honestly what each neighborhood is like for a family.</p>
+    <div class="sch-cta-actions">
+      <a class="sch-cta-btn primary" href="https://wa.me/50683028660" target="_blank" rel="noopener">WhatsApp Tiago</a>
+      <a class="sch-cta-btn" href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+      <a class="sch-cta-btn" href="properties.html">See homes &amp; drive times</a>
+    </div>
+    <p class="sch-cta-note">Every message goes straight to my phone — no team inbox, no handoff.</p>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -581,6 +611,9 @@
         }
       }
 
+      // Fill the closing CTA with this school's name.
+      document.querySelectorAll('.cta-name').forEach(el => el.textContent = plainName);
+
       // Schema: School + breadcrumbs. Only assert fields the school publishes.
       const ld = {
         '@context': 'https://schema.org',
@@ -606,8 +639,23 @@
         ]
       };
       // Baked pages already carry static JSON-LD; skip the runtime duplicates.
+      // Same entity as the homepage #agent node — consistent @id + fields let
+      // search engines and AI assistants merge them into one knowledge-graph entity.
+      const agent = {
+        '@context': 'https://schema.org',
+        '@type': 'RealEstateAgent',
+        '@id': 'https://soldbytiago.com/#agent',
+        'name': 'Tiago Leao',
+        'url': 'https://soldbytiago.com',
+        'telephone': '+506-8302-8660',
+        'email': 'tiago@soldbytiago.com',
+        'worksFor': { '@type': 'Organization', 'name': 'KRAIN Luxury Real Estate' },
+        'areaServed': 'Guanacaste, Costa Rica',
+        'knowsAbout': 'Homes near ' + plainName + ', Guanacaste, Costa Rica'
+      };
+
       if (!document.querySelector('script[type="application/ld+json"][data-baked]')) {
-        [ld, crumbs].forEach(obj => {
+        [ld, crumbs, agent].forEach(obj => {
           const tag = document.createElement('script');
           tag.type = 'application/ld+json';
           tag.textContent = JSON.stringify(obj);

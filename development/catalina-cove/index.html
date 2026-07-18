@@ -11,14 +11,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
   <title>Catalina Cove | Guanacaste Communities | Tiago Leao</title>
-  <meta name="description" content="An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry pri…">
+  <meta name="description" content="Catalina Cove guide: established Brasilito community from 2005 - oversized lots, low HOA, walk to two beaches, real entry prices and honest trade-offs.">
   <link rel="canonical" href="https://soldbytiago.com/development/catalina-cove/">
   <meta property="og:title" content="Catalina Cove">
-  <meta property="og:description" content="An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry pri…">
+  <meta property="og:description" content="Catalina Cove guide: established Brasilito community from 2005 - oversized lots, low HOA, walk to two beaches, real entry prices and honest trade-offs.">
   <meta property="og:url" content="https://soldbytiago.com/development/catalina-cove/">
-  <meta name="twitter:image" content="https://soldbytiago.com/og-image.jpg">
+  <meta name="twitter:image" content="https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391811448-ypelsp.jpg">
   <meta property="og:type" content="article">
-  <meta property="og:image" content="https://soldbytiago.com/og-image.jpg">
+  <meta property="og:image" content="https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391811448-ypelsp.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="fonts.css" />
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
@@ -268,6 +268,22 @@
   <style>
     /* ── School detail ─────────────────────────────────────────── */
     .sch-wrap { max-width: 1100px; margin: 0 auto; padding: 0 60px 100px; }
+
+    /* Closing CTA */
+    .sch-cta { background: var(--terra); margin-top: 40px; padding: 76px 48px; text-align: center; }
+    .sch-cta-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,250,250,.65); margin-bottom: 16px; font-weight: 600; }
+    .sch-cta-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; color: #fafafa; max-width: 720px; margin: 0 auto 18px; }
+    .sch-cta-text { max-width: 640px; margin: 0 auto 32px; font-size: 15px; line-height: 1.75; color: rgba(250,250,250,.88); }
+    .sch-cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .sch-cta-btn { display: inline-block; padding: 14px 28px; border: 1px solid rgba(250,250,250,.4); border-radius: 100px; color: #fafafa; font-size: 14px; font-weight: 500; transition: background .25s, border-color .25s, opacity .25s; }
+    .sch-cta-btn:hover { background: rgba(250,250,250,.12); border-color: #fafafa; }
+    .sch-cta-btn.primary { background: #fafafa; color: var(--terra); border-color: #fafafa; font-weight: 600; }
+    .sch-cta-btn.primary:hover { opacity: .88; }
+    .sch-cta-note { font-size: 12.5px; color: rgba(250,250,250,.55); margin: 0; }
+    @media (max-width: 640px) {
+      .sch-cta { padding: 56px 24px; }
+      .sch-cta-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+    }
     .sch-crumb { font-size: 13px; color: var(--stone); padding: 30px 0 18px; }
     .sch-crumb a { color: var(--stone); text-decoration: none; }
     .sch-crumb a:hover { color: var(--terra); }
@@ -342,12 +358,17 @@
   "@type": "Residence",
   "name": "Catalina Cove",
   "url": "https://soldbytiago.com/development/catalina-cove/",
-  "description": "An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry pri…",
+  "description": "Catalina Cove guide: established Brasilito community from 2005 - oversized lots, low HOA, walk to two beaches, real entry prices and honest trade-offs.",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Brasilito",
     "addressRegion": "Guanacaste",
     "addressCountry": "CR"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 10.405238,
+    "longitude": -85.792174
   }
 }
 </script>
@@ -375,6 +396,23 @@
       "item": "https://soldbytiago.com/development/catalina-cove/"
     }
   ]
+}
+</script>
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "@id": "https://soldbytiago.com/#agent",
+  "name": "Tiago Leao",
+  "url": "https://soldbytiago.com",
+  "telephone": "+506-8302-8660",
+  "email": "tiago@soldbytiago.com",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "KRAIN Luxury Real Estate"
+  },
+  "areaServed": "Guanacaste, Costa Rica",
+  "knowsAbout": "Catalina Cove, Guanacaste, Costa Rica"
 }
 </script>
 </head>
@@ -420,8 +458,22 @@
 
 
   <div class="sch-wrap" id="school-container">
-    <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; Catalina Cove</div><div class="sch-hero"></div><div class="sch-town">Brasilito</div><h1 class="sch-title">Catalina Cove</h1><p class="sch-excerpt">An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry prices behind this coastline.</p><div class="sch-cols"><div class="sch-body"><p>Catalina Cove is the quiet achiever of the Brasilito corridor — established in 2005, roughly 40 hectares, and organized around genuinely oversized lots: about 73 parcels averaging 5,000 m² plus 29 more around 2,000 m².</p><p>Twenty years of growth means mature trees, settled roads, and a real mix of full-time residents alongside vacation homes — the kind of lived-in feel new developments spend a decade chasing.</p><h2>What makes it different</h2><p>Accessibility, in both senses. It is walking-to-short-drive distance from Playa Brasilito, minutes from Conchal and Flamingo — and its entry prices are among the lowest of any gated community in this corridor, with lots recently advertised from around $60,000 and homes from the low $200s (asking prices; verify current availability). For a coast where gated communities often start at seven figures, that is a different market entirely.</p><h2>Who it fits</h2><p>First-time Costa Rica buyers who want gated security and land without resort pricing; builders who want a large flat-ish lot in an established neighborhood; and buyers priced out of Flamingo or Conchal who still want that ten-minute circle.</p><h2>Honest considerations</h2><p>There is no beach club, golf course or resort amenity stack here — this is a residential neighborhood, full stop. The HOA is functioning and fees are modest by coastal standards, but as always I confirm current dues and any build guidelines before an offer.</p><h2>Alternatives to compare</h2><p>Mar Vista for grander infrastructure and the school, Potrero&#x27;s Surfside area for beach-walk proximity, Las Ventanas for view acreage.</p></div><aside class="sch-facts"><h3>The Details</h3><div class="sch-fact"><div class="sch-fact-label">Town</div><div class="sch-fact-value">Brasilito</div></div><div class="sch-fact"><div class="sch-fact-label">Established</div><div class="sch-fact-value">2005</div></div></aside></div>
+    <div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="developments.html">Communities</a> &rsaquo; Catalina Cove</div><div class="sch-hero" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391811448-ypelsp.jpg')"></div><div class="sch-town">Brasilito</div><h1 class="sch-title">Catalina Cove</h1><p class="sch-excerpt">An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry prices behind this coastline.</p><div class="sch-cols"><div class="sch-body"><p>Catalina Cove is the quiet achiever of the Brasilito corridor - established in 2005, roughly 40 hectares, and organized around genuinely oversized lots: about 73 parcels averaging 5,000 m² plus 29 more around 2,000 m².</p><p>Twenty years of growth means mature trees, wildlife corridors, settled paved roads, and a real mix of full-time residents alongside vacation homes - the kind of lived-in feel new developments spend a decade chasing.</p><h2>Walk to two beaches</h2><p>The community sits behind Playa Brasilito - a Blue Flag beach with a working beach town attached - about a ten-minute walk from the gate, and Playa Conchal&#x27;s white shell sand is roughly a twenty-minute walk beyond that. Brasilito town brings restaurants, cafés and small groceries within strolling distance; Flamingo and its new marina are a few minutes by car. On a coast where &quot;walk to the beach&quot; usually costs seven figures, this is the exception.</p><h2>What it costs</h2><p>Entry prices are among the most accessible of any gated community in this corridor: lots have been advertised from around $60,000 and homes from around $230,000 (asking prices; verify current availability). The HOA is modest too - local brokerages publish fees around $150 per month (verify current) - covering the gate, roads and common areas rather than a resort payroll.</p><h2>What makes it different</h2><p>Accessibility, in both senses. You get gated security, big flat-ish lots and two walkable beaches at prices that simply do not exist in Flamingo, Conchal or the resort communities - because you are not paying for a golf course, a beach club or a hotel brand. For buyers who would rather own the land than rent the lifestyle, the math is compelling.</p><h2>Who it fits</h2><p>First-time Costa Rica buyers who want gated security and land without resort pricing; builders who want a large lot in an established neighborhood with the infrastructure already settled; and buyers priced out of Flamingo or Conchal who still want that ten-minute circle around them.</p><h2>Honest considerations</h2><p>There is no beach club, golf course or resort amenity stack here - this is a residential neighborhood, full stop, and your recreation happens at the beaches and in town. Homes span twenty years of construction styles, so quality varies house to house. As always, I confirm current dues and any build guidelines before an offer. Liberia airport is just under an hour away.</p><h2>Alternatives to compare</h2><p><a href="https://soldbytiago.com/development/mar-vista/" class="body-link" target="_blank" rel="noopener">Mar Vista</a> up the hill for grander infrastructure and the school, <a href="https://soldbytiago.com/development/las-ventanas-playa-grande/" class="body-link" target="_blank" rel="noopener">Las Ventanas</a> for view acreage, Surfside in Potrero for a beach-town grid with a similar value profile.</p></div><aside class="sch-facts"><h3>The Details</h3><div class="sch-fact"><div class="sch-fact-label">Town</div><div class="sch-fact-value">Brasilito</div></div><div class="sch-fact"><div class="sch-fact-label">Established</div><div class="sch-fact-value">2005</div></div><div class="sch-fact"><div class="sch-fact-label">Typical asking range</div><div class="sch-fact-value">Lots from ~$60K; homes from ~$230K (asking - verify current)</div></div><div class="sch-fact"><div class="sch-fact-label">HOA fees</div><div class="sch-fact-value">~$150/month (published by local brokers - verify current)</div></div><div class="sch-fact"><div class="sch-fact-label">Amenities</div><div class="sch-fact-value">24/7 gated entry, paved roads, mature trees and green areas - residential by design, no resort amenity stack</div></div><div class="sch-fact"><div class="sch-fact-label">Beach access</div><div class="sch-fact-value">~10-minute walk to Playa Brasilito; ~20-minute walk to Playa Conchal</div></div><div class="sch-fact"><div class="sch-fact-label">Rental rules</div><div class="sch-fact-value">Vacation rentals present throughout the community - confirm current rules</div></div><div class="sch-fact"><div class="sch-fact-label">Best for</div><div class="sch-fact-value">First-time Costa Rica buyers - value, land and walkability</div></div></aside></div>
   </div>
+
+  <!-- Closing CTA — the name spans are filled per community (baked at build
+       time for crawlers; runtime JS fills them on fallback slugs). -->
+  <section class="sch-cta">
+    <div class="sch-cta-label">The Next Step</div>
+    <h2 class="sch-cta-title">Thinking about buying in <span class="cta-name">Catalina Cove</span>?</h2>
+    <p class="sch-cta-text">I'm Tiago Leao, a luxury real estate agent with KRAIN Luxury Real Estate in Guanacaste, Costa Rica. I can confirm current asking prices, HOA fees and rental rules for homes in <span class="cta-name">Catalina Cove</span>, arrange private showings in person or by video, and tell you honestly whether it fits what you're looking for — or which community does.</p>
+    <div class="sch-cta-actions">
+      <a class="sch-cta-btn primary" href="https://wa.me/50683028660" target="_blank" rel="noopener">WhatsApp Tiago</a>
+      <a class="sch-cta-btn" href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+      <a class="sch-cta-btn" href="properties.html">Browse current listings</a>
+    </div>
+    <p class="sch-cta-note">Every message goes straight to my phone — no team inbox, no handoff.</p>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -562,24 +614,29 @@
       }
 
       // Homes for sale IN this community (location match), with drive-time
-      // proximity as the fallback when nothing matches by name.
-      const props = await TL.getProperties();
+      // proximity as the fallback when nothing matches by name. Sold homes
+      // appear only in the in-community list, where the card labels them.
+      const props = await TL.getProperties({ includeSold: true });
       let inDev = [];
       if (props && props.length && s.match_location) {
         const key = decode(s.match_location).toLowerCase();
-        inDev = props.filter(p => (decode(p.location || '')).toLowerCase().includes(key));
+        inDev = props
+          .filter(p => (decode(p.location || '')).toLowerCase().includes(key))
+          .sort((a, b) => (a.status === 'sold') - (b.status === 'sold'));
       }
-      if (props && props.length && s.lat && s.lng) {
-        const withPins = props.filter(p => p.lat != null && p.lng != null);
+      let near = [];
+      let routed = false;
+      if (inDev.length) {
+        near = inDev.slice(0, 6);
+      } else if (props && props.length && s.lat && s.lng) {
+        const forSale = props.filter(p => p.status !== 'sold' && p.lat != null && p.lng != null);
         // Shortlist by straight line first — Matrix caps at 25 coordinates.
-        const shortlist = withPins
+        const shortlist = forSale
           .map(p => ({ ...p, d: TL.distanceKm(+s.lat, +s.lng, +p.lat, +p.lng) }))
           .sort((a, b) => a.d - b.d)
           .slice(0, 24);
 
-        let near = shortlist.filter(p => p.d <= 20).slice(0, 3);
-        if (inDev.length) { near = inDev.slice(0, 6); routed = false; }
-        let routed = false;
+        near = shortlist.filter(p => p.d <= 20).slice(0, 3);
         const key = TL.getMapboxKey();
         if (key && shortlist.length) {
           try {
@@ -607,8 +664,9 @@
             console.info('[Mapbox] Drive times unavailable, using straight-line distance:', e.message);
           }
         }
+      }
 
-        if (near.length) {
+      if (near.length) {
           document.getElementById('sch-nearby').innerHTML = `
             <h2 class="sch-section-title">${inDev.length ? `Homes for sale in ${s.name}` : `Homes near ${s.name}`}</h2>
             <p class="sch-section-sub">${inDev.length ? 'Current listings from my portfolio in this community.' : routed ? 'Driving time to this community, by road.' : 'Closest listings to this community.'}</p>
@@ -625,8 +683,10 @@
                   </div>
                 </a>`).join('')}
             </div>`;
-        }
       }
+
+      // Fill the closing CTA with this community's name.
+      document.querySelectorAll('.cta-name').forEach(el => el.textContent = plainName);
 
       // Schema: School + breadcrumbs. Only assert fields the school publishes.
       const ld = {
@@ -652,9 +712,24 @@
           { '@type': 'ListItem', 'position': 3, 'name': plainName, 'item': pageUrl }
         ]
       };
+      // Same entity as the homepage #agent node — consistent @id + fields let
+      // search engines and AI assistants merge them into one knowledge-graph entity.
+      const agent = {
+        '@context': 'https://schema.org',
+        '@type': 'RealEstateAgent',
+        '@id': 'https://soldbytiago.com/#agent',
+        'name': 'Tiago Leao',
+        'url': 'https://soldbytiago.com',
+        'telephone': '+506-8302-8660',
+        'email': 'tiago@soldbytiago.com',
+        'worksFor': { '@type': 'Organization', 'name': 'KRAIN Luxury Real Estate' },
+        'areaServed': 'Guanacaste, Costa Rica',
+        'knowsAbout': plainName + ', Guanacaste, Costa Rica'
+      };
+
       // Baked pages already carry static JSON-LD; skip the runtime duplicates.
       if (!document.querySelector('script[type="application/ld+json"][data-baked]')) {
-        [ld, crumbs].forEach(obj => {
+        [ld, crumbs, agent].forEach(obj => {
           const tag = document.createElement('script');
           tag.type = 'application/ld+json';
           tag.textContent = JSON.stringify(obj);

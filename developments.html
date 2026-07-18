@@ -304,7 +304,83 @@
       .schools-intro { padding: 0 24px 30px; }
       .schools-grid { padding: 0 24px 70px; grid-template-columns: 1fr; gap: 22px; }
     }
+
+    /* Closing CTA */
+    .sch-cta { background: var(--terra); margin-top: 40px; padding: 76px 48px; text-align: center; }
+    .sch-cta-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,250,250,.65); margin-bottom: 16px; font-weight: 600; }
+    .sch-cta-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; color: #fafafa; max-width: 720px; margin: 0 auto 18px; }
+    .sch-cta-text { max-width: 640px; margin: 0 auto 32px; font-size: 15px; line-height: 1.75; color: rgba(250,250,250,.88); }
+    .sch-cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .sch-cta-btn { display: inline-block; padding: 14px 28px; border: 1px solid rgba(250,250,250,.4); border-radius: 100px; color: #fafafa; font-size: 14px; font-weight: 500; transition: background .25s, border-color .25s, opacity .25s; }
+    .sch-cta-btn:hover { background: rgba(250,250,250,.12); border-color: #fafafa; }
+    .sch-cta-btn.primary { background: #fafafa; color: var(--terra); border-color: #fafafa; font-weight: 600; }
+    .sch-cta-btn.primary:hover { opacity: .88; }
+    .sch-cta-note { font-size: 12.5px; color: rgba(250,250,250,.55); margin: 0; }
+    @media (max-width: 640px) {
+      .sch-cta { padding: 56px 24px; }
+      .sch-cta-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+    }
   </style>
+  <!--BAKE:DEVS-LD-->
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Gated Communities & Developments in Guanacaste, Costa Rica",
+  "numberOfItems": 8,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Hacienda Pinilla",
+      "url": "https://soldbytiago.com/development/hacienda-pinilla/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Reserva Conchal",
+      "url": "https://soldbytiago.com/development/reserva-conchal/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Senderos",
+      "url": "https://soldbytiago.com/development/senderos-tamarindo/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Tamarindo Park",
+      "url": "https://soldbytiago.com/development/tamarindo-park/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Las Ventanas de Playa Grande",
+      "url": "https://soldbytiago.com/development/las-ventanas-playa-grande/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Mar Vista",
+      "url": "https://soldbytiago.com/development/mar-vista/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Catalina Cove",
+      "url": "https://soldbytiago.com/development/catalina-cove/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Las Catalinas",
+      "url": "https://soldbytiago.com/development/las-catalinas/"
+    }
+  ]
+}
+</script>
+<!--/BAKE:DEVS-LD-->
 </head>
 <body>
 
@@ -359,11 +435,25 @@
   <!-- Schools grid (populated from Supabase) -->
   <div class="schools-grid" id="schools-grid">
     <!--BAKE:DEVS-->
-<a href="/development/hacienda-pinilla/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Avellanas</div><div class="school-card-name">Hacienda Pinilla</div><div class="school-card-excerpt">4,500 gated acres between Tamarindo and Avellanas — golf, beach club, three miles of coastline, and the deepest resale market of any resort community on this coast.</div></div></a><a href="/development/reserva-conchal/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Reserva Conchal</div><div class="school-card-excerpt">Guanacaste&#x27;s most complete resort community — Robert Trent Jones II golf, the Westin and W hotels, and a beach club on Playa Conchal itself.</div></div></a><a href="/development/senderos-tamarindo/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Senderos</div><div class="school-card-excerpt">Tamarindo&#x27;s largest luxury gated community — 110 hillside acres above town with a private beach club at the estuary and &#x27;Natural Modern&#x27; architecture.</div></div></a><a href="/development/tamarindo-park/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Tamarindo Park</div><div class="school-card-excerpt">The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.</div></div></a><a href="/development/las-ventanas-playa-grande/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Playa Grande</div><div class="school-card-name">Las Ventanas de Playa Grande</div><div class="school-card-excerpt">A 380-acre, 73-property community on the ridge between Playa Grande and Playa Conchal — the lowest-density gated community on this coast.</div></div></a><a href="/development/mar-vista/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Mar Vista</div><div class="school-card-excerpt">750 acres between Brasilito and Flamingo — 5,000 m² lots, 30 km of paved roads, a third of the land preserved, and La Paz school at the entrance.</div></div></a><a href="/development/catalina-cove/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Catalina Cove</div><div class="school-card-excerpt">An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry prices behind this coastline.</div><div class="school-card-tags"><span class="school-tag">Est. 2005</span></div></div></a><a href="/development/las-catalinas/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Las Catalinas</div><div class="school-card-name">Las Catalinas</div><div class="school-card-excerpt">The car-free New Urbanist beach town on Playa Danta — walkable streets, 1,000 acres of tropical forest trails, and architecture found nowhere else in Central America.</div></div></a>
+<a href="/development/hacienda-pinilla/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391472872-7wle4m.jpg')"></div><div class="school-card-body"><div class="school-card-town">Avellanas</div><div class="school-card-name">Hacienda Pinilla</div><div class="school-card-excerpt">4,500 gated acres between Tamarindo and Avellanas — golf, beach club, three miles of coastline, and the deepest resale market of any resort community on this coast.</div><div class="school-card-tags"><span class="school-tag">Est. 1990s</span><span class="school-tag">Golfers, luxury buyers, established rental investors</span></div></div></a><a href="/development/reserva-conchal/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391543006-q6zye3.jpg')"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Reserva Conchal</div><div class="school-card-excerpt">Guanacaste&#x27;s most complete resort community — Robert Trent Jones II golf, the Westin and W hotels, and a beach club on Playa Conchal itself.</div><div class="school-card-tags"><span class="school-tag">Turnkey resort buyers and relocating families (CRIA next door)</span></div></div></a><a href="/development/senderos-tamarindo/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391650268-5dr5dv.jpg')"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Senderos</div><div class="school-card-excerpt">Tamarindo&#x27;s largest luxury gated community — 110 hillside acres above town with a private beach club at the estuary and &#x27;Natural Modern&#x27; architecture.</div><div class="school-card-tags"><span class="school-tag">Build-your-own buyers who want privacy five minutes from town</span></div></div></a><a href="/development/tamarindo-park/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391623711-2qdsdm.jpg')"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Tamarindo Park</div><div class="school-card-excerpt">The newest gated community in Tamarindo — a planned 220-home village in the reforested hills between Tamarindo and Langosta, designed by Richard Müller.</div><div class="school-card-tags"><span class="school-tag">Est. 2020s</span><span class="school-tag">Early buyers who want new construction between two beaches</span></div></div></a><a href="/development/las-ventanas-playa-grande/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391698346-9pmski.jpg')"></div><div class="school-card-body"><div class="school-card-town">Playa Grande</div><div class="school-card-name">Las Ventanas de Playa Grande</div><div class="school-card-excerpt">A 380-acre, 73-property community on the ridge between Playa Grande and Playa Conchal — the lowest-density gated community on this coast.</div><div class="school-card-tags"><span class="school-tag">Land, views and quiet - full-time relocators and builders</span></div></div></a><a href="/development/mar-vista/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391729580-8j3uxf.jpg')"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Mar Vista</div><div class="school-card-excerpt">750 acres between Brasilito and Flamingo — 5,000 m² lots, 30 km of paved roads, a third of the land preserved, and La Paz school at the entrance.</div><div class="school-card-tags"><span class="school-tag">Relocating families (La Paz onsite) and acreage builders</span></div></div></a><a href="/development/catalina-cove/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391811448-ypelsp.jpg')"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Catalina Cove</div><div class="school-card-excerpt">An established 40-hectare community in Brasilito — around 100 oversized lots, mature trees, full-time neighbors, and some of the most accessible entry prices behind this coastline.</div><div class="school-card-tags"><span class="school-tag">Est. 2005</span><span class="school-tag">First-time Costa Rica buyers - value, land and walkability</span></div></div></a><a href="/development/las-catalinas/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/dev/1784391854071-aup30x.jpg')"></div><div class="school-card-body"><div class="school-card-town">Las Catalinas</div><div class="school-card-name">Las Catalinas</div><div class="school-card-excerpt">The car-free New Urbanist beach town on Playa Danta — walkable streets, 1,000 acres of tropical forest trails, and architecture found nowhere else in Central America.</div><div class="school-card-tags"><span class="school-tag">Est. Mid-2000s</span><span class="school-tag">Walkable-town lovers and design-driven buyers</span></div></div></a>
 <!--/BAKE:DEVS-->
   </div>
 
   <!-- Footer -->
+
+  <!-- Closing CTA -->
+  <section class="sch-cta">
+    <div class="sch-cta-label">Not Sure Where To Start?</div>
+    <h2 class="sch-cta-title">Tell me how you want to live — I'll shortlist the communities.</h2>
+    <p class="sch-cta-text">I'm Tiago Leao, a luxury real estate agent with KRAIN Luxury Real Estate in Guanacaste, Costa Rica. Golf or surf, gated quiet or walk-to-dinner, full-time or rental — tell me what your life here looks like and I'll narrow these communities to the two or three actually worth flying down to see.</p>
+    <div class="sch-cta-actions">
+      <a class="sch-cta-btn primary" href="https://wa.me/50683028660" target="_blank" rel="noopener">WhatsApp Tiago</a>
+      <a class="sch-cta-btn" href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+      <a class="sch-cta-btn" href="properties.html">Browse current listings</a>
+    </div>
+    <p class="sch-cta-note">Every message goes straight to my phone — no team inbox, no handoff.</p>
+  </section>
+
   <footer>
     <div class="footer-top">
       <div>

@@ -304,7 +304,95 @@
       .schools-intro { padding: 0 24px 30px; }
       .schools-grid { padding: 0 24px 70px; grid-template-columns: 1fr; gap: 22px; }
     }
+
+    /* Closing CTA */
+    .sch-cta { background: var(--terra); margin-top: 40px; padding: 76px 48px; text-align: center; }
+    .sch-cta-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,250,250,.65); margin-bottom: 16px; font-weight: 600; }
+    .sch-cta-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; color: #fafafa; max-width: 720px; margin: 0 auto 18px; }
+    .sch-cta-text { max-width: 640px; margin: 0 auto 32px; font-size: 15px; line-height: 1.75; color: rgba(250,250,250,.88); }
+    .sch-cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+    .sch-cta-btn { display: inline-block; padding: 14px 28px; border: 1px solid rgba(250,250,250,.4); border-radius: 100px; color: #fafafa; font-size: 14px; font-weight: 500; transition: background .25s, border-color .25s, opacity .25s; }
+    .sch-cta-btn:hover { background: rgba(250,250,250,.12); border-color: #fafafa; }
+    .sch-cta-btn.primary { background: #fafafa; color: var(--terra); border-color: #fafafa; font-weight: 600; }
+    .sch-cta-btn.primary:hover { opacity: .88; }
+    .sch-cta-note { font-size: 12.5px; color: rgba(250,250,250,.55); margin: 0; }
+    @media (max-width: 640px) {
+      .sch-cta { padding: 56px 24px; }
+      .sch-cta-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin-left: auto; margin-right: auto; }
+    }
   </style>
+  <!--BAKE:SCHOOLS-LD-->
+<script type="application/ld+json" data-baked="1">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "International Schools in Guanacaste, Costa Rica",
+  "numberOfItems": 10,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Costa Rica International Academy (CRIA)",
+      "url": "https://soldbytiago.com/school/costa-rica-international-academy/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "La Paz Community School — Cabo Velas Campus",
+      "url": "https://soldbytiago.com/school/la-paz-community-school-cabo-velas/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "La Paz Community School — Tempisque Campus",
+      "url": "https://soldbytiago.com/school/la-paz-community-school-tempisque/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Journey School of Costa Rica — Tamarindo",
+      "url": "https://soldbytiago.com/school/journey-school-tamarindo/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Del Mar Academy",
+      "url": "https://soldbytiago.com/school/del-mar-academy/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Educarte",
+      "url": "https://soldbytiago.com/school/educarte/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Lakeside International School",
+      "url": "https://soldbytiago.com/school/lakeside-international-school/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Pacífico Internacional",
+      "url": "https://soldbytiago.com/school/pacifico-internacional/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "name": "TIDE Academy",
+      "url": "https://soldbytiago.com/school/tide-academy/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "Dolphin's Academy",
+      "url": "https://soldbytiago.com/school/dolphins-academy/"
+    }
+  ]
+}
+</script>
+<!--/BAKE:SCHOOLS-LD-->
 </head>
 <body>
 
@@ -361,11 +449,25 @@
   <!-- Schools grid (populated from Supabase) -->
   <div class="schools-grid" id="schools-grid">
     <!--BAKE:SCHOOLS-->
-<a href="/school/costa-rica-international-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Costa Rica International Academy (CRIA)</div><div class="school-card-excerpt">U.S.-accredited bilingual school on a 32-acre campus near Reserva Conchal, serving this coast since 2000.</div><div class="school-card-tags"><span class="school-tag">Early Years – Secondary</span><span class="school-tag">U.S.-accredited bilingual</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/la-paz-community-school-cabo-velas/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">La Paz Community School — Cabo Velas Campus</div><div class="school-card-excerpt">IB World School between Flamingo and Brasilito, built around dual-language immersion and experiential learning.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">International Baccalaureate (IB), experiential learning</span><span class="school-tag">Bilingual dual-language immersion</span></div></div></a><a href="/school/la-paz-community-school-tempisque/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Palmira</div><div class="school-card-name">La Paz Community School — Tempisque Campus</div><div class="school-card-excerpt">La Paz&#x27;s second campus, inland near Palmira in Carrillo, running the same IB dual-language program.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">International Baccalaureate (IB), experiential learning</span><span class="school-tag">Bilingual dual-language immersion</span></div></div></a><a href="/school/journey-school-tamarindo/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Journey School of Costa Rica — Tamarindo</div><div class="school-card-excerpt">Authorized IB World School in Tamarindo offering the IB Diploma Programme with project-based learning.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">International Baccalaureate (IB), project-based learning</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/del-mar-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Nosara</div><div class="school-card-name">Del Mar Academy</div><div class="school-card-excerpt">Nosara IB World School on an 11-acre campus, running Montessori in the early years into the IB Diploma.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">Montessori through IB Diploma Programme</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/educarte/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Huacas</div><div class="school-card-name">Educarte</div><div class="school-card-excerpt">Bilingual MEP-certified school near Huacas, and the only school on this list that publishes its tuition.</div><div class="school-card-tags"><span class="school-tag">Preescolar – Secundaria</span><span class="school-tag">Bilingual, MEP-certified</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/lakeside-international-school/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Sardinal</div><div class="school-card-name">Lakeside International School</div><div class="school-card-excerpt">Bilingual PreK–12 school inland from Playas del Coco, built on an integrated Multiple Intelligences curriculum.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">Integrated curriculum, Multiple Intelligences model</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/pacifico-internacional/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Villareal</div><div class="school-card-name">Pacífico Internacional</div><div class="school-card-excerpt">Waldorf-inspired school in the hills at Cañafistula, just inland from Tamarindo.</div><div class="school-card-tags"><span class="school-tag">Preschool – middle school</span><span class="school-tag">Waldorf-inspired</span><span class="school-tag">Bilingual</span></div></div></a><a href="/school/tide-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">TIDE Academy</div><div class="school-card-excerpt">Pre-K through 12 in Tamarindo on a personalized US curriculum — around 80 students from 17 countries at an 8:1 ratio, with high school accredited via Middle States through North Atlantic Regional High School.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">Personalized US curriculum</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/dolphins-academy/" class="school-card"><div class="school-card-photo"></div><div class="school-card-body"><div class="school-card-town">Playas del Coco</div><div class="school-card-name">Dolphin&#x27;s Academy</div><div class="school-card-excerpt">Bilingual elementary school in Playas del Coco, with curricula developed in alliance with Oxford and Cambridge.</div><div class="school-card-tags"><span class="school-tag">Elementary</span><span class="school-tag">Bilingual</span><span class="school-tag">Bilingual</span></div></div></a>
+<a href="/school/costa-rica-international-academy/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388273737-yr79x9.jpg')"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">Costa Rica International Academy (CRIA)</div><div class="school-card-excerpt">U.S.-accredited bilingual school on a 32-acre campus near Reserva Conchal, serving this coast since 2000.</div><div class="school-card-tags"><span class="school-tag">Early Years – Secondary</span><span class="school-tag">U.S.-accredited bilingual</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/la-paz-community-school-cabo-velas/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388305205-grzcdq.jpg')"></div><div class="school-card-body"><div class="school-card-town">Brasilito</div><div class="school-card-name">La Paz Community School — Cabo Velas Campus</div><div class="school-card-excerpt">IB World School between Flamingo and Brasilito, built around dual-language immersion and experiential learning.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">International Baccalaureate (IB), experiential learning</span><span class="school-tag">Bilingual dual-language immersion</span></div></div></a><a href="/school/la-paz-community-school-tempisque/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388331380-9axqmn.jpg')"></div><div class="school-card-body"><div class="school-card-town">Palmira</div><div class="school-card-name">La Paz Community School — Tempisque Campus</div><div class="school-card-excerpt">La Paz&#x27;s second campus, inland near Palmira in Carrillo, running the same IB dual-language program.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">International Baccalaureate (IB), experiential learning</span><span class="school-tag">Bilingual dual-language immersion</span></div></div></a><a href="/school/journey-school-tamarindo/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388362796-z5fz1o.jpg')"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">Journey School of Costa Rica — Tamarindo</div><div class="school-card-excerpt">Authorized IB World School in Tamarindo offering the IB Diploma Programme with project-based learning.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">International Baccalaureate (IB), project-based learning</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/del-mar-academy/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388388721-m0d1bv.jpg')"></div><div class="school-card-body"><div class="school-card-town">Nosara</div><div class="school-card-name">Del Mar Academy</div><div class="school-card-excerpt">Nosara IB World School on an 11-acre campus, running Montessori in the early years into the IB Diploma.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">Montessori through IB Diploma Programme</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/educarte/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388417116-r0vcqq.jpg')"></div><div class="school-card-body"><div class="school-card-town">Huacas</div><div class="school-card-name">Educarte</div><div class="school-card-excerpt">Bilingual MEP-certified school near Huacas, and the only school on this list that publishes its tuition.</div><div class="school-card-tags"><span class="school-tag">Preescolar – Secundaria</span><span class="school-tag">Bilingual, MEP-certified</span><span class="school-tag">Spanish and English</span></div></div></a><a href="/school/lakeside-international-school/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388457418-uxofv4.webp')"></div><div class="school-card-body"><div class="school-card-town">Sardinal</div><div class="school-card-name">Lakeside International School</div><div class="school-card-excerpt">Bilingual PreK–12 school inland from Playas del Coco, built on an integrated Multiple Intelligences curriculum.</div><div class="school-card-tags"><span class="school-tag">PreK – 12</span><span class="school-tag">Integrated curriculum, Multiple Intelligences model</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/pacifico-internacional/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388485854-4pekux.jpeg')"></div><div class="school-card-body"><div class="school-card-town">Villareal</div><div class="school-card-name">Pacífico Internacional</div><div class="school-card-excerpt">Waldorf-inspired school in the hills at Cañafistula, just inland from Tamarindo.</div><div class="school-card-tags"><span class="school-tag">Preschool – middle school</span><span class="school-tag">Waldorf-inspired</span><span class="school-tag">Bilingual</span></div></div></a><a href="/school/tide-academy/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388513231-o88rin.jpg')"></div><div class="school-card-body"><div class="school-card-town">Tamarindo</div><div class="school-card-name">TIDE Academy</div><div class="school-card-excerpt">Pre-K through 12 in Tamarindo on a personalized US curriculum — around 80 students from 17 countries at an 8:1 ratio, with high school accredited via Middle States through North Atlantic Regional High School.</div><div class="school-card-tags"><span class="school-tag">Pre-K – 12</span><span class="school-tag">Personalized US curriculum</span><span class="school-tag">English and Spanish</span></div></div></a><a href="/school/dolphins-academy/" class="school-card"><div class="school-card-photo" style="background-image:url('https://xjliwfmugylwxlrwyvmh.supabase.co/storage/v1/object/public/photos/school/1784388544858-7ifaik.jpg')"></div><div class="school-card-body"><div class="school-card-town">Playas del Coco</div><div class="school-card-name">Dolphin&#x27;s Academy</div><div class="school-card-excerpt">Bilingual elementary school in Playas del Coco, with curricula developed in alliance with Oxford and Cambridge.</div><div class="school-card-tags"><span class="school-tag">Elementary</span><span class="school-tag">Bilingual</span><span class="school-tag">Bilingual</span></div></div></a>
 <!--/BAKE:SCHOOLS-->
   </div>
 
   <!-- Footer -->
+
+  <!-- Closing CTA -->
+  <section class="sch-cta">
+    <div class="sch-cta-label">Relocating With Kids?</div>
+    <h2 class="sch-cta-title">Tell me your kids' ages — I'll map the school run for every area.</h2>
+    <p class="sch-cta-text">I'm Tiago Leao, a luxury real estate agent with KRAIN Luxury Real Estate in Guanacaste, Costa Rica. Every listing on this site shows real driving times to these schools, and I help relocating families match the right school to the right neighborhood before they ever get on a plane.</p>
+    <div class="sch-cta-actions">
+      <a class="sch-cta-btn primary" href="https://wa.me/50683028660" target="_blank" rel="noopener">WhatsApp Tiago</a>
+      <a class="sch-cta-btn" href="mailto:tiago@soldbytiago.com">tiago@soldbytiago.com</a>
+      <a class="sch-cta-btn" href="properties.html">See homes &amp; drive times</a>
+    </div>
+    <p class="sch-cta-note">Every message goes straight to my phone — no team inbox, no handoff.</p>
+  </section>
+
   <footer>
     <div class="footer-top">
       <div>

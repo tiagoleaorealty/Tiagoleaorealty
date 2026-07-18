@@ -181,6 +181,33 @@ def head_common(doc, title, desc, canon, og_title, og_desc, og_image):
     return doc
 
 
+def agent_ld(knows_about):
+    """Compact RealEstateAgent node. Same @id and core fields as the homepage
+    #agent entity so crawlers and AI assistants merge them into one entity;
+    knowsAbout carries the page-specific topic."""
+    return {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "@id": SITE + "/#agent",
+        "name": "Tiago Leao",
+        "url": SITE,
+        "telephone": "+506-8302-8660",
+        "email": "tiago@soldbytiago.com",
+        "worksFor": {"@type": "Organization", "name": "KRAIN Luxury Real Estate"},
+        "areaServed": "Guanacaste, Costa Rica",
+        "knowsAbout": knows_about,
+    }
+
+
+def fill_cta_name(doc, default, name, label):
+    """Bake the page's name into the closing-CTA spans (2 in each template)."""
+    needle = f'<span class="cta-name">{default}</span>'
+    n = doc.count(needle)
+    if n != 2:
+        raise SystemExit(f"BUILD FAILED: expected 2 CTA name spans in {label}, found {n}")
+    return doc.replace(needle, f'<span class="cta-name">{esc(name)}</span>')
+
+
 def ld_script(obj, baked=True):
     attr = ' data-baked="1"' if baked else ""
     return f'<script type="application/ld+json"{attr}>\n{json.dumps(obj, indent=2, ensure_ascii=False)}\n</script>'
@@ -439,9 +466,13 @@ def build_schools(tpl, rows):
                 {"@type": "ListItem", "position": 3, "name": name, "item": canon},
             ],
         }
+        agent = agent_ld(f"Homes near {name}, Guanacaste, Costa Rica")
         doc = sub_once(
-            doc, r"</head>", ld_script(ld) + "\n" + ld_script(crumbs) + "\n</head>", "school ld insert"
+            doc, r"</head>",
+            ld_script(ld) + "\n" + ld_script(crumbs) + "\n" + ld_script(agent) + "\n</head>",
+            "school ld insert"
         )
+        doc = fill_cta_name(doc, "this school", name, f"school/{slug}")
 
         write_page(f"school/{slug}", doc)
         urls.append((f"/school/{slug}/", (s.get("updated_at") or TODAY)[:10], "0.6", "monthly"))
@@ -518,7 +549,11 @@ def build_developments(tpl, rows):
                       {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
                       {"@type": "ListItem", "position": 2, "name": "Communities", "item": SITE + "/developments.html"},
                       {"@type": "ListItem", "position": 3, "name": name, "item": canon}]}
-        doc = sub_once(doc, r"</head>", ld_script(ld) + "\n" + ld_script(crumbs) + "\n</head>", "dev ld insert")
+        agent = agent_ld(f"{name}, Guanacaste, Costa Rica")
+        doc = sub_once(doc, r"</head>",
+                       ld_script(ld) + "\n" + ld_script(crumbs) + "\n" + ld_script(agent) + "\n</head>",
+                       "dev ld insert")
+        doc = fill_cta_name(doc, "this community", name, f"development/{slug}")
         write_page(f"development/{slug}", doc)
         urls.append((f"/development/{slug}/", (s.get("updated_at") or TODAY)[:10], "0.7", "monthly"))
     return urls
@@ -715,6 +750,28 @@ def bake_roots(props, schools, posts, devs=None):
     if devs:
         inject("developments.html", "<!--BAKE:DEVS-->", "<!--/BAKE:DEVS-->",
                "".join(_dev_card(d) for d in devs), "developments")
+
+    # Hub ItemList structured data — lets crawlers and AI assistants read the
+    # full catalog of school/community pages without executing any JS.
+    def hub_itemlist(title, rows, path_prefix):
+        return ld_script({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": title,
+            "numberOfItems": len(rows),
+            "itemListElement": [
+                {"@type": "ListItem", "position": i + 1,
+                 "name": r.get("name") or "", "url": f"{SITE}/{path_prefix}/{r['slug']}/"}
+                for i, r in enumerate(rows)
+            ],
+        })
+    inject("schools.html", "<!--BAKE:SCHOOLS-LD-->", "<!--/BAKE:SCHOOLS-LD-->",
+           hub_itemlist("International Schools in Guanacaste, Costa Rica", schools, "school"),
+           "schools itemlist ld")
+    if devs:
+        inject("developments.html", "<!--BAKE:DEVS-LD-->", "<!--/BAKE:DEVS-LD-->",
+               hub_itemlist("Gated Communities & Developments in Guanacaste, Costa Rica", devs, "development"),
+               "developments itemlist ld")
 
 
 # ── sitemap ──────────────────────────────────────────────────────
