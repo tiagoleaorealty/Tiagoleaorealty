@@ -817,7 +817,7 @@ def _blog_href(p):
             else "/blog/" + p["slug"] + "/")
 
 
-def _featured_card(p):
+def _blog_featured_card(p):
     cover = (' style="background-image:url(' + "'" + esc(p["cover_url"]) + "'" + ');"') if p.get("cover_url") else ""
     return ('<a href="' + _blog_href(p) + '" class="featured-card">'
             + '<div class="featured-img"' + cover + '></div>'
@@ -888,7 +888,7 @@ def bake_roots(props, schools, posts, devs=None):
     # Blog hub: featured hero (newest post) + one grid per topic section.
     featured = posts[0] if posts else None
     inject("blog.html", "<!--BAKE:FEATURED-POST-->", "<!--/BAKE:FEATURED-POST-->",
-           _featured_card(featured) if featured else "", "featured post")
+           _blog_featured_card(featured) if featured else "", "featured post")
     rest = posts[1:]
     for key, name in BLOG_CATS:
         mine = [p for p in rest if blog_cat(p) == key]

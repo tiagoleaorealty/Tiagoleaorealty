@@ -298,6 +298,21 @@
       ],
       "destination": "/school/:slug/",
       "permanent": true
+    },
+    {
+      "source": "/blog/casa-hanna-tamarindo/",
+      "destination": "/property/casa-hanna-tamarindo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mareas-i-hacienda-pinilla/",
+      "destination": "/property/mareas-i-hacienda-pinilla/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/casa-golondrinas-hacienda-pinilla/",
+      "destination": "/property/casa-golondrinas-hacienda-pinilla/",
+      "permanent": true
     }
   ],
   "rewrites": [
