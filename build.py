@@ -135,7 +135,8 @@ def write_page(rel_dir, content):
 
 def head_common(doc, title, desc, canon, og_title, og_desc, og_image):
     """Per-page head surgery shared by all three templates."""
-    doc = sub_once(doc, r"<head>", '<head>\n  <base href="/">', "<head> (base tag)")
+    if '<base href="/">' not in doc:
+        doc = sub_once(doc, r"<head>", '<head>\n  <base href="/">', "<head> (base tag)")
     doc = sub_once(doc, r"<title>[^<]*</title>", f"<title>{esc(title)}</title>", "<title>")
     doc = sub_once(
         doc,

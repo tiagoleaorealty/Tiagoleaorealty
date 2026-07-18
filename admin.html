@@ -1222,6 +1222,13 @@ Separate paragraphs with a blank line."></textarea>
       } else {
         ({ error } = await sb.from('properties').insert([row]));
       }
+      // Two listings with the same name+community would collide on the slug —
+      // retry once with a short suffix rather than failing the save.
+      if (error && /slug/i.test(error.message) && /duplicate|unique/i.test(error.message)) {
+        row.slug += '-' + Date.now().toString(36).slice(-4);
+        if (id) ({ error } = await sb.from('properties').update(row).eq('id', id));
+        else ({ error } = await sb.from('properties').insert([row]));
+      }
 
       btn.textContent = 'Save Property'; btn.disabled = false;
 

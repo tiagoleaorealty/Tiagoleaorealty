@@ -5,27 +5,65 @@
   "redirects": [
     {
       "source": "/blog-post.html",
-      "has": [{ "type": "query", "key": "slug", "value": "el-chante-tamarindo-villas" }],
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "el-chante-tamarindo-villas"
+        }
+      ],
       "destination": "/blog-el-chante-tamarindo.html",
       "permanent": true
     },
     {
       "source": "/property-detail.html",
-      "has": [{ "type": "query", "key": "id", "value": "(?<id>.+)" }],
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "(?<id>.+)"
+        }
+      ],
       "destination": "/property/:id/",
       "permanent": true
     },
     {
       "source": "/blog-post.html",
-      "has": [{ "type": "query", "key": "slug", "value": "(?<slug>.+)" }],
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "(?<slug>.+)"
+        }
+      ],
       "destination": "/blog/:slug/",
       "permanent": true
     },
     {
       "source": "/school.html",
-      "has": [{ "type": "query", "key": "slug", "value": "(?<slug>.+)" }],
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "(?<slug>.+)"
+        }
+      ],
       "destination": "/school/:slug/",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/property/:seg*",
+      "destination": "/property-detail.html"
+    },
+    {
+      "source": "/school/:seg*",
+      "destination": "/school.html"
+    },
+    {
+      "source": "/blog/:seg*",
+      "destination": "/blog-post.html"
     }
   ]
 }
