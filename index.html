@@ -960,6 +960,8 @@
     .form-wrapper {
       max-width: 780px;
       margin: 0 auto;
+      /* Clip the step slide-in animation so its 30px offset never widens the page on mobile */
+      overflow-x: hidden;
     }
     .form-header {
       text-align: center;
