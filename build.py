@@ -782,6 +782,7 @@ STATIC_PAGES = [
     ("/communities.html", "0.9", "weekly"),
     ("/buyers-guide.html", "0.9", "monthly"),
     ("/sellers-guide.html", "0.9", "monthly"),
+    ("/how-i-sell.html", "0.8", "monthly"),
     ("/about.html", "0.8", "monthly"),
     ("/schools.html", "0.8", "monthly"),
     ("/developments.html", "0.9", "weekly"),

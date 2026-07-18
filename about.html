@@ -112,6 +112,18 @@
     .approach-card h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 10px; }
     .approach-card p { font-size: 15px; line-height: 1.65; color: var(--sand); }
 
+    /* KRAIN band */
+    .krain-band { max-width: 1080px; margin: 0 auto; padding: 26px 48px 0; }
+    .krain-band-card { background: var(--terra); border-radius: 16px; padding: 38px 36px; color: #fff; }
+    .krain-band-card h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .krain-band-head p { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.7); max-width: 62ch; margin-bottom: 26px; }
+    .krain-band-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 26px; }
+    .krain-num { display: block; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .krain-label { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+    .krain-band-link { display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 2px; transition: border-color .2s; }
+    .krain-band-link:hover { border-color: #fff; }
+    @media (max-width: 700px) { .krain-band { padding: 20px 24px 0; } .krain-band-grid { grid-template-columns: repeat(2, 1fr); } }
+
     /* Reviews */
     .reviews { max-width: 1080px; margin: 0 auto; padding: 56px 48px 20px; }
     .reviews h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.025em; color: var(--terra); margin-bottom: 8px; }
@@ -211,6 +223,7 @@
         <ul class="nav-dd-menu">
           <li><a href="buyers-guide.html">Buyer's Guide</a></li>
           <li><a href="sellers-guide.html">Seller's Guide</a></li>
+          <li><a href="how-i-sell.html">How I Sell</a></li>
           <li><a href="schools.html">Schools</a></li>
           <li><a href="developments.html">Developments</a></li>
         </ul>
@@ -229,6 +242,7 @@
       <summary>Resources <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 1l4 4 4-4"/></svg></summary>
       <a href="buyers-guide.html">Buyer's Guide</a>
       <a href="sellers-guide.html">Seller's Guide</a>
+      <a href="how-i-sell.html">How I Sell</a>
       <a href="schools.html">Schools</a>
       <a href="developments.html">Developments</a>
     </details>
@@ -294,6 +308,23 @@
         <h3>You get me, every step</h3>
         <p>Every call, showing, and negotiation is handled by me personally, in English, Spanish, or Portuguese. I also connect you with the attorneys, escrow companies, and lenders that make a Costa Rica deal go smoothly.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- The KRAIN network -->
+  <section class="krain-band">
+    <div class="krain-band-card">
+      <div class="krain-band-head">
+        <h2>Backed by the KRAIN machine</h2>
+        <p>I'm an agent with KRAIN Luxury Real Estate — five offices across Guanacaste and an international buyer network behind every listing I take. Brokerage-wide figures, 2024&ndash;2025:</p>
+      </div>
+      <div class="krain-band-grid">
+        <div><span class="krain-num">$130M+</span><span class="krain-label">Deal volume</span></div>
+        <div><span class="krain-num">115+</span><span class="krain-label">Deals closed</span></div>
+        <div><span class="krain-num">550+</span><span class="krain-label">Brokerages in network</span></div>
+        <div><span class="krain-num">60+</span><span class="krain-label">Countries of exposure</span></div>
+      </div>
+      <a class="krain-band-link" href="how-i-sell.html">See exactly how I market listings &rarr;</a>
     </div>
   </section>
 
