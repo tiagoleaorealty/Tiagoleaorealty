@@ -333,6 +333,17 @@ def build_properties(tpl, rows):
         if sold:
             doc = sub_once(doc, r"<body>", '<body class="listing-sold">', "<body> sold class")
 
+        # Per-type provider note in the inquiry sidebar (runtime renders the same).
+        t = (p.get("type") or "home").lower()
+        prov = ("attorney, surveyor, engineer, water contact, architect, or contractor"
+                if ("land" in t or "lot" in t) else
+                "attorney, escrow provider, inspector, property manager, or insurance contact"
+                if ("condo" in t or "apartment" in t) else
+                "attorney, escrow provider, inspector, surveyor, insurance contact, or property manager")
+        doc = sub_once(doc, r'<span id="sidebar-providers"></span>',
+                       ' When appropriate, I can also connect you with the independent professionals a purchase like this involves &mdash; ' + prov + '.<span id="sidebar-providers"></span>',
+                       "sidebar providers")
+
         # Baked pages are the canonical, indexable versions — strip the
         # template's default noindex (kept only for unknown-id fallbacks).
         doc = sub_once(doc, r'\s*<!-- Template ships noindex[^>]*>\s*<meta name="robots" content="noindex">', "", "strip template noindex", flags=re.S)
@@ -578,6 +589,20 @@ def _dev_card(s):
             + ('<div class="school-card-tags">' + tags + "</div>" if tags else "") + "</div></a>")
 
 
+# Per-community closing-CTA copy: each reflects the actual decisions a buyer
+# faces in that community. Slugs not listed keep the template's generic text.
+DEV_ASSIST = {
+    "hacienda-pinilla": "Considering Hacienda Pinilla? I can help you compare its residential neighborhoods, review current inventory, arrange private showings, and frame the questions worth asking about HOA fees, Beach Club access, rental management, construction rules, and ownership costs. When you move forward, I connect the independent professionals due diligence and closing require.",
+    "reserva-conchal": "I can help you compare the residential products inside Reserva Conchal &mdash; the practical differences between condominiums, villas, homes, and homesites &mdash; and organize the independent professionals needed to review HOA documents, title, inspection, escrow, and closing for the section you choose.",
+    "senderos-tamarindo": "I can help you compare available homes and homesites in Senderos, understand how the community relates to Tamarindo day to day, and organize the legal, escrow, inspection, construction, or property-management contacts your purchase or build will involve.",
+    "tamarindo-park": "In a young community, the questions matter more: what is delivered versus planned, what the developer documents commit to, and how lots compare with turnkey homes. I help you ask them, tour the Hilltop, and bring in the independent professionals when an offer takes shape.",
+    "las-ventanas-playa-grande": "I can help you compare the different areas inside Las Ventanas, evaluate available homes and lots, arrange private tours, and identify the questions that matter here &mdash; HOA fees, construction requirements, the community water system, road access, and ownership costs &mdash; before the independent professionals verify the answers.",
+    "mar-vista": "I can help you compare Mar Vista's property types and ocean-view positioning, weigh school access and amenities against the build-out stage, and frame HOA and construction questions &mdash; then organize showings and the professional introductions a purchase or build requires.",
+    "catalina-cove": "In an established community like Catalina Cove, the work is verification: HOA documents, boundaries and survey on older parcels, and honest comparisons against Mar Vista up the hill or Flamingo nearby. I help you compare, tour, and bring in the independent professionals who confirm the details.",
+    "las-catalinas": "Las Catalinas ownership comes with a town architectural code and a rental program worth reading closely before you commit. I help you compare flats, townhomes, and villas, understand the rules, and organize the attorney, escrow, and management contacts the transaction needs.",
+}
+
+
 def build_developments(tpl, rows):
     urls = []
     for s in rows:
@@ -640,6 +665,10 @@ def build_developments(tpl, rows):
                        ld_script(ld) + "\n" + ld_script(crumbs) + "\n" + ld_script(agent) + "\n</head>",
                        "dev ld insert")
         doc = fill_cta_name(doc, "this community", name, f"development/{slug}")
+        if slug in DEV_ASSIST:
+            doc = sub_once(doc, r'<p class="sch-cta-text">.*?</p>',
+                           '<p class="sch-cta-text">' + DEV_ASSIST[slug] + '</p>',
+                           f"dev assist {slug}", flags=re.S)
         write_page(f"development/{slug}", doc)
         urls.append((f"/development/{slug}/", (s.get("updated_at") or TODAY)[:10], "0.7", "monthly"))
     return urls
