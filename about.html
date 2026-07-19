@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d4a4a" />
   <title>About Tiago Leao | Guanacaste Real Estate Agent, Costa Rica</title>
-  <meta name="description" content="Meet Tiago Leao — a Guanacaste real estate agent with KRAIN Luxury Real Estate. Born from a love of this coast, trilingual, and marketing every listing like a product launch. Read client reviews.">
+  <meta name="description" content="Meet Tiago Leao, Guanacaste real estate agent with KRAIN Luxury Real Estate. Raised on this coast, trilingual, and personally involved in every transaction.">
   <link rel="canonical" href="https://soldbytiago.com/about.html">
   <meta property="og:title" content="About Tiago Leao | Guanacaste Real Estate Agent">
   <meta property="og:description" content="The agent who actually lives here, knows every corner of the market, and answers every message himself — in English, Spanish, or Portuguese.">
@@ -357,8 +357,8 @@
     <h2>What clients say</h2>
     <div class="sub">Real words from buyers and sellers I've worked with in Guanacaste.</div>
     <div class="reviews-grid" id="reviews-grid">
-      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">Tiago made buying from abroad feel simple. He answered every question himself, walked properties for us over video, and connected us with an attorney we trusted. We closed without a single surprise.</div><div class="review-author">The Andersons</div><div class="review-loc">Bought in Tamarindo</div></div>
-      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">We interviewed three agents. Tiago was the only one who knew the closed sale prices and told us the honest truth about each area. His marketing is on another level.</div><div class="review-author">Mark &amp; Julie R.</div><div class="review-loc">Relocated from Toronto</div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">Working with Tiago was an excellent experience. As an American buying property in another country, the process can feel daunting, but Tiago made every step clear, manageable, and stress free. He was responsive, knowledgeable about the local market, and took the time to truly understand our needs.</div><div class="review-author">Lana Smith</div><div class="review-loc">Bought in Tamarindo</div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">We just closed on our place in Playa Grande, and Tiago Leao was fantastic. What I appreciated most was his honesty, he didn't just try to sell us anything, he actually pointed out the pros and cons of different neighborhoods and steered us away from properties that didn't fit our goals. Having an agent with that kind of deep knowledge of Guanacaste is invaluable. He genuinely looked out for our best interests.</div><div class="review-author">Alberto Ruiz</div><div class="review-loc">Bought in Playa Grande</div></div>
     </div>
   </section>
 
@@ -405,8 +405,8 @@
     (async function() {
       const grid = document.getElementById('reviews-grid');
       const fallback = `
-        <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">Tiago made buying from abroad feel simple. He answered every question himself, walked properties for us over video, and connected us with an attorney we trusted. We closed without a single surprise.</div><div class="review-author">The Andersons</div><div class="review-loc">Bought in Tamarindo</div></div>
-        <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">We interviewed three agents. Tiago was the only one who knew the closed sale prices and told us the honest truth about each area. His marketing is on another level.</div><div class="review-author">Mark &amp; Julie R.</div><div class="review-loc">Relocated from Toronto</div></div>`;
+        <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">Working with Tiago was an excellent experience. As an American buying property in another country, the process can feel daunting, but Tiago made every step clear, manageable, and stress free. He was responsive, knowledgeable about the local market, and took the time to truly understand our needs.</div><div class="review-author">Lana Smith</div><div class="review-loc">Bought in Tamarindo</div></div>
+        <div class="review-card"><div class="review-stars">★★★★★</div><div class="review-quote">We just closed on our place in Playa Grande, and Tiago Leao was fantastic. What I appreciated most was his honesty, he didn't just try to sell us anything, he actually pointed out the pros and cons of different neighborhoods and steered us away from properties that didn't fit our goals. Having an agent with that kind of deep knowledge of Guanacaste is invaluable. He genuinely looked out for our best interests.</div><div class="review-author">Alberto Ruiz</div><div class="review-loc">Bought in Playa Grande</div></div>`;
       if (typeof TL === 'undefined' || !TL.isConnected()) { grid.innerHTML = fallback; return; }
       let reviews = null;
       try { reviews = await TL.getReviews(); } catch (e) {}
