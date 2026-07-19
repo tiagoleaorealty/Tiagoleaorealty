@@ -949,10 +949,13 @@
     .poc-title { font-size: clamp(28px, 3.4vw, 42px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; color: #fafafa; margin-bottom: 18px; }
     .poc-text { font-size: 16px; line-height: 1.75; color: rgba(250,250,250,.85); max-width: 62ch; }
     .poc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 44px; }
-    .poc-step { background: #fff; border: none; border-radius: 12px; padding: 26px 24px; }
-    .poc-step-num { font-size: 13px; font-weight: 700; color: var(--terra); letter-spacing: .06em; margin-bottom: 10px; }
+    .poc-step { display: flex; flex-direction: column; background: #fff; border: none; border-radius: 12px; padding: 26px 24px; transition: transform .25s, box-shadow .25s; }
+    .poc-step:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,0.18); }
+    .poc-step-num { font-size: 11px; font-weight: 700; color: var(--terra); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
     .poc-step h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 10px; }
     .poc-step p { font-size: 13.5px; line-height: 1.65; color: var(--stone); }
+    .poc-step-link { margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--terra); }
+    .poc-foot { margin-top: 34px; font-size: 13.5px; line-height: 1.7; color: rgba(250,250,250,.6); max-width: 68ch; }
     @media (max-width: 1000px) { .poc { padding: 90px 48px; } .poc-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) { .poc { padding: 72px 24px; } .poc-grid { grid-template-columns: 1fr; } }
 
@@ -1820,35 +1823,40 @@
   </section>
 
   <!-- ── FAQ ──────────────────────────────────────────────────────── -->
-  <!-- ── SUPPORT BEYOND THE PROPERTY ───────────────────────────── -->
+  <!-- ── PATHWAYS: route each visitor type to what they came for ── -->
   <section class="poc">
     <div class="poc-header">
-      <div class="poc-label">When You Need It</div>
-      <h2 class="poc-title reveal">Support beyond the property</h2>
-      <p class="poc-text reveal">Some clients already have an attorney, escrow provider, inspector, or property manager. Others want help identifying the right professionals. My role adapts to your situation: in addition to representing you in the transaction, I can introduce independent local professionals, coordinate communication, and keep next steps organized when needed — and you always remain free to work with your own team.</p>
+      <div class="poc-label">Start Where You Are</div>
+      <h2 class="poc-title reveal">What brings you to Guanacaste?</h2>
+      <p class="poc-text reveal">Every path below is built from real local knowledge — and I'm one message away on any of them.</p>
     </div>
     <div class="poc-grid">
-      <div class="poc-step reveal">
-        <div class="poc-step-num">01</div>
-        <h3>Property strategy</h3>
-        <p>Property search, market comparisons, pricing, listing strategy, showings, and honest opportunity evaluation.</p>
-      </div>
-      <div class="poc-step reveal">
-        <div class="poc-step-num">02</div>
-        <h3>Representation</h3>
-        <p>Offer strategy, negotiation, buyer qualification, professional marketing, and outreach across the agent network.</p>
-      </div>
-      <div class="poc-step reveal">
-        <div class="poc-step-num">03</div>
-        <h3>Transaction support</h3>
-        <p>Timelines, documents, access, follow-up, and communication between the parties through due diligence and closing.</p>
-      </div>
-      <div class="poc-step reveal">
-        <div class="poc-step-num">04</div>
-        <h3>Local connections</h3>
-        <p>Introductions to independent attorneys, escrow providers, inspectors, surveyors, property managers, and local services — when you want them.</p>
-      </div>
+      <a href="properties.html" class="poc-step reveal">
+        <div class="poc-step-num">Buying</div>
+        <h3>Find your place on this coast</h3>
+        <p>Every current listing — homes, villas, condos and land — with real drive times to beaches, schools and the airport on every page.</p>
+        <span class="poc-step-link">Browse properties &rarr;</span>
+      </a>
+      <a href="how-i-sell.html" class="poc-step reveal">
+        <div class="poc-step-num">Selling</div>
+        <h3>See how your property gets sold</h3>
+        <p>Cinematic film, drone, a dedicated page per listing, and KRAIN's international buyer network — marketing built like a launch, priced honestly.</p>
+        <span class="poc-step-link">How I sell &rarr;</span>
+      </a>
+      <a href="communities.html" class="poc-step reveal">
+        <div class="poc-step-num">Choosing Where</div>
+        <h3>Compare towns and communities</h3>
+        <p>Eleven beach towns and eight gated communities, compared honestly — the vibe, the fees, the trade-offs, and who each one actually fits.</p>
+        <span class="poc-step-link">Explore communities &rarr;</span>
+      </a>
+      <a href="schools.html" class="poc-step reveal">
+        <div class="poc-step-num">Relocating</div>
+        <h3>Moving with your family</h3>
+        <p>Every international school on this coast, profiled — and homes shortlisted around the school run, not just the view.</p>
+        <span class="poc-step-link">See the schools &rarr;</span>
+      </a>
     </div>
+    <p class="poc-foot">And when a deal is in motion, I handle the practical side too — showings, timelines, paperwork, and introductions to independent attorneys, escrow providers, inspectors or property managers when you want them.</p>
   </section>
 
   <section id="why" class="grain">
