@@ -168,6 +168,18 @@
     @media (max-width: 800px) { .related-sec { padding: 50px 24px 60px; } .related-grid { grid-template-columns: 1fr; } }
 
   </style>
+<script>
+  /* Legacy ?id=/?slug= redirects: Vercel always forwards the query string,
+     so once the clean path has loaded, drop those params from the URL bar. */
+  (function () {
+    if (!/^\/(property|school|blog|development)\/[^/]+/.test(location.pathname)) return;
+    var q = new URLSearchParams(location.search);
+    if (!q.has("id") && !q.has("slug")) return;
+    q.delete("id"); q.delete("slug");
+    var s = q.toString();
+    history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + location.hash);
+  })();
+</script>
 </head>
 
 <body>

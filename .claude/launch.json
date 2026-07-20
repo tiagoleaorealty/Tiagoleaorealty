@@ -4,7 +4,7 @@
     {
       "name": "static-site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "/Users/tiagoleao/Desktop/WEBSITE"],
+      "runtimeArgs": ["/Users/tiagoleao/Desktop/WEBSITE/serve.py"],
       "port": 8000
     }
   ]
