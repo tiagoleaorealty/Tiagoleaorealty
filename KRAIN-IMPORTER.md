@@ -84,6 +84,7 @@ normalizeData is part of `extract`; `source` is the returned metadata.)
 | Adapter | Handles | Status |
 |---|---|---|
 | `krain-lp` | `krainrealestate.com/properties/<slug>` (Luxury Presence SSR pages; lp-cdn media) | **fully supported** |
+| `manual` | no fetch — admin-entered listing under written permission | **supported** (see § Manual entry) |
 | `krain-idx` | `krainrealestate.com/home-search/…` | **intentionally not auto-imported** — shared MLS/IDX feed (see § IDX / MLS listings) |
 | `propertyshelf` | `*.propertyshelf.com` | recognized → same message (host unreachable during development; needs a sample listing) |
 | anything else on allowlisted hosts | — | same message |
@@ -121,10 +122,27 @@ automatic importer:
 
 **Legitimate paths instead:** (a) if the listing is KRAIN's own, it also exists
 at a `krainrealestate.com/properties/<slug>` URL — import that; (b) for a
-specific third-party listing Tiago has **written permission** to feature, enter
-it by hand in `admin.html` (or an assisted manual-paste mode) so the compliance
-record reflects that permission. The importer will **not** be turned into an
-automated MLS/IDX republisher.
+specific third-party listing Tiago has **written permission** to feature, use
+**Manual entry (written permission)** in the importer (below). The importer
+will **not** be turned into an automated MLS/IDX republisher.
+
+### Manual entry (written permission) mode
+
+Added 2026-07-20 for the "I have written permission" case. A **＋ Enter a
+listing manually** button on the importer's list view opens the same review
+workspace with empty fields — nothing is fetched from any source. The admin
+types the listing details (with the same m²/ft²/acre conversion helpers and
+the same blocking/warning/info validation) and **uploads the photos they are
+authorized to use** (reusing the browser-side compress + Supabase Storage
+pipeline; the source CDN is never contacted). The permission scope defaults to
+`written_permission`, and manual entries carry **extra required compliance
+gates** on top of the normal ones: a permission note (who granted permission,
+when), the **listing broker/agent attribution** (whose listing it is), and
+description-republication authorization when a description is present. Publish,
+duplicate detection, draft/audit history and the clean-URL/sitemap bake are all
+identical to a fetched import; "Check source for changes" and the source-text
+tab are hidden (there is no source page). This gives a proper authorized-import
+workflow for permitted third-party listings without scraping the MLS/IDX feed.
 
 `krain-lp` extraction sources (verified against two live fixtures):
 `<h1>`, sectioned spec list `features-amenities-list` (`<li><strong>key</strong>

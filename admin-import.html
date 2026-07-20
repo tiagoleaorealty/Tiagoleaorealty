@@ -177,7 +177,7 @@
         <div class="page-title">Import a KRAIN listing</div>
         <p class="page-sub">Paste the URL of a KRAIN listing you are authorized to republish. The importer fetches that one page,
         shows you everything it found, and nothing goes on the website until you review, confirm authorization, and publish.
-        Supported now: <b>krainrealestate.com/properties/…</b> pages. Home-search/IDX and Propertyshelf URLs are recognized but not yet supported.</p>
+        Automatic import supports <b>krainrealestate.com/properties/…</b> pages (KRAIN's own listings). Shared MLS/IDX search results (<b>/home-search/…</b>) are other brokerages' listings under licence terms that bar republishing, so they are not fetched — for one you have written permission to feature, use <b>Enter a listing manually</b> below.</p>
 
         <div class="card">
           <h2>New import</h2>
@@ -186,6 +186,11 @@
             <button class="btn btn-terra" id="import-btn" onclick="importNew()">Import</button>
           </div>
           <div class="muted" id="import-status" style="margin-top:10px; min-height:18px;"></div>
+          <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+            <button class="btn" onclick="createManualImport()">＋ Enter a listing manually (written permission)</button>
+            <div class="muted" style="margin-top:8px; line-height:1.5;">For a specific listing you have <b>written permission</b> to feature (e.g. another brokerage's MLS listing) —
+              you supply the details and the photos you're authorized to use. This does not fetch or copy from any MLS/IDX page; it records who gave you permission.</div>
+          </div>
         </div>
 
         <div class="card">
@@ -235,13 +240,19 @@
 
         <div class="card">
           <h2>Images <span class="muted" id="w-imgcount"></span></h2>
-          <div class="img-tools">
+          <div class="img-tools" id="img-tools-fetch" style="display:none;">
             <button class="btn btn-sm" onclick="selectAllImages(true)">Select all</button>
             <button class="btn btn-sm" onclick="selectAllImages(false)">Deselect all</button>
             <button class="btn btn-terra btn-sm" id="dl-btn" onclick="downloadSelected()">Copy selected images to SoldByTiago storage</button>
             <span class="muted" id="dl-status"></span>
           </div>
-          <div class="muted" style="margin-bottom:10px;">Drag to reorder. ★ marks the hero image. Images are copied to SoldByTiago-controlled storage only
+          <div class="img-tools" id="img-tools-manual" style="display:none;">
+            <label class="btn btn-terra btn-sm" style="cursor:pointer;">Upload photos you're authorized to use
+              <input type="file" id="manual-photo-input" multiple accept="image/*" style="display:none;" onchange="handleManualPhotos(event)" />
+            </label>
+            <span class="muted" id="manual-dl-status"></span>
+          </div>
+          <div class="muted" style="margin-bottom:10px;" id="img-help">Drag to reorder. ★ marks the hero image. Images are copied to SoldByTiago-controlled storage only
             when image republication is authorized below — the public site never hotlinks the source CDN.</div>
           <div class="img-grid" id="w-images"></div>
         </div>
@@ -265,6 +276,17 @@
               <input type="text" id="a-note" oninput="onFieldInput()" placeholder="e.g. Listing agreement signed 2026-07-01" />
             </div>
           </div>
+          <div class="fgrid" id="manual-attribution" style="display:none; margin-top:4px;">
+            <div class="fg">
+              <label>Listing agent (whose listing is this?)</label>
+              <input type="text" id="a-agent" oninput="onFieldInput()" placeholder="e.g. Gabriel Araya" />
+            </div>
+            <div class="fg">
+              <label>Listing brokerage</label>
+              <input type="text" id="a-brokerage" oninput="onFieldInput()" placeholder="e.g. Coldwell Banker Flamingo" />
+            </div>
+            <div class="fg full src-note">For a listing that is not your own, record whose listing it is. This is an internal compliance record; it does not need to appear on the public page, but you must have written permission from the listing owner to feature it.</div>
+          </div>
           <label class="chk"><input type="checkbox" id="a-images" onchange="onFieldInput()" /> Image republication is authorized for this listing</label>
           <label class="chk"><input type="checkbox" id="a-desc" onchange="onFieldInput()" /> Description republication is authorized (publish the source text or an edit of it)</label>
           <label class="chk"><input type="checkbox" id="a-sync" onchange="onFieldInput()" /> Periodic re-checking of the source page is authorized (manual “Check source” button)</label>
@@ -277,7 +299,7 @@
           <button class="btn" id="ready-btn" onclick="markReady()">Mark ready to publish</button>
           <button class="btn btn-terra" id="publish-btn" onclick="openPublishModal()">Publish…</button>
           <span class="spacer"></span>
-          <button class="btn btn-sm" onclick="checkSource()">Check source for changes</button>
+          <button class="btn btn-sm" id="check-source-btn" onclick="checkSource()">Check source for changes</button>
           <button class="btn btn-sm" onclick="openHistory()">History</button>
           <button class="btn btn-sm" onclick="archiveImport()">Archive</button>
           <button class="btn btn-danger btn-sm" onclick="deleteImport()">Delete import</button>
@@ -533,6 +555,37 @@ async function importNew() {
   openImport(ins.data.id);
 }
 
+// Manual, permission-based entry: no source fetch. The admin fills the fields
+// and uploads the photos they are authorized to use; the row records the
+// written-permission scope and the (required) listing-broker attribution.
+async function createManualImport() {
+  const ref = (prompt('Optional: a reference for where this listing lives or how you got permission (a URL, an email subject, an MLS number). You can edit this later.') || '').trim();
+  const email = await userEmail();
+  const emptyDraft = {
+    name: '', price_display: '', price_amount: null, price_currency: null, type: '', status: '',
+    location: '', address: '', beds: null, baths_full: null, baths_half: null, baths_total: null, baths: null,
+    size_m2: null, lot_m2: null, short_desc: '', description: '', features: [], lat: null, lng: null,
+    year_built: null, hoa_display: '', video_url: '', tour_url: '',
+    walk_score: null, beach_minutes: null, beach_mode: null, airport_minutes: null,
+  };
+  const row = {
+    import_status: 'imported',
+    source_url: ref, source_provider: 'manual',
+    source_listing_id: '', source_mls_id: '', source_agent: '', source_brokerage: '', source_updated_at: '',
+    permission_scope: 'written_permission',
+    imported_by: email,
+    source_snapshot: { source: { provider: 'manual', provider_label: 'Manual entry (written permission)', url: ref }, listing: null, images: [], missing: [], flags: [] },
+    draft: emptyDraft, images: [], validation: [],
+    history: [{ at: nowIso(), user: email, event: 'manual_created', details: { reference: ref } }],
+    updated_at: nowIso(),
+  };
+  const ins = await sb.from('property_imports').insert([row]).select().single();
+  if (ins.error) { showToast('Could not create: ' + ins.error.message); return; }
+  allImports.unshift(ins.data);
+  openImport(ins.data.id);
+}
+function isManual() { return current && current.source_provider === 'manual'; }
+
 // ══════════════════════════════════════════════════════════════
 //  WORK VIEW
 // ══════════════════════════════════════════════════════════════
@@ -573,6 +626,7 @@ function srcOf(key) { // raw source value for the annotation line
   }
 }
 function note(key, extra) {
+  if (isManual()) return extra ? `<div class="src-note">${extra}</div>` : '';
   const v = srcOf(key);
   return `<div class="src-note"><b>Source:</b> ${v == null || v === '' ? NP : esc(String(v))}${extra || ''}</div>`;
 }
@@ -584,14 +638,16 @@ function renderWork() {
 
   document.getElementById('w-sourcebar').innerHTML = [
     `<span class="chip st-${esc(current.import_status)}">${esc(current.import_status.replace('_',' '))}</span>`,
-    `<a class="mono" href="${esc(current.source_url)}" target="_blank" rel="noopener">source page ↗</a>`,
-    current.source_provider ? `provider: <b>${esc(current.source_provider)}</b>` : '',
+    isManual()
+      ? `<b>Manual entry (written permission)</b>${current.source_url ? ` — ref: ${/^https?:\/\//.test(current.source_url) ? `<a class="mono" href="${esc(current.source_url)}" target="_blank" rel="noopener">${esc(current.source_url.slice(0,60))} ↗</a>` : `<span class="mono">${esc(current.source_url.slice(0,80))}</span>`}` : ''}`
+      : `<a class="mono" href="${esc(current.source_url)}" target="_blank" rel="noopener">source page ↗</a>`,
+    (!isManual() && current.source_provider) ? `provider: <b>${esc(current.source_provider)}</b>` : '',
     current.source_mls_id ? `MLS: <b>${esc(current.source_mls_id)}</b>` : '',
-    current.source_listing_id ? `<span class="mono">src id ${esc(current.source_listing_id.slice(0, 8))}…</span>` : '',
-    current.source_agent ? `agent: <b>${esc(current.source_agent)}</b>` : '',
-    current.source_brokerage ? `brokerage: <b>${esc(current.source_brokerage)}</b>` : '',
+    (!isManual() && current.source_listing_id) ? `<span class="mono">src id ${esc(current.source_listing_id.slice(0, 8))}…</span>` : '',
+    (!isManual() && current.source_agent) ? `agent: <b>${esc(current.source_agent)}</b>` : '',
+    (!isManual() && current.source_brokerage) ? `brokerage: <b>${esc(current.source_brokerage)}</b>` : '',
     `imported by ${esc(current.imported_by || '—')} on ${esc(new Date(current.created_at).toLocaleDateString('en-US'))}`,
-    current.source_updated_at ? `source updated: ${esc(current.source_updated_at)}` : `source updated: <span class="np">Not provided by source</span>`,
+    isManual() ? '' : (current.source_updated_at ? `source updated: ${esc(current.source_updated_at)}` : `source updated: <span class="np">Not provided by source</span>`),
   ].filter(Boolean).join(' <span style="opacity:.4">·</span> ');
 
   // Banners
@@ -637,7 +693,7 @@ function renderWork() {
     <div class="fg"><label>Longitude</label><input id="f-lng" type="number" step="any" value="${d.lng ?? ''}" oninput="onFieldInput()" /></div>
     <div class="fg full"><label>Features (comma-separated — shown as chips on the page)</label>
       <input id="f-features" value="${esc((d.features || []).join(', '))}" oninput="onFieldInput()" />
-      <div class="src-note"><b>Source lists:</b> ${esc([...(s.listing?.appliances || [])].join(', ') || '')} ${s.listing?.year_built ? ' · Year built ' + esc(String(s.listing.year_built)) : ''}</div></div>
+      ${isManual() ? '' : `<div class="src-note"><b>Source lists:</b> ${esc([...(s.listing?.appliances || [])].join(', ') || '')} ${s.listing?.year_built ? ' · Year built ' + esc(String(s.listing.year_built)) : ''}</div>`}</div>
   `;
   document.getElementById('f-description').value = d.description || '';
   document.getElementById('desc-source-view').textContent = (s.listing && s.listing.description) || 'Not provided by source';
@@ -650,6 +706,22 @@ function renderWork() {
   document.getElementById('a-desc').checked = !!current.description_authorized;
   document.getElementById('a-sync').checked = !!current.sync_authorized;
   document.getElementById('a-confirm').checked = !!current.authorization_confirmed;
+
+  // Manual vs fetched: swap image tools, show attribution, hide source-only bits
+  const manual = isManual();
+  document.getElementById('img-tools-fetch').style.display = manual ? 'none' : 'flex';
+  document.getElementById('img-tools-manual').style.display = manual ? 'flex' : 'none';
+  document.getElementById('manual-attribution').style.display = manual ? 'grid' : 'none';
+  document.getElementById('dtab-source').style.display = manual ? 'none' : '';
+  document.getElementById('check-source-btn').style.display = manual ? 'none' : '';
+  document.getElementById('img-help').textContent = manual
+    ? 'Upload the photos you are authorized to use. Drag to reorder; ★ marks the hero image. Files are stored in SoldByTiago storage.'
+    : 'Drag to reorder. ★ marks the hero image. Images are copied to SoldByTiago-controlled storage only when image republication is authorized below — the public site never hotlinks the source CDN.';
+  if (manual) {
+    document.getElementById('a-agent').value = current.source_agent || '';
+    document.getElementById('a-brokerage').value = current.source_brokerage || '';
+    descTab('edited');
+  }
 
   renderImages();
   updateConversions();
@@ -694,7 +766,7 @@ function collectDraft() {
   return d;
 }
 function collectAuth() {
-  return {
+  const a = {
     permission_scope: document.getElementById('a-scope').value,
     permission_note: document.getElementById('a-note').value.trim(),
     images_authorized: document.getElementById('a-images').checked,
@@ -702,6 +774,11 @@ function collectAuth() {
     sync_authorized: document.getElementById('a-sync').checked,
     authorization_confirmed: document.getElementById('a-confirm').checked,
   };
+  if (isManual()) {
+    a.source_agent = document.getElementById('a-agent').value.trim();
+    a.source_brokerage = document.getElementById('a-brokerage').value.trim();
+  }
+  return a;
 }
 function onFieldInput() { dirty = true; updateConversions(); runValidation(); }
 
@@ -751,6 +828,12 @@ function runValidation() {
   if (selected.length && !a.images_authorized) block('img-auth', 'Images are selected but image republication is not marked authorized.');
   if (!a.authorization_confirmed) block('authz', 'The authorization confirmation checkbox is required before publishing.');
   if (!a.permission_scope) block('scope', 'Choose a permission scope for the compliance record.');
+  if (isManual()) {
+    if (!a.permission_note) block('perm-note', 'Manual entry: record who gave you written permission and when (permission note).');
+    if (!(a.source_agent || a.source_brokerage)) block('attribution', 'Manual entry: record whose listing this is (listing agent or brokerage).');
+    if (d.description && d.description.trim() && !a.description_authorized) block('desc-auth-manual', 'Confirm description republication is authorized (this is a third-party listing).');
+    info('manual', 'Manually entered under written permission — no data was pulled from any MLS/IDX page.');
+  }
   const failed = imgs.filter(i => i.status === 'failed');
   if (failed.length) warn('img-fail', `${failed.length} image(s) failed to download — open the image grid for exact reasons.`);
   const lowres = imgs.filter(i => i.selected && i.width && i.width < 800);
@@ -834,6 +917,48 @@ function compressImage(blob, maxDim = 1600, quality = 0.72) {
     im.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
     im.src = url;
   });
+}
+
+// Manual entry: the admin uploads image FILES they are authorized to use.
+// Reuses the same compress + Supabase Storage pipeline as admin.html; no
+// source CDN is contacted.
+async function handleManualPhotos(e) {
+  const files = Array.from(e.target.files || []);
+  e.target.value = '';
+  if (!files.length) return;
+  if (!collectAuth().images_authorized) { showToast('Tick “image republication is authorized” first.'); return; }
+  const st = document.getElementById('manual-dl-status');
+  const nameSlug = slugify((collectDraft().name || 'listing').slice(0, 40)) || 'listing';
+  let order = current.images.length, done = 0, failed = 0;
+  for (const file of files) {
+    st.textContent = `Uploading ${done + failed + 1} of ${files.length}…`;
+    try {
+      if (!file.type.startsWith('image/')) throw new Error('Not an image file.');
+      const bmp = await createImageBitmap(file).catch(() => null);
+      if (!bmp) throw new Error('Unreadable image.');
+      const disp = await compressImage(file);
+      const base = `import/${current.id}/manual-${String(order).padStart(2, '0')}-${nameSlug}-${Math.random().toString(36).slice(2, 8)}`;
+      const up1 = await sb.storage.from('photos').upload(`${base}-orig.jpg`, file, { cacheControl: '3600', contentType: file.type, upsert: true });
+      if (up1.error) throw new Error('Storage (original): ' + up1.error.message);
+      const up2 = await sb.storage.from('photos').upload(`${base}.jpg`, disp || file, { cacheControl: '3600', contentType: 'image/jpeg', upsert: true });
+      if (up2.error) throw new Error('Storage (display): ' + up2.error.message);
+      current.images.push({
+        uuid: 'manual-' + Math.random().toString(36).slice(2, 10),
+        source_url: '', full_url: '', preview_url: '',
+        original_storage_url: sb.storage.from('photos').getPublicUrl(`${base}-orig.jpg`).data.publicUrl,
+        display_url: sb.storage.from('photos').getPublicUrl(`${base}.jpg`).data.publicUrl,
+        selected: true, hero: current.images.length === 0 && order === current.images.length, alt: '',
+        order: order++, width: bmp.width, height: bmp.height, bytes: file.size, status: 'uploaded', error: '',
+      });
+      done++;
+    } catch (err) { failed++; showToast('Upload failed: ' + err.message); }
+    renderImages();
+  }
+  if (!current.images.some(i => i.hero) && current.images[0]) current.images[0].hero = true;
+  st.textContent = `Uploaded ${done}${failed ? `, ${failed} failed` : ''}.`;
+  dirty = true;
+  await persist({ images: current.images }, 'manual_images_uploaded', { uploaded: done, failed });
+  renderImages(); runValidation();
 }
 
 async function downloadSelected() {
