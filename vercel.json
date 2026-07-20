@@ -9,6 +9,11 @@
       "permanent": true
     },
     {
+      "source": "/api/_lib/(.*)",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/blog/el-chante-tamarindo-villas/",
       "destination": "/blog-el-chante-tamarindo.html",
       "permanent": true
