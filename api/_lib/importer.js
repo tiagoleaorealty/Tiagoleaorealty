@@ -471,15 +471,14 @@ const krainLp = {
 // licence typically restricts the data to "personal, non-commercial use".
 // Republishing them as content on soldbytiago.com is a different right from
 // importing KRAIN's own listings, and the pages are behind bot protection
-// with no public slug lookup — so this importer does not pull them
-// automatically. Use the listing's own krainrealestate.com/properties/… page
-// when it is KRAIN's, or enter a listing you have written permission for by
-// hand. See KRAIN-IMPORTER.md § IDX / MLS listings.
+// with no public slug lookup — so this importer does not import them. Use the
+// listing's own krainrealestate.com/properties/… page when it is KRAIN's.
+// See KRAIN-IMPORTER.md § IDX / MLS listings.
 const krainIdx = {
   id: 'krain-idx',
   label: 'KRAIN home-search (shared MLS/IDX feed)',
   supported: false,
-  reason: 'This is a shared MLS/IDX search result, not a KRAIN listing page. These are often other brokerages’ listings under MLS rules that limit them to personal, non-commercial use, so the importer will not republish them automatically. If it is KRAIN’s own listing, import its krainrealestate.com/properties/… page instead; if you have written permission for a specific third-party listing, add it by hand.',
+  reason: 'This is a shared MLS/IDX search result, not a KRAIN listing page. These are often other brokerages’ listings under MLS rules that limit them to personal, non-commercial use, so the importer does not import them. If it is KRAIN’s own listing, open it on krainrealestate.com/properties/… and import that page instead.',
   canHandle(u) {
     return /(^|\.)krainrealestate\.com$/.test(u.hostname) && /^\/home-search(\/|$)/.test(u.pathname);
   },
