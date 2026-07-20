@@ -465,12 +465,21 @@ const krainLp = {
   },
 };
 
-// ── KRAIN home-search / IDX pages: recognized, not yet supported ──
+// ── KRAIN home-search / IDX pages: intentionally NOT auto-imported ──
+// These are the shared MLS/IDX feed — mostly OTHER brokerages' listings that
+// KRAIN may display under IDX rules, sourced from MLSs (e.g. Omni MLS) whose
+// licence typically restricts the data to "personal, non-commercial use".
+// Republishing them as content on soldbytiago.com is a different right from
+// importing KRAIN's own listings, and the pages are behind bot protection
+// with no public slug lookup — so this importer does not pull them
+// automatically. Use the listing's own krainrealestate.com/properties/… page
+// when it is KRAIN's, or enter a listing you have written permission for by
+// hand. See KRAIN-IMPORTER.md § IDX / MLS listings.
 const krainIdx = {
   id: 'krain-idx',
-  label: 'KRAIN home-search (IDX)',
+  label: 'KRAIN home-search (shared MLS/IDX feed)',
   supported: false,
-  reason: 'This KRAIN listing format is not currently supported. Home-search/IDX pages are rendered by a protected feed — use the matching krainrealestate.com/properties/… page, or ask for feed access to be added.',
+  reason: 'This is a shared MLS/IDX search result, not a KRAIN listing page. These are often other brokerages’ listings under MLS rules that limit them to personal, non-commercial use, so the importer will not republish them automatically. If it is KRAIN’s own listing, import its krainrealestate.com/properties/… page instead; if you have written permission for a specific third-party listing, add it by hand.',
   canHandle(u) {
     return /(^|\.)krainrealestate\.com$/.test(u.hostname) && /^\/home-search(\/|$)/.test(u.pathname);
   },

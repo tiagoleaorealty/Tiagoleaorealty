@@ -84,13 +84,47 @@ normalizeData is part of `extract`; `source` is the returned metadata.)
 | Adapter | Handles | Status |
 |---|---|---|
 | `krain-lp` | `krainrealestate.com/properties/<slug>` (Luxury Presence SSR pages; lp-cdn media) | **fully supported** |
-| `krain-idx` | `krainrealestate.com/home-search/…` | recognized → "This KRAIN listing format is not currently supported." (pages are bot-gated, HTTP 403 server-side) |
+| `krain-idx` | `krainrealestate.com/home-search/…` | **intentionally not auto-imported** — shared MLS/IDX feed (see § IDX / MLS listings) |
 | `propertyshelf` | `*.propertyshelf.com` | recognized → same message (host unreachable during development; needs a sample listing) |
 | anything else on allowlisted hosts | — | same message |
 | non-allowlisted host | — | rejected before any fetch |
 
 Unsupported ⇒ **no partial import, ever** — a page yielding neither a name nor
 images is refused with the standard message.
+
+### IDX / MLS listings (`/home-search/…`) — why they are not auto-imported
+
+Investigated 2026-07-20 against a live example (Reserva Conchal Carao T3-3,
+`…/home-search/listings/8585740543063911494-Reserva-Conchal-Carao-T3-3-…`).
+Two independent reasons, either one sufficient, to keep these out of the
+automatic importer:
+
+1. **Rights.** These are shared **MLS/IDX** search results, not KRAIN's own
+   listing pages. The example belongs to **Gabriel Araya, Coldwell Banker
+   Flamingo** (a different brokerage) and is sourced from **Omni MLS**; the
+   feed's own disclaimer states the data is *"intended solely for personal,
+   non-commercial use… not to be utilized for any other purposes except to
+   identify potential properties for purchase."* KRAIN's right to **display**
+   these under IDX is not a right for Tiago to **republish** them as content on
+   a separate commercial site. Importing KRAIN's own exclusives (the `/properties/`
+   pages) is a different matter and is fully supported.
+2. **Access.** The `/home-search/` detail pages are behind Cloudflare's bot
+   challenge (HTTP 403 server-side even with full browser headers), and the
+   underlying data API (`POST /federation`, GraphQL — reachable server-side)
+   has **no public slug→listing lookup**: `mlsListing(displayId, feedIds)`
+   needs the internal UUID, which appears only inside the bot-protected page's
+   `__NEXT_DATA__`; the browsable `mlsListings` index has no `slug`/`search`
+   filter and does not contain every listing; introspection is disabled.
+   Pulling these automatically would require defeating the bot challenge —
+   which this tool will not do, and which would itself breach the site/MLS
+   terms.
+
+**Legitimate paths instead:** (a) if the listing is KRAIN's own, it also exists
+at a `krainrealestate.com/properties/<slug>` URL — import that; (b) for a
+specific third-party listing Tiago has **written permission** to feature, enter
+it by hand in `admin.html` (or an assisted manual-paste mode) so the compliance
+record reflects that permission. The importer will **not** be turned into an
+automated MLS/IDX republisher.
 
 `krain-lp` extraction sources (verified against two live fixtures):
 `<h1>`, sectioned spec list `features-amenities-list` (`<li><strong>key</strong>
@@ -285,8 +319,10 @@ the source snapshot + permission record privately.
   design holds.
 - **Image similarity** dedupe is byte/dimension-signature only (no perceptual
   hashing); identical photos re-exported by the CDN could slip through.
-- **IDX / Propertyshelf** URLs are recognized but unsupported (bot-gated /
-  unreachable) — clean refusal message, no partial imports.
+- **IDX / home-search / Propertyshelf** URLs are intentionally not
+  auto-imported (shared third-party MLS feed under personal/non-commercial
+  licence terms, plus bot-protected pages with no public slug lookup) — clean
+  refusal message, no partial imports. See § IDX / MLS listings.
 - **Rate limiting** is per-function-instance (serverless best effort); the
   real gate is that every call requires a valid admin login.
 - **HOA frequency, canton/province, furnished** etc. aren't structured on the
