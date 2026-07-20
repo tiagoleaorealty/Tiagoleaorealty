@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d4a4a" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Listing Importer | Admin | Tiago Leao</title>
+  <link rel="stylesheet" href="fonts.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fafafa; --text: #1d2021; --stone: #6b7a7a; --sand: #3d4a4a;
+      --terra: #0d4a4a; --accent: #7fd0c8; --white: #fff;
+      --border: rgba(0,0,0,0.14);
+      --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --red: #b3261e; --amber: #9a6a00; --green: #2e7d32;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+
+    #login-gate { position: fixed; inset: 0; z-index: 9999; background: var(--bg); display: flex; align-items: center; justify-content: center; }
+    .login-box { text-align: center; max-width: 360px; width: 100%; padding: 0 24px; }
+    .login-brand { font-size: 18px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .login-brand span { color: var(--terra); }
+    .login-sub { font-size: 14px; color: var(--stone); margin-bottom: 28px; }
+    .login-box input { width: 100%; font-family: var(--font); font-size: 14px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); margin-bottom: 8px; outline: none; }
+    .login-box input:focus { border-color: var(--terra); }
+    .login-box button { width: 100%; font-family: var(--font); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 24px; border: none; border-radius: 4px; background: var(--terra); color: var(--white); cursor: pointer; }
+    .login-error { font-size: 13px; color: var(--red); margin-top: 12px; min-height: 20px; }
+
+    .topbar { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: var(--text); color: var(--bg); }
+    .topbar-brand { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .topbar-brand span { color: var(--accent); }
+    .topbar-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .topbar-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 14px; border-radius: 4px; color: rgba(253,248,242,0.65); cursor: pointer; }
+    .topbar-links a:hover { color: var(--bg); }
+
+    .page { max-width: 1280px; margin: 0 auto; padding: 32px 28px 80px; }
+    .page-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .page-sub { font-size: 13.5px; color: var(--stone); margin: 6px 0 24px; max-width: 760px; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .card h2 { font-size: 15px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 14px; color: var(--sand); }
+    .muted { color: var(--stone); font-size: 13px; }
+    .mono { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+
+    .import-bar { display: flex; gap: 8px; }
+    .import-bar input { flex: 1; font-family: var(--font); font-size: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); outline: none; }
+    .import-bar input:focus { border-color: var(--terra); }
+    .btn { display: inline-block; font-family: var(--font); font-size: 12px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 11px 18px; border-radius: 4px; border: 1px solid var(--border); background: var(--white); color: var(--text); cursor: pointer; transition: opacity .15s; }
+    .btn:hover { opacity: 0.8; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-terra { background: var(--terra); border-color: var(--terra); color: var(--white); }
+    .btn-danger { background: none; border-color: rgba(179,38,30,.4); color: var(--red); }
+    .btn-sm { padding: 7px 12px; font-size: 11px; }
+
+    .item-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--white); margin-bottom: 10px; cursor: pointer; }
+    .item-card:hover { border-color: var(--terra); }
+    .item-info h3 { font-size: 15px; font-weight: 600; }
+    .item-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; font-size: 12px; color: var(--stone); align-items: center; }
+    .chip { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: rgba(13,74,74,.08); color: var(--terra); }
+    .chip.st-imported { background: rgba(13,74,74,.08); color: var(--terra); }
+    .chip.st-needs_review { background: rgba(154,106,0,.12); color: var(--amber); }
+    .chip.st-ready { background: rgba(46,125,50,.12); color: var(--green); }
+    .chip.st-published { background: var(--terra); color: #fff; }
+    .chip.st-update_available { background: rgba(179,38,30,.1); color: var(--red); }
+    .chip.st-archived { background: rgba(0,0,0,.07); color: var(--stone); }
+
+    .banner { border-radius: 6px; padding: 12px 16px; font-size: 13.5px; margin-bottom: 16px; }
+    .banner-red { background: rgba(179,38,30,.08); border: 1px solid rgba(179,38,30,.35); color: var(--red); }
+    .banner-amber { background: rgba(154,106,0,.08); border: 1px solid rgba(154,106,0,.3); color: var(--amber); }
+    .banner-green { background: rgba(46,125,50,.08); border: 1px solid rgba(46,125,50,.3); color: var(--green); }
+
+    .vitem { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; font-size: 13.5px; border-bottom: 1px dashed rgba(0,0,0,.06); }
+    .vitem:last-child { border-bottom: none; }
+    .vtag { flex: 0 0 auto; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+    .v-block .vtag { background: rgba(179,38,30,.12); color: var(--red); }
+    .v-warn .vtag { background: rgba(154,106,0,.12); color: var(--amber); }
+    .v-info .vtag { background: rgba(0,0,0,.06); color: var(--stone); }
+
+    .fgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 18px; }
+    .fgrid .full { grid-column: 1 / -1; }
+    .fg label { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--sand); margin-bottom: 5px; }
+    .fg input, .fg select, .fg textarea { width: 100%; font-family: var(--font); font-size: 14px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); outline: none; }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--terra); }
+    .fg textarea { min-height: 150px; resize: vertical; line-height: 1.55; }
+    .src-note { font-size: 12px; color: var(--stone); margin-top: 4px; line-height: 1.45; }
+    .src-note b { color: var(--sand); font-weight: 600; }
+    .src-note .np { color: var(--amber); }
+
+    .desc-tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+    .desc-tabs button { font-family: var(--font); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; padding: 7px 12px; border: 1px solid var(--border); background: var(--white); border-radius: 4px; cursor: pointer; color: var(--stone); }
+    .desc-tabs button.on { background: var(--terra); border-color: var(--terra); color: #fff; }
+    #desc-source-view { white-space: pre-wrap; font-size: 13.5px; background: rgba(0,0,0,.03); border: 1px solid var(--border); border-radius: 4px; padding: 12px; max-height: 300px; overflow: auto; }
+
+    .img-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .img-cell { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--white); position: relative; }
+    .img-cell.dragover { outline: 2px dashed var(--terra); }
+    .img-cell img.thumb { width: 100%; height: 100px; object-fit: cover; display: block; background: #eee; }
+    .img-cell.deselected img.thumb { opacity: 0.3; }
+    .img-cell .img-meta { padding: 7px 8px; font-size: 11px; color: var(--stone); line-height: 1.5; }
+    .img-cell .img-flag { position: absolute; top: 6px; right: 6px; display: flex; gap: 4px; }
+    .img-cell .hero-star { position: absolute; top: 6px; left: 6px; background: rgba(255,255,255,.92); border-radius: 3px; font-size: 11px; padding: 2px 6px; cursor: pointer; border: 1px solid var(--border); }
+    .img-cell .hero-star.on { background: var(--terra); color: #fff; border-color: var(--terra); }
+    .img-cell input.alt { width: 100%; border: none; border-top: 1px solid var(--border); font-size: 11.5px; padding: 6px 8px; font-family: var(--font); outline: none; }
+    .img-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; background: rgba(255,255,255,.92); border: 1px solid var(--border); }
+    .img-badge.ok { color: var(--green); }
+    .img-badge.err { color: var(--red); }
+
+    .authz label.chk { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; margin: 10px 0; cursor: pointer; }
+    .authz input[type=checkbox] { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--terra); }
+    .authz .master { font-weight: 600; background: rgba(13,74,74,.05); border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
+
+    .actions { position: sticky; bottom: 0; background: rgba(250,250,250,.96); backdrop-filter: blur(4px); border-top: 1px solid var(--border); margin: 0 -28px; padding: 14px 28px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; z-index: 50; }
+    .actions .spacer { flex: 1; }
+
+    .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(29,32,33,.5); display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow: auto; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 8px; max-width: 760px; width: 100%; padding: 26px; position: relative; }
+    .modal h2 { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
+    .modal-close { position: absolute; top: 12px; right: 16px; border: none; background: none; font-size: 22px; cursor: pointer; color: var(--stone); }
+
+    table.diff { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.diff th, table.diff td { text-align: left; padding: 7px 9px; border-bottom: 1px solid rgba(0,0,0,.07); vertical-align: top; }
+    table.diff th { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--stone); }
+    .old-val { color: var(--red); text-decoration: line-through; }
+    .new-val { color: var(--green); font-weight: 600; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text); color: var(--bg); font-size: 13.5px; padding: 12px 22px; border-radius: 6px; transition: transform .25s; z-index: 2000; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    #work-view { display: none; }
+    .hist-item { padding: 10px 0; border-bottom: 1px dashed rgba(0,0,0,.08); font-size: 13px; }
+    .hist-item:last-child { border: none; }
+
+    @media (max-width: 800px) {
+      .page { padding: 20px 16px 100px; }
+      .fgrid { grid-template-columns: 1fr; }
+      .actions { margin: 0 -16px; padding: 12px 16px; }
+      .img-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login gate (same Supabase Auth as admin.html) -->
+  <div id="login-gate">
+    <div class="login-box">
+      <div class="login-brand">SOLD BY <span>TIAGO</span></div>
+      <div class="login-sub">Listing Importer — sign in with your admin account</div>
+      <input type="email" id="login-email" placeholder="Email" autocomplete="username" />
+      <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
+      <button onclick="attemptLogin()">Sign In</button>
+      <div class="login-error" id="login-error"></div>
+      <a class="muted" href="admin.html">&larr; Back to Admin</a>
+    </div>
+  </div>
+
+  <div id="app" style="display:none;">
+    <div class="topbar">
+      <div class="topbar-brand">SOLD BY <span>TIAGO</span> — LISTING IMPORTER</div>
+      <div class="topbar-links">
+        <a href="admin.html">Admin Panel</a>
+        <a href="/" target="_blank">View Site</a>
+        <a onclick="logout()">Log Out</a>
+      </div>
+    </div>
+
+    <div class="page">
+
+      <!-- ══════════ LIST VIEW ══════════ -->
+      <div id="list-view">
+        <div class="page-title">Import a KRAIN listing</div>
+        <p class="page-sub">Paste the URL of a KRAIN listing you are authorized to republish. The importer fetches that one page,
+        shows you everything it found, and nothing goes on the website until you review, confirm authorization, and publish.
+        Supported now: <b>krainrealestate.com/properties/…</b> pages. Home-search/IDX and Propertyshelf URLs are recognized but not yet supported.</p>
+
+        <div class="card">
+          <h2>New import</h2>
+          <div class="import-bar">
+            <input type="url" id="import-url" placeholder="https://krainrealestate.com/properties/…" />
+            <button class="btn btn-terra" id="import-btn" onclick="importNew()">Import</button>
+          </div>
+          <div class="muted" id="import-status" style="margin-top:10px; min-height:18px;"></div>
+        </div>
+
+        <div class="card">
+          <h2>Imports <span class="muted" id="imports-count"></span></h2>
+          <div id="imports-list"><div class="muted">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- ══════════ WORK VIEW ══════════ -->
+      <div id="work-view">
+        <a onclick="closeImport()" class="muted" style="cursor:pointer;">&larr; All imports</a>
+        <div class="page-title" id="w-title" style="margin-top:6px;">—</div>
+        <div class="item-meta" id="w-sourcebar" style="margin:6px 0 18px;"></div>
+        <div id="w-banners"></div>
+
+        <div class="card">
+          <h2>Validation</h2>
+          <div id="w-validation"></div>
+        </div>
+
+        <div class="card">
+          <h2>Listing details <span class="muted">(source value shown under each field — blank source fields say “Not provided by source”)</span></h2>
+          <div class="fgrid" id="w-fields"></div>
+        </div>
+
+        <div class="card">
+          <h2>Description</h2>
+          <div class="desc-tabs">
+            <button id="dtab-edited" class="on" onclick="descTab('edited')">Edited (goes on the site)</button>
+            <button id="dtab-source" onclick="descTab('source')">Original source (read-only)</button>
+            <button id="dtab-summary" onclick="descTab('summary')">Short summary</button>
+          </div>
+          <div id="desc-edited-wrap" class="fg">
+            <textarea id="f-description" oninput="onFieldInput()"></textarea>
+            <div class="src-note">Imported source text stays stored internally for comparison. Edit freely — or keep the approved original.
+              Never add rental returns, occupancy, appreciation, “proven/guaranteed” claims, or distances that are not in the source.</div>
+          </div>
+          <div id="desc-source-wrap" style="display:none;">
+            <div id="desc-source-view"></div>
+            <div class="src-note" style="margin-top:8px;"><button class="btn btn-sm" onclick="copySourceDesc()">Reset edited text to the source original</button></div>
+          </div>
+          <div id="desc-summary-wrap" class="fg" style="display:none;">
+            <input type="text" id="f-short_desc" maxlength="120" oninput="onFieldInput()" placeholder="One-liner for listing cards (max 120 chars)" />
+            <div class="src-note">Used on property cards. Keep it factual.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Images <span class="muted" id="w-imgcount"></span></h2>
+          <div class="img-tools">
+            <button class="btn btn-sm" onclick="selectAllImages(true)">Select all</button>
+            <button class="btn btn-sm" onclick="selectAllImages(false)">Deselect all</button>
+            <button class="btn btn-terra btn-sm" id="dl-btn" onclick="downloadSelected()">Copy selected images to SoldByTiago storage</button>
+            <span class="muted" id="dl-status"></span>
+          </div>
+          <div class="muted" style="margin-bottom:10px;">Drag to reorder. ★ marks the hero image. Images are copied to SoldByTiago-controlled storage only
+            when image republication is authorized below — the public site never hotlinks the source CDN.</div>
+          <div class="img-grid" id="w-images"></div>
+        </div>
+
+        <div class="card authz">
+          <h2>Authorization &amp; permission record <span class="muted">(internal compliance record — never shown publicly)</span></h2>
+          <div class="fgrid">
+            <div class="fg">
+              <label>Permission scope</label>
+              <select id="a-scope" onchange="onFieldInput()">
+                <option value="">— choose —</option>
+                <option value="own_listing">My personal listing</option>
+                <option value="krain_exclusive">KRAIN exclusive</option>
+                <option value="brokerage_approved">Brokerage-approved listing</option>
+                <option value="mls_syndication">MLS-approved syndication</option>
+                <option value="written_permission">Manual written permission</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Permission note (who approved, when, reference)</label>
+              <input type="text" id="a-note" oninput="onFieldInput()" placeholder="e.g. Listing agreement signed 2026-07-01" />
+            </div>
+          </div>
+          <label class="chk"><input type="checkbox" id="a-images" onchange="onFieldInput()" /> Image republication is authorized for this listing</label>
+          <label class="chk"><input type="checkbox" id="a-desc" onchange="onFieldInput()" /> Description republication is authorized (publish the source text or an edit of it)</label>
+          <label class="chk"><input type="checkbox" id="a-sync" onchange="onFieldInput()" /> Periodic re-checking of the source page is authorized (manual “Check source” button)</label>
+          <label class="chk master"><input type="checkbox" id="a-confirm" onchange="onFieldInput()" />
+            I confirm that I am authorized to republish this listing and its selected media on SoldByTiago.</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn" onclick="saveDraft()">Save draft</button>
+          <button class="btn" id="ready-btn" onclick="markReady()">Mark ready to publish</button>
+          <button class="btn btn-terra" id="publish-btn" onclick="openPublishModal()">Publish…</button>
+          <span class="spacer"></span>
+          <button class="btn btn-sm" onclick="checkSource()">Check source for changes</button>
+          <button class="btn btn-sm" onclick="openHistory()">History</button>
+          <button class="btn btn-sm" onclick="archiveImport()">Archive</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteImport()">Delete import</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Publish modal -->
+  <div class="modal-overlay" id="publish-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('publish-modal')">&times;</button>
+      <h2>Publish to soldbytiago.com</h2>
+      <div id="pub-dupes"></div>
+      <div id="pub-summary" class="muted" style="margin:12px 0;"></div>
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button class="btn btn-terra" id="pub-confirm-btn" onclick="publishConfirmed()">Publish now</button>
+        <button class="btn" onclick="closeModal('publish-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History modal -->
+  <div class="modal-overlay" id="history-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('history-modal')">&times;</button>
+      <h2>Import history</h2>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <!-- Sync diff modal -->
+  <div class="modal-overlay" id="sync-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('sync-modal')">&times;</button>
+      <h2>Source changes detected</h2>
+      <p class="muted" style="margin-bottom:12px;">Nothing is applied automatically. Tick the changes you want copied into your draft, then apply.
+        Publishing the updated draft is still a separate, explicit step.</p>
+      <div id="sync-diff"></div>
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button class="btn btn-terra" onclick="applySyncSelected()">Apply ticked changes to draft</button>
+        <button class="btn" onclick="closeModal('sync-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  Supabase client + auth (identical model to admin.html: the
+//  logged-in user's session token authorizes every DB/storage
+//  write via RLS, and is also what /api/import-* verifies).
+// ══════════════════════════════════════════════════════════════
+const DEFAULT_SB_URL = 'https://xjliwfmugylwxlrwyvmh.supabase.co';
+const DEFAULT_SB_KEY = 'sb_publishable_YHOe_eAJzuWpzbFD_tO-4A_vuvnSHum';
+let sb = null;
+function initSupabase() {
+  if (!window.supabase) return false;
+  const url = localStorage.getItem('tl_sb_url') || DEFAULT_SB_URL;
+  const key = localStorage.getItem('tl_sb_key') || DEFAULT_SB_KEY;
+  sb = window.supabase.createClient(url, key);
+  return true;
+}
+async function attemptLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw = document.getElementById('login-password').value;
+  const err = document.getElementById('login-error');
+  if (!email || !pw) { err.textContent = 'Enter your email and password.'; return; }
+  if (!sb && !initSupabase()) { err.textContent = 'Still connecting — try again in a moment.'; return; }
+  err.textContent = 'Signing in…';
+  const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+  document.getElementById('login-password').value = '';
+  if (error) { err.textContent = /invalid login/i.test(error.message) ? 'Incorrect email or password.' : error.message; return; }
+  err.textContent = '';
+  showApp();
+}
+async function bootSession() {
+  if (!sb && !initSupabase()) return;
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) showApp();
+}
+async function logout() { if (sb) await sb.auth.signOut(); location.reload(); }
+async function getToken() {
+  const { data: { session } } = await sb.auth.getSession();
+  return session ? session.access_token : null;
+}
+async function userEmail() {
+  const { data: { session } } = await sb.auth.getSession();
+  return session && session.user ? (session.user.email || '') : '';
+}
+function showApp() {
+  document.getElementById('login-gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  refreshAll();
+}
+bootSession();
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+
+// ══════════════════════════════════════════════════════════════
+//  State + utilities
+// ══════════════════════════════════════════════════════════════
+let allImports = [];
+let allProperties = [];
+let current = null;      // open property_imports row
+let dirty = false;
+let syncNew = null;      // latest fetched source during a sync check
+
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const NP = '<span class="np">Not provided by source</span>';
+function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3200); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function slugify(s) {
+  return String(s || '').toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-').slice(0, 80);
+}
+// Precise conversion constants (same as the server library)
+const SQFT_PER_SQM = 10.7639104167, SQM_PER_ACRE = 4046.8564224;
+const m2ft = m2 => m2 ? Math.round(m2 * SQFT_PER_SQM).toLocaleString('en-US') : '';
+const m2ac = m2 => m2 ? (m2 / SQM_PER_ACRE).toFixed(2) : '';
+function nowIso() { return new Date().toISOString(); }
+
+async function refreshAll() {
+  const [imp, props] = await Promise.all([
+    sb.from('property_imports').select('*').order('updated_at', { ascending: false }),
+    sb.from('properties').select('id,name,slug,price,status,type,location,address,lat,lng,sort_order'),
+  ]);
+  if (imp.error) {
+    document.getElementById('imports-list').innerHTML =
+      `<div class="banner banner-amber">Could not load imports: ${esc(imp.error.message)}.<br>
+       If the table does not exist yet, run <b>supabase-importer-setup.sql</b> in the Supabase SQL Editor once.</div>`;
+    return;
+  }
+  allImports = imp.data || [];
+  allProperties = props.data || [];
+  renderImportsList();
+}
+
+function renderImportsList() {
+  const el = document.getElementById('imports-list');
+  document.getElementById('imports-count').textContent = `(${allImports.length})`;
+  if (!allImports.length) { el.innerHTML = '<div class="muted">No imports yet — paste a listing URL above.</div>'; return; }
+  el.innerHTML = allImports.map(r => {
+    const d = r.draft || {};
+    const img = (r.images || []).find(i => i.display_url);
+    return `<div class="item-card" onclick="openImport('${r.id}')">
+      ${img ? `<img src="${esc(img.display_url)}" style="width:64px;height:48px;object-fit:cover;border-radius:4px;" alt="" />` : '<div style="width:64px;height:48px;background:rgba(0,0,0,.06);border-radius:4px;"></div>'}
+      <div class="item-info" style="flex:1;">
+        <h3>${esc(d.name || r.source_url)}</h3>
+        <div class="item-meta">
+          <span class="chip st-${esc(r.import_status)}">${esc(r.import_status.replace('_',' '))}</span>
+          <span>${esc(d.price_display || '')}</span>
+          <span>${esc(r.source_mls_id ? 'MLS ' + r.source_mls_id : '')}</span>
+          <span>${esc(new Date(r.updated_at).toLocaleDateString('en-US', { month:'short', day:'numeric' }))}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  IMPORT (fetch + create draft row)
+// ══════════════════════════════════════════════════════════════
+async function apiFetchListing(url) {
+  const token = await getToken();
+  const res = await fetch('/api/import-fetch', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+    body: JSON.stringify({ url }),
+  });
+  let j = null;
+  try { j = await res.json(); } catch { /* non-JSON error */ }
+  if (!j) j = { ok: false, error: `Import service error (HTTP ${res.status}).` };
+  return j;
+}
+
+function draftFromSnapshot(snap) {
+  const L = snap.listing, A = L.area || {};
+  const feats = [...new Set([
+    ...(L.interior_features || []), ...(L.exterior_features || []),
+    ...(L.pool ? [L.pool] : []), ...(L.view ? [L.view] : []),
+    ...(L.parking ? [L.parking] : []),
+  ])];
+  return {
+    name: L.name || '',
+    price_display: L.price ? L.price.display : '',
+    price_amount: L.price ? L.price.amount : null,
+    price_currency: L.price ? L.price.currency : null,
+    type: L.type_mapped || '',
+    status: '',                                  // never guessed — admin chooses
+    location: L.neighborhood || '',
+    address: '',
+    beds: L.beds, baths_full: L.baths_full, baths_half: L.baths_half, baths_total: L.baths_total,
+    baths: L.baths_total != null ? (L.baths_full != null && L.baths_half ? L.baths_full + 0.5 * L.baths_half : L.baths_total)
+          : (L.baths_full != null ? L.baths_full + 0.5 * (L.baths_half || 0) : null),
+    size_m2: A.built_m2 != null ? Math.round(A.built_m2) : null,
+    lot_m2: A.lot_m2 != null ? Math.round(A.lot_m2) : null,
+    short_desc: '',
+    description: L.description || '',
+    features: feats,
+    lat: L.lat, lng: L.lng,
+    year_built: L.year_built, hoa_display: L.hoa_amount ? L.hoa_amount.display : '',
+    video_url: L.video_url || '', tour_url: L.tour_url || '',
+    walk_score: null, beach_minutes: null, beach_mode: null, airport_minutes: null,
+  };
+}
+
+async function importNew() {
+  const url = document.getElementById('import-url').value.trim();
+  const st = document.getElementById('import-status');
+  const btn = document.getElementById('import-btn');
+  if (!url) { st.textContent = 'Paste a listing URL first.'; return; }
+  btn.disabled = true;
+  st.textContent = 'Fetching the source page…';
+  const r = await apiFetchListing(url);
+  if (!r.ok) { st.textContent = '✕ ' + (r.error || 'Import failed.'); btn.disabled = false; return; }
+  st.textContent = 'Source read — detected: ' + r.source_label + '. Creating draft…';
+
+  // Duplicate awareness at import time (not blocking — the publish step decides)
+  const dupNote = findDuplicates(r, null);
+
+  const email = await userEmail();
+  const row = {
+    import_status: 'imported',
+    source_url: r.source.url,
+    source_provider: r.source.provider,
+    source_listing_id: r.source.listing_uuid || '',
+    source_mls_id: r.source.mls_id || '',
+    source_agent: r.source.agent || '',
+    source_brokerage: r.source.brokerage || '',
+    source_updated_at: r.source.updated_at || '',
+    imported_by: email,
+    source_snapshot: { source: r.source, listing: r.listing, images: r.images, missing: r.missing, flags: r.flags },
+    draft: draftFromSnapshot(r),
+    images: r.images.map((im, i) => ({
+      uuid: im.uuid, source_url: im.original_url, full_url: im.full_url, preview_url: im.preview_url,
+      selected: true, hero: i === 0, alt: '', order: i,
+      original_storage_url: '', display_url: '', width: null, height: null, bytes: null,
+      status: 'pending', error: '',
+    })),
+    validation: [],
+    history: [{ at: nowIso(), user: email, event: 'imported', details: { url: r.source.url, images_found: r.images.length, missing: r.missing, flags: r.flags, duplicates_noted: dupNote.map(d => d.label) } }],
+    updated_at: nowIso(),
+  };
+  const ins = await sb.from('property_imports').insert([row]).select().single();
+  btn.disabled = false;
+  if (ins.error) { st.textContent = '✕ Could not save the import: ' + ins.error.message; return; }
+  st.textContent = '';
+  document.getElementById('import-url').value = '';
+  allImports.unshift(ins.data);
+  openImport(ins.data.id);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  WORK VIEW
+// ══════════════════════════════════════════════════════════════
+function openImport(id) {
+  current = allImports.find(r => r.id === id);
+  if (!current) return;
+  dirty = false;
+  document.getElementById('list-view').style.display = 'none';
+  document.getElementById('work-view').style.display = 'block';
+  renderWork();
+  window.scrollTo(0, 0);
+}
+function closeImport() {
+  if (dirty && !confirm('You have unsaved changes. Leave without saving?')) return;
+  current = null; dirty = false;
+  document.getElementById('work-view').style.display = 'none';
+  document.getElementById('list-view').style.display = 'block';
+  refreshAll();
+}
+
+function srcOf(key) { // raw source value for the annotation line
+  const L = (current.source_snapshot || {}).listing || {};
+  const A = L.area || {};
+  switch (key) {
+    case 'name': return L.name;
+    case 'price_display': return L.price ? `${L.price.display} (${L.price.currency}, source label: ${current.source_snapshot.listing.price_label || '—'})` : null;
+    case 'type': return L.type_raw;
+    case 'status': return L.status_raw;
+    case 'location': return L.neighborhood;
+    case 'beds': return L.beds;
+    case 'baths': return L.baths_total != null || L.baths_full != null
+      ? `full ${L.baths_full ?? '—'} · half ${L.baths_half ?? '—'} · total ${L.baths_total ?? '—'}` : null;
+    case 'size_m2': return Object.entries(A.pairs || {}).filter(([k]) => /living|interior|construction/i.test(k)).map(([k, v]) => `${k}: ${v.raw}`).join(' · ') || null;
+    case 'lot_m2': return Object.entries(A.pairs || {}).filter(([k]) => /lot|land|acre/i.test(k)).map(([k, v]) => `${k}: ${v.raw}`).join(' · ') || null;
+    case 'lat': return L.lat != null ? `${L.lat}, ${L.lng}` : null;
+    case 'year_built': return L.year_built;
+    default: return null;
+  }
+}
+function note(key, extra) {
+  const v = srcOf(key);
+  return `<div class="src-note"><b>Source:</b> ${v == null || v === '' ? NP : esc(String(v))}${extra || ''}</div>`;
+}
+
+function renderWork() {
+  const d = current.draft || {};
+  const s = current.source_snapshot || {};
+  document.getElementById('w-title').textContent = d.name || '(unnamed import)';
+
+  document.getElementById('w-sourcebar').innerHTML = [
+    `<span class="chip st-${esc(current.import_status)}">${esc(current.import_status.replace('_',' '))}</span>`,
+    `<a class="mono" href="${esc(current.source_url)}" target="_blank" rel="noopener">source page ↗</a>`,
+    current.source_provider ? `provider: <b>${esc(current.source_provider)}</b>` : '',
+    current.source_mls_id ? `MLS: <b>${esc(current.source_mls_id)}</b>` : '',
+    current.source_listing_id ? `<span class="mono">src id ${esc(current.source_listing_id.slice(0, 8))}…</span>` : '',
+    current.source_agent ? `agent: <b>${esc(current.source_agent)}</b>` : '',
+    current.source_brokerage ? `brokerage: <b>${esc(current.source_brokerage)}</b>` : '',
+    `imported by ${esc(current.imported_by || '—')} on ${esc(new Date(current.created_at).toLocaleDateString('en-US'))}`,
+    current.source_updated_at ? `source updated: ${esc(current.source_updated_at)}` : `source updated: <span class="np">Not provided by source</span>`,
+  ].filter(Boolean).join(' <span style="opacity:.4">·</span> ');
+
+  // Banners
+  let banners = '';
+  if (current.import_status === 'published' && current.published_property_id) {
+    const p = allProperties.find(x => x.id === current.published_property_id);
+    banners += `<div class="banner banner-green">Published${p ? ` as <a style="text-decoration:underline" href="/property/${esc(p.slug || p.id)}/" target="_blank">/property/${esc(p.slug || p.id)}/</a>` : ''}${current.published_at ? ' on ' + esc(new Date(current.published_at).toLocaleString()) : ''}.
+      Remember: new pages, canonical tags and the sitemap bake on the next site build (Admin → Settings → Publish Site, or a git push).</div>`;
+  }
+  if (current.sync_diff && current.sync_diff.high_priority) {
+    banners += `<div class="banner banner-red"><b>High-priority:</b> ${esc(current.sync_diff.high_priority)} The SoldByTiago property was NOT changed automatically — review and decide.</div>`;
+  } else if (current.import_status === 'update_available') {
+    banners += `<div class="banner banner-amber">The source page has changed since import. Open “Check source for changes” to review the diff.</div>`;
+  }
+  const dups = findDuplicates({ source: { url: current.source_url, listing_uuid: current.source_listing_id, mls_id: current.source_mls_id }, listing: d }, current.id);
+  if (dups.length && current.import_status !== 'published') {
+    banners += `<div class="banner banner-amber"><b>Possible duplicate:</b> ${dups.map(x => esc(x.label)).join(' · ')}. Publishing will let you update the existing property instead of creating a new one.</div>`;
+  }
+  document.getElementById('w-banners').innerHTML = banners;
+
+  // Fields
+  const f = document.getElementById('w-fields');
+  f.innerHTML = `
+    <div class="fg"><label>Property name</label><input id="f-name" value="${esc(d.name)}" oninput="onFieldInput()" />${note('name')}</div>
+    <div class="fg"><label>Price (display)</label><input id="f-price" value="${esc(d.price_display)}" oninput="onFieldInput()" />${note('price_display',
+      d.price_currency && d.price_currency !== 'USD' ? ` <span class="np">Source currency ${esc(d.price_currency)} — convert manually, never automatically.</span>` : '')}</div>
+    <div class="fg"><label>Type</label><select id="f-type" onchange="onFieldInput()">
+      ${['','home','condo','villa','land','commercial'].map(t => `<option value="${t}" ${d.type === t ? 'selected' : ''}>${t || '— choose —'}</option>`).join('')}
+    </select>${note('type')}</div>
+    <div class="fg"><label>Status</label><select id="f-status" onchange="onFieldInput()">
+      ${['','active','pending','sold'].map(t => `<option value="${t}" ${d.status === t ? 'selected' : ''}>${t || '— choose —'}</option>`).join('')}
+    </select>${note('status', ' <span class="np">Status is never guessed — choose it deliberately.</span>')}</div>
+    <div class="fg"><label>Location shown on listing</label><input id="f-location" value="${esc(d.location)}" oninput="onFieldInput()" />${note('location',
+      ' <b>Tip:</b> this text also decides which community page shows the listing — match the wording used on your existing listings.')}</div>
+    <div class="fg"><label>Address (optional)</label><input id="f-address" value="${esc(d.address)}" oninput="onFieldInput()" />${note('address')}</div>
+    <div class="fg"><label>Bedrooms</label><input id="f-beds" type="number" min="0" value="${d.beds ?? ''}" oninput="onFieldInput()" />${note('beds')}</div>
+    <div class="fg"><label>Bathrooms (site shows one number — halves count 0.5)</label><input id="f-baths" type="number" min="0" step="0.5" value="${d.baths ?? ''}" oninput="onFieldInput()" />${note('baths')}</div>
+    <div class="fg"><label>Built area (m²)</label><input id="f-size" type="number" min="0" value="${d.size_m2 ?? ''}" oninput="onFieldInput()" />
+      <div class="src-note" id="size-conv"></div>${note('size_m2')}</div>
+    <div class="fg"><label>Lot area (m²)</label><input id="f-lot" type="number" min="0" value="${d.lot_m2 ?? ''}" oninput="onFieldInput()" />
+      <div class="src-note" id="lot-conv"></div>${note('lot_m2')}</div>
+    <div class="fg"><label>Latitude</label><input id="f-lat" type="number" step="any" value="${d.lat ?? ''}" oninput="onFieldInput()" />${note('lat')}</div>
+    <div class="fg"><label>Longitude</label><input id="f-lng" type="number" step="any" value="${d.lng ?? ''}" oninput="onFieldInput()" /></div>
+    <div class="fg full"><label>Features (comma-separated — shown as chips on the page)</label>
+      <input id="f-features" value="${esc((d.features || []).join(', '))}" oninput="onFieldInput()" />
+      <div class="src-note"><b>Source lists:</b> ${esc([...(s.listing?.appliances || [])].join(', ') || '')} ${s.listing?.year_built ? ' · Year built ' + esc(String(s.listing.year_built)) : ''}</div></div>
+  `;
+  document.getElementById('f-description').value = d.description || '';
+  document.getElementById('desc-source-view').textContent = (s.listing && s.listing.description) || 'Not provided by source';
+  document.getElementById('f-short_desc').value = d.short_desc || '';
+
+  // Authorization
+  document.getElementById('a-scope').value = current.permission_scope || '';
+  document.getElementById('a-note').value = current.permission_note || '';
+  document.getElementById('a-images').checked = !!current.images_authorized;
+  document.getElementById('a-desc').checked = !!current.description_authorized;
+  document.getElementById('a-sync').checked = !!current.sync_authorized;
+  document.getElementById('a-confirm').checked = !!current.authorization_confirmed;
+
+  renderImages();
+  updateConversions();
+  runValidation();
+}
+
+function updateConversions() {
+  const size = parseFloat(document.getElementById('f-size').value) || 0;
+  const lot = parseFloat(document.getElementById('f-lot').value) || 0;
+  document.getElementById('size-conv').innerHTML = size ? `<b>Normalized:</b> ${size.toLocaleString('en-US')} m² = ${m2ft(size)} ft²` : '';
+  document.getElementById('lot-conv').innerHTML = lot ? `<b>Normalized:</b> ${lot.toLocaleString('en-US')} m² = ${m2ft(lot)} ft² = ${m2ac(lot)} acres` : '';
+}
+
+function descTab(which) {
+  for (const t of ['edited','source','summary']) {
+    document.getElementById('dtab-' + t).classList.toggle('on', t === which);
+    document.getElementById('desc-' + t + '-wrap').style.display = t === which ? '' : 'none';
+  }
+}
+function copySourceDesc() {
+  const src = (current.source_snapshot.listing || {}).description || '';
+  document.getElementById('f-description').value = src;
+  onFieldInput(); descTab('edited');
+  showToast('Edited text reset to the source original');
+}
+
+function collectDraft() {
+  const d = { ...current.draft };
+  d.name = document.getElementById('f-name').value.trim();
+  d.price_display = document.getElementById('f-price').value.trim();
+  d.type = document.getElementById('f-type').value;
+  d.status = document.getElementById('f-status').value;
+  d.location = document.getElementById('f-location').value.trim();
+  d.address = document.getElementById('f-address').value.trim();
+  const num = id => { const v = document.getElementById(id).value; return v === '' ? null : parseFloat(v); };
+  d.beds = num('f-beds'); d.baths = num('f-baths');
+  d.size_m2 = num('f-size'); d.lot_m2 = num('f-lot');
+  d.lat = num('f-lat'); d.lng = num('f-lng');
+  d.features = document.getElementById('f-features').value.split(',').map(x => x.trim()).filter(Boolean);
+  d.description = document.getElementById('f-description').value;
+  d.short_desc = document.getElementById('f-short_desc').value.trim();
+  return d;
+}
+function collectAuth() {
+  return {
+    permission_scope: document.getElementById('a-scope').value,
+    permission_note: document.getElementById('a-note').value.trim(),
+    images_authorized: document.getElementById('a-images').checked,
+    description_authorized: document.getElementById('a-desc').checked,
+    sync_authorized: document.getElementById('a-sync').checked,
+    authorization_confirmed: document.getElementById('a-confirm').checked,
+  };
+}
+function onFieldInput() { dirty = true; updateConversions(); runValidation(); }
+
+// ══════════════════════════════════════════════════════════════
+//  VALIDATION (blocking / warning / informational)
+// ══════════════════════════════════════════════════════════════
+const CLAIM_RE = /(guaranteed\s+(income|return|rent)|proven\s+investment|assured\s+return|\b\d+\s*%\s*(roi|return|yield|cap\s*rate)|occupancy\s+rate|appreciat\w*\s+(of|by)\s+\d)/i;
+
+function runValidation() {
+  if (!current) return [];
+  const d = collectDraft();
+  const a = collectAuth();
+  const imgs = current.images || [];
+  const L = (current.source_snapshot || {}).listing || {};
+  const v = [];
+  const block = (c, m) => v.push({ level: 'block', code: c, msg: m });
+  const warn = (c, m) => v.push({ level: 'warn', code: c, msg: m });
+  const info = (c, m) => v.push({ level: 'info', code: c, msg: m });
+
+  if (!d.name) block('name', 'Missing property name.');
+  if (!d.price_display) block('price', 'Missing price.');
+  if (d.price_currency && d.price_currency !== 'USD') warn('currency', `Source price is in ${d.price_currency} — site prices are USD. Convert deliberately; the importer never converts currency.`);
+  if (!d.status) block('status', 'Missing status — choose active / pending / sold.');
+  if (!d.type) block('type', 'Missing property type.');
+  if (!d.location) block('location', 'Missing location.');
+  const residential = d.type && d.type !== 'land' && d.type !== 'commercial';
+  if (residential && (d.beds == null || d.beds === 0)) block('beds', 'Missing bedroom count for a residential listing.');
+  if (residential && d.baths == null) block('baths', 'Missing bathroom count for a residential listing.');
+  if (L.baths_full != null && L.baths_total != null && L.baths_full + (L.baths_half || 0) !== L.baths_total)
+    block('baths-conflict', `Contradictory bathroom values in source: full ${L.baths_full} + half ${L.baths_half || 0} ≠ total ${L.baths_total}. Set the site number deliberately.`);
+  if (d.baths != null && L.baths_total != null && d.baths > L.baths_total) warn('baths-high', `Site bathroom number (${d.baths}) is higher than the source total (${L.baths_total}).`);
+  if (d.size_m2 && d.lot_m2 && d.size_m2 > d.lot_m2) warn('size-lot', `Built area (${d.size_m2} m²) exceeds lot (${d.lot_m2} m²) — check for a unit mixup.`);
+  if (d.size_m2 && d.lot_m2 && d.size_m2 === d.lot_m2) warn('size-eq-lot', 'Built area equals lot area exactly — usually a data-entry error at the source.');
+  if (d.size_m2 && d.size_m2 > 1500) warn('size-unit', `Built area ${d.size_m2} m² is unusually large — source may have reported square feet.`);
+  for (const [k, val] of Object.entries((L.area || {}).pairs || {})) {
+    if (!val.parsed) warn('area-parse', `Could not read the source area value “${k}: ${val.raw}” — enter the number manually.`);
+  }
+  if (!d.description || !d.description.trim()) block('desc', 'Missing description.');
+  const usingSourceText = d.description && L.description && d.description.trim() === L.description.trim();
+  if (usingSourceText && !a.description_authorized) block('desc-auth', 'The description is the source original but description republication is not marked authorized.');
+  if (CLAIM_RE.test(d.description || '')) warn('claims', 'Description contains investment-performance claims (returns / occupancy / appreciation). Keep only if they are in the approved source, and attribute them.');
+  const selected = imgs.filter(i => i.selected);
+  const uploaded = selected.filter(i => i.display_url);
+  if (!selected.length) block('hero', 'No images selected — a listing needs at least a hero image.');
+  else if (!uploaded.length) block('img-copy', 'Selected images have not been copied to SoldByTiago storage yet.');
+  else if (!selected.some(i => i.hero && i.display_url)) block('hero2', 'Choose a hero image (★) among the copied images.');
+  if (selected.length && !a.images_authorized) block('img-auth', 'Images are selected but image republication is not marked authorized.');
+  if (!a.authorization_confirmed) block('authz', 'The authorization confirmation checkbox is required before publishing.');
+  if (!a.permission_scope) block('scope', 'Choose a permission scope for the compliance record.');
+  const failed = imgs.filter(i => i.status === 'failed');
+  if (failed.length) warn('img-fail', `${failed.length} image(s) failed to download — open the image grid for exact reasons.`);
+  const lowres = imgs.filter(i => i.selected && i.width && i.width < 800);
+  if (lowres.length) warn('img-lowres', `${lowres.length} selected image(s) are below 800 px wide.`);
+  if (d.lat == null || d.lng == null) info('coords', 'No map coordinates — the property page will simply hide its map.');
+  if (!d.short_desc) info('short', 'No short summary — property cards will show only name and specs.');
+  if ((current.source_snapshot.missing || []).length) info('missing', 'Not provided by source: ' + current.source_snapshot.missing.join(', ') + '.');
+  for (const fl of current.source_snapshot.flags || []) info('src-flag', 'Source note: ' + fl);
+
+  const el = document.getElementById('w-validation');
+  el.innerHTML = v.length ? v.map(x => `<div class="vitem v-${x.level}"><span class="vtag">${x.level === 'block' ? 'Blocking' : x.level === 'warn' ? 'Warning' : 'Info'}</span><span>${esc(x.msg)}</span></div>`).join('')
+    : '<div class="vitem v-info"><span class="vtag">OK</span><span>No findings — ready to publish.</span></div>';
+  const blocks = v.filter(x => x.level === 'block');
+  document.getElementById('publish-btn').disabled = blocks.length > 0;
+  document.getElementById('ready-btn').disabled = blocks.length > 0;
+  return v;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  IMAGES
+// ══════════════════════════════════════════════════════════════
+function renderImages() {
+  const grid = document.getElementById('w-images');
+  const imgs = (current.images || []).slice().sort((a, b) => a.order - b.order);
+  document.getElementById('w-imgcount').textContent = `(${imgs.filter(i => i.selected).length} of ${imgs.length} selected)`;
+  grid.innerHTML = imgs.map(im => {
+    const badge = im.status === 'uploaded' ? '<span class="img-badge ok">copied</span>'
+      : im.status === 'failed' ? `<span class="img-badge err" title="${esc(im.error)}">failed</span>`
+      : im.status === 'downloading' ? '<span class="img-badge">…</span>' : '';
+    const dup = im.duplicate ? '<span class="img-badge err">duplicate</span>' : '';
+    const low = im.width && im.width < 800 ? '<span class="img-badge err">low-res</span>' : '';
+    return `<div class="img-cell ${im.selected ? '' : 'deselected'}" draggable="true" data-uuid="${esc(im.uuid)}"
+        ondragstart="imgDragStart(event)" ondragover="imgDragOver(event)" ondrop="imgDrop(event)" ondragleave="this.classList.remove('dragover')">
+      <span class="hero-star ${im.hero ? 'on' : ''}" onclick="setHero('${esc(im.uuid)}')" title="Hero image">★</span>
+      <div class="img-flag">${dup}${low}${badge}</div>
+      <img class="thumb" src="${esc(im.display_url || im.preview_url)}" loading="lazy"
+           onclick="toggleImg('${esc(im.uuid)}')" onerror="markBroken('${esc(im.uuid)}', this)" alt="" />
+      <div class="img-meta">${im.width ? `${im.width}×${im.height} · ${(im.bytes / 1024).toFixed(0)} KB` : (im.status === 'failed' ? esc(im.error).slice(0, 60) : 'not copied yet')}</div>
+      <input class="alt" placeholder="alt text" value="${esc(im.alt)}" onchange="setAlt('${esc(im.uuid)}', this.value)" />
+    </div>`;
+  }).join('');
+}
+function img(uuid) { return current.images.find(i => i.uuid === uuid); }
+function toggleImg(uuid) { const i = img(uuid); i.selected = !i.selected; dirty = true; renderImages(); runValidation(); }
+function setHero(uuid) { current.images.forEach(i => i.hero = i.uuid === uuid); dirty = true; renderImages(); runValidation(); }
+function setAlt(uuid, v) { img(uuid).alt = v; dirty = true; }
+function selectAllImages(on) { current.images.forEach(i => i.selected = on); dirty = true; renderImages(); runValidation(); }
+function markBroken(uuid, el) { const i = img(uuid); if (i && i.status === 'pending') { i.status = 'failed'; i.error = 'Preview did not load (broken source image?)'; } el.style.opacity = 0.2; }
+
+let dragUuid = null;
+function imgDragStart(e) { dragUuid = e.currentTarget.dataset.uuid; }
+function imgDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); }
+function imgDrop(e) {
+  e.preventDefault(); e.currentTarget.classList.remove('dragover');
+  const target = e.currentTarget.dataset.uuid;
+  if (!dragUuid || dragUuid === target) return;
+  const list = current.images.slice().sort((a, b) => a.order - b.order);
+  const from = list.findIndex(i => i.uuid === dragUuid);
+  const to = list.findIndex(i => i.uuid === target);
+  list.splice(to, 0, list.splice(from, 1)[0]);
+  list.forEach((i, n) => i.order = n);
+  dirty = true; renderImages();
+}
+
+function compressImage(blob, maxDim = 1600, quality = 0.72) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(blob);
+    const im = new Image();
+    im.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = im;
+      if (width > maxDim || height > maxDim) {
+        if (width >= height) { height = Math.round(height * maxDim / width); width = maxDim; }
+        else { width = Math.round(width * maxDim / height); height = maxDim; }
+      }
+      const c = document.createElement('canvas');
+      c.width = width; c.height = height;
+      c.getContext('2d').drawImage(im, 0, 0, width, height);
+      c.toBlob(b => resolve(b && b.size < blob.size ? b : blob), 'image/jpeg', quality);
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    im.src = url;
+  });
+}
+
+async function downloadSelected() {
+  if (!collectAuth().images_authorized) { showToast('Tick “image republication is authorized” first.'); return; }
+  const token = await getToken();
+  const btn = document.getElementById('dl-btn'); const st = document.getElementById('dl-status');
+  btn.disabled = true;
+  const todo = current.images.filter(i => i.selected && !i.display_url);
+  const nameSlug = slugify((collectDraft().name || 'listing').slice(0, 40)) || 'listing';
+  let done = 0, failed = 0;
+  const seenSig = new Set(current.images.filter(i => i.bytes).map(i => `${i.bytes}:${i.width}x${i.height}`));
+  for (const im of todo) {
+    st.textContent = `Copying image ${done + failed + 1} of ${todo.length}…`;
+    im.status = 'downloading'; renderImages();
+    try {
+      // Try the untouched source original first; fall back to the 2560-px rendition.
+      let res = await fetch('/api/import-image', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ url: im.source_url }) });
+      let rendition = 'original';
+      if (!res.ok) {
+        res = await fetch('/api/import-image', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ url: im.full_url }) });
+        rendition = 'w2560';
+      }
+      if (!res.ok) {
+        let msg = `HTTP ${res.status}`;
+        try { msg = (await res.json()).error || msg; } catch {}
+        throw new Error(msg);
+      }
+      const blob = await res.blob();
+      const bmp = await createImageBitmap(blob).catch(() => null);
+      if (!bmp) throw new Error('Downloaded file is not a readable image.');
+      im.width = bmp.width; im.height = bmp.height; im.bytes = blob.size;
+      const sig = `${blob.size}:${bmp.width}x${bmp.height}`;
+      im.duplicate = seenSig.has(sig); seenSig.add(sig);
+      const base = `import/${current.id}/${String(im.order).padStart(2, '0')}-${nameSlug}-${im.uuid.slice(0, 8)}`;
+      const up1 = await sb.storage.from('photos').upload(`${base}-orig.jpg`, blob, { cacheControl: '3600', contentType: blob.type || 'image/jpeg', upsert: true });
+      if (up1.error) throw new Error('Storage (original): ' + up1.error.message);
+      const disp = await compressImage(blob);
+      const up2 = await sb.storage.from('photos').upload(`${base}.jpg`, disp || blob, { cacheControl: '3600', contentType: 'image/jpeg', upsert: true });
+      if (up2.error) throw new Error('Storage (display): ' + up2.error.message);
+      im.original_storage_url = sb.storage.from('photos').getPublicUrl(`${base}-orig.jpg`).data.publicUrl;
+      im.display_url = sb.storage.from('photos').getPublicUrl(`${base}.jpg`).data.publicUrl;
+      im.status = 'uploaded'; im.error = ''; im.rendition = rendition;
+      done++;
+    } catch (e) {
+      im.status = 'failed'; im.error = String(e.message || e); failed++;
+    }
+    renderImages();
+  }
+  st.textContent = `Done: ${done} copied${failed ? `, ${failed} FAILED (reasons on each image)` : ''}.`;
+  btn.disabled = false;
+  dirty = true;
+  await persist({ images: current.images }, 'images_copied', { copied: done, failed });
+  runValidation();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PERSISTENCE + WORKFLOW
+// ══════════════════════════════════════════════════════════════
+async function persist(patch, event, details) {
+  const email = await userEmail();
+  const history = (current.history || []).concat([{ at: nowIso(), user: email, event, details: details || {} }]);
+  const upd = { ...patch, history, updated_at: nowIso() };
+  const { data, error } = await sb.from('property_imports').update(upd).eq('id', current.id).select().single();
+  if (error) { showToast('Save failed: ' + error.message); return false; }
+  Object.assign(current, data);
+  const i = allImports.findIndex(r => r.id === current.id);
+  if (i >= 0) allImports[i] = current;
+  return true;
+}
+
+async function saveDraft() {
+  const d = collectDraft(), a = collectAuth();
+  const v = runValidation();
+  const status = current.import_status === 'published' || current.import_status === 'update_available'
+    ? current.import_status
+    : (current.import_status === 'ready' ? 'ready' : 'needs_review');
+  const ok = await persist({ draft: d, ...a, images: current.images, validation: v, import_status: status },
+    'draft_saved', { draft: d, validation_counts: countLevels(v) });
+  if (ok) { dirty = false; showToast('Draft saved'); renderWork(); }
+}
+function countLevels(v) { return { block: v.filter(x => x.level === 'block').length, warn: v.filter(x => x.level === 'warn').length, info: v.filter(x => x.level === 'info').length }; }
+
+async function markReady() {
+  const v = runValidation();
+  if (v.some(x => x.level === 'block')) { showToast('Resolve blocking errors first.'); return; }
+  const d = collectDraft(), a = collectAuth();
+  const ok = await persist({ draft: d, ...a, validation: v, import_status: 'ready' }, 'marked_ready', {});
+  if (ok) { dirty = false; showToast('Marked ready to publish'); renderWork(); }
+}
+
+async function archiveImport() {
+  if (!confirm('Archive this import? It stays in the audit history and can be reopened.')) return;
+  const ok = await persist({ import_status: 'archived' }, 'archived', {});
+  if (ok) closeImport();
+}
+async function deleteImport() {
+  if (!confirm('Delete this import record and its audit history? The published property (if any) is NOT touched. This cannot be undone.')) return;
+  const { error } = await sb.from('property_imports').delete().eq('id', current.id);
+  if (error) { showToast('Delete failed: ' + error.message); return; }
+  allImports = allImports.filter(r => r.id !== current.id);
+  current = null; dirty = false;
+  document.getElementById('work-view').style.display = 'none';
+  document.getElementById('list-view').style.display = 'block';
+  renderImportsList();
+  showToast('Import deleted');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DUPLICATES + PUBLISH
+// ══════════════════════════════════════════════════════════════
+function findDuplicates(r, excludeImportId) {
+  const hits = [];
+  const L = r.listing || {};
+  const srcUrl = (r.source && r.source.url || '').toLowerCase().replace(/\/+$/, '');
+  for (const im of allImports) {
+    if (im.id === excludeImportId) continue;
+    if (srcUrl && (im.source_url || '').toLowerCase().replace(/\/+$/, '') === srcUrl)
+      hits.push({ kind: 'import', id: im.id, label: `same source URL already imported (${im.import_status})`, property_id: im.published_property_id });
+    else if (r.source && r.source.listing_uuid && im.source_listing_id === r.source.listing_uuid)
+      hits.push({ kind: 'import', id: im.id, label: `same source listing ID already imported (${im.import_status})`, property_id: im.published_property_id });
+    else if (r.source && r.source.mls_id && im.source_mls_id && im.source_mls_id === r.source.mls_id)
+      hits.push({ kind: 'import', id: im.id, label: `same MLS ID already imported (${im.import_status})`, property_id: im.published_property_id });
+  }
+  const name = (L.name || '').toLowerCase();
+  for (const p of allProperties) {
+    const reasons = [];
+    if (name && (p.name || '').toLowerCase().startsWith(name)) reasons.push('name');
+    if (L.lat != null && p.lat != null && Math.abs(p.lat - L.lat) < 0.0007 && Math.abs(p.lng - L.lng) < 0.0007) reasons.push('coordinates');
+    if (L.address && p.address && p.address.toLowerCase() === L.address.toLowerCase()) reasons.push('address');
+    if (reasons.length) hits.push({ kind: 'property', id: p.id, label: `matches existing “${p.name}” by ${reasons.join(' + ')}`, property: p });
+  }
+  return hits;
+}
+
+let pubChoice = null;
+function openPublishModal() {
+  const v = runValidation();
+  if (v.some(x => x.level === 'block')) { showToast('Resolve blocking errors first.'); return; }
+  const d = collectDraft();
+  const dups = findDuplicates({ source: { url: current.source_url, listing_uuid: current.source_listing_id, mls_id: current.source_mls_id }, listing: d }, current.id);
+  const propHits = dups.filter(x => x.kind === 'property' || x.property_id).map(x => x.property_id
+    ? { id: x.property_id, label: x.label + ' (published from that import)', p: allProperties.find(p => p.id === x.property_id) }
+    : { id: x.id, label: x.label, p: x.property });
+  const uniq = []; const seen = new Set();
+  for (const h of propHits) if (h.id && !seen.has(h.id)) { seen.add(h.id); uniq.push(h); }
+
+  // Default: update the existing property when the source listing ID matches.
+  const sameSource = dups.find(x => x.property_id && /source listing ID|source URL/.test(x.label));
+  pubChoice = sameSource ? sameSource.property_id : (uniq.length ? null : 'new');
+
+  document.getElementById('pub-dupes').innerHTML = uniq.length
+    ? `<div class="banner banner-amber" style="margin-bottom:10px;">Possible duplicates found — choose what to do:</div>` +
+      uniq.map(h => `<label class="chk" style="display:flex;gap:8px;align-items:center;margin:6px 0;">
+          <input type="radio" name="pubchoice" value="${esc(h.id)}" ${pubChoice === h.id ? 'checked' : ''} onchange="pubChoice=this.value" />
+          <span>Update existing: <b>${esc(h.p ? h.p.name : h.id)}</b> <span class="muted">(${esc(h.label)}; price ${esc(h.p ? h.p.price : '?')}, status ${esc(h.p ? h.p.status : '?')})</span></span>
+        </label>`).join('') +
+      `<label class="chk" style="display:flex;gap:8px;align-items:center;margin:6px 0;">
+          <input type="radio" name="pubchoice" value="new" ${pubChoice === 'new' ? 'checked' : ''} onchange="pubChoice='new'" />
+          <span>Create a separate new property</span></label>`
+    : '<div class="muted">No duplicates detected — a new property will be created.</div>';
+  if (!uniq.length) pubChoice = 'new';
+
+  const conflict = uniq.map(h => h.p).filter(Boolean).filter(p => (p.price && p.price !== d.price_display) || (p.status && d.status && p.status !== d.status));
+  document.getElementById('pub-summary').innerHTML =
+    `Publishing “<b>${esc(d.name)}</b>” — ${esc(d.price_display)}, ${esc(d.type)}, ${esc(d.status)}, ${(current.images || []).filter(i => i.selected && i.display_url).length} photos.` +
+    (conflict.length ? `<br><span class="np">Note: price/status differs from the existing listing (${esc(conflict[0].price)} / ${esc(conflict[0].status)}) — updating will overwrite it.</span>` : '') +
+    `<br>The clean URL, canonical tag, structured data and sitemap entry are generated by the site build after publishing.`;
+  openModal('publish-modal');
+}
+
+async function publishConfirmed() {
+  if (!pubChoice) { showToast('Choose update-existing or create-new first.'); return; }
+  const btn = document.getElementById('pub-confirm-btn');
+  btn.disabled = true; btn.textContent = 'Publishing…';
+  const d = collectDraft(); const a = collectAuth(); const email = await userEmail();
+  const photos = (current.images || []).slice().sort((x, y) => x.order - y.order)
+    .filter(i => i.selected && i.display_url);
+  const heroFirst = photos.slice().sort((x, y) => (y.hero ? 1 : 0) - (x.hero ? 1 : 0));
+  const photoUrls = [...new Set(heroFirst.map(i => i.display_url))];
+  const existing = pubChoice !== 'new' ? allProperties.find(p => p.id === pubChoice) : null;
+  const maxSort = allProperties.reduce((m, p) => Math.max(m, p.sort_order || 0), 0);
+
+  const row = {
+    name: d.name, price: d.price_display, type: d.type, status: d.status,
+    location: d.location, address: d.address,
+    beds: d.beds || 0, baths: d.baths || 0,
+    size: d.size_m2 || 0, lot: d.lot_m2 || 0,
+    short_desc: d.short_desc, description: d.description,
+    features: d.features, photos: photoUrls,
+    lat: d.lat, lng: d.lng,
+    walk_score: d.walk_score, beach_minutes: d.beach_minutes, beach_mode: d.beach_mode, airport_minutes: d.airport_minutes,
+    updated_at: nowIso(),
+    slug: existing ? existing.slug : slugify(d.name.split(':')[0].split('|')[0] + ' ' + d.location),
+  };
+  if (!existing) { row.featured = false; row.sort_order = maxSort + 1; }
+
+  let res;
+  if (existing) res = await sb.from('properties').update(row).eq('id', existing.id).select().single();
+  else res = await sb.from('properties').insert([row]).select().single();
+  if (res.error && /slug/i.test(res.error.message) && /duplicate|unique/i.test(res.error.message)) {
+    row.slug += '-' + Date.now().toString(36).slice(-4);
+    res = existing ? await sb.from('properties').update(row).eq('id', existing.id).select().single()
+                   : await sb.from('properties').insert([row]).select().single();
+  }
+  btn.disabled = false; btn.textContent = 'Publish now';
+  if (res.error) { showToast('Publish failed: ' + res.error.message); return; }
+
+  const prop = res.data;
+  await persist({
+    draft: d, ...a, images: current.images, validation: runValidation(),
+    import_status: 'published', published_property_id: prop.id,
+    published_at: nowIso(), published_by: email,
+  }, 'published', { property_id: prop.id, mode: existing ? 'updated_existing' : 'created_new', slug: prop.slug, row_written: row });
+  dirty = false;
+  closeModal('publish-modal');
+  await refreshAll();
+  const again = allImports.find(r => r.id === current.id); if (again) current = again;
+  renderWork();
+  showToast(existing ? 'Existing property updated' : 'Property created');
+  maybeOfferSiteBuild();
+}
+function maybeOfferSiteBuild() {
+  const hook = localStorage.getItem('tl_deploy_hook');
+  if (hook && confirm('Trigger a site build now so the clean URL, canonical and sitemap go live? (Vercel deploy, ~1 minute)')) {
+    fetch(hook, { method: 'POST', mode: 'no-cors' }).then(() => showToast('Build triggered — live in about a minute.'))
+      .catch(() => showToast('Could not reach Vercel — trigger the build from Admin → Settings.'));
+  } else if (!hook) {
+    showToast('Reminder: trigger a site build (Admin → Settings → Publish Site) so the page + sitemap go live.');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SYNC (manual re-check, diff, approve)
+// ══════════════════════════════════════════════════════════════
+const SYNC_FIELDS = [
+  ['name', s => s.listing.name],
+  ['price', s => s.listing.price ? s.listing.price.display : null],
+  ['status_raw', s => s.listing.status_raw],
+  ['beds', s => s.listing.beds],
+  ['baths_total', s => s.listing.baths_total],
+  ['year_built', s => s.listing.year_built],
+  ['neighborhood', s => s.listing.neighborhood],
+  ['view', s => s.listing.view],
+  ['description', s => s.listing.description],
+];
+async function checkSource() {
+  if (!collectAuth().sync_authorized && !confirm('Source re-checking is not marked authorized for this listing. Check once anyway?')) return;
+  showToast('Re-fetching the source page…');
+  const r = await apiFetchListing(current.source_url);
+  if (!r.ok) {
+    if (r.source_gone) {
+      await persist({ import_status: 'update_available', last_sync_check: nowIso(),
+        sync_diff: { high_priority: 'The source listing page has been REMOVED (sold, withdrawn or expired?).', checked_at: nowIso(), changes: [] } },
+        'sync_checked', { source_gone: true });
+      renderWork();
+    } else showToast('Check failed: ' + r.error);
+    return;
+  }
+  syncNew = r;
+  const old = current.source_snapshot;
+  const changes = [];
+  for (const [key, get] of SYNC_FIELDS) {
+    const a = get(old), b = get(r);
+    if (JSON.stringify(a ?? null) !== JSON.stringify(b ?? null)) changes.push({ field: key, old: a, new: b });
+  }
+  const oldImgs = new Set((old.images || []).map(i => i.uuid));
+  const newImgs = new Set((r.images || []).map(i => i.uuid));
+  const added = [...newImgs].filter(u => !oldImgs.has(u));
+  const removed = [...oldImgs].filter(u => !newImgs.has(u));
+  if (added.length) changes.push({ field: 'images', old: `${oldImgs.size} images`, new: `${added.length} new image(s) at source` });
+  if (removed.length) changes.push({ field: 'images_removed', old: `${removed.length} image(s)`, new: 'removed at source' });
+
+  const soldish = /sold|withdraw|expired|inactive|off.?market/i.test(String(r.listing.status_raw || ''));
+  const diff = { checked_at: nowIso(), changes, high_priority: soldish ? `Source status is now “${r.listing.status_raw}”.` : null };
+  await persist({ last_sync_check: nowIso(), sync_diff: diff,
+    import_status: changes.length || diff.high_priority ? 'update_available' : current.import_status },
+    'sync_checked', { changes: changes.map(c => c.field), high_priority: diff.high_priority });
+
+  if (!changes.length && !diff.high_priority) { showToast('No changes at the source.'); renderWork(); return; }
+  document.getElementById('sync-diff').innerHTML =
+    (diff.high_priority ? `<div class="banner banner-red">${esc(diff.high_priority)} Nothing was deleted or changed automatically.</div>` : '') +
+    `<table class="diff"><tr><th></th><th>Field</th><th>Old (imported)</th><th>New (source now)</th></tr>` +
+    changes.map((c, i) => `<tr>
+      <td>${c.field.startsWith('images') ? '' : `<input type="checkbox" id="sync-apply-${i}" checked />`}</td>
+      <td><b>${esc(c.field)}</b></td>
+      <td class="old-val">${esc(String(c.old ?? '—')).slice(0, 220)}</td>
+      <td class="new-val">${esc(String(c.new ?? '—')).slice(0, 220)}</td></tr>`).join('') + '</table>';
+  openModal('sync-modal');
+  window._syncChanges = changes;
+}
+async function applySyncSelected() {
+  if (!syncNew) { closeModal('sync-modal'); return; }
+  const changes = window._syncChanges || [];
+  const applied = [];
+  const d = collectDraft();
+  changes.forEach((c, i) => {
+    const box = document.getElementById('sync-apply-' + i);
+    if (!box || !box.checked) return;
+    applied.push(c.field);
+    if (c.field === 'name') d.name = syncNew.listing.name || d.name;
+    if (c.field === 'price') { d.price_display = syncNew.listing.price ? syncNew.listing.price.display : d.price_display; d.price_amount = syncNew.listing.price?.amount ?? d.price_amount; }
+    if (c.field === 'beds') d.beds = syncNew.listing.beds;
+    if (c.field === 'baths_total') d.baths = syncNew.listing.baths_total;
+    if (c.field === 'year_built') d.year_built = syncNew.listing.year_built;
+    if (c.field === 'neighborhood') d.location = syncNew.listing.neighborhood || d.location;
+    if (c.field === 'description') d.description = syncNew.listing.description || d.description;
+    if (c.field === 'status_raw') { /* site status stays a deliberate manual choice */ }
+  });
+  // Merge any new source images into the grid (unselected by default).
+  const known = new Set(current.images.map(i => i.uuid));
+  let order = current.images.length;
+  for (const im of syncNew.images) {
+    if (!known.has(im.uuid)) current.images.push({
+      uuid: im.uuid, source_url: im.original_url, full_url: im.full_url, preview_url: im.preview_url,
+      selected: false, hero: false, alt: '', order: order++,
+      original_storage_url: '', display_url: '', width: null, height: null, bytes: null, status: 'pending', error: '',
+    });
+  }
+  const ok = await persist({
+    draft: d, images: current.images,
+    source_snapshot: { source: syncNew.source, listing: syncNew.listing, images: syncNew.images, missing: syncNew.missing, flags: syncNew.flags },
+    import_status: 'needs_review', sync_diff: null,
+  }, 'sync_applied', { applied });
+  closeModal('sync-modal');
+  if (ok) { showToast('Draft updated from source — review and re-publish when ready.'); renderWork(); }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  HISTORY
+// ══════════════════════════════════════════════════════════════
+function openHistory() {
+  const list = (current.history || []).slice().reverse();
+  document.getElementById('history-list').innerHTML = list.length ? list.map((h, idx) => `
+    <div class="hist-item">
+      <b>${esc(h.event.replace('_',' '))}</b> — ${esc(new Date(h.at).toLocaleString())} · ${esc(h.user || '')}
+      ${h.event === 'draft_saved' ? `<button class="btn btn-sm" style="margin-left:8px;" onclick="restoreDraft(${list.length - 1 - idx})">Restore this draft</button>` : ''}
+      ${h.details && Object.keys(h.details).length ? `<div class="mono muted" style="margin-top:4px; white-space:pre-wrap;">${esc(JSON.stringify(h.details, null, 1).slice(0, 500))}</div>` : ''}
+    </div>`).join('') : '<div class="muted">No events yet.</div>';
+  openModal('history-modal');
+}
+async function restoreDraft(histIndex) {
+  const h = (current.history || [])[histIndex];
+  if (!h || !h.details || !h.details.draft) { showToast('That event has no stored draft.'); return; }
+  if (!confirm('Replace the current draft with the values from ' + new Date(h.at).toLocaleString() + '?')) return;
+  const ok = await persist({ draft: h.details.draft, import_status: 'needs_review' }, 'draft_restored', { from: h.at });
+  closeModal('history-modal');
+  if (ok) { showToast('Draft restored'); renderWork(); }
+}
+</script>
+</body>
+</html>

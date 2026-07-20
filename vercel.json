@@ -317,6 +317,10 @@
   ],
   "rewrites": [
     {
+      "source": "/admin/import-property/",
+      "destination": "/admin-import.html"
+    },
+    {
       "source": "/property/(.*)",
       "destination": "/property-detail.html"
     },

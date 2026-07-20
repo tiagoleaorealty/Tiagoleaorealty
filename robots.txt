@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /admin-import.html
+Disallow: /admin/
+Disallow: /api/
 
 Sitemap: https://soldbytiago.com/sitemap.xml
 
