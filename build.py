@@ -334,16 +334,15 @@ def build_properties(tpl, rows):
         if sold:
             doc = sub_once(doc, r"<body>", '<body class="listing-sold">', "<body> sold class")
 
-        # Per-type provider note in the inquiry sidebar (runtime renders the same).
-        t = (p.get("type") or "home").lower()
-        prov = ("attorney, surveyor, engineer, water contact, architect, or contractor"
-                if ("land" in t or "lot" in t) else
-                "attorney, escrow provider, inspector, property manager, or insurance contact"
-                if ("condo" in t or "apartment" in t) else
-                "attorney, escrow provider, inspector, surveyor, insurance contact, or property manager")
-        doc = sub_once(doc, r'<span id="sidebar-providers"></span>',
-                       ' When appropriate, I can also connect you with the independent professionals a purchase like this involves &mdash; ' + prov + '.<span id="sidebar-providers"></span>',
-                       "sidebar providers")
+        # Personalized inquiry CTA (runtime sets the same label after load).
+        # Marketing-style names keep a short core before "|" or ":" — use it,
+        # and let genuinely long names keep the generic label instead.
+        cta_name = (p.get("name") or "").split(":")[0].split("|")[0].strip()
+        if cta_name and len(cta_name) <= 28:
+            doc = sub_once(doc,
+                           r'<span id="inquiry-toggle-label">Ask Tiago About This Property</span>',
+                           f'<span id="inquiry-toggle-label">Ask Tiago About {esc(cta_name)}</span>',
+                           "inquiry CTA label")
 
         # Baked pages are the canonical, indexable versions — strip the
         # template's default noindex (kept only for unknown-id fallbacks).
