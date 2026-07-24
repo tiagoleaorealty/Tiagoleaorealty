@@ -207,6 +207,19 @@
       .stats-inner { justify-content: space-between; gap: 10px; padding: 26px 0; }
       .stat-label { letter-spacing: 0.04em; }
     }
+    /* Surfing band — full-width photo between bio and stats */
+    .surf-band { max-width: 1080px; margin: 26px auto 0; padding: 20px 48px 6px; }
+    .surf-figure { position: relative; margin: 0; border-radius: 16px; overflow: hidden; }
+    .surf-figure img { width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 50%; }
+    .surf-figure figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 64px 34px 26px; display: flex; flex-direction: column; gap: 7px;
+      background: linear-gradient(to top, rgba(8,31,31,0.82) 0%, rgba(8,31,31,0.30) 55%, rgba(8,31,31,0) 100%); }
+    .surf-kicker { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #7fd0c8; font-weight: 600; }
+    .surf-line { font-size: clamp(17px, 2.1vw, 23px); font-weight: 600; color: #fff; letter-spacing: -0.01em; max-width: 32ch; line-height: 1.32; }
+    @media (max-width: 720px) {
+      .surf-band { padding: 14px 20px 4px; }
+      .surf-figure img { aspect-ratio: 4 / 3; }
+      .surf-figure figcaption { padding: 44px 20px 20px; }
+    }
   </style>
 </head>
 
@@ -274,6 +287,17 @@
         <p>Whether you are buying or selling property in Costa Rica, my goal is simple: make your life easier and help you move forward with confidence.</p>
       </div>
     </div>
+  </section>
+
+  <!-- Local / surfing -->
+  <section class="surf-band">
+    <figure class="surf-figure">
+      <img src="tiago-surfing.jpg" alt="Tiago Leao surfing a barreling wave on Costa Rica's Guanacaste coast" loading="lazy" />
+      <figcaption>
+        <span class="surf-kicker">Home break</span>
+        <span class="surf-line">I grew up surfing these beaches — the same coast I now help people call home.</span>
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Stats -->
