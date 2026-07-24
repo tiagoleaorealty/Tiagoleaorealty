@@ -376,6 +376,7 @@
       <a href="#" data-tab="schools">Schools</a>
       <a href="#" data-tab="developments">Communities</a>
       <a href="#" data-tab="settings">Settings</a>
+      <a href="/admin/import-property/">Importer</a>
       <a href="index.html" style="opacity:0.4;">View Site &rarr;</a>
       <a href="#" onclick="logout()" style="opacity:0.4;">Log Out</a>
     </div>
@@ -395,7 +396,10 @@
       <p class="page-sub">Manage your listings. The &#9650;/&#9660; arrows set the order — this controls both the homepage featured order and the Properties page. Each listing's <strong>Community</strong> decides which Communities page it shows on.</p>
       <div class="items-header">
         <span class="items-count" id="prop-count">0 properties</span>
-        <button class="btn btn-terra" onclick="openPropertyEditor()">+ Add Property</button>
+        <span style="display:flex; gap:8px;">
+          <a class="btn btn-outline" href="/admin/import-property/" style="text-decoration:none;">&#8595; Import from KRAIN</a>
+          <button class="btn btn-terra" onclick="openPropertyEditor()">+ Add Property</button>
+        </span>
       </div>
       <div id="properties-list"></div>
     </div>

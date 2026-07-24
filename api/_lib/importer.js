@@ -219,8 +219,9 @@ function parseAreaValue(s) {
   if (!m) return null;
   const v = Number(m[1]);
   const unit = m[2].toLowerCase().replace(/\s|\./g, '');
-  if (/^(sqft|squarefeet|ft²|sqf?t?)$/.test(unit) || unit.startsWith('sqft') || unit.startsWith('ft')) return { value: v, unit: 'sqft' };
-  if (unit.startsWith('m')) return { value: v, unit: 'sqm' };
+  // Order matters: "sqm"/"Sq.M." must not fall through the sqft branch.
+  if (unit.startsWith('sqm') || unit.startsWith('m') || unit.startsWith('squaremeter')) return { value: v, unit: 'sqm' };
+  if (unit.startsWith('sqf') || unit.startsWith('ft') || unit.startsWith('squarefeet')) return { value: v, unit: 'sqft' };
   if (unit.startsWith('ac')) return { value: v, unit: 'acre' };
   if (unit.startsWith('h')) return { value: v, unit: 'hectare' };
   return null;
@@ -268,11 +269,14 @@ const krainLp = {
     while ((sm = secRe.exec(doc))) {
       const secName = decodeEntities(sm[1]).trim();
       sections[secName] = {};
-      const liRe = /<li><strong>([^<]*)<\/strong><span class="feature">([^<]*)<\/span><\/li>/g;
+      // Values may nest markup (e.g. "3,939.58 <span>Sq.Ft.</span>") and the
+      // key/value gap sometimes carries whitespace — match loosely, then
+      // flatten the value to plain text.
+      const liRe = /<li><strong>([^<]*)<\/strong>\s*<span class="feature">([\s\S]*?)<\/span>\s*<\/li>/g;
       let lm;
       while ((lm = liRe.exec(sm[2]))) {
         const k = decodeEntities(lm[1]).trim();
-        const v = decodeEntities(lm[2]).trim();
+        const v = stripTags(lm[2]).replace(/\s+/g, ' ').trim();
         sections[secName][k] = v;
         pairs[k.toLowerCase()] = v;
       }
@@ -322,6 +326,19 @@ const krainLp = {
         }
       }
     }
+    // Some listings label the lot "Total Area" instead of "Lot Area". Only
+    // use it when no explicit lot value exists and it is clearly larger than
+    // the living area — and say where the number came from.
+    if (area.lot_m2 == null) {
+      const tot = area.pairs['total area'];
+      if (tot && tot.parsed) {
+        const totSqm = toSqm(tot.parsed);
+        if (totSqm && (area.built_m2 == null || totSqm > area.built_m2)) {
+          area.lot_m2 = totSqm;
+          flags.push(`Lot area taken from the source's "Total Area" (${tot.raw}) — verify it means the lot.`);
+        }
+      }
+    }
     if (area.built_m2 == null) missing.push('built area');
     if (area.lot_m2 == null) missing.push('lot area');
 
@@ -354,10 +371,13 @@ const krainLp = {
     }
     if (lat == null) missing.push('coordinates');
 
-    // Status: LP pages rarely render it as text; look for a badge, else null.
-    let statusRaw = null;
-    const statusM = doc.match(/class="[^"]*(?:property|listing)-status[^"]*"[^>]*>\s*([^<]{2,30}?)\s*</i);
-    if (statusM) statusRaw = decodeEntities(statusM[1]).trim();
+    // Status: the Area & Lot section carries it as a pair (e.g. "Exclusive",
+    // "For Sale"); fall back to a status badge if the pair is absent.
+    let statusRaw = pair('status', 'listing status');
+    if (!statusRaw) {
+      const statusM = doc.match(/class="[^"]*(?:property|listing)-status[^"]*"[^>]*>\s*([^<]{2,30}?)\s*</i);
+      if (statusM) statusRaw = decodeEntities(statusM[1]).trim();
+    }
     if (!statusRaw) missing.push('status');
 
     // Video / virtual tour: only concrete embeds, never guessed.

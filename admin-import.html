@@ -165,6 +165,7 @@
       <div class="topbar-brand">SOLD BY <span>TIAGO</span> — LISTING IMPORTER</div>
       <div class="topbar-links">
         <a href="admin.html">Admin Panel</a>
+        <a onclick="publishSiteNow()" title="Rebuild the site so new pages + sitemap go live (~1 min)">Publish Site</a>
         <a href="/" target="_blank">View Site</a>
         <a onclick="logout()">Log Out</a>
       </div>
@@ -638,6 +639,22 @@ function renderWork() {
     <div class="fg full"><label>Features (comma-separated — shown as chips on the page)</label>
       <input id="f-features" value="${esc((d.features || []).join(', '))}" oninput="onFieldInput()" />
       <div class="src-note"><b>Source lists:</b> ${esc([...(s.listing?.appliances || [])].join(', ') || '')} ${s.listing?.year_built ? ' · Year built ' + esc(String(s.listing.year_built)) : ''}</div></div>
+    <div class="fg full" style="border-top:1px dashed rgba(0,0,0,.12); padding-top:14px;">
+      <label>Around the property — your local knowledge (optional; empty tiles stay hidden on the page)</label>
+      <div class="src-note" style="margin:0 0 10px;">KRAIN pages don't publish these — enter only times you know or have checked.
+        ${d.lat != null && d.lng != null ? `<a href="https://www.google.com/maps?q=${d.lat},${d.lng}" target="_blank" rel="noopener" style="color:var(--terra);text-decoration:underline;">Open pin in Google Maps</a> ·
+        <a href="https://www.google.com/maps/dir/?api=1&origin=${d.lat},${d.lng}&destination=Daniel+Oduber+Quiros+International+Airport+Liberia&travelmode=driving" target="_blank" rel="noopener" style="color:var(--terra);text-decoration:underline;">Check real drive time to LIR</a>` : 'Add coordinates above to get Google Maps helper links.'}</div>
+      <div class="fgrid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="fg"><label>Beach (minutes)</label><input id="f-beach_minutes" type="number" min="0" value="${d.beach_minutes ?? ''}" oninput="onFieldInput()" /></div>
+        <div class="fg"><label>Beach mode</label><select id="f-beach_mode" onchange="onFieldInput()">
+          <option value="" ${!d.beach_mode ? 'selected' : ''}>—</option>
+          <option value="walk" ${d.beach_mode === 'walk' ? 'selected' : ''}>Walk</option>
+          <option value="drive" ${d.beach_mode === 'drive' ? 'selected' : ''}>Drive</option>
+        </select></div>
+        <div class="fg"><label>Airport LIR (min drive)</label><input id="f-airport_minutes" type="number" min="0" value="${d.airport_minutes ?? ''}" oninput="onFieldInput()" /></div>
+        <div class="fg"><label>Walk Score (0–100)</label><input id="f-walk_score" type="number" min="0" max="100" value="${d.walk_score ?? ''}" oninput="onFieldInput()" /></div>
+      </div>
+    </div>
   `;
   document.getElementById('f-description').value = d.description || '';
   document.getElementById('desc-source-view').textContent = (s.listing && s.listing.description) || 'Not provided by source';
@@ -688,6 +705,10 @@ function collectDraft() {
   d.beds = num('f-beds'); d.baths = num('f-baths');
   d.size_m2 = num('f-size'); d.lot_m2 = num('f-lot');
   d.lat = num('f-lat'); d.lng = num('f-lng');
+  d.beach_minutes = num('f-beach_minutes');
+  d.beach_mode = document.getElementById('f-beach_mode').value || null;
+  d.airport_minutes = num('f-airport_minutes');
+  d.walk_score = num('f-walk_score');
   d.features = document.getElementById('f-features').value.split(',').map(x => x.trim()).filter(Boolean);
   d.description = document.getElementById('f-description').value;
   d.short_desc = document.getElementById('f-short_desc').value.trim();
@@ -1058,11 +1079,22 @@ async function publishConfirmed() {
 function maybeOfferSiteBuild() {
   const hook = localStorage.getItem('tl_deploy_hook');
   if (hook && confirm('Trigger a site build now so the clean URL, canonical and sitemap go live? (Vercel deploy, ~1 minute)')) {
-    fetch(hook, { method: 'POST', mode: 'no-cors' }).then(() => showToast('Build triggered — live in about a minute.'))
-      .catch(() => showToast('Could not reach Vercel — trigger the build from Admin → Settings.'));
+    publishSiteNow();
   } else if (!hook) {
-    showToast('Reminder: trigger a site build (Admin → Settings → Publish Site) so the page + sitemap go live.');
+    showToast('Reminder: trigger a site build (Publish Site, top bar) so the page + sitemap go live.');
   }
+}
+// Same deploy hook admin.html uses (saved in Admin → Settings; shared here
+// automatically because both pages live on the same domain).
+function publishSiteNow() {
+  const hook = localStorage.getItem('tl_deploy_hook');
+  if (!hook) {
+    showToast('No deploy hook saved on this device yet — set it once in Admin → Settings → Publish Site.');
+    return;
+  }
+  fetch(hook, { method: 'POST', mode: 'no-cors' })
+    .then(() => showToast('Build triggered — changes live in about a minute.'))
+    .catch(() => showToast('Could not reach Vercel — check the hook URL in Admin → Settings.'));
 }
 
 // ══════════════════════════════════════════════════════════════
