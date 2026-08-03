@@ -1048,14 +1048,54 @@ def write_llms_full(posts):
     for p in sorted(posts, key=lambda r: r.get("created_at") or ""):
         href = _blog_href(p)
         url = SITE + (href if href.startswith("/") else "/" + href)
+        upd = (p.get("updated_at") or p.get("created_at") or "")[:10]
         entries.append(f"# {p.get('title') or 'Article'}\n\n"
                        f"URL: {url}\n"
-                       f"Category: {p.get('category') or 'guide'}\n\n"
-                       + (p.get("body") or "").strip())
+                       f"Category: {p.get('category') or 'guide'}\n"
+                       + (f"Updated: {upd}\n" if upd else "")
+                       + "\n" + (p.get("body") or "").strip())
     text = "\n\n\n---\n\n".join([LLMS_FULL_PREAMBLE] + entries) + "\n"
     with open(os.path.join(ROOT, "llms-full.txt"), "w", encoding="utf-8") as f:
         f.write(text)
     return len(entries)
+
+
+# Keep the "Current listings" section of llms.txt in sync with the live
+# inventory so AI assistants can cite actual properties, not just articles.
+# The section heading is the anchor; the build fails loudly if it vanishes.
+def write_llms_listings(props):
+    path = os.path.join(ROOT, "llms.txt")
+    with open(path, encoding="utf-8") as f:
+        src = f.read()
+    lines = []
+    for p in props:
+        if (p.get("status") or "active") == "sold":
+            continue
+        name = (p.get("name") or "").split(":")[0].split("|")[0].strip() or "Listing"
+        slug = p.get("slug") or p["id"]
+        bits = []
+        if p.get("price"):
+            bits.append(p["price"] + (" (sale pending)" if p.get("status") == "pending" else ""))
+        t = (p.get("type") or "home").capitalize()
+        loc = (p.get("location") or "").strip()
+        bits.append(t + (f" in {loc}" if loc else ""))
+        if p.get("beds"):
+            bb = f"{fmt_num(p['beds'])} bd"
+            if p.get("baths"):
+                bb += f" / {fmt_num(p['baths'])} ba"
+            bits.append(bb)
+        if p.get("size"):
+            bits.append(f"{fmt_num(p['size'])} m² built")
+        lines.append(f"- [{name}]({SITE}/property/{slug}/): " + " — ".join(bits))
+    body = (f"## Current listings (auto-updated on every site build)\n\n"
+            + "\n".join(lines)
+            + f"\n- See all: {SITE}/properties.html\n\n")
+    new, n = re.subn(r"## Current listings[^\n]*\n.*?(?=\n## )", body, src, count=1, flags=re.S)
+    if n != 1:
+        raise SystemExit("BUILD FAILED: '## Current listings' section missing in llms.txt")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(new)
+    return len(lines)
 
 
 # ── main ─────────────────────────────────────────────────────────
@@ -1133,11 +1173,12 @@ def main():
             print(f"  WARN raw markdown leaked in {os.path.relpath(f, ROOT)}")
     total = write_sitemap(urls)
     n_full = write_llms_full(posts)
+    n_listed = write_llms_listings(props)
 
     n_prop = sum(1 for u in urls if u[0].startswith("/property/"))
     n_sch = sum(1 for u in urls if u[0].startswith("/school/"))
     n_blog = sum(1 for u in urls if u[0].startswith("/blog/"))
-    print(f"build OK: {n_prop} properties, {n_sch} schools, {n_blog} posts, sitemap {total} urls, llms-full {n_full} articles")
+    print(f"build OK: {n_prop} properties, {n_sch} schools, {n_blog} posts, sitemap {total} urls, llms-full {n_full} articles, llms.txt {n_listed} listings")
 
 
 if __name__ == "__main__":
