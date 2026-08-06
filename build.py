@@ -39,7 +39,11 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 TODAY = date.today().isoformat()
 
 # Posts that have a hand-built custom page instead of the generated template.
-CUSTOM_BLOG_PAGES = {"el-chante-tamarindo-villas"}
+# slug -> site-absolute URL of the custom page.
+CUSTOM_BLOG_PAGES = {
+    "el-chante-tamarindo-villas": "/blog-el-chante-tamarindo.html",
+    "villa-mariposa-catalina-cove": "/villa-mariposa/",
+}
 
 
 # ── helpers ──────────────────────────────────────────────────────
@@ -846,8 +850,7 @@ def blog_cat(p):
 
 
 def _blog_href(p):
-    return ("blog-el-chante-tamarindo.html" if p["slug"] in CUSTOM_BLOG_PAGES
-            else "/blog/" + p["slug"] + "/")
+    return CUSTOM_BLOG_PAGES.get(p["slug"]) or "/blog/" + p["slug"] + "/"
 
 
 def _blog_featured_card(p):
@@ -943,8 +946,7 @@ def bake_roots(props, schools, posts, devs=None):
                "itemListElement": [
                    {"@type": "ListItem", "position": i + 1,
                     "name": p.get("title") or "",
-                    "url": SITE + ("/blog-el-chante-tamarindo.html" if p["slug"] in CUSTOM_BLOG_PAGES
-                                    else f"/blog/{p['slug']}/")}
+                    "url": SITE + (CUSTOM_BLOG_PAGES.get(p["slug"]) or f"/blog/{p['slug']}/")}
                    for i, p in enumerate(posts)
                ],
            }), "blog itemlist ld")
@@ -991,6 +993,7 @@ STATIC_PAGES = [
     ("/developments.html", "0.9", "weekly"),
     ("/blog.html", "0.8", "weekly"),
     ("/blog-el-chante-tamarindo.html", "0.8", "monthly"),
+    ("/villa-mariposa/", "0.8", "monthly"),
     ("/playas-del-coco.html", "0.8", "monthly"),
     ("/potrero.html", "0.8", "monthly"),
     ("/las-catalinas.html", "0.8", "monthly"),

@@ -31,6 +31,23 @@
       "permanent": true
     },
     {
+      "source": "/blog/villa-mariposa-catalina-cove/",
+      "destination": "/villa-mariposa/",
+      "permanent": true
+    },
+    {
+      "source": "/blog-post.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "villa-mariposa-catalina-cove"
+        }
+      ],
+      "destination": "/villa-mariposa/",
+      "permanent": true
+    },
+    {
       "source": "/property-detail.html",
       "has": [
         {
