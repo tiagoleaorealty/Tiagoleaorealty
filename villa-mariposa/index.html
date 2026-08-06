@@ -234,6 +234,19 @@ header.scrolled .wordmark,header.scrolled .co-brand{color:var(--ink)}
 .bstat span{display:block;margin-top:8px;font-size:10.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;opacity:.72}
 @media(max-width:860px){.band-in{grid-template-columns:repeat(2,1fr);row-gap:2.2rem}}
 
+/* film placeholder */
+.film-frame{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--pine-deep);margin-top:1.8rem}
+.film-frame img{width:100%;height:100%;object-fit:cover;opacity:.42;filter:saturate(.85)}
+.film-frame iframe{width:100%;height:100%;border:0;display:block}
+.film-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--ivory);text-align:center;padding:0 20px}
+.film-play{position:relative;width:74px;height:74px;border-radius:50%;border:1px solid rgba(253,248,242,.55);display:flex;align-items:center;justify-content:center;color:var(--ivory);background:rgba(9,42,42,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.film-play svg{width:26px;height:26px;margin-left:4px}
+.film-play::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(253,248,242,.45);animation:filmpulse 2.6s ease-out infinite}
+@keyframes filmpulse{0%{transform:scale(1);opacity:.7}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
+.film-soon{font-size:13px;font-weight:500;letter-spacing:.32em;text-transform:uppercase}
+.film-note{font-size:12.5px;opacity:.75}
+@media(max-width:700px){.film-play{width:58px;height:58px}.film-play svg{width:20px;height:20px}}
+
 /* chapter headers */
 .chapter-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,4vw,4rem);align-items:end;margin-bottom:clamp(1.8rem,4vw,3rem)}
 .chapter-head .right{max-width:52ch;justify-self:end;color:var(--ink-soft);font-size:15.5px;padding-bottom:6px}
@@ -374,6 +387,7 @@ footer .fine{margin-top:26px;padding-top:22px;border-top:1px solid rgba(253,248,
   .hero img.bg{animation:none}
   .scroll-cue::after{animation:none}
   .ph img{transition:none}
+  .film-play::after{animation:none}
 }
 </style>
 </head>
@@ -444,6 +458,27 @@ footer .fine{margin-top:26px;padding-top:22px;border-top:1px solid rgba(253,248,
     <div class="bstat"><b>2026</b><span>Newly Completed</span></div>
   </div>
 </div>
+
+<!-- ───────────────────────── FILM ───────────────────────── -->
+<section class="sec-tight" id="film">
+  <div class="container">
+    <p class="kicker rv">The Film</p>
+    <!-- When the video is ready, replace the .film-frame contents below with:
+         <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="Villa Mariposa — Official Film"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                 allowfullscreen></iframe> -->
+    <div class="film-frame rv" role="img" aria-label="Villa Mariposa film — coming soon">
+      <img src="/villa-mariposa/img/full/p07.jpg" alt="" loading="lazy" decoding="async">
+      <div class="film-overlay">
+        <span class="film-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+        </span>
+        <span class="film-soon">Coming Soon</span>
+        <span class="film-note">The official Villa Mariposa film &mdash; shot on location by Tiago Leao</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ───────────────────────── OUTDOOR LIVING ───────────────────────── -->
 <section class="sec" id="gallery">
