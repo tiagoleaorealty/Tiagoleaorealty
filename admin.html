@@ -375,6 +375,7 @@
       <a href="#" data-tab="blog">Blog Posts</a>
       <a href="#" data-tab="schools">Schools</a>
       <a href="#" data-tab="developments">Communities</a>
+      <a href="#" data-tab="showcases">Showcases</a>
       <a href="#" data-tab="settings">Settings</a>
       <a href="/admin/import-property/">Importer</a>
       <a href="index.html" style="opacity:0.4;">View Site &rarr;</a>
@@ -446,6 +447,17 @@
         <button class="btn btn-terra" onclick="openDevEditor()">+ New Community</button>
       </div>
       <div id="dev-list"></div>
+    </div>
+
+    <!-- ══ SHOWCASES TAB ═════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-showcases">
+      <h1 class="page-title">Signature Showcases</h1>
+      <p class="page-sub">Your hand-built property pages, each hosted at its own URL on soldbytiago.com and listed publicly at <a href="/signature/" target="_blank" rel="noopener" style="color:var(--terra);">/signature/</a>. These are custom-designed static pages managed in the site's code &mdash; to add a new one, change a price, rename a URL or take one down, ask Claude in a Claude Code session on the WEBSITE folder; the change goes live on the next push. This list reads from <strong>showcases.json</strong>.</p>
+      <div class="items-header">
+        <span class="items-count" id="showcase-count">0 pages</span>
+        <a class="btn btn-outline" href="/signature/" target="_blank" rel="noopener" style="text-decoration:none;">View public gallery &rarr;</a>
+      </div>
+      <div id="showcase-list"></div>
     </div>
 
     <!-- ══ SETTINGS TAB ══════════════════════════════════════════ -->
@@ -1017,6 +1029,7 @@ Separate paragraphs with a blank line."></textarea>
     // this is what fixes having to close/reopen the site to use the admin.
     function reconnectAndRefresh() {
       if (!loggedIn) return; // not logged in
+      loadShowcases(); // static file, needs no Supabase
       if (initSupabase()) {
         loadProperties();
         loadBlogPosts();
@@ -1024,6 +1037,52 @@ Separate paragraphs with a blank line."></textarea>
         loadDevelopments();
         if (typeof loadReviews === 'function') loadReviews();
       }
+    }
+
+    // ─── Showcases: read-only view of showcases.json ─────────────
+    // The signature pages are static folders managed in git, so this tab
+    // only displays them; add/edit/remove happens in the repo (ask Claude),
+    // and takes effect on the next deploy.
+    async function loadShowcases() {
+      const listEl = document.getElementById('showcase-list');
+      if (!listEl) return;
+      const escS = s => String(s == null ? '' : s).replace(/[&<>"']/g,
+        c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      try {
+        const res = await fetch('/showcases.json?t=' + Date.now());
+        if (!res.ok) throw new Error(res.status);
+        const pages = (await res.json()).pages || [];
+        document.getElementById('showcase-count').textContent =
+          pages.length + (pages.length === 1 ? ' page' : ' pages');
+        listEl.innerHTML = pages.map(p => {
+          const url = 'https://soldbytiago.com/' + p.slug + '/';
+          const statusColors = { live: '#0d4a4a', sold: '#8a6d3b', hidden: '#999' };
+          return '<div class="item-card">' +
+            '<div class="item-thumb"><img src="' + escS(p.hero) + '" alt="" loading="lazy"></div>' +
+            '<div class="item-info"><h3>' + escS(p.title) + '</h3>' +
+            '<div class="item-meta">' +
+              '<span class="tag" style="background:rgba(13,74,74,0.08);color:' + (statusColors[p.status] || '#666') + ';">' + escS(p.status) + '</span>' +
+              '<span>' + escS(p.location) + '</span>' +
+              '<span><strong>' + escS(p.price) + '</strong></span>' +
+              (p.added ? '<span>added ' + escS(p.added) + '</span>' : '') +
+              '<span style="user-select:all;">' + escS(url) + '</span>' +
+            '</div></div>' +
+            '<div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">' +
+              '<button class="btn btn-outline" onclick="copyShowcaseUrl(\'' + escS(url) + '\')">Copy URL</button>' +
+              '<a class="btn btn-outline" style="text-decoration:none;" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(p.title + ' — ' + url) + '">Share</a>' +
+              '<a class="btn btn-terra" style="text-decoration:none;" target="_blank" rel="noopener" href="/' + escS(p.slug) + '/">Open</a>' +
+            '</div></div>';
+        }).join('');
+      } catch (e) {
+        listEl.innerHTML = '<p style="color:var(--stone); font-size:14px;">Could not load showcases.json (' + escS(e.message) + '). It ships with the site, so on a fresh deploy this resolves itself.</p>';
+      }
+    }
+
+    function copyShowcaseUrl(url) {
+      navigator.clipboard.writeText(url).then(
+        () => showToast('URL copied'),
+        () => showToast('Copy failed — long-press the URL text instead')
+      );
     }
 
     // bfcache restore (browser back/forward) — page comes back frozen; re-init.

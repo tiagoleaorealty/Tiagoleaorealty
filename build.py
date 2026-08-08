@@ -979,6 +979,140 @@ def bake_roots(props, schools, posts, devs=None):
                "developments itemlist ld")
 
 
+# ── signature showcases ──────────────────────────────────────────
+# Hand-built property pages (villa-mariposa, villa-los-monos, ...) live as
+# static folders at the repo root, registered in showcases.json. That file
+# drives the /signature/ gallery generated here, the sitemap entries, and
+# the read-only Showcases tab in admin. The folders themselves are source,
+# not build output — never add them to the rmtree list in main().
+
+def load_showcases():
+    path = os.path.join(ROOT, "showcases.json")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    pages = data.get("pages", [])
+    seen = set()
+    for p in pages:
+        slug = p.get("slug", "")
+        if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", slug):
+            raise SystemExit(f"BUILD FAILED: showcase slug {slug!r} is not a valid path segment")
+        if slug in seen:
+            raise SystemExit(f"BUILD FAILED: duplicate showcase slug {slug!r}")
+        seen.add(slug)
+        if p.get("status") not in ("live", "sold", "hidden"):
+            raise SystemExit(f"BUILD FAILED: showcase {slug}: status must be live/sold/hidden")
+        if not os.path.isfile(os.path.join(ROOT, slug, "index.html")):
+            raise SystemExit(f"BUILD FAILED: showcase {slug}: /{slug}/index.html does not exist")
+        hero = p.get("hero", "")
+        if not os.path.isfile(os.path.join(ROOT, hero.lstrip("/"))):
+            raise SystemExit(f"BUILD FAILED: showcase {slug}: hero image {hero!r} does not exist")
+        for field in ("title", "location", "price"):
+            if not p.get(field):
+                raise SystemExit(f"BUILD FAILED: showcase {slug}: missing {field!r}")
+    return pages
+
+
+SIGNATURE_TEMPLATE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signature Listings | Tiago Leao, Guanacaste Real Estate</title>
+<meta name="description" content="Hand-picked Guanacaste properties, each presented on its own dedicated page: full story, photography and investment numbers.">
+<link rel="canonical" href="https://soldbytiago.com/signature/">
+<meta name="theme-color" content="#0d4a4a">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://soldbytiago.com/signature/">
+<meta property="og:title" content="Signature Listings | Tiago Leao">
+<meta property="og:description" content="Hand-picked Guanacaste properties, each with its own dedicated presentation.">
+<meta property="og:image" content="{{OG_IMAGE}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="/favicon-48.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/fonts.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--teal:#0d4a4a;--teal-deep:#072e2e;--ink:#1d2021;--stone:#6b7a7a;--bg:#fafafa;--cream:#fdf8f2;--line:rgba(29,32,33,.13)}
+body{background:var(--bg);color:var(--ink);font-family:"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header{position:sticky;top:0;z-index:50;background:rgba(250,250,250,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(29,32,33,.07)}
+.hrow{display:flex;align-items:center;justify-content:space-between;height:66px}
+.mark{text-decoration:none;line-height:1.05}
+.mark b{display:block;font-weight:700;font-size:15px;letter-spacing:.06em}
+.mark span{display:block;font-size:9.5px;letter-spacing:.19em;color:var(--stone);font-weight:500;text-transform:uppercase}
+.back{font-size:12.5px;letter-spacing:.03em;text-decoration:none;color:var(--stone)}
+.back:hover{color:var(--ink)}
+.hero{background:var(--teal-deep);color:#fff;padding:clamp(64px,9vw,120px) 0}
+.hero .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:500}
+.hero h1{font-size:clamp(38px,6.5vw,76px);font-weight:700;letter-spacing:-.04em;line-height:1.02;margin-top:14px}
+.hero p{color:rgba(255,255,255,.72);font-size:clamp(15px,1.9vw,18px);max-width:560px;margin-top:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:26px;padding:72px 0 96px}
+.cardlink{text-decoration:none;display:block;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff;transition:box-shadow .25s,transform .25s}
+.cardlink:hover{box-shadow:0 22px 48px -24px rgba(13,74,74,.4);transform:translateY(-3px)}
+.cardlink .ph{position:relative;height:250px;overflow:hidden;background:#d5dbda}
+.cardlink .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.cardlink:hover .ph img{transform:scale(1.05)}
+.sold{position:absolute;top:14px;left:14px;background:#fff;color:var(--teal);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:5px 11px;border-radius:2px}
+.cardlink .body{padding:24px 24px 26px}
+.cardlink .loc{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);font-weight:500}
+.cardlink h2{font-size:24px;font-weight:700;letter-spacing:-.03em;margin-top:7px}
+.cardlink .price{font-size:17px;font-weight:700;color:var(--teal);margin-top:6px;font-variant-numeric:tabular-nums}
+.cardlink .tag{font-size:13.5px;color:var(--stone);margin-top:12px;line-height:1.55}
+.cardlink .cta{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--teal);margin-top:16px;border-bottom:1px solid var(--teal);padding-bottom:2px}
+footer{border-top:1px solid var(--line);padding:38px 0;font-size:12px;color:var(--stone)}
+footer .fr{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{text-decoration:none}
+@media(prefers-reduced-motion:reduce){.cardlink,.cardlink .ph img{transition:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap hrow">
+  <a class="mark" href="/"><b>TIAGO LEAO</b><span>Guanacaste Real Estate</span></a>
+  <a class="back" href="/properties.html">All properties &rarr;</a>
+</div></header>
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Signature Listings</div>
+  <h1>Properties that earn their own address.</h1>
+  <p>A hand-picked few, each presented on its own dedicated page: the full story, the photography, and the numbers behind it.</p>
+</div></div>
+<main class="wrap"><div class="grid">
+{{CARDS}}
+</div></main>
+<footer><div class="wrap fr">
+  <div><b style="color:var(--ink);letter-spacing:.06em">TIAGO LEAO</b> &middot; Guanacaste, Costa Rica</div>
+  <div><a href="/">soldbytiago.com</a></div>
+</div></footer>
+</body>
+</html>
+"""
+
+
+def build_signature(pages):
+    """Write /signature/index.html and return sitemap urls for the section."""
+    visible = [p for p in pages if p["status"] in ("live", "sold")]
+    cards = []
+    for p in visible:
+        sold = '<span class="sold">Sold</span>' if p["status"] == "sold" else ""
+        tagline = f'<p class="tag">{esc(p["tagline"])}</p>' if p.get("tagline") else ""
+        cards.append(
+            f'<a class="cardlink" href="/{esc(p["slug"])}/">'
+            f'<div class="ph"><img src="{esc(p["hero"])}" alt="{esc(p["title"])}" loading="lazy">{sold}</div>'
+            f'<div class="body"><div class="loc">{esc(p["location"])}</div>'
+            f'<h2>{esc(p["title"])}</h2><div class="price">{esc(p["price"])}</div>'
+            f'{tagline}<span class="cta">View the listing</span></div></a>'
+        )
+    og = f"{SITE}{visible[0]['hero']}" if visible else f"{SITE}/apple-touch-icon.png"
+    doc = SIGNATURE_TEMPLATE.replace("{{OG_IMAGE}}", esc(og)).replace("{{CARDS}}", "\n".join(cards))
+    outdir = os.path.join(ROOT, "signature")
+    os.makedirs(outdir, exist_ok=True)
+    with open(os.path.join(outdir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(doc)
+    urls = [("/signature/", None, "0.9", "weekly")]
+    urls += [(f"/{p['slug']}/", None, "0.8", "monthly") for p in visible]
+    return urls
+
+
 # ── sitemap ──────────────────────────────────────────────────────
 
 STATIC_PAGES = [
@@ -993,8 +1127,7 @@ STATIC_PAGES = [
     ("/developments.html", "0.9", "weekly"),
     ("/blog.html", "0.8", "weekly"),
     ("/blog-el-chante-tamarindo.html", "0.8", "monthly"),
-    ("/villa-mariposa/", "0.8", "monthly"),
-    ("/villa-los-monos/", "0.8", "monthly"),
+    # showcase pages (/villa-mariposa/ etc.) come from showcases.json, not here
     ("/playas-del-coco.html", "0.8", "monthly"),
     ("/potrero.html", "0.8", "monthly"),
     ("/las-catalinas.html", "0.8", "monthly"),
@@ -1157,7 +1290,10 @@ def main():
 
     validate(props, schools, posts)
 
+    showcases = load_showcases()
+
     urls = []
+    urls += build_signature(showcases)
     urls += build_properties(read("property-detail.html"), props)
     urls += build_schools(read("school.html"), schools)
     urls += build_posts(read("blog-post.html"), posts)
@@ -1182,7 +1318,8 @@ def main():
     n_prop = sum(1 for u in urls if u[0].startswith("/property/"))
     n_sch = sum(1 for u in urls if u[0].startswith("/school/"))
     n_blog = sum(1 for u in urls if u[0].startswith("/blog/"))
-    print(f"build OK: {n_prop} properties, {n_sch} schools, {n_blog} posts, sitemap {total} urls, llms-full {n_full} articles, llms.txt {n_listed} listings")
+    n_show = sum(1 for p in showcases if p["status"] != "hidden")
+    print(f"build OK: {n_prop} properties, {n_sch} schools, {n_blog} posts, {n_show} showcases, sitemap {total} urls, llms-full {n_full} articles, llms.txt {n_listed} listings")
 
 
 if __name__ == "__main__":

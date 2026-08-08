@@ -12,6 +12,7 @@ secrets.json
 /property/
 /school/
 /blog/
+/signature/
 
 # macOS
 .DS_Store

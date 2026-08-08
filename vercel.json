@@ -41,6 +41,11 @@
       "permanent": true
     },
     {
+      "source": "/signature",
+      "destination": "/signature/",
+      "permanent": true
+    },
+    {
       "source": "/blog/villa-mariposa-catalina-cove/",
       "destination": "/villa-mariposa/",
       "permanent": true

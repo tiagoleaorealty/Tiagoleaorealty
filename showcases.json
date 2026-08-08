@@ -1,0 +1,25 @@
+{
+  "_readme": "Registry of hand-built signature property pages. Each entry is a static folder at the repo root (e.g. /villa-mariposa/). This file drives the /signature/ gallery, the sitemap, and the Showcases tab in admin. To add/change a page, edit this file and the folder together, then push. status: live (gallery + sitemap), sold (gallery with SOLD badge + sitemap), hidden (URL still works, excluded from gallery and sitemap).",
+  "pages": [
+    {
+      "slug": "villa-los-monos",
+      "title": "Villa Los Monos",
+      "location": "Matapalo, Playa Grande",
+      "price": "$889,000",
+      "tagline": "Nine income-producing units on one title. 15.6% net yield, backed by four years of Airbnb payout records.",
+      "hero": "/villa-los-monos/img/hero.jpg",
+      "status": "live",
+      "added": "2026-08-08"
+    },
+    {
+      "slug": "villa-mariposa",
+      "title": "Villa Mariposa",
+      "location": "Catalina Cove, Cabo Velas",
+      "price": "$1,299,000",
+      "tagline": "New Balinese-inspired 4-bedroom villa with designer pool, walking distance to Playa Brasilito.",
+      "hero": "/villa-mariposa/img/hero.jpg",
+      "status": "live",
+      "added": "2026-08-05"
+    }
+  ]
+}
