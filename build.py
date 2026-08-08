@@ -117,6 +117,21 @@ def parse_body(text):
     return "".join(out)
 
 
+def abs_url(u):
+    """Absolutize a possibly-relative asset URL for og:image / JSON-LD use.
+
+    cover_url values in the DB are sometimes bare filenames ('Sun set.jpg');
+    link-preview bots do not resolve relative og:image, so those pages shipped
+    broken previews. Spaces are percent-encoded; full URLs pass through.
+    """
+    from urllib.parse import quote
+    if not u:
+        return u
+    if u.startswith(("http://", "https://")):
+        return u
+    return SITE + "/" + quote(u.lstrip("/"))
+
+
 def one_line(s, limit=155):
     s = re.sub(r"\s+", " ", str(s or "")).strip()
     return s if len(s) <= limit else s[: limit - 1].rstrip() + "…"
@@ -511,7 +526,7 @@ def build_schools(tpl, rows):
         canon = f"{SITE}/school/{slug}/"
         desc = one_line(s.get("meta_desc") or s.get("excerpt") or f"{name} — schools in Guanacaste, Costa Rica.")
         title = f"{name} | Schools in Guanacaste | Tiago Leao"
-        og_image = s.get("cover_url") or f"{SITE}/og-image.jpg"
+        og_image = abs_url(s.get("cover_url")) or f"{SITE}/og-image.jpg"
 
         doc = head_common(tpl, title, desc, canon, name, desc, og_image)
 
@@ -624,7 +639,7 @@ def build_developments(tpl, rows):
         canon = f"{SITE}/development/{slug}/"
         desc = one_line(s.get("meta_desc") or s.get("excerpt") or f"{name} - gated community in Guanacaste, Costa Rica.")
         title = f"{name} | Guanacaste Communities | Tiago Leao"
-        og_image = s.get("cover_url") or f"{SITE}/og-image.jpg"
+        og_image = abs_url(s.get("cover_url")) or f"{SITE}/og-image.jpg"
         doc = head_common(tpl, title, desc, canon, name, desc, og_image)
 
         facts = ""
@@ -751,7 +766,7 @@ def build_posts(tpl, rows):
         title_txt = p.get("title") or "Article"
         canon = f"{SITE}/blog/{slug}/"
         desc = one_line(p.get("meta_desc") or p.get("excerpt") or title_txt)
-        og_image = p.get("cover_url") or f"{SITE}/og-image.jpg"
+        og_image = abs_url(p.get("cover_url")) or f"{SITE}/og-image.jpg"
 
         doc = head_common(tpl, f"{title_txt} | Tiago Leao | Guanacaste Real Estate", desc, canon, title_txt, desc, og_image)
 
