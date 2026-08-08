@@ -33,3 +33,9 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Title/plano article: folio real & certificacion literal contents; discrepancy-resolution process framing
 - Land checklist: Ley Forestal 7575 protection distances (10m/15m/50m rivers, 100m/200m springs); permit chain order (uso de suelo -> CFIA/APC -> institutional -> municipal + INS); SETENA screening framing; 0.25% property tax reference
 - All four carry on-page "general education, not legal advice" disclaimers + Sources & Verification blocks; developer/community claims in the six community blogs are attributed to developer or brokerage materials
+
+## Blog: escrow / beachfront-maritime zone (added 2026-08-08) — verify with a CR real-estate attorney
+- Escrow article: SUGEF registration/supervision framing for escrow companies; "commonly ~10% deposit" custom; fee-split-by-agreement custom; notary files transfer with Registro Nacional
+- Beachfront article: 200m maritime zone split (first 50m public, next 150m restricted/concession); 49% foreign-control limit on concessions; pre-maritime-law titled exceptions inside the zone
+- Both carry on-page "general information, not legal advice" disclaimers with regulator/registry links
+- Town-comparison articles (Tamarindo vs Playa Grande; Flamingo vs Conchal vs Potrero): market characterizations are the author's observations; Las Baulas park protection framing in the Playa Grande article should be sanity-checked against current zoning practice
