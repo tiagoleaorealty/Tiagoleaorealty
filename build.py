@@ -994,6 +994,7 @@ STATIC_PAGES = [
     ("/blog.html", "0.8", "weekly"),
     ("/blog-el-chante-tamarindo.html", "0.8", "monthly"),
     ("/villa-mariposa/", "0.8", "monthly"),
+    ("/villa-los-monos/", "0.8", "monthly"),
     ("/playas-del-coco.html", "0.8", "monthly"),
     ("/potrero.html", "0.8", "monthly"),
     ("/las-catalinas.html", "0.8", "monthly"),

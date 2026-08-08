@@ -36,6 +36,11 @@
       "permanent": true
     },
     {
+      "source": "/villa-los-monos",
+      "destination": "/villa-los-monos/",
+      "permanent": true
+    },
+    {
       "source": "/blog/villa-mariposa-catalina-cove/",
       "destination": "/villa-mariposa/",
       "permanent": true
