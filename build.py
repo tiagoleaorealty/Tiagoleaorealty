@@ -45,6 +45,13 @@ CUSTOM_BLOG_PAGES = {
     "villa-mariposa-catalina-cove": "/villa-mariposa/",
 }
 
+# Properties whose canonical page is a hand-built showcase, not the generated
+# template. Skipped at bake time (no /property/<slug>/ page, no sitemap entry);
+# vercel.json holds the matching redirect so the old URL forwards permanently.
+CUSTOM_PROPERTY_PAGES = {
+    "villa-los-monos-playa-grande": "/villa-los-monos/",
+}
+
 
 # ── helpers ──────────────────────────────────────────────────────
 
@@ -276,6 +283,8 @@ def build_properties(tpl, rows):
         raise SystemExit("BUILD FAILED: zero properties returned")
     urls = []
     for p in rows:
+        if (p.get("slug") or "").strip() in CUSTOM_PROPERTY_PAGES:
+            continue  # canonical page is a hand-built showcase; redirect covers the old URL
         pid = p["id"]
         name = p.get("name") or "Property in Guanacaste"
         loc = p.get("location") or "Guanacaste, Costa Rica"
@@ -680,6 +689,57 @@ def build_developments(tpl, rows):
 
 # ── blog posts ───────────────────────────────────────────────────
 
+def faq_ld_from_body(body, canon):
+    """Build FAQPage JSON-LD from a post's '## FAQ' section (### = question).
+
+    Answer engines lift Q&A pairs far more reliably when they are marked up;
+    the visible FAQ headings already exist in many posts, so this derives the
+    schema from them instead of maintaining it by hand. Returns None when the
+    post has no FAQ section or fewer than two complete pairs.
+    """
+    if not body:
+        return None
+    m = re.search(r"^## (?:FAQs?|Frequently Asked Questions|Common questions)\s*$(.*?)(?=^## |\Z)",
+                  body, re.M | re.S | re.I)
+    if not m:
+        return None
+
+    def plain(t):
+        t = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", t)   # links -> text
+        t = re.sub(r"\*\*?([^*]+)\*\*?", r"\1", t)        # bold/em markers
+        return " ".join(t.split())
+
+    pairs = []
+    for qm in re.finditer(r"^### (.+?)\s*$(.*?)(?=^### |\Z)", m.group(1), re.M | re.S):
+        q, a = plain(qm.group(1)), plain(qm.group(2))
+        if q and a:
+            pairs.append({
+                "@type": "Question",
+                "name": q,
+                "acceptedAnswer": {"@type": "Answer", "text": a},
+            })
+    if not pairs:
+        # Older posts write FAQ items as a bold line followed by the answer
+        # paragraph(s) instead of ### headings — parse that shape too.
+        for qm in re.finditer(r"^\*\*(.+?)\*\*\s*$(.*?)(?=^\*\*.+?\*\*\s*$|\Z)",
+                              m.group(1), re.M | re.S):
+            q, a = plain(qm.group(1)), plain(qm.group(2))
+            if q and a:
+                pairs.append({
+                    "@type": "Question",
+                    "name": q,
+                    "acceptedAnswer": {"@type": "Answer", "text": a},
+                })
+    if len(pairs) < 2:
+        return None
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": canon + "#faq",
+        "mainEntity": pairs,
+    }
+
+
 def build_posts(tpl, rows):
     if not rows:
         raise SystemExit("BUILD FAILED: zero blog posts returned")
@@ -738,6 +798,10 @@ def build_posts(tpl, rows):
             "mainEntityOfPage": canon,
         }
         doc = sub_once(doc, r"</head>", ld_script(ld) + "\n</head>", "article ld insert")
+
+        faq = faq_ld_from_body(p.get("body"), canon)
+        if faq:
+            doc = sub_once(doc, r"</head>", ld_script(faq) + "\n</head>", "faq ld insert")
 
         # Related articles: same topic first, then newest others — baked as
         # real internal links for crawlers; the runtime skips filled grids.
@@ -1223,7 +1287,8 @@ def write_llms_listings(props):
             bits.append(bb)
         if p.get("size"):
             bits.append(f"{fmt_num(p['size'])} m² built")
-        lines.append(f"- [{name}]({SITE}/property/{slug}/): " + " — ".join(bits))
+        url = CUSTOM_PROPERTY_PAGES.get(slug, f"/property/{slug}/")
+        lines.append(f"- [{name}]({SITE}{url}): " + " — ".join(bits))
     body = (f"## Current listings (auto-updated on every site build)\n\n"
             + "\n".join(lines)
             + f"\n- See all: {SITE}/properties.html\n\n")

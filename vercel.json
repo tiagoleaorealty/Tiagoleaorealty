@@ -46,6 +46,28 @@
       "permanent": true
     },
     {
+      "source": "/property/villa-los-monos-playa-grande/",
+      "destination": "/villa-los-monos/",
+      "permanent": true
+    },
+    {
+      "source": "/property/b8af5335-7331-4e6e-b43e-01814951ef00/",
+      "destination": "/villa-los-monos/",
+      "permanent": true
+    },
+    {
+      "source": "/property-detail.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "b8af5335-7331-4e6e-b43e-01814951ef00"
+        }
+      ],
+      "destination": "/villa-los-monos/",
+      "permanent": true
+    },
+    {
       "source": "/blog/villa-mariposa-catalina-cove/",
       "destination": "/villa-mariposa/",
       "permanent": true
