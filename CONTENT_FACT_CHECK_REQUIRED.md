@@ -39,3 +39,4 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Beachfront article: 200m maritime zone split (first 50m public, next 150m restricted/concession); 49% foreign-control limit on concessions; pre-maritime-law titled exceptions inside the zone
 - Both carry on-page "general information, not legal advice" disclaimers with regulator/registry links
 - Town-comparison articles (Tamarindo vs Playa Grande; Flamingo vs Conchal vs Potrero): market characterizations are the author's observations; Las Baulas park protection framing in the Playa Grande article should be sanity-checked against current zoning practice
+- Titled-beachfront percentage article: the 3-5% titled-oceanfront figure is labeled on-page as an industry estimate with no official statistic; Ley 6043 (1977) framing and grandfathered-title mechanics should be confirmed with a CR real-estate attorney
