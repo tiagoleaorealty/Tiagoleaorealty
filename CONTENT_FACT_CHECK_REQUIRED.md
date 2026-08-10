@@ -40,3 +40,8 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Both carry on-page "general information, not legal advice" disclaimers with regulator/registry links
 - Town-comparison articles (Tamarindo vs Playa Grande; Flamingo vs Conchal vs Potrero): market characterizations are the author's observations; Las Baulas park protection framing in the Playa Grande article should be sanity-checked against current zoning practice
 - Titled-beachfront percentage article: the 3-5% titled-oceanfront figure is labeled on-page as an industry estimate with no official statistic; Ley 6043 (1977) framing and grandfathered-title mechanics should be confirmed with a CR real-estate attorney
+
+## Blog: property tax / country comparison / build cost (added 2026-08-08) — verify with CR professionals
+- Property tax article: 0.25% base rate (matches buyers guide); Luxury Home Tax framed as threshold-updates-yearly with no specific figure; corporation annual tax framed without figures; "purchase price becomes new base" simplification — CPA check
+- CR vs MX vs PA article: Mexico restricted-zone fideicomiso (~50km coast) and Panama island/border restriction framing are high-level; article directs readers to in-country attorneys; "no army since 1948" historical fact
+- Build cost article: $1,200-2,500/m2 quoted range labeled as builder-quote observations, mid-2026 — Tiago to confirm range matches current local quotes; permit chain framing mirrors the land checklist article
