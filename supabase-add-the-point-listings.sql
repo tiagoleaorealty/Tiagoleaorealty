@@ -1,20 +1,22 @@
--- ═══════════════════════════════════════════════════════════════
+-- =================================================================
 --  Add two listings at The Point, Playa Avellanas
---  Run once in the Supabase SQL Editor (Dashboard > SQL Editor).
+--  Run once in the Supabase SQL Editor.
 --
---  Photos are served from this repo at /property-photos/... so they
---  go live with the next Vercel deploy — push the repo BEFORE or with
---  this insert, or the galleries will 404 until you do.
+--  ASCII-only, and long text is dollar-quoted, so apostrophes need
+--  no escaping and cannot break the parse.
 --
---  Source listings (co-broke / shared with written permission):
---    The Point 18 — lxcostarica.com/property/surf-sun-style-villa
---                   (The Agency Costa Rica / Grupo LX — Mitzam Fontiveros)
---    The Point 4  — henkelandwilliamsrealestate.com/listing/the-point-4
---                   (Team Henkel & Williams / Coldwell Banker Tamarindo)
--- ═══════════════════════════════════════════════════════════════
+--  Photos are served from the repo at /property-photos/... (already
+--  live on soldbytiago.com as of the push on 2026-08-28).
+--
+--  Sources (shared with written permission):
+--    The Point 18 - lxcostarica.com/property/surf-sun-style-villa
+--                   (The Agency Costa Rica / Grupo LX)
+--    The Point 4  - henkelandwilliamsrealestate.com/listing/the-point-4
+--                   (Team Henkel & Williams)
+-- =================================================================
 
 INSERT INTO properties
-  (name, slug, price, type, status, location, address, beds, baths, size, lot,
+  (name, slug, price, type, status, location, beds, baths, size, lot,
    short_desc, description, features, photos, lat, lng, featured, sort_order)
 VALUES
 (
@@ -23,14 +25,13 @@ VALUES
   '$459,000',
   'home', 'active',
   'The Point, Playa Avellanas',
-  '',
   4, 3.5, 303, 330,
-  'Brand-new 4-bedroom villa with an independent guest suite, steps from Playa Avellanas inside the gated community of The Point.',
-  'Set inside The Point, a gated community of 28 villas roughly 300 meters from the sand at Playa Avellanas, The Point 18 is a newly built four-bedroom villa that puts world-class surf, a resort-style community pool, and Guanacaste''s most relaxed beach town within walking distance.
+  $s18$Brand-new 4-bedroom villa with an independent guest suite, steps from Playa Avellanas inside the gated community of The Point.$s18$,
+  $d18$Set inside The Point, a gated community of 28 villas roughly 300 meters from the sand at Playa Avellanas, The Point 18 is a newly built four-bedroom villa that puts world-class surf, a resort-style community pool, and Guanacaste's most relaxed beach town within walking distance.
 
 A Brand-New Contemporary Villa Steps From Playa Avellanas
 
-Completed in 2023, the home offers 303 m² (3,261 sq ft) of living space on a 330 m² lot, plus a 28 m² (301 sq ft) covered parking area with two spaces. Four bedrooms and three and a half bathrooms are split between the main residence and an independent guest suite, giving the layout real flexibility for families, guests, or rental income.
+Completed in 2023, the home offers 303 square meters (3,261 sq ft) of living space on a 330 square meter lot, plus a 28 square meter (301 sq ft) covered parking area with two spaces. Four bedrooms and three and a half bathrooms are split between the main residence and an independent guest suite, giving the layout real flexibility for families, guests, or rental income.
 
 Open-Concept Living That Opens to the Pool
 
@@ -38,7 +39,7 @@ At the center of the main residence, an open-concept living area brings the kitc
 
 Four Bedrooms, Including a Private Guest Suite
 
-The main residence holds three spacious bedrooms, each designed around natural light and warm, honest materials. The primary suite opens directly to the terrace through glass sliders and includes an en-suite bath with dual vanities and contemporary finishes. A separate guest suite with its own private entrance and full bathroom rounds out the home — ideal for visiting family and friends, a home office, or short-term rental income.
+The main residence holds three spacious bedrooms, each designed around natural light and warm, honest materials. The primary suite opens directly to the terrace through glass sliders and includes an en-suite bath with dual vanities and contemporary finishes. A separate guest suite with its own private entrance and full bathroom rounds out the home, ideal for visiting family and friends, a home office, or short-term rental income.
 
 Life Inside The Point
 
@@ -46,9 +47,9 @@ The Point was developed in four planned phases and designed to sit lightly in it
 
 Location: Avellanas, With Tamarindo Close By
 
-Playa Avellanas is a few minutes'' walk away, with consistent surf, wide golden sand, and beachfront dining at Lola''s. Tamarindo and Langosta are roughly 25 to 30 minutes north, and the coming Waldorf Astoria Guanacaste, minutes from the community, should continue to lift values across this stretch of coast. Liberia International Airport (LIR) is about an hour and fifteen minutes away.
+Playa Avellanas is a few minutes' walk away, with consistent surf, wide golden sand, and beachfront dining at Lola's. Tamarindo and Langosta are roughly 25 to 30 minutes north, and the coming Waldorf Astoria Guanacaste, minutes from the community, should continue to lift values across this stretch of coast. Liberia International Airport (LIR) is about an hour and fifteen minutes away.
 
-Architecturally, the villa keeps to clean lines, natural textures, and a refined tropical aesthetic — the easy, unfussy sophistication that has made Playa Avellanas one of Guanacaste''s most desirable coastal addresses.',
+Architecturally, the villa keeps to clean lines, natural textures, and a refined tropical aesthetic, the easy, unfussy sophistication that has made Playa Avellanas one of Guanacaste's most desirable coastal addresses.$d18$,
   ARRAY[
     'Brand New (2023)',
     'Gated Community',
@@ -112,14 +113,13 @@ Architecturally, the villa keeps to clean lines, natural textures, and a refined
   '$365,000',
   'home', 'active',
   'The Point, Playa Avellanas',
-  '',
   2, 2, 105, 223,
-  'Turnkey, fully furnished 2-bedroom villa with a proven vacation-rental track record, minutes from Playa Avellanas.',
-  'The Point 4 is a fully furnished, turnkey two-bedroom villa inside The Point, the gated community just minutes from the sand at Playa Avellanas. It is already operating as a high-performing vacation rental, which makes it one of the more straightforward entry points into Guanacaste beach real estate at this price.
+  $s4$Turnkey, fully furnished 2-bedroom villa with a proven vacation-rental track record, minutes from Playa Avellanas.$s4$,
+  $d4$The Point 4 is a fully furnished, turnkey two-bedroom villa inside The Point, the gated community just minutes from the sand at Playa Avellanas. It is already operating as a high-performing vacation rental, which makes it one of the more straightforward entry points into Guanacaste beach real estate at this price.
 
 Turnkey and Move-In Ready
 
-Professionally designed and sold fully furnished, the 105 m² home sits on a 223 m² lot with two bedrooms and two bathrooms. Contemporary tropical architecture meets relaxed coastal living here: soaring ceilings, expansive glass, and an open-concept layout that connects the indoor living spaces to lush tropical gardens and shaded outdoor entertaining areas. Warm natural finishes, mature landscaping, and abundant natural light give the property a private, quiet feel.
+Professionally designed and sold fully furnished, the 105 square meter home sits on a 223 square meter lot with two bedrooms and two bathrooms. Contemporary tropical architecture meets relaxed coastal living here: soaring ceilings, expansive glass, and an open-concept layout that connects the indoor living spaces to lush tropical gardens and shaded outdoor entertaining areas. Warm natural finishes, mature landscaping, and abundant natural light give the property a private, quiet feel.
 
 A Proven Rental Performer
 
@@ -127,13 +127,13 @@ This is not a projection. The villa has an established track record as a vacatio
 
 Gated Community Amenities
 
-Ownership at The Point includes 24/7 security, a large community pool, and beautifully landscaped common areas set against Costa Rica''s natural surroundings.
+Ownership at The Point includes 24/7 security, a large community pool, and beautifully landscaped common areas set against Costa Rica's natural surroundings.
 
 Location: Minutes From Avellanas Surf and Dining
 
-The home is a short distance from the surf, beaches, and beachfront restaurants of Playa Avellanas, and stays within easy reach of Tamarindo and Daniel Oduber Quirós International Airport (LIR) in Liberia.
+The home is a short distance from the surf, beaches, and beachfront restaurants of Playa Avellanas, and stays within easy reach of Tamarindo and Daniel Oduber Quiros International Airport (LIR) in Liberia.
 
-Turnkey convenience, modern tropical design, proven rental performance, and a prime beachside location — an unusually complete package in one of Costa Rica''s most sought-after coastal destinations.',
+Turnkey convenience, modern tropical design, proven rental performance, and a prime beachside location: an unusually complete package in one of Costa Rica's most sought-after coastal destinations.$d4$,
   ARRAY[
     'Turnkey',
     'Fully Furnished',
@@ -180,7 +180,7 @@ Turnkey convenience, modern tropical design, proven rental performance, and a pr
   (SELECT COALESCE(MAX(sort_order), 0) + 2 FROM properties)
 );
 
--- Verify
-SELECT name, slug, price, beds, baths, size, lot, array_length(photos, 1) AS photo_count, sort_order
+SELECT name, slug, price, beds, baths, size, lot,
+       array_length(photos, 1) AS photo_count, sort_order
 FROM properties
 WHERE slug IN ('the-point-18-playa-avellanas', 'the-point-4-playa-avellanas');
