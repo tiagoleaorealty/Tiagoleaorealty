@@ -32,3 +32,5 @@ secrets.json
 *.webm
 !hero.mp4
 !hero.webm
+!hero-mobile.mp4
+!hero-mobile.webm

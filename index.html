@@ -2499,15 +2499,24 @@
     var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
     var frugal = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
 
-    if (mq('(max-width: 900px)') || mq('(prefers-reduced-motion: reduce)') || frugal) {
+    // Reduced motion and metered/slow connections still skip it outright.
+    // Small screens no longer do — they get a lighter encode instead.
+    if (mq('(prefers-reduced-motion: reduce)') || frugal) {
       v.remove();
       return;
     }
 
     function start() {
+      // Phones get a more compressed cut of the same 1080p frame. Resolution
+      // is kept because portrait crops to roughly the centre third, where
+      // downscaling would show; the saving comes from compression instead.
+      var small = mq('(max-width: 900px)');
       // WebM/VP9 is meaningfully smaller where it is supported; Safari gets MP4.
       var webm = v.canPlayType('video/webm; codecs="vp9"');
-      v.src = (webm === 'probably' || webm === 'maybe') ? 'hero.webm' : 'hero.mp4';
+      var useWebm = (webm === 'probably' || webm === 'maybe');
+      v.src = small
+        ? (useWebm ? 'hero-mobile.webm' : 'hero-mobile.mp4')
+        : (useWebm ? 'hero.webm' : 'hero.mp4');
 
       v.addEventListener('canplay', function () {
         v.classList.add('ready');

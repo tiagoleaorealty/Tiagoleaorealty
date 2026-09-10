@@ -7,8 +7,10 @@ skipped entirely whenever playing it would cost more than it gives.
 
 ## Adding or replacing the video
 
-Drop two files in the repo root: **`hero.mp4`** and **`hero.webm`**. Nothing
-else to wire up. If they are absent the element removes itself and the still
+Run `./encode-hero.sh`, which produces all five files: **`hero.mp4`** and
+**`hero.webm`** for desktop, **`hero-mobile.mp4`** and **`hero-mobile.webm`**
+(same 1080p frame, more compressed) for phones, and **`hero-poster.jpg`**.
+Nothing else to wire up. If they are absent the element removes itself and the still
 simply stays, so the site is never broken by a missing file.
 
 macOS's built-in `avconvert` is **not** usable here: its presets have no
@@ -90,6 +92,13 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
 - Serves WebM/VP9 where supported and MP4 to Safari.
 - Pauses when scrolled out of view and when the tab is hidden, so a looping
   decode is not burning CPU and battery down the page.
-- Skips the video entirely on: screens under 900px, `prefers-reduced-motion`,
-  and `Save-Data` / 2g connections.
+- Serves the lighter mobile cut under 900px. Resolution is not reduced there:
+  portrait crops to roughly the centre third of a 16:9 frame, so a smaller
+  encode would look soft exactly where it is magnified. The saving comes from
+  compression — 2.3 MB / 1.6 MB against 3.8 MB / 2.6 MB.
+- Skips the video entirely on `prefers-reduced-motion` and on `Save-Data` or
+  2g connections.
+- iOS autoplay needs `muted`, `playsinline` and a programmatic `play()`, all of
+  which are in place. It will still refuse in Low Power Mode — the poster
+  shows instead, which is the correct outcome.
 - Removes itself on any load error.

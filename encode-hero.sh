@@ -37,8 +37,25 @@ echo "Encoding ${DUR}s from ${START}s of $SRC ..."
   -c:v libvpx-vp9 -crf 44 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
   hero.webm
 
+# Lighter cuts for phones. Resolution stays 1080p because portrait crops to
+# roughly the centre third, where downscaling shows; the saving is bought
+# with compression instead.
+"$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
+  -vf "scale=1920:-2,fps=30" \
+  -c:v libx264 -profile:v high -crf 32 -preset slow -pix_fmt yuv420p \
+  -movflags +faststart hero-mobile.mp4
+
+"$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
+  -vf "scale=1920:-2,fps=30" \
+  -c:v libvpx-vp9 -crf 50 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
+  hero-mobile.webm
+
+# Poster is frame 0 of the desktop cut, so the still and the video's first
+# frame match and nothing visibly changes when playback starts.
+"$FFMPEG" -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
+
 echo
-ls -lh hero.mp4 hero.webm
+ls -lh hero.mp4 hero.webm hero-mobile.mp4 hero-mobile.webm hero-poster.jpg
 echo
 echo "Target is under 4 MB for hero.mp4. If it is over, shorten the clip"
 echo "before lowering quality:  ./encode-hero.sh 0 8"
