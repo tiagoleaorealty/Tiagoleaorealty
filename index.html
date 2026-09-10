@@ -502,16 +502,19 @@
       letter-spacing: -0.03em;
       color: #fff;
       margin-bottom: 28px;
+      text-wrap: balance;
       text-shadow: 0 2px 24px rgba(0,0,0,0.35);
     }
     .hero-headline em {
       font-style: normal;
       color: inherit;          /* second line reads white with the first */
     }
+    .hero-headline .hl-dot { color: var(--accent); }
     .hero-sub {
       font-size: clamp(16px, 1.4vw, 19px);
       color: rgba(255,255,255,0.92);
       max-width: 47ch;          /* a readable measure, not the full column */
+      text-wrap: pretty;        /* stops a single word orphaning on the last line */
       line-height: 1.55;
       margin-bottom: 44px;
       text-shadow: 0 1px 16px rgba(0,0,0,0.4);
@@ -1807,10 +1810,10 @@
         <div class="hero-eyebrow reveal">Guanacaste, Costa Rica</div>
         <h1 class="hero-headline reveal reveal-delay-1">
           You found paradise<br />
-          <em>let's make it yours.</em>
+          <em>let's make it yours<span class="hl-dot">.</span></em>
         </h1>
         <p class="hero-sub reveal reveal-delay-2">
-          Homes, condos and land across Guanacaste's Gold Coast, from Tamarindo to Conchal. I represent buyers and sellers with KRAIN Luxury Real Estate, and I live on this coast full time.
+          Discover homes, condos, and land across Guanacaste's most sought-after beach communities, with local expertise every step of the way.
         </p>
         <div class="hero-actions reveal reveal-delay-3">
           <a href="properties.html" class="btn-primary">See Homes <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
