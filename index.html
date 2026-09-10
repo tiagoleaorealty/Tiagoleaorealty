@@ -439,7 +439,7 @@
       position: relative;
       overflow: hidden;
       padding: 0;
-      background-image: url("Real Estate Photo.jpg");
+      background-image: url("hero-poster.jpg");
       background-size: cover;
       background-position: center center;
     }
@@ -462,7 +462,9 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.38) 0%, transparent 42%);
+      background:
+        linear-gradient(to right, rgba(16,24,16,0.78) 0%, rgba(16,24,16,0.52) 34%, rgba(16,24,16,0) 66%),
+        linear-gradient(to bottom, rgba(16,24,16,0.42) 0%, rgba(16,24,16,0) 34%);
       z-index: 1;
     }
     /* Hero grain removed for clean photo */
@@ -481,6 +483,7 @@
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 24px;
+      text-shadow: 0 1px 14px rgba(0,0,0,0.55);
       display: flex;
       align-items: center;
       gap: 14px;
@@ -495,21 +498,23 @@
     .hero-headline {
       font-size: clamp(38px, 5vw, 72px);
       font-weight: 700;
-      line-height: 1.0;
+      line-height: 1.02;
       letter-spacing: -0.03em;
       color: #fff;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.35);
     }
     .hero-headline em {
       font-style: normal;
       color: inherit;          /* second line reads white with the first */
     }
     .hero-sub {
-      font-size: clamp(16px, 1.4vw, 18px);
-      color: rgba(255,255,255,0.8);
-      max-width: 580px;
-      line-height: 1.6;
-      margin-bottom: 40px;
+      font-size: clamp(16px, 1.4vw, 19px);
+      color: rgba(255,255,255,0.92);
+      max-width: 40ch;          /* a readable measure, not the full column */
+      line-height: 1.55;
+      margin-bottom: 44px;
+      text-shadow: 0 1px 16px rgba(0,0,0,0.4);
     }
     .hero-actions {
       display: flex;
@@ -1640,6 +1645,13 @@
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
       #hero { background-position: 15% center; }
+      .hero-bg {
+        background: linear-gradient(to bottom,
+          rgba(16,24,16,0.50) 0%,
+          rgba(16,24,16,0.20) 20%,
+          rgba(16,24,16,0.58) 52%,
+          rgba(16,24,16,0.72) 100%);
+      }
       .hero-left { padding: 100px 24px 72px; max-width: 100%; }
       .hero-actions { gap: 12px; }
       section { padding: 72px 24px; }
@@ -1787,7 +1799,7 @@
     <!-- src is set by JS, never in markup: that keeps the video off the
          critical path and lets it be skipped entirely on mobile, on reduced
          motion, and on metered or slow connections. -->
-    <video id="hero-video" class="hero-video" poster="Real Estate Photo.jpg"
+    <video id="hero-video" class="hero-video" poster="hero-poster.jpg"
            muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
     <div class="hero-bg"></div>
     <div class="hero-left">
@@ -1798,7 +1810,7 @@
           <em>let's make it yours.</em>
         </h1>
         <p class="hero-sub reveal reveal-delay-2">
-          Buying or selling property in Guanacaste? My job is to make your life easier. I combine local market knowledge, professional property marketing, and hands-on representation to help you make the right decisions, keep the transaction moving, and coordinate the people and details around it.
+          Buying or selling on the Guanacaste coast? I grew up on these beaches, I know what these towns are really worth, and I'll tell you straight.
         </p>
         <div class="hero-actions reveal reveal-delay-3">
           <a href="properties.html" class="btn-primary">See Homes <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>

@@ -69,9 +69,17 @@ Two things worth knowing for next time:
 - **macOS's built-in `avconvert` cannot do this.** Its presets have no bitrate
   control: the same clip came out 12 MB at 1080p and still 8.8 MB at 720p.
 
-The poster is the existing hero still. If you change the hero photo, update the
-`poster` attribute on `#hero-video` in `index.html` to match, or the fade will
-jump.
+**The poster is a frame of the video itself** (`hero-poster.jpg`, extracted
+from `hero.mp4` frame 0), used both as `#hero`'s `background-image` and the
+video's `poster`. That is deliberate: with a different photo there, the hero
+visibly cross-faded from one image to another when the video arrived. Matching
+them means the still simply starts moving.
+
+Regenerate it whenever the clip changes:
+
+```bash
+ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
+```
 
 ## What the loader does
 
