@@ -2583,16 +2583,13 @@
       return;
     }
 
-    // Reduce Motion is different. It used to remove the video outright, which
-    // is indistinguishable from a broken page — the poster is frame 0 of the
-    // clip, so "no video" and "frozen video" look identical. On iOS the
-    // setting lives under Accessibility > Motion and is commonly on, which
-    // silently disabled the hero in Safari and Chrome alike.
-    // Now: no autoplay, but the video is loaded and a deliberate tap starts
-    // it. Motion the person asked for is motion they can have.
+    // Reduce Motion does not gate the hero loop. It used to remove the video,
+    // then to suppress autoplay — and since the setting is commonly on, that
+    // is what kept the clip from playing on Tiago's own phone. His call, on
+    // his own site, for a slow silent background clip. The Play button below
+    // still covers a genuine autoplay refusal.
     var reduced = mq('(prefers-reduced-motion: reduce)');
-    if (window.__heroDebug) window.__heroDebug('reduced-motion: ' + reduced +
-      (reduced ? ' — autoplay off, tap the hero to play' : ''));
+    if (window.__heroDebug) window.__heroDebug('reduced-motion: ' + reduced + ' (does not gate autoplay)');
 
     function start() {
       // Phones get a more compressed cut of the same 1080p frame. Resolution
@@ -2619,8 +2616,6 @@
       var hideBtn = function () { if (btn) btn.classList.remove('show'); };
 
       var attempt = function (userAsked) {
-        // Reduce Motion is honoured until the person asks for motion.
-        if (reduced && !userAsked) { showBtn(); return; }
         var p = v.play();
         if (p && p.then) {
           p.then(hideBtn).catch(function () {

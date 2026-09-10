@@ -27,27 +27,27 @@ echo "Encoding ${DUR}s from ${START}s of $SRC ..."
 # download finishes.
 "$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
   -vf "scale=1920:-2,fps=30" \
-  -c:v libx264 -profile:v high -level:v 4.0 -crf 28 -preset slow -pix_fmt yuv420p \
+  -c:v libx264 -profile:v high -level:v 4.0 -crf 24 -preset slow -pix_fmt yuv420p \
   -movflags +faststart hero.mp4
 
 # VP9 for Chrome/Firefox — ~a third smaller than the H.264 at these settings.
 # Note VP9's CRF scale is not H.264's: 36 produced a BIGGER file than the MP4.
 "$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
   -vf "scale=1920:-2,fps=30" \
-  -c:v libvpx-vp9 -crf 44 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
+  -c:v libvpx-vp9 -crf 38 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
   hero.webm
 
 # Lighter cuts for phones. Resolution stays 1080p because portrait crops to
 # roughly the centre third, where downscaling shows; the saving is bought
 # with compression instead.
 "$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
-  -vf "scale=1920:-2,fps=25" \
-  -c:v libx264 -profile:v high -level:v 4.0 -crf 36 -preset slow -pix_fmt yuv420p \
+  -vf "scale=1920:-2,fps=30" \
+  -c:v libx264 -profile:v high -level:v 4.0 -crf 30 -preset slow -pix_fmt yuv420p \
   -movflags +faststart hero-mobile.mp4
 
 "$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
-  -vf "scale=1920:-2,fps=25" \
-  -c:v libvpx-vp9 -crf 52 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
+  -vf "scale=1920:-2,fps=30" \
+  -c:v libvpx-vp9 -crf 44 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
   hero-mobile.webm
 
 # Poster is frame 0 of the desktop cut, so the still and the video's first

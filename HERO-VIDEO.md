@@ -51,8 +51,9 @@ feels laggy:
 - `-t 8` caps the length. A loop that reads as ambient does not need to be long.
 - `scale=1920:-2` — 1080p. 4K in a hero is invisible and costs several times
   the bytes and the decode.
-- `-crf 28` (H.264) / `-crf 36` (VP9) are the quality dials. Higher number,
-  smaller file. Nudge down if it looks soft on your footage.
+- `-crf 24` desktop / `-crf 30` mobile (H.264), and `-crf 38` / `-crf 44`
+  (VP9), are the quality dials. Higher number, smaller file. These were raised
+  from 28/36/44/52 because the first pass looked soft next to other sites.
 - `-movflags +faststart` moves the index to the front of the MP4 so it can
   start playing before it has finished downloading.
 - **`-level:v 4.0` is not optional.** Without it, `-preset slow` uses five
@@ -71,8 +72,11 @@ python3 -c "d=open('hero.mp4','rb').read(400000); i=d.find(b'avcC'); print('prof
 **Target under 4 MB for the MP4.** Check with `ls -lh hero.*`. If it is far
 over, shorten the clip before you lower the quality.
 
-Current files, from a 1920x1080 10.8s master (19 MB): **hero.mp4 3.8 MB,
-hero.webm 2.6 MB**, both exactly 10.00s.
+Current files, from a 1920x1080 10.8s master (19 MB), all 10.00s at 30fps:
+**hero.mp4 6.3 MB / hero.webm 4.3 MB** desktop, **hero-mobile.mp4 3.0 MB /
+hero-mobile.webm 2.6 MB** for phones. Size affects buffering, not time to
+first frame — faststart means playback begins as soon as the first frame
+lands.
 
 Two things worth knowing for next time:
 
@@ -120,12 +124,12 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
   compression — 2.3 MB / 1.6 MB against 3.8 MB / 2.6 MB.
 - Skips the video entirely on `Save-Data` or a 2g connection — that is about
   someone's data cost.
-- **Reduce Motion does not remove the video, it only stops autoplay.** On iOS
-  the setting is Settings > Accessibility > Motion > Reduce Motion, it is
-  commonly on, and it applies to Safari and Chrome alike since both are WebKit.
-  Removing the element made that indistinguishable from a broken page: the
-  poster is frame 0 of the clip, so "no video" and "frozen video" look exactly
-  the same. The clip now loads and a tap on the hero starts it.
+- **Reduce Motion does not gate the video at all** — it autoplays regardless.
+  The setting is commonly on (iOS: Settings > Accessibility > Motion), and
+  gating on it is what stopped the hero playing on Tiago's own phone through
+  several rounds. A deliberate decision for a slow, silent, decorative
+  background clip on his own site; the Play button still covers a genuine
+  autoplay refusal.
 - iOS autoplay needs `muted`, `playsinline` and a programmatic `play()`. The
   order matters: with `preload="none"` Safari will not fetch on `load()`
   alone, so waiting for `canplay` before calling `play()` deadlocks — the
