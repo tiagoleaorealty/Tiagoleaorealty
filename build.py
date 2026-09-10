@@ -258,10 +258,52 @@ def agent_ld(knows_about):
         "url": SITE,
         "telephone": "+506-8302-8660",
         "email": "tiago@soldbytiago.com",
-        "worksFor": {"@type": "Organization", "name": "KRAIN Luxury Real Estate"},
+        "image": SITE + "/Headshot.jpg",
+        "worksFor": {
+            "@type": "Organization",
+            "name": "KRAIN Luxury Real Estate",
+            "url": "https://krainrealestate.com",
+        },
         "areaServed": "Guanacaste, Costa Rica",
+        # Repeated on every page on purpose: these are the links that let a
+        # crawler resolve this node to the same real person across the web.
+        "sameAs": [
+            "https://www.instagram.com/soldbytiago/",
+            "https://www.linkedin.com/in/tiago-leao-643b6b339/",
+            "https://krainrealestate.com/agent/tiago-leao",
+        ],
         "knowsAbout": knows_about,
     }
+
+
+# Static root pages that carry the compact #agent node. Every public page
+# should assert the same entity — "this is Tiago Leao, a real estate agent in
+# Guanacaste, with KRAIN" — so search engines and AI crawlers resolve one agent
+# rather than a set of unrelated mentions. index.html holds the full definition
+# and how-i-sell.html has its own node; both are omitted here.
+# The value is the page's knowsAbout topic.
+AGENT_LD_PAGES = {
+    "about.html": "Relocating to Guanacaste, Costa Rica",
+    "properties.html": "Homes and condos for sale in Guanacaste, Costa Rica",
+    "communities.html": "Beach towns and communities of Guanacaste, Costa Rica",
+    "developments.html": "New developments and gated communities in Guanacaste, Costa Rica",
+    "schools.html": "Schools on the Guanacaste Gold Coast, Costa Rica",
+    "blog.html": "Buying and owning property in Guanacaste, Costa Rica",
+    "buyers-guide.html": "Buying property in Costa Rica as a foreigner",
+    "sellers-guide.html": "Selling property in Guanacaste, Costa Rica",
+    "blog-el-chante-tamarindo.html": "El Chante, Tamarindo, Costa Rica",
+    "tamarindo.html": "Tamarindo, Guanacaste, Costa Rica",
+    "playa-grande.html": "Playa Grande, Guanacaste, Costa Rica",
+    "flamingo.html": "Playa Flamingo, Guanacaste, Costa Rica",
+    "conchal.html": "Playa Conchal, Guanacaste, Costa Rica",
+    "potrero.html": "Playa Potrero, Guanacaste, Costa Rica",
+    "avellanas.html": "Playa Avellanas, Guanacaste, Costa Rica",
+    "langosta.html": "Playa Langosta, Guanacaste, Costa Rica",
+    "las-catalinas.html": "Las Catalinas, Guanacaste, Costa Rica",
+    "marbella.html": "Marbella, Guanacaste, Costa Rica",
+    "nosara.html": "Nosara, Guanacaste, Costa Rica",
+    "playas-del-coco.html": "Playas del Coco, Guanacaste, Costa Rica",
+}
 
 
 def fill_cta_name(doc, default, name, label):
@@ -382,7 +424,7 @@ def build_properties(tpl, rows):
                 "@type": "Offer",
                 "priceCurrency": "USD",
                 "availability": "https://schema.org/SoldOut" if sold else "https://schema.org/InStock",
-                "seller": {"@type": "RealEstateAgent", "name": "Tiago Leao", "url": SITE},
+                "seller": {"@id": SITE + "/#agent"},
             },
         }
         if price_num:
@@ -392,9 +434,11 @@ def build_properties(tpl, rows):
         if p.get("size"):
             ld["about"]["floorSize"] = {"@type": "QuantitativeValue", "value": fmt_num(p["size"]), "unitCode": "MTK"}
         ld["about"] = {k: v for k, v in ld["about"].items() if v is not None}
+        agent = agent_ld(f"{name}, Guanacaste, Costa Rica")
         doc = sub_once(
             doc, r'<script type="application/ld\+json">.*?</script>',
-            ld_script(ld).replace("\\", "\\\\"), "property JSON-LD", flags=re.S,
+            (ld_script(ld) + "\n" + ld_script(agent)).replace("\\", "\\\\"),
+            "property JSON-LD", flags=re.S,
         )
 
         if sold:
@@ -847,10 +891,11 @@ def build_posts(tpl, rows):
             "dateModified": upd,
             "image": og_image,
             "author": {"@type": "Person", "@id": f"{SITE}/#person", "name": "Tiago Leao", "url": f"{SITE}/about.html"},
-            "publisher": {"@type": "RealEstateAgent", "name": "Tiago Leao | Guanacaste Real Estate", "url": SITE},
+            "publisher": {"@id": SITE + "/#agent"},
             "mainEntityOfPage": canon,
         }
-        doc = sub_once(doc, r"</head>", ld_script(ld) + "\n</head>", "article ld insert")
+        agent = agent_ld(f"{title_txt} — Guanacaste, Costa Rica real estate")
+        doc = sub_once(doc, r"</head>", ld_script(ld) + "\n" + ld_script(agent) + "\n</head>", "article ld insert")
 
         faq = faq_ld_from_body(p.get("body"), canon)
         if faq:
@@ -1021,6 +1066,13 @@ def _school_card(s):
 
 
 def bake_roots(props, schools, posts, devs=None):
+    # Every public page asserts the same #agent entity, so a crawler landing on
+    # a town page or a guide knows whose site it is without visiting the home
+    # page. index.html and how-i-sell.html carry their own nodes already.
+    for page, topic in AGENT_LD_PAGES.items():
+        inject(page, "<!--BAKE:AGENT-LD-->", "<!--/BAKE:AGENT-LD-->",
+               ld_script(agent_ld(topic)), f"agent ld {page}")
+
     inject("properties.html", "<!--BAKE:LISTINGS-->", "<!--/BAKE:LISTINGS-->",
            "".join(_prop_card(p) for p in props), "listings")
     # The shell used to hardcode "6 results" and "0 results"; keep both counts real.
