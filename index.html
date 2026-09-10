@@ -2498,6 +2498,35 @@
     var v = document.getElementById('hero-video');
     if (!v) return;
 
+    // Visit /?herodebug=1 on the phone to see exactly what the video is doing.
+    // Diagnosing this from a desktop preview has not worked; this reports from
+    // the actual device.
+    if (/[?&]herodebug=1/.test(location.search)) {
+      var box = document.createElement('div');
+      box.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:9999;' +
+        'background:rgba(20,30,20,.94);color:#efeae3;font:12px/1.5 monospace;' +
+        'padding:10px 12px;border-radius:8px;max-height:45vh;overflow:auto;white-space:pre-wrap';
+      document.body.appendChild(box);
+      var lines = [];
+      window.__heroDebug = function (m) {
+        lines.push(m);
+        box.textContent = lines.join('\n') +
+          '\n— readyState ' + v.readyState + ' paused ' + v.paused +
+          ' netState ' + v.networkState +
+          (v.error ? ' ERR code ' + v.error.code : '');
+      };
+      window.__heroDebug('ua: ' + navigator.userAgent.slice(0, 90));
+      window.__heroDebug('webm says: "' + v.canPlayType('video/webm; codecs="vp9"') + '"  mp4 says: "' + v.canPlayType('video/mp4; codecs="avc1.64001f"') + '"');
+      window.__heroDebug('width ' + window.innerWidth + '  reduced-motion ' +
+        (window.matchMedia('(prefers-reduced-motion: reduce)').matches) +
+        '  saveData ' + !!(navigator.connection && navigator.connection.saveData) +
+        '  effectiveType ' + ((navigator.connection || {}).effectiveType || 'n/a'));
+      ['loadeddata', 'playing', 'stalled', 'suspend', 'waiting', 'canplay', 'pause'].forEach(function (ev) {
+        v.addEventListener(ev, function () { window.__heroDebug('event: ' + ev); });
+      });
+      setInterval(function () { window.__heroDebug('tick'); lines = lines.slice(-14); }, 3000);
+    }
+
     var mq = function (q) { return window.matchMedia && window.matchMedia(q).matches; };
     var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
     var frugal = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
@@ -2505,7 +2534,8 @@
     // Reduced motion and metered/slow connections still skip it outright.
     // Small screens no longer do — they get a lighter encode instead.
     if (mq('(prefers-reduced-motion: reduce)') || frugal) {
-      v.remove();
+      if (window.__heroDebug) window.__heroDebug('SKIPPED: reduced-motion or saveData/2g');
+      else v.remove();
       return;
     }
 
@@ -2514,9 +2544,19 @@
       // is kept because portrait crops to roughly the centre third, where
       // downscaling would show; the saving comes from compression instead.
       var small = mq('(max-width: 900px)');
-      // WebM/VP9 is meaningfully smaller where it is supported; Safari gets MP4.
-      var webm = v.canPlayType('video/webm; codecs="vp9"');
-      var useWebm = (webm === 'probably' || webm === 'maybe');
+
+      // Candidate list, tried in order. WebM/VP9 is a third smaller where it
+      // genuinely works, but Safari answers canPlayType('video/webm') with
+      // "maybe" on hardware that then fails to decode it — so MP4 goes first
+      // on Safari, and any failure falls through to the next candidate rather
+      // than deleting the element. Trusting canPlayType is what left the phone
+      // showing a still frame.
+      var isSafari = /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(navigator.userAgent) ||
+                     (/iP(hone|ad|od)/.test(navigator.userAgent) && !window.MSStream);
+      var mp4 = small ? 'hero-mobile.mp4' : 'hero.mp4';
+      var webmFile = small ? 'hero-mobile.webm' : 'hero.webm';
+      var canWebm = v.canPlayType('video/webm; codecs="vp9"');
+      var sources = isSafari || !canWebm ? [mp4, webmFile] : [webmFile, mp4];
 
       var reveal = function () { v.classList.add('ready'); };
       var attempt = function () {
@@ -2531,13 +2571,22 @@
       v.preload = 'auto';
       v.addEventListener('loadeddata', reveal, { once: true });
       v.addEventListener('playing', reveal, { once: true });
-      v.addEventListener('error', function () { v.remove(); }, { once: true });
 
-      v.src = small
-        ? (useWebm ? 'hero-mobile.webm' : 'hero-mobile.mp4')
-        : (useWebm ? 'hero.webm' : 'hero.mp4');
-      v.load();
-      attempt();
+      var at = 0;
+      var tryNext = function () {
+        if (at >= sources.length) { v.remove(); return; }   // genuinely unplayable
+        var file = sources[at++];
+        v.src = file;
+        v.load();
+        attempt();
+        if (window.__heroDebug) window.__heroDebug('trying ' + file);
+      };
+      // A decode failure moves to the next candidate instead of giving up.
+      v.addEventListener('error', function () {
+        if (window.__heroDebug) window.__heroDebug('error on ' + v.currentSrc.split('/').pop());
+        tryNext();
+      });
+      tryNext();
 
       // Low Power Mode on iOS refuses muted autoplay outright. Start on the
       // first real interaction instead of leaving a still frame forever.

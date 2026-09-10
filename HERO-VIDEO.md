@@ -89,7 +89,11 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
 - Waits for the browser to be idle (`requestIdleCallback`, 2.5s timeout) before
   fetching anything.
 - Fades in only on `canplay`, over the still — no flash, no layout shift.
-- Serves WebM/VP9 where supported and MP4 to Safari.
+- Tries a list of candidates in order and falls through on failure rather than
+  giving up. **Safari and every iOS browser get MP4 first**: Safari answers
+  `canPlayType('video/webm; codecs="vp9"')` with "maybe" on hardware that then
+  cannot decode it, and the old code trusted that answer, served the WebM, and
+  deleted the element when it failed — which is why the phone showed a still.
 - Pauses when scrolled out of view and when the tab is hidden, so a looping
   decode is not burning CPU and battery down the page.
 - Serves the lighter mobile cut under 900px. Resolution is not reduced there:
@@ -110,3 +114,14 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
   no `requestIdleCallback`, and an `in` check passes on a property that exists
   but is not callable.
 - Removes itself on any load error.
+
+
+## Diagnosing it on a phone
+
+A desktop preview cannot reproduce Safari's media behaviour, so the page has an
+on-device readout: open **`/?herodebug=1`** on the phone. A panel at the bottom
+reports the user agent, what the browser claims it can play, the viewport,
+reduced-motion and Save-Data state, which file is being tried, every media
+event, and `readyState` / `networkState` / any error code.
+
+If the video is not playing, that panel says why.
