@@ -219,6 +219,9 @@
             <button type="button" class="btn" style="float:right;font-size:12px;padding:7px 12px"
                     onclick="finishAllDrafts()"
                     title="Copy photos, set status from the source page, record authorization and publish every unpublished draft">Finish &amp; publish all drafts</button>
+            <button type="button" class="btn" style="float:right;font-size:12px;padding:7px 12px;margin-right:8px"
+                    onclick="removeDuplicateListings()"
+                    title="Find listings that appear more than once and remove the extra copies">Remove duplicates</button>
           </h2>
           <div id="bulk-finish" hidden style="margin-bottom:14px;"></div>
           <div id="imports-list"><div class="muted">Loading…</div></div>
@@ -1564,6 +1567,126 @@ async function finishAllDrafts() {
   renderImportsList();
   showToast(`Finished: ${published} published, ${skipped} need attention, ${errored} failed.`);
   if (published) maybeOfferSiteBuild();
+}
+
+
+// ══════════════════════════════════════════════════════════════
+//  REMOVE DUPLICATE LISTINGS
+//
+//  Cleans up what the old publish path wrote: it always INSERTed, and on the
+//  unique-slug collision a re-run guarantees it appended a random suffix and
+//  inserted anyway. publishRow() is idempotent now, so this is a one-off
+//  repair rather than something that should ever be needed again.
+//
+//  Keeps the OLDEST row of each name — it owns the clean slug and any hand
+//  curation — but first adopts the larger photo set if a newer copy imported
+//  more, and carries over a featured flag rather than deleting it.
+// ══════════════════════════════════════════════════════════════
+
+function findDuplicateGroups() {
+  const byName = {};
+  (allProperties || []).forEach((p) => {
+    const k = String(p.name || '').trim().toLowerCase();
+    if (!k) return;
+    (byName[k] = byName[k] || []).push(p);
+  });
+  return Object.keys(byName)
+    .map((k) => byName[k])
+    .filter((v) => v.length > 1)
+    .map((v) => {
+      v = v.slice().sort((a, b) => String(a.created_at || '').localeCompare(String(b.created_at || '')));
+      const keep = v[0];
+      const drop = v.slice(1);
+      const photosOf = (r) => (r.photos || []).length;
+      const best = v.reduce((m, r) => (photosOf(r) > photosOf(m) ? r : m), keep);
+      return {
+        keep: keep,
+        drop: drop,
+        adoptPhotos: (best.id !== keep.id && photosOf(best) > photosOf(keep)) ? best.photos : null,
+        adoptFeatured: !keep.featured && drop.some((r) => r.featured),
+        keepPhotos: photosOf(keep),
+        bestPhotos: photosOf(best),
+      };
+    })
+    .sort((a, b) => a.keep.name.localeCompare(b.keep.name));
+}
+
+async function removeDuplicateListings() {
+  await refreshAll();
+  const groups = findDuplicateGroups();
+  const panel = document.getElementById('bulk-finish');
+
+  if (!groups.length) { showToast('No duplicate listings found.'); return; }
+
+  const toDelete = groups.reduce((n, g) => n + g.drop.length, 0);
+  const gaining = groups.filter((g) => g.adoptPhotos).length;
+
+  const preview = groups.map((g) =>
+    `• ${g.keep.name} — keep 1, remove ${g.drop.length}` +
+    (g.adoptPhotos ? ` (photos ${g.keepPhotos} → ${g.bestPhotos})` : '')
+  ).join('\n');
+
+  if (!confirm(
+    `${groups.length} listings appear more than once. This will remove ${toDelete} duplicate row${toDelete === 1 ? '' : 's'}.\n\n` +
+    `The oldest copy of each is kept, so its web address stays the same.` +
+    (gaining ? ` ${gaining} of them will take the larger photo set from the copy being removed.` : '') +
+    `\n\n${preview}\n\nThis cannot be undone. Continue?`
+  )) return;
+
+  const rows = groups.map((g) => ({ name: g.keep.name, state: 'wait', note: '' }));
+  const draw = () => {
+    const done = rows.filter((r) => r.state !== 'wait' && r.state !== 'busy').length;
+    panel.innerHTML =
+      `<div class="suggest-head"><b>Removing duplicates</b> — ${done} of ${rows.length} listings done.</div>` +
+      rows.map((r) => {
+        const mark = r.state === 'ok' ? '<span class="bulk-mark bulk-ok">✓</span>'
+                   : r.state === 'err' ? '<span class="bulk-mark bulk-err">✕</span>'
+                   : r.state === 'busy' ? '<span class="bulk-mark">·</span>'
+                   : '<span class="bulk-mark bulk-wait">·</span>';
+        return `<div class="bulk-row ${r.state === 'wait' ? 'bulk-wait' : ''}">${mark}
+                  <span class="bulk-name">${esc(r.name)}</span>
+                  <span class="bulk-note">${esc(r.note)}</span></div>`;
+      }).join('');
+    panel.hidden = false;
+  };
+  draw();
+
+  let removed = 0, failed = 0;
+  for (let i = 0; i < groups.length; i++) {
+    const g = groups[i];
+    const line = rows[i];
+    line.state = 'busy'; line.note = 'working…'; draw();
+    try {
+      // Move anything worth keeping onto the survivor BEFORE deleting.
+      const patch = {};
+      if (g.adoptPhotos) patch.photos = g.adoptPhotos;
+      if (g.adoptFeatured) patch.featured = true;
+      if (Object.keys(patch).length) {
+        patch.updated_at = nowIso();
+        const up = await sb.from('properties').update(patch).eq('id', g.keep.id);
+        if (up.error) throw new Error(up.error.message);
+      }
+
+      for (const d of g.drop) {
+        const del = await sb.from('properties').delete().eq('id', d.id);
+        if (del.error) throw new Error(del.error.message);
+        removed++;
+      }
+
+      line.state = 'ok';
+      line.note = `removed ${g.drop.length}` + (g.adoptPhotos ? ` · photos ${g.keepPhotos} → ${g.bestPhotos}` : '');
+    } catch (e) {
+      line.state = 'err';
+      line.note = String((e && e.message) || e).slice(0, 120);
+      failed++;
+    }
+    draw();
+  }
+
+  await refreshAll();
+  renderImportsList();
+  showToast(`Removed ${removed} duplicate listing${removed === 1 ? '' : 's'}` + (failed ? `, ${failed} group(s) failed.` : '.'));
+  if (removed) maybeOfferSiteBuild();
 }
 
 function maybeOfferSiteBuild() {

@@ -220,6 +220,21 @@ Verified against stubs: clean draft → published active; a Sold source →
 published **sold**; a draft missing its price → skipped with "Missing price.";
 a publish error → reported without stopping the batch.
 
+### Remove duplicates (2026-09-10)
+
+Button on the Imports card, beside "Finish & publish all drafts". Finds
+listings whose name appears more than once and removes the extra rows, under
+the admin's own session — no SQL.
+
+It keeps the **oldest** row of each name, because that one owns the clean slug
+and any hand curation, and before deleting anything it moves what is worth
+keeping onto that survivor: the larger photo set if a newer copy imported more,
+and a featured flag if only a copy carried one. A confirmation lists every
+group and what will happen before a single row is touched.
+
+This exists to repair what the old publish path wrote. `publishRow()` is
+idempotent now, so it should be a one-off.
+
 ## 4. Supported KRAIN URL formats
 
 - ✅ `https://krainrealestate.com/properties/<slug>` (and `www.`)
