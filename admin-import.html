@@ -50,8 +50,16 @@
     .mono { font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
 
     .import-bar { display: flex; gap: 8px; }
-    .import-bar input { flex: 1; font-family: var(--font); font-size: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); outline: none; }
-    .import-bar input:focus { border-color: var(--terra); }
+    .import-bar { align-items: flex-start; }
+    .import-bar textarea { flex: 1; font-family: var(--font); font-size: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--white); outline: none; resize: vertical; min-height: 46px; line-height: 1.5; }
+    .import-bar textarea:focus { border-color: var(--terra); }
+    /* Bulk import progress */
+    .bulk-row { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; border-bottom: 1px solid rgba(0,0,0,.07); font-size: 12.5px; }
+    .bulk-row:last-child { border-bottom: 0; }
+    .bulk-mark { flex: none; width: 14px; font-weight: 700; }
+    .bulk-ok { color: var(--green); } .bulk-err { color: var(--red); } .bulk-wait { opacity: .45; }
+    .bulk-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+    .bulk-note { flex: none; opacity: .65; }
     .btn { display: inline-block; font-family: var(--font); font-size: 12px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 11px 18px; border-radius: 4px; border: 1px solid var(--border); background: var(--white); color: var(--text); cursor: pointer; transition: opacity .15s; }
     .btn:hover { opacity: 0.8; }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -187,16 +195,19 @@
       <!-- ══════════ LIST VIEW ══════════ -->
       <div id="list-view">
         <div class="page-title">Import a KRAIN listing</div>
-        <p class="page-sub">Paste the URL of a KRAIN listing you are authorized to republish. The importer fetches that one page,
+        <p class="page-sub">Paste the URL of a KRAIN listing you are authorized to republish &mdash; or several at once, one per line, to import them all as drafts.
+        The importer fetches only the pages you submit,
         shows you everything it found, and nothing goes on the website until you review, confirm authorization, and publish.
         This imports <b>KRAIN's own listings</b> — the <b>krainrealestate.com/properties/…</b> pages. Shared MLS search results (<b>/home-search/…</b>) are other brokerages' listings and are not imported.</p>
 
         <div class="card">
           <h2>New import</h2>
           <div class="import-bar">
-            <input type="url" id="import-url" placeholder="https://krainrealestate.com/properties/…" />
+            <textarea id="import-url" rows="1" spellcheck="false"
+                      placeholder="https://krainrealestate.com/properties/…&#10;Paste one URL, or many (one per line) to import them all."></textarea>
             <button class="btn btn-terra" id="import-btn" onclick="importNew()">Import</button>
           </div>
+          <div id="bulk-progress" hidden style="margin-top:12px;"></div>
           <div class="muted" id="import-status" style="margin-top:10px; min-height:18px;"></div>
           <div id="import-suggest" hidden style="margin-top:12px;"></div>
         </div>
@@ -529,15 +540,39 @@ document.addEventListener('click', (e) => {
   importNew();
 });
 
+// The box takes one URL or many (one per line). One behaves exactly as
+// before — fetch, draft, open it. Several run as a queue with per-URL
+// results, and the drafts wait in the list rather than opening on top of
+// each other.
+function parseUrlList(text) {
+  const seen = new Set();
+  return String(text || '')
+    .split(/[\s,]+/)
+    .map((u) => u.trim())
+    .filter((u) => /^https?:\/\//i.test(u))
+    .filter((u) => (seen.has(u) ? false : (seen.add(u), true)));
+}
+
+function shortLabel(url) {
+  try {
+    const seg = new URL(url).pathname.split('/').filter(Boolean).pop() || url;
+    return seg.length > 70 ? seg.slice(0, 70) + '…' : seg;
+  } catch { return url; }
+}
+
 async function importNew() {
-  const url = document.getElementById('import-url').value.trim();
+  const box = document.getElementById('import-url');
   const st = document.getElementById('import-status');
   const btn = document.getElementById('import-btn');
   renderSuggestions(null);
-  if (!url) { st.textContent = 'Paste a listing URL first.'; return; }
+
+  const urls = parseUrlList(box.value);
+  if (!urls.length) { st.textContent = 'Paste a listing URL first.'; return; }
+  if (urls.length > 1) { await importMany(urls); return; }
+
   btn.disabled = true;
   st.textContent = 'Fetching the source page…';
-  const r = await apiFetchListing(url);
+  const r = await apiFetchListing(urls[0]);
   if (!r.ok) {
     st.textContent = '✕ ' + (r.error || 'Import failed.');
     renderSuggestions(r.suggestions);
@@ -545,6 +580,89 @@ async function importNew() {
     return;
   }
   st.textContent = 'Source read — detected: ' + r.source_label + '. Creating draft…';
+  await createDraftFrom(r);
+}
+
+// The fetch endpoint allows 20 imports a minute per user, so the queue paces
+// itself under that and waits out a 429 rather than burning the rest of the
+// batch against the limit.
+const BULK_GAP_MS = 3200;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function importMany(urls) {
+  const box = document.getElementById('import-url');
+  const st = document.getElementById('import-status');
+  const btn = document.getElementById('import-btn');
+  const prog = document.getElementById('bulk-progress');
+
+  const rows = urls.map((u) => ({ url: u, state: 'wait', note: '' }));
+  const draw = () => {
+    const done = rows.filter((r) => r.state !== 'wait' && r.state !== 'busy').length;
+    prog.innerHTML =
+      `<div class="suggest-head"><b>Importing ${rows.length} listings</b> — ${done} of ${rows.length} done.</div>` +
+      rows.map((r) => {
+        const mark = r.state === 'ok' ? '<span class="bulk-mark bulk-ok">✓</span>'
+                   : r.state === 'err' ? '<span class="bulk-mark bulk-err">✕</span>'
+                   : r.state === 'busy' ? '<span class="bulk-mark">·</span>'
+                   : '<span class="bulk-mark bulk-wait">·</span>';
+        return `<div class="bulk-row ${r.state === 'wait' ? 'bulk-wait' : ''}">${mark}
+                  <span class="bulk-name">${esc(shortLabel(r.url))}</span>
+                  <span class="bulk-note">${esc(r.note)}</span></div>`;
+      }).join('');
+    prog.hidden = false;
+  };
+  draw();
+
+  btn.disabled = true;
+  box.disabled = true;
+  st.textContent = '';
+
+  let ok = 0;
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    row.state = 'busy'; row.note = 'fetching…'; draw();
+
+    let r = await apiFetchListing(row.url);
+    // One retry after the rate-limit window; anything else is reported as-is.
+    if (!r.ok && /too many/i.test(r.error || '')) {
+      row.note = 'rate limited — waiting 60s'; draw();
+      await sleep(60000);
+      r = await apiFetchListing(row.url);
+    }
+
+    if (!r.ok) {
+      row.state = 'err';
+      row.note = r.error || 'failed';
+    } else {
+      try {
+        const saved = await createDraftFrom(r, { open: false });
+        row.state = saved ? 'ok' : 'err';
+        row.note = saved ? `${r.images.length} photo${r.images.length === 1 ? '' : 's'}` : 'could not save';
+        if (saved) ok++;
+      } catch (e) {
+        row.state = 'err';
+        row.note = String((e && e.message) || e);
+      }
+    }
+    draw();
+    if (i < rows.length - 1) await sleep(BULK_GAP_MS);
+  }
+
+  btn.disabled = false;
+  box.disabled = false;
+  if (ok) box.value = rows.filter((r) => r.state === 'err').map((r) => r.url).join('\n');
+  st.textContent = `Done — ${ok} of ${rows.length} imported as drafts.` +
+    (ok < rows.length ? ' The ones that failed are still in the box.' : '');
+  renderImportsList();
+}
+
+// Turn a normalized listing (server adapter OR browser paste) into a draft
+// row and open it. Shared so both import paths get the same review, the same
+// duplicate check and the same audit history.
+async function createDraftFrom(r, opts) {
+  const open = !opts || opts.open !== false;
+  const st = document.getElementById('import-status');
+  const btn = document.getElementById('import-btn');
 
   // Duplicate awareness at import time (not blocking — the publish step decides)
   const dupNote = findDuplicates(r, null);
@@ -560,7 +678,8 @@ async function importNew() {
     source_brokerage: r.source.brokerage || '',
     source_updated_at: r.source.updated_at || '',
     imported_by: email,
-    source_snapshot: { source: r.source, listing: r.listing, images: r.images, missing: r.missing, flags: r.flags },
+    source_snapshot: { source: r.source, listing: r.listing, images: r.images, missing: r.missing, flags: r.flags,
+                       ...(r.raw_payload ? { raw_payload: r.raw_payload } : {}) },
     draft: draftFromSnapshot(r),
     images: r.images.map((im, i) => ({
       uuid: im.uuid, source_url: im.original_url, full_url: im.full_url, preview_url: im.preview_url,
@@ -573,12 +692,17 @@ async function importNew() {
     updated_at: nowIso(),
   };
   const ins = await sb.from('property_imports').insert([row]).select().single();
+  if (ins.error) {
+    if (open) { btn.disabled = false; st.textContent = '✕ Could not save the import: ' + ins.error.message; }
+    else throw new Error(ins.error.message);
+  }
+  allImports.unshift(ins.data);
+  if (!open) return ins.data;          // bulk: leave it in the list
   btn.disabled = false;
-  if (ins.error) { st.textContent = '✕ Could not save the import: ' + ins.error.message; return; }
   st.textContent = '';
   document.getElementById('import-url').value = '';
-  allImports.unshift(ins.data);
   openImport(ins.data.id);
+  return ins.data;
 }
 
 // ══════════════════════════════════════════════════════════════

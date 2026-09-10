@@ -29,8 +29,18 @@ const PAGE_HOSTS = new Set([
 ]);
 
 // Hosts the importer may download IMAGES from (listing-media CDNs).
+// Trestle/Cotality hosts serve media for listings imported via the browser
+// bookmarklet. If a listing's photos live somewhere not listed here, the
+// image step fails with the rejected hostname named in the error, so the
+// host can be reviewed and added deliberately rather than guessed at.
 const IMAGE_HOSTS = new Set([
-  'media-production.lp-cdn.com', // Luxury Presence CDN (KRAIN's media)
+  'media-production.lp-cdn.com',   // Luxury Presence CDN (KRAIN's own media)
+  'api-trestle.corelogic.com',     // Trestle media API
+  'api.trestle.corelogic.com',
+  'trestle.corelogic.com',
+  'api-trestle.cotality.com',      // same service, post-rebrand hostnames
+  'api.trestle.cotality.com',
+  'trestle.cotality.com',
 ]);
 
 const FETCH_TIMEOUT_MS = 15000;
@@ -384,26 +394,59 @@ const krainLp = {
     const vidM = doc.match(/<iframe[^>]+src="(https:\/\/(?:www\.)?(?:youtube\.com\/embed|player\.vimeo\.com\/video)\/[^"]+)"/);
     const tourM = doc.match(/https:\/\/my\.matterport\.com\/show\/[^"'\s]+/);
 
-    // Images: lp-cdn media UUIDs in order of first appearance.
-    // Excluded: the brokerage logo/photo from org JSON-LD and the agent portrait.
-    const exclude = new Set();
-    const orgBlock = doc.match(/"@type":\s*"RealEstateAgent"[\s\S]{0,1200}/);
-    if (orgBlock) for (const mm of orgBlock[0].matchAll(/media\/([a-f0-9-]{36})/g)) exclude.add(mm[1]);
-    for (const mm of doc.matchAll(/<img[^>]+class="[^"]*portrait[^"]*"[^>]*>/g)) {
-      for (const um of mm[0].matchAll(/media\/([a-f0-9-]{36})/g)) exclude.add(um[1]);
-    }
+    // Images: read the listing GALLERY, do not scan the whole page.
+    //
+    // Scanning every lp-cdn URL in the document swept up site chrome — the
+    // KRAIN logo, the office team photo, the affiliate badges (LeadingRE,
+    // Luxury Portfolio, Mayfair) in the footer disclaimer, the agent avatar
+    // and the theme's placeholder image — because those are served from the
+    // same CDN as the photos. Blocklisting each kind was a losing game; the
+    // gallery container is the thing that actually means "listing photo".
+    //
+    // Verified against two live fixtures: 5 photos on a small listing and 115
+    // on a 9-unit property, zero chrome in either.
     const heroUuid = (meta(doc, 'og:image').match(/media\/([a-f0-9-]{36})/) || [])[1] || null;
-    const seen = new Set();
     const images = [];
-    for (const mm of doc.matchAll(/https:\/\/media-production\.lp-cdn\.com\/(?:cdn-cgi\/image\/[^"'\s\\)]*?\/https:\/\/media-production\.lp-cdn\.com\/)?media\/([a-f0-9-]{36})/g)) {
-      const uuid = mm[1];
-      if (seen.has(uuid) || exclude.has(uuid)) continue;
+    const seen = new Set();
+    const pushUuid = (uuid) => {
+      if (!uuid || seen.has(uuid)) return;
       seen.add(uuid);
       images.push(uuid);
+    };
+    for (const mm of doc.matchAll(/property-intro-2-bg-slider-item[\s\S]{0,600}?<img[^>]*>/g)) {
+      for (const um of mm[0].matchAll(/media\/([a-f0-9-]{36})/g)) pushUuid(um[1]);
     }
-    if (heroUuid && seen.has(heroUuid)) {
-      images.splice(images.indexOf(heroUuid), 1);
-      images.unshift(heroUuid);
+
+    // Fallback: if the gallery markup ever changes, degrade to the old
+    // whole-page scan minus the chrome we know about, rather than importing a
+    // listing with no photos at all. `flags` tells the admin this happened.
+    let galleryFallback = false;
+    if (!images.length) {
+      galleryFallback = true;
+      const exclude = new Set();
+      const orgBlock = doc.match(/"@type":\s*"RealEstateAgent"[\s\S]{0,1200}/);
+      if (orgBlock) for (const mm of orgBlock[0].matchAll(/media\/([a-f0-9-]{36})/g)) exclude.add(mm[1]);
+      for (const mm of doc.matchAll(/<img[^>]*>/g)) {
+        const tag = mm[0];
+        const smallInline = /style="[^"]*width:\s*(\d+)\s*px/.exec(tag);
+        const isChrome = /class="[^"]*(portrait|avatar|logo)[^"]*"/.test(tag)
+                      || (smallInline && Number(smallInline[1]) <= 300);
+        if (isChrome) for (const um of tag.matchAll(/media\/([a-f0-9-]{36})/g)) exclude.add(um[1]);
+      }
+      // Decorative section backgrounds and the theme placeholder are chrome.
+      for (const mm of doc.matchAll(/background[^;{]*url\(\s*['"]?[^)]*?media\/([a-f0-9-]{36})/g)) exclude.add(mm[1]);
+      for (const mm of doc.matchAll(/propertyPlaceholderImage[\s\S]{0,900}/g)) {
+        for (const um of mm[0].matchAll(/media\/([a-f0-9-]{36})/g)) exclude.add(um[1]);
+      }
+      for (const mm of doc.matchAll(/https:\/\/media-production\.lp-cdn\.com\/(?:cdn-cgi\/image\/[^"'\s\\)]*?\/https:\/\/media-production\.lp-cdn\.com\/)?media\/([a-f0-9-]{36})/g)) {
+        if (!exclude.has(mm[1])) pushUuid(mm[1]);
+      }
+    }
+
+    if (heroUuid) {
+      const at = images.indexOf(heroUuid);
+      if (at > 0) images.splice(at, 1);
+      if (at !== 0) images.unshift(heroUuid);
     }
     const mkImg = (uuid) => ({
       uuid,
@@ -480,7 +523,9 @@ const krainLp = {
       },
       images: images.map(mkImg),
       missing,
-      flags,
+      flags: galleryFallback
+        ? flags.concat('Gallery markup not recognised — photos were collected from the whole page, so check for stray logos before publishing.')
+        : flags,
     };
   },
 };

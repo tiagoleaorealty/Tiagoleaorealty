@@ -163,6 +163,36 @@ walk; class also appears in inline CSS, handled), `.property-agent-cta-info h3.n
 `og:image` (hero), lp-cdn `media/<uuid>` URLs (deduped, brokerage logo + agent
 portrait excluded), `pageQueryVariables property.id` (source listing UUID).
 
+### Gallery extraction (fixed 2026-09-10)
+
+The adapter used to scan the whole page for `media-production.lp-cdn.com`
+URLs. That swept in site chrome served from the same CDN: the KRAIN logo, the
+office team photo, the affiliate badges in the footer disclaimer (LeadingRE,
+Luxury Portfolio, Mayfair), the agent avatar and the theme's placeholder
+image. Blocklisting each kind kept missing new ones — the team photo arrived
+through a CSS `background-image`, so no `<img>` class rule could catch it.
+
+It now reads the gallery container instead (`property-intro-2-bg-slider-item`
+`<img>` tags, document order), promoting the `og:image` hero to first. If that
+markup ever stops matching, it degrades to the old whole-page scan minus the
+known chrome and adds a flag telling the admin to check for stray logos.
+
+Verified against two live fixtures: Coralis 14 → 5 photos, Villa Monos → 115.
+Zero chrome in either. (The team photo is the same UUID on both pages, which
+is how it was identified as site-wide furniture rather than listing media.)
+
+### Bulk import (2026-09-10)
+
+The URL box takes one link or many, one per line. One behaves as before —
+fetch, draft, open it. Several run as a queue: each is fetched in turn, drafts
+land in the Imports list rather than opening on top of each other, and a
+per-URL progress list shows ✓/✕ with the photo count or the failure reason.
+Duplicate URLs in the paste are dropped. Failures stay in the box so they can
+be retried without re-pasting the whole batch.
+
+The fetch endpoint allows 20 imports a minute per user, so the queue paces at
+one every 3.2s and, on a 429, waits out the window and retries that URL once.
+
 ## 4. Supported KRAIN URL formats
 
 - ✅ `https://krainrealestate.com/properties/<slug>` (and `www.`)
