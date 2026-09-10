@@ -439,6 +439,11 @@
       position: relative;
       overflow: hidden;
       padding: 0;
+    }
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
       background-image: url("hero-poster.jpg");
       background-size: cover;
       background-position: center center;
@@ -1647,15 +1652,44 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
-      #hero { background-position: 15% center; }
-      .hero-bg {
-        background: linear-gradient(to bottom,
-          rgba(16,24,16,0.50) 0%,
-          rgba(16,24,16,0.20) 20%,
-          rgba(16,24,16,0.58) 52%,
-          rgba(16,24,16,0.72) 100%);
+      /* A 16:9 clip cannot fill a phone screen without losing the shot: at
+         full height only the centre 26% of the frame is visible, which on a
+         wide villa means a tree trunk and half a pool. So on mobile the video
+         stops being a background and becomes a band — about 60% of the frame
+         stays visible — with the copy below it on the brand green. */
+      #hero {
+        display: block;
+        min-height: 0;
+        background: var(--terra);
       }
-      .hero-left { padding: 100px 24px 72px; max-width: 100%; }
+      .hero-media {
+        position: relative;
+        inset: auto;
+        height: 46vh;
+        min-height: 260px;
+        background-position: center 40%;
+      }
+      .hero-bg {
+        /* Only a top wash now, so the nav stays legible over the footage.
+           The copy has its own ground and needs no scrim. */
+        background: linear-gradient(to bottom,
+          rgba(16,24,16,0.55) 0%,
+          rgba(16,24,16,0.10) 34%,
+          rgba(16,24,16,0) 100%);
+      }
+      .hero-left { padding: 34px 24px 56px; max-width: 100%; }
+      .hero-sub { color: rgba(255,255,255,0.9); text-shadow: none; }
+      .hero-headline { text-shadow: none; }
+      /* The eyebrow sits on the green panel now, where brand terracotta is
+         only 3.2:1 at 12px. The lighter tone reaches 4.5:1. The full stop in
+         the headline keeps the brand tone — at 38px it clears the 3:1 bar for
+         large text. */
+      .hero-eyebrow { text-shadow: none; color: var(--accent-soft); }
+      .hero-eyebrow::before { background: var(--accent-soft); }
+      /* The bar sits over the footage, and the band's top scrim cannot be
+         heavy enough to carry small terracotta over a bright sky. */
+      nav:not(.scrolled) .nav-logo,
+      nav:not(.scrolled) .nav-logo-sub { text-shadow: 0 1px 10px rgba(16,24,16,0.75); }
       .hero-actions { gap: 12px; }
       section { padding: 72px 24px; }
       .properties-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -1802,9 +1836,11 @@
     <!-- src is set by JS, never in markup: that keeps the video off the
          critical path and lets it be skipped entirely on mobile, on reduced
          motion, and on metered or slow connections. -->
-    <video id="hero-video" class="hero-video" poster="hero-poster.jpg"
-           muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
-    <div class="hero-bg"></div>
+    <div class="hero-media">
+      <video id="hero-video" class="hero-video" poster="hero-poster.jpg"
+             muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+      <div class="hero-bg"></div>
+    </div>
     <div class="hero-left">
       <div class="hero-content">
         <div class="hero-eyebrow reveal">Guanacaste, Costa Rica</div>

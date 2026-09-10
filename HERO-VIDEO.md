@@ -143,3 +143,29 @@ reduced-motion and Save-Data state, which file is being tried, every media
 event, and `readyState` / `networkState` / any error code.
 
 If the video is not playing, that panel says why.
+
+
+## The mobile layout
+
+A 16:9 clip cannot fill a phone screen without destroying the shot. At full
+height a 375x812 viewport shows only the **centre 26%** of the frame — on a
+wide villa that is a tree trunk and half a pool, with the building cropped off
+both sides.
+
+So on mobile the video is not a background. `.hero-media` becomes a band of
+`46vh` (min 260px), which keeps about **56%** of the frame visible, and the
+copy sits below it on the brand green. Desktop is unchanged: `.hero-media` is
+`position:absolute; inset:0` and the copy sits over the footage.
+
+Two contrast consequences of the copy moving onto green:
+
+- The eyebrow uses `--accent-soft`; brand terracotta is only 3.2:1 on the
+  green at 12px. The full stop in the headline keeps the brand tone, since at
+  38px it clears the 3:1 large-text bar.
+- The nav still sits over the footage, where a scrim cannot reliably carry
+  small terracotta over a bright sky, so the logo and its subtitle take a
+  text shadow while the bar is transparent.
+
+If you swap the clip for one that is composed differently, `background-position`
+on `.hero-media` (currently `center 40%`) is the dial for which part of the
+frame the band keeps.
