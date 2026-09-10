@@ -484,7 +484,7 @@
     }
     .hero-headline em {
       font-style: normal;
-      color: var(--accent);
+      color: inherit;          /* second line reads white with the first */
     }
     .hero-sub {
       font-size: clamp(16px, 1.4vw, 18px);
@@ -503,8 +503,8 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: #fff;
-      color: var(--cream);
+      background: var(--accent);   /* terracotta is the hero CTA */
+      color: #fff;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -515,8 +515,8 @@
       transition: all 0.25s;
     }
     .btn-primary:hover {
-      background: var(--accent);
-      color: var(--cream);
+      background: var(--accent-ink);   /* deeper terracotta on press */
+      color: #fff;
       transform: translateY(-2px);
     }
     .btn-primary svg {
