@@ -238,6 +238,7 @@
       --accent:   #d37234;
       --accent-soft: #e5945c;
       --accent-ink:  #984916;
+      --charcoal-warm: #e3dcd1;   /* cream cards on the green bands */
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -372,7 +373,7 @@
       border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(227,220,209,0.88);
+      background: rgba(255,255,255,0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom-color: rgba(45,66,45,0.12);
@@ -973,7 +974,7 @@
     .poc-title { font-size: clamp(28px, 3.4vw, 42px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; color: #e3dcd1; margin-bottom: 18px; }
     .poc-text { font-size: 16px; line-height: 1.75; color: rgba(227,220,209,.85); max-width: 62ch; }
     .poc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 44px; }
-    .poc-step { display: flex; flex-direction: column; background: #fff; border: none; border-radius: 12px; padding: 26px 24px; transition: transform .25s, box-shadow .25s; }
+    .poc-step { display: flex; flex-direction: column; background: var(--charcoal-warm); border: none; border-radius: 12px; padding: 26px 24px; transition: transform .25s, box-shadow .25s; }
     .poc-step:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,0.18); }
     .poc-step-num { font-size: 11px; font-weight: 700; color: var(--terra); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
     .poc-step h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 10px; }
