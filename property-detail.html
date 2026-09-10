@@ -58,8 +58,8 @@
        Variable names are inverted legacy names — --black is the light
        page ground, --cream is the dark text. Do not "fix" the names.
 
-         #ffffff  white    page background          --black
-         #e3dcd1  cream    section bands, cards     --charcoal
+         #ffffff  white    page + sections + cards  --black / --charcoal
+         #e3dcd1  cream    sparingly: text and buttons on the green bands
          #2d422d  green    brand, CTAs, footer      --terra
          #d37234  terracotta  accents, rules, hovers --accent
          #30312f  charcoal primary text             --cream
@@ -73,7 +73,7 @@
 
     :root {
       --black:    #ffffff;
-      --charcoal: #e3dcd1;
+      --charcoal: #ffffff;
       --stone:    #5c6058;
       --sand:     #454842;
       --cream:    #30312f;
@@ -1401,7 +1401,7 @@
           if (map.getLayer(id)) map.setPaintProperty(id, prop, value);
         };
         // Land — warm cream
-        paint('land', 'background-color', '#e3dcd1');
+        paint('land', 'background-color', '#f7f6f4');
         // Water — soft blue
         paint('water', 'fill-color', '#c0d8ef');
         // Parks / greenspace — muted sage
@@ -1410,7 +1410,7 @@
           'park', '#cfd3c6',
           'cemetery', '#cfd3c6',
           'glacier', '#e0ecf4',
-          'hospital', '#e3dcd1',
+          'hospital', '#f2efe9',
           'school', '#ded7ca',
           'commercial_area', '#ded7ca',
           'industrial', '#ded7ca',

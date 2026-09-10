@@ -215,8 +215,8 @@
        Variable names are inverted legacy names — --black is the light
        page ground, --cream is the dark text. Do not "fix" the names.
 
-         #ffffff  white    page background          --black
-         #e3dcd1  cream    section bands, cards     --charcoal
+         #ffffff  white    page + sections + cards  --black / --charcoal
+         #e3dcd1  cream    sparingly: text and buttons on the green bands
          #2d422d  green    brand, CTAs, footer      --terra
          #d37234  terracotta  accents, rules, hovers --accent
          #30312f  charcoal primary text             --cream
@@ -230,7 +230,7 @@
 
     :root {
       --black:    #ffffff;
-      --charcoal: #e3dcd1;
+      --charcoal: #ffffff;
       --stone:    #5c6058;
       --sand:     #454842;
       --cream:    #30312f;
@@ -504,8 +504,8 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: var(--accent);   /* terracotta is the hero CTA */
-      color: #fff;
+      background: #fff;
+      color: var(--cream);
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -516,7 +516,7 @@
       transition: all 0.25s;
     }
     .btn-primary:hover {
-      background: var(--accent-ink);   /* deeper terracotta on press */
+      background: var(--terra);       /* brand green on hover, not orange */
       color: #fff;
       transform: translateY(-2px);
     }
@@ -1793,7 +1793,7 @@
       <div class="scroll-line"></div>
       <span>Scroll</span>
     </div>
-    <div style="position:absolute;bottom:0;left:0;width:100%;height:40px;background:linear-gradient(to bottom, transparent, #e3dcd1);pointer-events:none;z-index:10;"></div>
+    <div style="position:absolute;bottom:0;left:0;width:100%;height:40px;background:linear-gradient(to bottom, transparent, #ffffff);pointer-events:none;z-index:10;"></div>
   </section>
 
   <!-- ── PROPERTIES ─────────────────────────────────────────────── -->
