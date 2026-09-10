@@ -98,8 +98,14 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
 ## What the loader does
 
 - Never sets `src` in the markup, so the video is off the page's critical path.
-- Waits for the browser to be idle (`requestIdleCallback`, 2.5s timeout) before
-  fetching anything.
+- Starts shortly after `DOMContentLoaded` (250ms), with the window `load`
+  event only as a backstop. Waiting for `load` meant queueing behind every
+  listing image on the page, which is what made the video take 15+ seconds to
+  appear on a phone.
+- Retries `play()` on `loadeddata` and `canplay`. The first attempt happens
+  before any data exists and iOS rejects it; without the retry the clip sat
+  still until a scroll produced a gesture, which is exactly the "only plays
+  after I scroll down and back up" symptom.
 - Fades in only on `canplay`, over the still — no flash, no layout shift.
 - Tries a list of candidates in order and falls through on failure rather than
   giving up. **Safari and every iOS browser get MP4 first**: Safari answers
@@ -147,25 +153,12 @@ If the video is not playing, that panel says why.
 
 ## The mobile layout
 
-A 16:9 clip cannot fill a phone screen without destroying the shot. At full
-height a 375x812 viewport shows only the **centre 26%** of the frame — on a
-wide villa that is a tree trunk and half a pool, with the building cropped off
-both sides.
+Full bleed, same as desktop. A band-plus-panel split was tried to avoid the
+crop and looked worse — it read as an arbitrary 50/50 — so the crop stays.
 
-So on mobile the video is not a background. `.hero-media` becomes a band of
-`46vh` (min 260px), which keeps about **56%** of the frame visible, and the
-copy sits below it on the brand green. Desktop is unchanged: `.hero-media` is
-`position:absolute; inset:0` and the copy sits over the footage.
-
-Two contrast consequences of the copy moving onto green:
-
-- The eyebrow uses `--accent-soft`; brand terracotta is only 3.2:1 on the
-  green at 12px. The full stop in the headline keeps the brand tone, since at
-  38px it clears the 3:1 large-text bar.
-- The nav still sits over the footage, where a scrim cannot reliably carry
-  small terracotta over a bright sky, so the logo and its subtitle take a
-  text shadow while the bar is transparent.
-
+A 16:9 clip in a 375x812 viewport shows the centre 26% of the frame. If that
+ever needs solving properly, the answer is a clip shot or cropped vertically,
+not a layout change.
 If you swap the clip for one that is composed differently, `background-position`
 on `.hero-media` (currently `center 40%`) is the dial for which part of the
 frame the band keeps.

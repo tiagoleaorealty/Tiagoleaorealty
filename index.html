@@ -1652,42 +1652,17 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-hamburger { display: flex; }
-      /* A 16:9 clip cannot fill a phone screen without losing the shot: at
-         full height only the centre 26% of the frame is visible, which on a
-         wide villa means a tree trunk and half a pool. So on mobile the video
-         stops being a background and becomes a band — about 60% of the frame
-         stays visible — with the copy below it on the brand green. */
-      #hero {
-        display: block;
-        min-height: 0;
-        background: var(--terra);
-      }
-      .hero-media {
-        position: relative;
-        inset: auto;
-        height: 46vh;
-        min-height: 260px;
-        background-position: center 40%;
-      }
+      /* Full bleed on mobile, as it was: the band split read as a 50/50 and
+         looked worse than the crop it was solving. */
+      .hero-media { background-position: 15% center; }
       .hero-bg {
-        /* Only a top wash now, so the nav stays legible over the footage.
-           The copy has its own ground and needs no scrim. */
         background: linear-gradient(to bottom,
-          rgba(16,24,16,0.55) 0%,
-          rgba(16,24,16,0.10) 34%,
-          rgba(16,24,16,0) 100%);
+          rgba(16,24,16,0.50) 0%,
+          rgba(16,24,16,0.20) 20%,
+          rgba(16,24,16,0.58) 52%,
+          rgba(16,24,16,0.72) 100%);
       }
-      .hero-left { padding: 34px 24px 56px; max-width: 100%; }
-      .hero-sub { color: rgba(255,255,255,0.9); text-shadow: none; }
-      .hero-headline { text-shadow: none; }
-      /* The eyebrow sits on the green panel now, where brand terracotta is
-         only 3.2:1 at 12px. The lighter tone reaches 4.5:1. The full stop in
-         the headline keeps the brand tone — at 38px it clears the 3:1 bar for
-         large text. */
-      .hero-eyebrow { text-shadow: none; color: var(--accent-soft); }
-      .hero-eyebrow::before { background: var(--accent-soft); }
-      /* The bar sits over the footage, and the band's top scrim cannot be
-         heavy enough to carry small terracotta over a bright sky. */
+      .hero-left { padding: 100px 24px 72px; max-width: 100%; }
       nav:not(.scrolled) .nav-logo,
       nav:not(.scrolled) .nav-logo-sub { text-shadow: 0 1px 10px rgba(16,24,16,0.75); }
       .hero-actions { gap: 12px; }
@@ -2618,7 +2593,11 @@
       // it — so we flip preload, call play() immediately rather than waiting
       // for canplay, and reveal on whichever of loadeddata/playing lands first.
       v.preload = 'auto';
-      v.addEventListener('loadeddata', reveal, { once: true });
+      // Retry play as data arrives. The first attempt happens before a single
+      // byte exists and iOS rejects it, which is why the video used to sit
+      // still until a scroll produced a gesture the retry could ride on.
+      v.addEventListener('loadeddata', function () { reveal(); attempt(); }, { once: true });
+      v.addEventListener('canplay', function () { attempt(); });
       v.addEventListener('playing', reveal, { once: true });
 
       var at = 0;
@@ -2665,15 +2644,20 @@
       });
     }
 
-    // Safari has no requestIdleCallback, and the old fallback hung a listener
-    // on 'load' that never fires if load already happened. Check readyState.
+    // The hero is the first thing on screen, so it must not queue behind the
+    // whole page. Waiting for the window 'load' event meant waiting for every
+    // listing image below the fold — the reason the video took 15 seconds or
+    // more to appear on a phone. It starts shortly after the document is
+    // interactive instead, with 'load' only as a backstop.
     function schedule(fn) {
-      var go = function () {
-        if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(fn, { timeout: 2000 });
-        else setTimeout(fn, 400);
-      };
-      if (document.readyState === 'complete') go();
-      else window.addEventListener('load', go, { once: true });
+      var fired = false;
+      var go = function () { if (!fired) { fired = true; fn(); } };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(go, 250); }, { once: true });
+      } else {
+        setTimeout(go, 250);
+      }
+      window.addEventListener('load', go, { once: true });
     }
     schedule(start);
   })();

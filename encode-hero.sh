@@ -41,13 +41,13 @@ echo "Encoding ${DUR}s from ${START}s of $SRC ..."
 # roughly the centre third, where downscaling shows; the saving is bought
 # with compression instead.
 "$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
-  -vf "scale=1920:-2,fps=30" \
-  -c:v libx264 -profile:v high -level:v 4.0 -crf 32 -preset slow -pix_fmt yuv420p \
+  -vf "scale=1920:-2,fps=25" \
+  -c:v libx264 -profile:v high -level:v 4.0 -crf 36 -preset slow -pix_fmt yuv420p \
   -movflags +faststart hero-mobile.mp4
 
 "$FFMPEG" -y -ss "$START" -i "$SRC" -t "$DUR" -an \
-  -vf "scale=1920:-2,fps=30" \
-  -c:v libvpx-vp9 -crf 50 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
+  -vf "scale=1920:-2,fps=25" \
+  -c:v libvpx-vp9 -crf 52 -b:v 0 -row-mt 1 -deadline good -cpu-used 2 \
   hero-mobile.webm
 
 # Poster is frame 0 of the desktop cut, so the still and the video's first
