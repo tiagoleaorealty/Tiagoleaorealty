@@ -162,3 +162,22 @@ not a layout change.
 If you swap the clip for one that is composed differently, `background-position`
 on `.hero-media` (currently `center 40%`) is the dial for which part of the
 frame the band keeps.
+
+
+## When it does not autoplay
+
+A loaded-but-paused video is indistinguishable from a broken page, which cost
+several rounds of debugging. So whenever the clip is ready and not playing —
+Reduce Motion is on, or the browser refused autoplay — a small **Play** button
+appears at the bottom-left of the hero (left, so it never collides with the
+WhatsApp bubble). Tapping it plays and the button disappears.
+
+That makes every remaining failure visible and recoverable for visitors, and
+it is also the fastest way to tell what is happening: if the button is there,
+the video loaded fine and something is suppressing playback rather than the
+file being broken.
+
+The poster and the video must also share a framing. They drifted once —
+`background-position: 15% center` on the poster against the video's default
+`center` — which showed the left of the shot and then visibly slid to the
+middle when the clip faded in. Both are `center center` now.

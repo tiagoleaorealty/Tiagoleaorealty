@@ -464,6 +464,33 @@
       pointer-events: none;
     }
     .hero-video.ready { opacity: 1; }
+    /* Shown only when the clip is loaded but not playing — Reduce Motion, or
+       an autoplay refusal. Without it a suppressed video is indistinguishable
+       from a broken one, which is how several rounds of this were lost. */
+    .hero-play {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      z-index: 3;   /* left, so it never collides with the WhatsApp bubble */
+      display: none;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 17px 11px 14px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 40px;
+      background: rgba(16,24,16,0.55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .hero-play.show { display: inline-flex; }
+    .hero-play svg { width: 11px; height: 13px; fill: #fff; }
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -1654,7 +1681,9 @@
       .nav-hamburger { display: flex; }
       /* Full bleed on mobile, as it was: the band split read as a 50/50 and
          looked worse than the crop it was solving. */
-      .hero-media { background-position: 15% center; }
+      /* Poster and video must sit on the same part of the frame, or the
+         still shows the left of the shot and the video fades to the middle. */
+      .hero-media { background-position: center center; }
       .hero-bg {
         background: linear-gradient(to bottom,
           rgba(16,24,16,0.50) 0%,
@@ -1813,8 +1842,11 @@
          motion, and on metered or slow connections. -->
     <div class="hero-media">
       <video id="hero-video" class="hero-video" poster="hero-poster.jpg"
-             muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
+             muted loop playsinline webkit-playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
       <div class="hero-bg"></div>
+      <button type="button" class="hero-play" id="hero-play" aria-label="Play the background video">
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg>Play
+      </button>
     </div>
     <div class="hero-left">
       <div class="hero-content">
@@ -2582,17 +2614,33 @@
       var sources = isSafari || !canWebm ? [mp4, webmFile] : [webmFile, mp4];
 
       var reveal = function () { v.classList.add('ready'); };
+      var btn = document.getElementById('hero-play');
+      var showBtn = function () { if (btn) btn.classList.add('show'); };
+      var hideBtn = function () { if (btn) btn.classList.remove('show'); };
+
       var attempt = function (userAsked) {
-        if (reduced && !userAsked) return;   // honour the setting until asked
+        // Reduce Motion is honoured until the person asks for motion.
+        if (reduced && !userAsked) { showBtn(); return; }
         var p = v.play();
-        if (p && p.catch) p.catch(function () { /* refused; the poster stands */ });
+        if (p && p.then) {
+          p.then(hideBtn).catch(function () {
+            // Autoplay refused. Offer it rather than leaving a frozen frame
+            // that looks broken.
+            showBtn();
+            if (window.__heroDebug) window.__heroDebug('play() refused — showing the button');
+          });
+        }
       };
+      if (btn) btn.addEventListener('click', function () { attempt(true); });
+      v.addEventListener('playing', hideBtn);
 
       // iOS is the reason this is shaped the way it is. With preload="none"
       // Safari will not fetch on load() alone — play() is what actually starts
       // it — so we flip preload, call play() immediately rather than waiting
       // for canplay, and reveal on whichever of loadeddata/playing lands first.
       v.preload = 'auto';
+      v.muted = true;          // property as well as attribute; iOS wants both
+      v.setAttribute('muted', '');
       // Retry play as data arrives. The first attempt happens before a single
       // byte exists and iOS rejects it, which is why the video used to sit
       // still until a scroll produced a gesture the retry could ride on.
