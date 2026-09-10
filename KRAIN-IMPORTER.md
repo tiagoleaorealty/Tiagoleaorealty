@@ -126,6 +126,35 @@ import that. Shared MLS/IDX listings are not imported. (A short-lived manual
 "written-permission" entry mode was built and then removed at the owner's
 request to keep the tool strictly to KRAIN's own inventory.)
 
+### "Did you mean" resolver (2026-09-10)
+
+Finding that `/properties/<slug>` URL by hand was the friction left by the
+scope decision, so pasting an unimportable URL is no longer a dead end.
+
+`suggestKrainListings()` in `api/_lib/importer.js` reads **KRAIN's public
+sitemap** (`sitemap.xml` → `sitemap-properties-dpages--*.xml`, ~860 listings),
+tokenises the pasted URL's last path segment, and ranks KRAIN's own listings by
+the summed IDF of the matched tokens. Rare tokens (a town name) outweigh common
+ones (`playa`, `lot`), so `…/8585294185596059561-Playa-Junquillal` returns the
+two Junquillal listings rather than every beach property. Results below half the
+top score are dropped; max 6. The index is cached 30 min per lambda instance.
+
+Returned as `suggestions: [{url, title}]` on two failure paths in
+`api/import-fetch.js`: an unsupported adapter (`krain-idx`, `propertyshelf`)
+and a source page that 404s (a slug that moved). `admin-import.html` renders
+them as one-click "Import this" buttons.
+
+Titles are derived from the slug (KRAIN encodes the `|` in a listing name as
+`-or-`, so only the first is converted back) and are therefore approximate —
+the URL is shown alongside, and the real title arrives when the listing is
+actually imported.
+
+**This changes no rights and defeats no bot protection.** It reads only
+KRAIN's public sitemap, never the Cloudflare-gated `/home-search/` detail
+pages, and never resolves an MLS listing id. Shared MLS/IDX listings still
+cannot be imported — the resolver just points at KRAIN's own listing for the
+same area when one exists.
+
 `krain-lp` extraction sources (verified against two live fixtures):
 `<h1>`, sectioned spec list `features-amenities-list` (`<li><strong>key</strong>
 <span class="feature">value</span>`), `.property-description__main` (balanced-tag
@@ -137,8 +166,8 @@ portrait excluded), `pageQueryVariables property.id` (source listing UUID).
 ## 4. Supported KRAIN URL formats
 
 - ✅ `https://krainrealestate.com/properties/<slug>` (and `www.`)
-- ⛔ `https://krainrealestate.com/home-search/listings/<id>` → clean unsupported message
-- ⛔ `https://mls.propertyshelf.com/…` → clean unsupported message
+- ⛔ `https://krainrealestate.com/home-search/listings/<id>` → clean unsupported message **+ suggested KRAIN listings for the same area**
+- ⛔ `https://mls.propertyshelf.com/…` → clean unsupported message + suggestions
 
 ## 5. Database migration
 

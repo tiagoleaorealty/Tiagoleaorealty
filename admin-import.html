@@ -75,6 +75,15 @@
     .banner-red { background: rgba(179,38,30,.08); border: 1px solid rgba(179,38,30,.35); color: var(--red); }
     .banner-amber { background: rgba(154,106,0,.08); border: 1px solid rgba(154,106,0,.3); color: var(--amber); }
     .banner-green { background: rgba(46,125,50,.08); border: 1px solid rgba(46,125,50,.3); color: var(--green); }
+    /* "Did you mean" list: KRAIN's own listings matching an unimportable URL. */
+    .suggest-head { font-size: 13px; margin-bottom: 8px; }
+    .suggest-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+                    border: 1px solid rgba(0,0,0,.12); border-radius: 6px; margin-bottom: 8px; }
+    .suggest-item + .suggest-item { margin-top: 0; }
+    .suggest-text { flex: 1; min-width: 0; }
+    .suggest-title { font-size: 13.5px; font-weight: 600; }
+    .suggest-url { font-size: 11.5px; opacity: .6; word-break: break-all; margin-top: 2px; }
+    .suggest-item .btn { flex: none; }
 
     .vitem { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; font-size: 13.5px; border-bottom: 1px dashed rgba(0,0,0,.06); }
     .vitem:last-child { border-bottom: none; }
@@ -189,6 +198,7 @@
             <button class="btn btn-terra" id="import-btn" onclick="importNew()">Import</button>
           </div>
           <div class="muted" id="import-status" style="margin-top:10px; min-height:18px;"></div>
+          <div id="import-suggest" hidden style="margin-top:12px;"></div>
         </div>
 
         <div class="card">
@@ -490,15 +500,50 @@ function draftFromSnapshot(snap) {
   };
 }
 
+// When a URL cannot be imported — an IDX /home-search/ link, or a slug that
+// has moved — the server looks the place up in KRAIN's own public listing
+// index and returns its listings. Render them as one-click imports so the
+// dead end becomes a working path.
+function renderSuggestions(list) {
+  const box = document.getElementById('import-suggest');
+  if (!list || !list.length) { box.hidden = true; box.innerHTML = ''; return; }
+  box.innerHTML =
+    `<div class="suggest-head"><b>KRAIN has ${list.length === 1 ? 'a listing' : list.length + ' listings'} of its own for this area.</b> These can be imported:</div>` +
+    list.map((sg) => `
+      <div class="suggest-item">
+        <div class="suggest-text">
+          <div class="suggest-title">${esc(sg.title)}</div>
+          <div class="suggest-url">${esc(sg.url)}</div>
+        </div>
+        <button type="button" class="btn btn-terra" data-suggest-url="${esc(sg.url)}">Import this</button>
+      </div>`).join('');
+  box.hidden = false;
+}
+
+// Delegated so the URL travels as data, never as interpolated code.
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-suggest-url]');
+  if (!btn) return;
+  document.getElementById('import-url').value = btn.getAttribute('data-suggest-url');
+  renderSuggestions(null);
+  importNew();
+});
+
 async function importNew() {
   const url = document.getElementById('import-url').value.trim();
   const st = document.getElementById('import-status');
   const btn = document.getElementById('import-btn');
+  renderSuggestions(null);
   if (!url) { st.textContent = 'Paste a listing URL first.'; return; }
   btn.disabled = true;
   st.textContent = 'Fetching the source page…';
   const r = await apiFetchListing(url);
-  if (!r.ok) { st.textContent = '✕ ' + (r.error || 'Import failed.'); btn.disabled = false; return; }
+  if (!r.ok) {
+    st.textContent = '✕ ' + (r.error || 'Import failed.');
+    renderSuggestions(r.suggestions);
+    btn.disabled = false;
+    return;
+  }
   st.textContent = 'Source read — detected: ' + r.source_label + '. Creating draft…';
 
   // Duplicate awareness at import time (not blocking — the publish step decides)

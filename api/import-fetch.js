@@ -46,7 +46,16 @@ module.exports = async function handler(req, res) {
     return;
   }
   if (!adapter.supported) {
-    res.status(422).json({ ok: false, error: adapter.reason, source_type: adapter.id, source_label: adapter.label });
+    // A URL we cannot import is usually still about a place where KRAIN has
+    // its own listings. Offer those instead of a dead end.
+    const suggestions = await lib.suggestKrainListings(check.url).catch(() => []);
+    res.status(422).json({
+      ok: false,
+      error: adapter.reason,
+      source_type: adapter.id,
+      source_label: adapter.label,
+      suggestions,
+    });
     return;
   }
 
@@ -64,10 +73,14 @@ module.exports = async function handler(req, res) {
   }
   if (!page.ok) {
     const gone = page.status === 404 || page.status === 410;
+    // A moved or renamed slug is the other case worth resolving: the listing
+    // often still exists at a new URL in KRAIN's index.
+    const suggestions = gone ? await lib.suggestKrainListings(check.url).catch(() => []) : [];
     res.status(502).json({
       ok: false,
       error: gone ? 'The source listing page no longer exists (removed or unpublished).' : page.error,
       source_gone: gone,
+      suggestions,
     });
     return;
   }

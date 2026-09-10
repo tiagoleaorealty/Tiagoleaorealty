@@ -515,6 +515,162 @@ const propertyshelf = {
   },
 };
 
+// ── "Did you mean" resolver over KRAIN's own listing index ──
+// A URL the importer cannot import — an IDX /home-search/ link, or a
+// /properties/ slug that has since moved — is usually about a place where
+// KRAIN does have its own listings. Rather than a dead end, we look that place
+// up in KRAIN's PUBLIC sitemap and offer those pages, which the krain-lp
+// adapter can import normally.
+//
+// This reads only krainrealestate.com's sitemap. It never touches the
+// bot-protected IDX pages and never tries to resolve an MLS listing id.
+const KRAIN_SITEMAP_INDEX = 'https://krainrealestate.com/sitemap.xml';
+const SITEMAP_TTL_MS = 30 * 60 * 1000;
+const MAX_SITEMAP_FILES = 6;
+const MAX_SUGGESTIONS = 6;
+
+// Warm per lambda instance; a cold start just refetches.
+let _sitemapCache = { at: 0, entries: null };
+
+// Words too common in listing slugs to identify anything.
+const SLUG_STOPWORDS = new Set([
+  'for', 'sale', 'the', 'and', 'or', 'of', 'in', 'at', 'on', 'with', 'a', 'an',
+  'costa', 'rica', 'property', 'properties', 'listing', 'listings', 'real',
+  'estate', 'home', 'homes', 'house', 'new', 'your', 'this', 'near', 'to',
+]);
+
+function slugTokens(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .split(' ')
+    .filter((t) => t.length > 2 && !/^\d+$/.test(t) && !SLUG_STOPWORDS.has(t));
+}
+
+// Slug → a readable label. KRAIN slugs encode "|" as "-or-", so this is an
+// approximation; the UI shows the URL alongside it and the real title arrives
+// when the listing is actually imported.
+function prettifySlug(slug) {
+  const label = String(slug || '')
+    .split('-')
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+  // KRAIN encodes the "Name | Description" pipe as "-or-". Only the first one
+  // is that separator; later ones are usually a real "or".
+  return label.replace(/\s+Or\s+/, ' | ');
+}
+
+function extractLocs(xml) {
+  const out = [];
+  const re = /<loc>\s*([^<\s]+)\s*<\/loc>/g;
+  let m;
+  while ((m = re.exec(xml))) out.push(decodeEntities(m[1]));
+  return out;
+}
+
+// Fetch and cache KRAIN's own /properties/ URLs from their sitemap.
+async function krainListingIndex() {
+  if (_sitemapCache.entries && Date.now() - _sitemapCache.at < SITEMAP_TTL_MS) {
+    return _sitemapCache.entries;
+  }
+  const opts = { timeoutMs: FETCH_TIMEOUT_MS, maxBytes: MAX_HTML_BYTES, accept: 'application/xml,text/xml' };
+  const index = await safeFetch(new URL(KRAIN_SITEMAP_INDEX), PAGE_HOSTS, opts);
+  if (!index.ok) return [];
+
+  const files = extractLocs(index.body.toString('utf-8'))
+    .filter((u) => /sitemap-properties/i.test(u))
+    .slice(0, MAX_SITEMAP_FILES);
+
+  const seen = new Set();
+  const entries = [];
+  for (const file of files) {
+    let page;
+    try {
+      page = await safeFetch(new URL(file), PAGE_HOSTS, opts);
+    } catch {
+      continue;
+    }
+    if (!page.ok) continue;
+    for (const loc of extractLocs(page.body.toString('utf-8'))) {
+      let u;
+      try {
+        u = new URL(loc);
+      } catch {
+        continue;
+      }
+      const m = u.pathname.match(/^\/properties\/([^/]+)\/?$/);
+      if (!m || seen.has(u.href)) continue;
+      seen.add(u.href);
+      entries.push({ url: u.href, slug: m[1], tokens: slugTokens(m[1]) });
+    }
+  }
+  _sitemapCache = { at: Date.now(), entries };
+  return entries;
+}
+
+// The part of an unimportable URL that names a place, e.g.
+// "/home-search/listings/8585294185596059561-Playa-Junquillal" → playa junquillal
+function queryTokensFromUrl(u) {
+  const segs = u.pathname.split('/').filter(Boolean);
+  const last = segs[segs.length - 1] || '';
+  const tokens = slugTokens(last);
+  // A bare numeric id carries no place name — fall back to the segment before.
+  if (!tokens.length && segs.length > 1) return slugTokens(segs[segs.length - 2]);
+  return tokens;
+}
+
+// Rank KRAIN's own listings against those tokens. Rarer tokens (a town name)
+// count for much more than common ones ("playa", "lot"), which is what makes
+// "Playa Junquillal" surface the two Junquillal listings rather than every
+// beach property KRAIN has.
+async function suggestKrainListings(u) {
+  const query = queryTokensFromUrl(u);
+  if (!query.length) return [];
+
+  let entries;
+  try {
+    entries = await krainListingIndex();
+  } catch {
+    return [];
+  }
+  if (!entries.length) return [];
+
+  const df = new Map();
+  for (const e of entries) {
+    for (const t of new Set(e.tokens)) df.set(t, (df.get(t) || 0) + 1);
+  }
+  const idf = (t) => Math.log(entries.length / (1 + (df.get(t) || 0)));
+
+  const scored = [];
+  for (const e of entries) {
+    const have = new Set(e.tokens);
+    let score = 0;
+    let hits = 0;
+    for (const t of query) {
+      if (have.has(t)) {
+        score += idf(t);
+        hits++;
+      }
+    }
+    if (!hits) continue;
+    // Score is the summed IDF of the matched tokens: a rare token (the town
+    // name) outweighs a common one ("playa", "lot") on its own, so a listing
+    // matching only the town still ranks above one matching only "playa".
+    // Deliberately no hits/query-length ratio — combined with the relevance
+    // cutoff below it buried listings that matched the town but not "playa".
+    scored.push({ url: e.url, title: prettifySlug(e.slug), score });
+  }
+  scored.sort((a, b) => b.score - a.score || a.title.length - b.title.length);
+
+  // Drop weak tails: anything far below the best match is noise.
+  const best = scored.length ? scored[0].score : 0;
+  return scored
+    .filter((s) => s.score >= best * 0.5)
+    .slice(0, MAX_SUGGESTIONS)
+    .map(({ url, title }) => ({ url, title }));
+}
+
 const ADAPTERS = [krainLp, krainIdx, propertyshelf];
 
 function findAdapter(url) {
@@ -527,5 +683,7 @@ module.exports = {
   SQFT_PER_SQM, SQM_PER_ACRE, SQM_PER_HECTARE,
   verifyAdminToken, rateLimit, validateUrl, safeFetch,
   findAdapter, ADAPTERS,
-  _test: { stripTags, decodeEntities, parseMoney, parseAreaValue, toSqm, balancedBlock, meta },
+  suggestKrainListings,
+  _test: { stripTags, decodeEntities, parseMoney, parseAreaValue, toSqm, balancedBlock, meta,
+           slugTokens, prettifySlug, extractLocs, queryTokensFromUrl },
 };
