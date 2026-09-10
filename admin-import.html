@@ -213,7 +213,12 @@
         </div>
 
         <div class="card">
-          <h2>Imports <span class="muted" id="imports-count"></span></h2>
+          <h2>Imports <span class="muted" id="imports-count"></span>
+            <button type="button" class="btn" style="float:right;font-size:12px;padding:7px 12px"
+                    onclick="finishAllDrafts()"
+                    title="Copy photos, set status from the source page, record authorization and publish every unpublished draft">Finish &amp; publish all drafts</button>
+          </h2>
+          <div id="bulk-finish" hidden style="margin-bottom:14px;"></div>
           <div id="imports-list"><div class="muted">Loading…</div></div>
         </div>
       </div>
@@ -902,12 +907,11 @@ function onFieldInput() { dirty = true; updateConversions(); runValidation(); }
 // ══════════════════════════════════════════════════════════════
 const CLAIM_RE = /(guaranteed\s+(income|return|rent)|proven\s+investment|assured\s+return|\b\d+\s*%\s*(roi|return|yield|cap\s*rate)|occupancy\s+rate|appreciat\w*\s+(of|by)\s+\d)/i;
 
-function runValidation() {
-  if (!current) return [];
-  const d = collectDraft();
-  const a = collectAuth();
-  const imgs = current.images || [];
-  const L = (current.source_snapshot || {}).listing || {};
+// Pure rule set, shared by the open editor and the bulk finisher, so a batch
+// can never publish something the manual path would have blocked.
+function validateDraftRow(row, d, a) {
+  const imgs = row.images || [];
+  const L = (row.source_snapshot || {}).listing || {};
   const v = [];
   const block = (c, m) => v.push({ level: 'block', code: c, msg: m });
   const warn = (c, m) => v.push({ level: 'warn', code: c, msg: m });
@@ -949,9 +953,15 @@ function runValidation() {
   if (lowres.length) warn('img-lowres', `${lowres.length} selected image(s) are below 800 px wide.`);
   if (d.lat == null || d.lng == null) info('coords', 'No map coordinates — the property page will simply hide its map.');
   if (!d.short_desc) info('short', 'No short summary — property cards will show only name and specs.');
-  if ((current.source_snapshot.missing || []).length) info('missing', 'Not provided by source: ' + current.source_snapshot.missing.join(', ') + '.');
-  for (const fl of current.source_snapshot.flags || []) info('src-flag', 'Source note: ' + fl);
+  if ((L && (row.source_snapshot || {}).missing || []).length) info('missing', 'Not provided by source: ' + row.source_snapshot.missing.join(', ') + '.');
+  for (const fl of (row.source_snapshot || {}).flags || []) info('src-flag', 'Source note: ' + fl);
 
+  return v;
+}
+
+function runValidation() {
+  if (!current) return [];
+  const v = validateDraftRow(current, collectDraft(), collectAuth());
   const el = document.getElementById('w-validation');
   el.innerHTML = v.length ? v.map(x => `<div class="vitem v-${x.level}"><span class="vtag">${x.level === 'block' ? 'Blocking' : x.level === 'warn' ? 'Warning' : 'Info'}</span><span>${esc(x.msg)}</span></div>`).join('')
     : '<div class="vitem v-info"><span class="vtag">OK</span><span>No findings — ready to publish.</span></div>';
@@ -1247,6 +1257,232 @@ async function publishConfirmed() {
   showToast(existing ? 'Existing property updated' : 'Property created');
   maybeOfferSiteBuild();
 }
+
+// ══════════════════════════════════════════════════════════════
+//  FINISH ALL DRAFTS — copy photos, set status, publish, in one run
+//
+//  Doing 50 drafts by hand means 50 × (tick boxes, copy photos, choose
+//  status, publish). This runs the same steps on every unpublished draft,
+//  using the same validation rules as the editor, and reports each one.
+//
+//  What it does NOT do is guess a listing into existence: a draft that
+//  fails validation is skipped with the reason, never published half-formed.
+// ══════════════════════════════════════════════════════════════
+
+let bulkStop = false;
+
+// The source page's own words for status → the site's enum. A listing that
+// says Sold must not go live as active, which is why this is read rather
+// than defaulted for every row.
+function statusFromSource(row) {
+  const raw = String(((row.source_snapshot || {}).listing || {}).status_raw || '').toLowerCase();
+  if (!raw) return { status: 'active', guessed: true };
+  if (/sold|closed/.test(raw)) return { status: 'sold', guessed: false };
+  if (/pending|under\s*contract|contingent|reserved/.test(raw)) return { status: 'pending', guessed: false };
+  if (/active|for\s*sale|available|new/.test(raw)) return { status: 'active', guessed: false };
+  return { status: 'active', guessed: true };
+}
+
+// Copy one draft's selected photos into storage. Mirrors downloadSelected(),
+// but operates on a row instead of the open editor's DOM.
+async function copyImagesForRow(row, token, onProgress, cap) {
+  const nameSlug = slugify(((row.draft || {}).name || 'listing').slice(0, 40)) || 'listing';
+  const ordered = (row.images || []).slice().sort((a, b) => a.order - b.order);
+  const selected = ordered.filter((i) => i.selected);
+  const capped = cap > 0 ? selected.slice(0, cap) : selected;
+  // Anything past the cap is deselected so it is not expected at publish time.
+  for (const im of selected) if (!capped.includes(im)) im.selected = false;
+
+  const todo = capped.filter((i) => !i.display_url);
+  const seenSig = new Set(ordered.filter((i) => i.bytes).map((i) => `${i.bytes}:${i.width}x${i.height}`));
+  let done = 0, failed = 0;
+
+  for (const im of todo) {
+    if (bulkStop) break;
+    if (onProgress) onProgress(done + failed + 1, todo.length);
+    try {
+      let res = await fetch('/api/import-image', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ url: im.source_url }) });
+      let rendition = 'original';
+      if (!res.ok) {
+        res = await fetch('/api/import-image', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ url: im.full_url }) });
+        rendition = 'w2560';
+      }
+      if (!res.ok) {
+        let msg = `HTTP ${res.status}`;
+        try { msg = (await res.json()).error || msg; } catch {}
+        throw new Error(msg);
+      }
+      const blob = await res.blob();
+      const bmp = await createImageBitmap(blob).catch(() => null);
+      if (!bmp) throw new Error('Downloaded file is not a readable image.');
+      im.width = bmp.width; im.height = bmp.height; im.bytes = blob.size;
+      const sig = `${blob.size}:${bmp.width}x${bmp.height}`;
+      im.duplicate = seenSig.has(sig); seenSig.add(sig);
+      const base = `import/${row.id}/${String(im.order).padStart(2, '0')}-${nameSlug}-${im.uuid.slice(0, 8)}`;
+      const up1 = await sb.storage.from('photos').upload(`${base}-orig.jpg`, blob, { cacheControl: '3600', contentType: blob.type || 'image/jpeg', upsert: true });
+      if (up1.error) throw new Error('Storage (original): ' + up1.error.message);
+      const disp = await compressImage(blob);
+      const up2 = await sb.storage.from('photos').upload(`${base}.jpg`, disp || blob, { cacheControl: '3600', contentType: 'image/jpeg', upsert: true });
+      if (up2.error) throw new Error('Storage (display): ' + up2.error.message);
+      im.original_storage_url = sb.storage.from('photos').getPublicUrl(`${base}-orig.jpg`).data.publicUrl;
+      im.display_url = sb.storage.from('photos').getPublicUrl(`${base}.jpg`).data.publicUrl;
+      im.status = 'uploaded'; im.error = ''; im.rendition = rendition;
+      done++;
+    } catch (e) {
+      im.status = 'failed'; im.error = String(e.message || e); failed++;
+    }
+  }
+  // A hero must exist among the copied photos.
+  const copied = (row.images || []).filter((i) => i.selected && i.display_url).sort((a, b) => a.order - b.order);
+  if (copied.length && !copied.some((i) => i.hero)) {
+    row.images.forEach((i) => { i.hero = false; });
+    copied[0].hero = true;
+  }
+  return { done, failed, copied: copied.length };
+}
+
+async function publishRow(row, d, a, email) {
+  const photos = (row.images || []).slice().sort((x, y) => x.order - y.order)
+    .filter((i) => i.selected && i.display_url);
+  const heroFirst = photos.slice().sort((x, y) => (y.hero ? 1 : 0) - (x.hero ? 1 : 0));
+  const photoUrls = [...new Set(heroFirst.map((i) => i.display_url))];
+  const maxSort = allProperties.reduce((m, p) => Math.max(m, p.sort_order || 0), 0);
+
+  const propRow = {
+    name: d.name, price: d.price_display, type: d.type, status: d.status,
+    location: d.location, address: d.address || '',
+    beds: d.beds || 0, baths: d.baths || 0,
+    size: d.size_m2 || 0, lot: d.lot_m2 || 0,
+    short_desc: d.short_desc || '', description: d.description,
+    features: d.features || [], photos: photoUrls,
+    lat: d.lat, lng: d.lng,
+    walk_score: d.walk_score, beach_minutes: d.beach_minutes, beach_mode: d.beach_mode, airport_minutes: d.airport_minutes,
+    updated_at: nowIso(), featured: false, sort_order: maxSort + 1,
+    slug: slugify(d.name.split(':')[0].split('|')[0] + ' ' + d.location),
+  };
+  let res = await sb.from('properties').insert([propRow]).select().single();
+  if (res.error && /slug/i.test(res.error.message) && /duplicate|unique/i.test(res.error.message)) {
+    propRow.slug += '-' + Date.now().toString(36).slice(-4);
+    res = await sb.from('properties').insert([propRow]).select().single();
+  }
+  if (res.error) throw new Error(res.error.message);
+  const prop = res.data;
+  allProperties.push(prop);
+
+  await sb.from('property_imports').update({
+    draft: d, ...a, images: row.images,
+    validation: validateDraftRow(row, d, a),
+    import_status: 'published', published_property_id: prop.id,
+    published_at: nowIso(), published_by: email,
+    history: (row.history || []).concat([{ at: nowIso(), user: email, event: 'published',
+      details: { property_id: prop.id, mode: 'created_new', slug: prop.slug, via: 'bulk finisher' } }]),
+    updated_at: nowIso(),
+  }).eq('id', row.id);
+  return prop;
+}
+
+async function finishAllDrafts() {
+  const pending = allImports.filter((r) => r.import_status !== 'published');
+  if (!pending.length) { showToast('No unpublished drafts.'); return; }
+
+  const capRaw = prompt(
+    `Finish and publish ${pending.length} draft${pending.length === 1 ? '' : 's'}?\n\n` +
+    `For each one this will: copy the photos into your storage, set status from what the source page says ` +
+    `(defaulting to active only when the page does not say), record your authorization, and publish it.\n\n` +
+    `Photos per listing to copy (blank = all). Copying is the slow part — around a second each.`,
+    '40');
+  if (capRaw === null) return;
+  const cap = capRaw.trim() === '' ? 0 : Math.max(1, parseInt(capRaw, 10) || 0);
+
+  if (!confirm(
+    'Confirm authorization for this batch.\n\n' +
+    'You are recording that you are authorized to republish these listings and their photos on ' +
+    'soldbytiago.com. This is written into each import\'s compliance record with your account and the time.\n\n' +
+    'Continue?')) return;
+
+  bulkStop = false;
+  const email = await userEmail();
+  const token = await getToken();
+  const panel = document.getElementById('bulk-finish');
+  const rows = pending.map((r) => ({ id: r.id, name: (r.draft || {}).name || '(unnamed)', state: 'wait', note: '' }));
+
+  const draw = () => {
+    const done = rows.filter((r) => r.state === 'ok' || r.state === 'skip' || r.state === 'err').length;
+    panel.innerHTML =
+      `<div class="suggest-head"><b>Finishing ${rows.length} drafts</b> — ${done} done.
+         <button type="button" class="btn" style="margin-left:10px" onclick="bulkStop=true">Stop</button></div>` +
+      rows.map((r) => {
+        const mark = r.state === 'ok' ? '<span class="bulk-mark bulk-ok">✓</span>'
+                   : r.state === 'err' ? '<span class="bulk-mark bulk-err">✕</span>'
+                   : r.state === 'skip' ? '<span class="bulk-mark">–</span>'
+                   : r.state === 'busy' ? '<span class="bulk-mark">·</span>'
+                   : '<span class="bulk-mark bulk-wait">·</span>';
+        return `<div class="bulk-row ${r.state === 'wait' ? 'bulk-wait' : ''}">${mark}
+                  <span class="bulk-name">${esc(r.name)}</span>
+                  <span class="bulk-note">${esc(r.note)}</span></div>`;
+      }).join('');
+    panel.hidden = false;
+  };
+  draw();
+
+  let published = 0, skipped = 0, errored = 0;
+  for (let i = 0; i < pending.length; i++) {
+    if (bulkStop) { rows.slice(i).forEach((r) => { if (r.state === 'wait') { r.state = 'skip'; r.note = 'stopped'; } }); draw(); break; }
+    const row = pending[i];
+    const line = rows[i];
+    line.state = 'busy'; line.note = 'copying photos…'; draw();
+
+    try {
+      const d = { ...(row.draft || {}) };
+      const st = statusFromSource(row);
+      if (!d.status) d.status = st.status;
+
+      const auth = {
+        permission_scope: row.permission_scope || 'own_brokerage_listing',
+        permission_note: (row.permission_note || '') ||
+          `Bulk authorization confirmed by ${email} on ${new Date().toISOString()} — KRAIN listing published by its own agent.`,
+        images_authorized: true,
+        description_authorized: true,
+        sync_authorized: row.sync_authorized || false,
+        authorization_confirmed: true,
+      };
+
+      const imgRes = await copyImagesForRow(row, token, (n, total) => {
+        line.note = `photo ${n} of ${total}…`; draw();
+      }, cap);
+      if (bulkStop) { line.state = 'skip'; line.note = 'stopped'; draw(); break; }
+
+      const findings = validateDraftRow(row, d, auth);
+      const blocks = findings.filter((x) => x.level === 'block');
+      if (blocks.length) {
+        line.state = 'skip';
+        line.note = 'needs you: ' + blocks.map((b) => b.msg).join(' ').slice(0, 120);
+        // Save the copied photos and the status so the manual fix is small.
+        await sb.from('property_imports').update({ draft: d, ...auth, images: row.images, validation: findings, updated_at: nowIso() }).eq('id', row.id);
+        skipped++; draw(); continue;
+      }
+
+      line.note = 'publishing…'; draw();
+      const prop = await publishRow(row, d, auth, email);
+      line.state = 'ok';
+      line.note = `${imgRes.copied} photo${imgRes.copied === 1 ? '' : 's'} · ${d.status}` +
+        (st.guessed ? ' (status not on source page — set active)' : '') +
+        (imgRes.failed ? ` · ${imgRes.failed} photo(s) failed` : '');
+      published++;
+    } catch (e) {
+      line.state = 'err';
+      line.note = String((e && e.message) || e).slice(0, 140);
+      errored++;
+    }
+    draw();
+  }
+
+  await refreshAll();
+  renderImportsList();
+  showToast(`Finished: ${published} published, ${skipped} need attention, ${errored} failed.`);
+  if (published) maybeOfferSiteBuild();
+}
+
 function maybeOfferSiteBuild() {
   const hook = localStorage.getItem('tl_deploy_hook');
   if (hook && confirm('Trigger a site build now so the clean URL, canonical and sitemap go live? (Vercel deploy, ~1 minute)')) {

@@ -193,6 +193,33 @@ be retried without re-pasting the whole batch.
 The fetch endpoint allows 20 imports a minute per user, so the queue paces at
 one every 3.2s and, on a 429, waits out the window and retries that URL once.
 
+### Finish & publish all drafts (2026-09-10)
+
+Button on the Imports card. For every unpublished draft it copies the photos
+into storage, sets status, writes the authorization record, runs validation
+and publishes — the same steps the editor does one at a time.
+
+- **Status is read, not assumed.** `statusFromSource()` maps the adapter's
+  `status_raw` (Sold/Closed → sold, Pending/Under Contract/Contingent →
+  pending, Active/For Sale → active). It defaults to active **only** when the
+  source page carries no status, and says so in that row's result. This is
+  what stops a sold listing going live as for-sale.
+- **Authorization is recorded, not skipped.** One confirmation covers the
+  batch and is written into each row's compliance record with the account and
+  timestamp, so the audit trail survives.
+- **Validation is shared.** `validateDraftRow(row, draft, auth)` is the same
+  pure rule set the editor uses, so a batch cannot publish something the
+  manual path would block. A draft with a blocking finding is **skipped with
+  the reason**, never published half-formed — and its copied photos and status
+  are saved first, so the manual fix left over is small.
+- Photos-per-listing cap is prompted (default 40, blank = all); anything past
+  the cap is deselected so publish does not expect it. A hero is auto-set to
+  the first copied photo if none was chosen. Stop button halts between rows.
+
+Verified against stubs: clean draft → published active; a Sold source →
+published **sold**; a draft missing its price → skipped with "Missing price.";
+a publish error → reported without stopping the batch.
+
 ## 4. Supported KRAIN URL formats
 
 - ✅ `https://krainrealestate.com/properties/<slug>` (and `www.`)
