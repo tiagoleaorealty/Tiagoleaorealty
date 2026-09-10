@@ -112,8 +112,14 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
   portrait crops to roughly the centre third of a 16:9 frame, so a smaller
   encode would look soft exactly where it is magnified. The saving comes from
   compression — 2.3 MB / 1.6 MB against 3.8 MB / 2.6 MB.
-- Skips the video entirely on `prefers-reduced-motion` and on `Save-Data` or
-  2g connections.
+- Skips the video entirely on `Save-Data` or a 2g connection — that is about
+  someone's data cost.
+- **Reduce Motion does not remove the video, it only stops autoplay.** On iOS
+  the setting is Settings > Accessibility > Motion > Reduce Motion, it is
+  commonly on, and it applies to Safari and Chrome alike since both are WebKit.
+  Removing the element made that indistinguishable from a broken page: the
+  poster is frame 0 of the clip, so "no video" and "frozen video" look exactly
+  the same. The clip now loads and a tap on the hero starts it.
 - iOS autoplay needs `muted`, `playsinline` and a programmatic `play()`. The
   order matters: with `preload="none"` Safari will not fetch on `load()`
   alone, so waiting for `canplay` before calling `play()` deadlocks — the

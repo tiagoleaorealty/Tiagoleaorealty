@@ -2533,11 +2533,23 @@
 
     // Reduced motion and metered/slow connections still skip it outright.
     // Small screens no longer do — they get a lighter encode instead.
-    if (mq('(prefers-reduced-motion: reduce)') || frugal) {
-      if (window.__heroDebug) window.__heroDebug('SKIPPED: reduced-motion or saveData/2g');
+    // Save-Data or a 2g connection: skip entirely, that is about cost.
+    if (frugal) {
+      if (window.__heroDebug) window.__heroDebug('SKIPPED: saveData or 2g connection');
       else v.remove();
       return;
     }
+
+    // Reduce Motion is different. It used to remove the video outright, which
+    // is indistinguishable from a broken page — the poster is frame 0 of the
+    // clip, so "no video" and "frozen video" look identical. On iOS the
+    // setting lives under Accessibility > Motion and is commonly on, which
+    // silently disabled the hero in Safari and Chrome alike.
+    // Now: no autoplay, but the video is loaded and a deliberate tap starts
+    // it. Motion the person asked for is motion they can have.
+    var reduced = mq('(prefers-reduced-motion: reduce)');
+    if (window.__heroDebug) window.__heroDebug('reduced-motion: ' + reduced +
+      (reduced ? ' — autoplay off, tap the hero to play' : ''));
 
     function start() {
       // Phones get a more compressed cut of the same 1080p frame. Resolution
@@ -2559,7 +2571,8 @@
       var sources = isSafari || !canWebm ? [mp4, webmFile] : [webmFile, mp4];
 
       var reveal = function () { v.classList.add('ready'); };
-      var attempt = function () {
+      var attempt = function (userAsked) {
+        if (reduced && !userAsked) return;   // honour the setting until asked
         var p = v.play();
         if (p && p.catch) p.catch(function () { /* refused; the poster stands */ });
       };
@@ -2591,7 +2604,7 @@
       // Low Power Mode on iOS refuses muted autoplay outright. Start on the
       // first real interaction instead of leaving a still frame forever.
       var kick = function () {
-        if (v.isConnected && v.paused) attempt();
+        if (v.isConnected && v.paused) attempt(true);   // a real gesture
         if (!v.paused) {
           ['touchstart', 'pointerdown', 'scroll'].forEach(function (t) {
             window.removeEventListener(t, kick);
