@@ -814,7 +814,7 @@ function renderWork() {
       ' <b>Tip:</b> this text also decides which community page shows the listing — match the wording used on your existing listings.')}</div>
     <div class="fg"><label>Address (optional)</label><input id="f-address" value="${esc(d.address)}" oninput="onFieldInput()" />${note('address')}</div>
     <div class="fg"><label>Bedrooms</label><input id="f-beds" type="number" min="0" value="${d.beds ?? ''}" oninput="onFieldInput()" />${note('beds')}</div>
-    <div class="fg"><label>Bathrooms (site shows one number — halves count 0.5)</label><input id="f-baths" type="number" min="0" step="0.5" value="${d.baths ?? ''}" oninput="onFieldInput()" />${note('baths')}</div>
+    <div class="fg"><label>Bathrooms (site shows one number — halves count 0.5)</label><input id="f-baths" type="number" min="0" step="0.5" value="${d.baths ?? ''}" oninput="markBathsReviewed(); onFieldInput()" />${note('baths')}</div>
     <div class="fg"><label>Built area (m²)</label><input id="f-size" type="number" min="0" value="${d.size_m2 ?? ''}" oninput="onFieldInput()" />
       <div class="src-note" id="size-conv"></div>${note('size_m2')}</div>
     <div class="fg"><label>Lot area (m²)</label><input id="f-lot" type="number" min="0" value="${d.lot_m2 ?? ''}" oninput="onFieldInput()" />
@@ -909,6 +909,13 @@ function collectDraft() {
   d.short_desc = document.getElementById('f-short_desc').value.trim();
   return d;
 }
+// The source contradicting itself on bathrooms is not something editing the
+// site can repair, so the finding has to be clearable by confirming a number
+// rather than by fixing the source. Touching the field is that confirmation.
+function markBathsReviewed() {
+  if (current && current.draft) current.draft.baths_reviewed = true;
+}
+
 function collectAuth() {
   return {
     permission_scope: document.getElementById('a-scope').value,
@@ -945,8 +952,14 @@ function validateDraftRow(row, d, a) {
   const residential = d.type && d.type !== 'land' && d.type !== 'commercial';
   if (residential && (d.beds == null || d.beds === 0)) block('beds', 'Missing bedroom count for a residential listing.');
   if (residential && d.baths == null) block('baths', 'Missing bathroom count for a residential listing.');
-  if (L.baths_full != null && L.baths_total != null && L.baths_full + (L.baths_half || 0) !== L.baths_total)
-    block('baths-conflict', `Contradictory bathroom values in source: full ${L.baths_full} + half ${L.baths_half || 0} ≠ total ${L.baths_total}. Set the site number deliberately.`);
+  if (L.baths_full != null && L.baths_total != null && L.baths_full + (L.baths_half || 0) !== L.baths_total) {
+    // Blocking until a human picks a number, then a warning — never a block
+    // that no edit can clear, which is what this was: the test reads only the
+    // source snapshot, so no change to the listing could ever satisfy it.
+    const msg = `Source disagrees with itself on bathrooms: full ${L.baths_full} + half ${L.baths_half || 0} \u2260 total ${L.baths_total}.`;
+    if (d.baths_reviewed) warn('baths-conflict', `${msg} Publishing ${d.baths} as the site number.`);
+    else block('baths-conflict', `${msg} Set the Bathrooms field below to the number the site should show — that clears this.`);
+  }
   if (d.baths != null && L.baths_total != null && d.baths > L.baths_total) warn('baths-high', `Site bathroom number (${d.baths}) is higher than the source total (${L.baths_total}).`);
   if (d.size_m2 && d.lot_m2 && d.size_m2 > d.lot_m2) warn('size-lot', `Built area (${d.size_m2} m²) exceeds lot (${d.lot_m2} m²) — check for a unit mixup.`);
   if (d.size_m2 && d.lot_m2 && d.size_m2 === d.lot_m2) warn('size-eq-lot', 'Built area equals lot area exactly — usually a data-entry error at the source.');
@@ -1556,6 +1569,13 @@ async function finishAllDrafts() {
       const st = statusFromSource(row);
       if (!d.status) d.status = st.status;
       if (looksLikeLand(row, d)) d.type = 'land';
+      // A source that contradicts its own bathroom counts cannot be repaired
+      // from here, and it blocked the batch. The derived number (full + half/2)
+      // stands, and the disagreement is kept as a warning on the record.
+      const srcL = (row.source_snapshot || {}).listing || {};
+      const bathsConflict = srcL.baths_full != null && srcL.baths_total != null &&
+        srcL.baths_full + (srcL.baths_half || 0) !== srcL.baths_total;
+      if (bathsConflict) d.baths_reviewed = true;
 
       // MUST be one of the values property_imports' CHECK constraint allows:
       // '', own_listing, krain_exclusive, brokerage_approved, mls_syndication,
@@ -1603,6 +1623,7 @@ async function finishAllDrafts() {
       line.state = 'ok';
       renderImportsList();
       line.note = `${imgRes.copied} photo${imgRes.copied === 1 ? '' : 's'} · ${d.status}` +
+        (bathsConflict ? ` · check baths (${d.baths})` : '') +
         (st.conflict ? ` — heads up, the source page says ${st.conflict}` : '') +
         (imgRes.failed ? ` · ${imgRes.failed} photo(s) failed` : '');
       published++;
