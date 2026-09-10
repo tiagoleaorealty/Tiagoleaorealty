@@ -1287,7 +1287,14 @@ function statusFromSource(row) {
 
 // Copy one draft's selected photos into storage. Mirrors downloadSelected(),
 // but operates on a row instead of the open editor's DOM.
-async function copyImagesForRow(row, token, onProgress, cap) {
+// Pace under the server's 500-per-5-minute image limit (~1.7/s) and back off
+// rather than burning through a batch. The first bulk run hit the old
+// 200/5min ceiling after ~200 photos and then failed every remaining image
+// instantly, which left every later listing with nothing copied.
+const IMG_GAP_MS = 650;
+const IMG_MAX_WAITS = 6;
+
+async function copyImagesForRow(row, token, onProgress, cap, onToken) {
   const nameSlug = slugify(((row.draft || {}).name || 'listing').slice(0, 40)) || 'listing';
   const ordered = (row.images || []).slice().sort((a, b) => a.order - b.order);
   const selected = ordered.filter((i) => i.selected);
@@ -1299,14 +1306,35 @@ async function copyImagesForRow(row, token, onProgress, cap) {
   const seenSig = new Set(ordered.filter((i) => i.bytes).map((i) => `${i.bytes}:${i.width}x${i.height}`));
   let done = 0, failed = 0;
 
-  for (const im of todo) {
+  const grab = (url) => fetch('/api/import-image', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+    body: JSON.stringify({ url }),
+  });
+
+  for (let n = 0; n < todo.length; n++) {
+    const im = todo[n];
     if (bulkStop) break;
     if (onProgress) onProgress(done + failed + 1, todo.length);
+    if (n > 0) await sleep(IMG_GAP_MS);
     try {
-      let res = await fetch('/api/import-image', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ url: im.source_url }) });
+      let res = await grab(im.source_url);
       let rendition = 'original';
+
+      // A rate-limited or expired-token response is temporary — wait it out
+      // (and re-auth) instead of marking the photo permanently failed.
+      for (let waits = 0; (res.status === 429 || res.status === 401) && waits < IMG_MAX_WAITS; waits++) {
+        if (bulkStop) break;
+        if (res.status === 401 && onToken) token = await onToken();
+        else {
+          if (onProgress) onProgress(done + failed + 1, todo.length, 'rate limited — waiting');
+          await sleep(45000);
+        }
+        res = await grab(im.source_url);
+      }
+
       if (!res.ok) {
-        res = await fetch('/api/import-image', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ url: im.full_url }) });
+        res = await grab(im.full_url);
         rendition = 'w2560';
       }
       if (!res.ok) {
@@ -1404,7 +1432,6 @@ async function finishAllDrafts() {
 
   bulkStop = false;
   const email = await userEmail();
-  const token = await getToken();
   const panel = document.getElementById('bulk-finish');
   const rows = pending.map((r) => ({ id: r.id, name: (r.draft || {}).name || '(unnamed)', state: 'wait', note: '' }));
 
@@ -1449,16 +1476,25 @@ async function finishAllDrafts() {
         authorization_confirmed: true,
       };
 
-      const imgRes = await copyImagesForRow(row, token, (n, total) => {
-        line.note = `photo ${n} of ${total}…`; draw();
-      }, cap);
+      // Fresh token per listing — a full gallery run can outlast one.
+      const token = await getToken();
+      const imgRes = await copyImagesForRow(row, token, (n, total, note) => {
+        line.note = note ? `photo ${n} of ${total} — ${note}` : `photo ${n} of ${total}…`;
+        draw();
+      }, cap, getToken);
       if (bulkStop) { line.state = 'skip'; line.note = 'stopped'; draw(); break; }
 
       const findings = validateDraftRow(row, d, auth);
       const blocks = findings.filter((x) => x.level === 'block');
       if (blocks.length) {
         line.state = 'skip';
-        line.note = 'needs you: ' + blocks.map((b) => b.msg).join(' ').slice(0, 120);
+        // Surface the underlying image error, not just "not copied yet" —
+        // that generic line hid a rate limit behind 40 identical rows.
+        const imgErr = (row.images || []).find((i) => i.status === 'failed' && i.error);
+        const why = blocks.map((b) => b.msg).join(' ');
+        line.note = 'needs you: ' + (imgErr && /not been copied/.test(why)
+          ? `photos failed — ${imgErr.error}`.slice(0, 140)
+          : why.slice(0, 120));
         // Save the copied photos and the status so the manual fix is small.
         await sb.from('property_imports').update({ draft: d, ...auth, images: row.images, validation: findings, updated_at: nowIso() }).eq('id', row.id);
         skipped++; draw(); continue;

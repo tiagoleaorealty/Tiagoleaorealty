@@ -23,7 +23,11 @@ module.exports = async function handler(req, res) {
     res.status(401).json({ ok: false, error: 'Sign in to the admin first.' });
     return;
   }
-  if (!lib.rateLimit(`img:${user.id}`, 200, 300_000)) {
+  // A full gallery import runs to thousands of images (40 photos x 40+
+  // listings), so 200/5min stalled the bulk finisher almost immediately.
+  // 500/5min is ~1.7/s, still an unremarkable rate for the source CDN, and
+  // the client paces itself under this and backs off on a 429.
+  if (!lib.rateLimit(`img:${user.id}`, 500, 300_000)) {
     res.status(429).json({ ok: false, error: 'Image download rate limit hit — pause a few minutes.' });
     return;
   }
