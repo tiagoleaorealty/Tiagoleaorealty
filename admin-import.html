@@ -1274,6 +1274,11 @@ async function publishConfirmed() {
 //  fails validation is skipped with the reason, never published half-formed.
 // ══════════════════════════════════════════════════════════════
 
+// Keep in sync with the CHECK constraint on property_imports.permission_scope
+// and the options in the Authorization select.
+const PERMISSION_SCOPES = ['', 'own_listing', 'krain_exclusive', 'brokerage_approved',
+                           'mls_syndication', 'written_permission'];
+
 let bulkStop = false;
 
 // The source page's own words for status → the site's enum. A listing that
@@ -1513,8 +1518,14 @@ async function finishAllDrafts() {
       if (!d.status) d.status = st.status;
       if (looksLikeLand(row, d)) d.type = 'land';
 
+      // MUST be one of the values property_imports' CHECK constraint allows:
+      // '', own_listing, krain_exclusive, brokerage_approved, mls_syndication,
+      // written_permission. Writing anything else makes Postgres reject the
+      // whole update, which is what left published imports marked "imported"
+      // and invited the re-runs that duplicated them.
       const auth = {
-        permission_scope: row.permission_scope || 'own_brokerage_listing',
+        permission_scope: PERMISSION_SCOPES.indexOf(row.permission_scope) > 0
+          ? row.permission_scope : 'brokerage_approved',
         permission_note: (row.permission_note || '') ||
           `Bulk authorization confirmed by ${email} on ${new Date().toISOString()} — KRAIN listing published by its own agent.`,
         images_authorized: true,
