@@ -98,7 +98,15 @@ ffmpeg -y -i hero.mp4 -frames:v 1 -q:v 3 hero-poster.jpg
   compression — 2.3 MB / 1.6 MB against 3.8 MB / 2.6 MB.
 - Skips the video entirely on `prefers-reduced-motion` and on `Save-Data` or
   2g connections.
-- iOS autoplay needs `muted`, `playsinline` and a programmatic `play()`, all of
-  which are in place. It will still refuse in Low Power Mode — the poster
-  shows instead, which is the correct outcome.
+- iOS autoplay needs `muted`, `playsinline` and a programmatic `play()`. The
+  order matters: with `preload="none"` Safari will not fetch on `load()`
+  alone, so waiting for `canplay` before calling `play()` deadlocks — the
+  fetch never starts, `canplay` never fires, nothing plays. The loader sets
+  `preload='auto'`, calls `play()` immediately, and reveals on whichever of
+  `loadeddata`/`playing` arrives first.
+- Low Power Mode refuses muted autoplay outright. The first `touchstart`,
+  `pointerdown` or `scroll` starts it instead of leaving a frozen frame.
+- Feature tests use `typeof x === 'function'`, not `'x' in window`: Safari has
+  no `requestIdleCallback`, and an `in` check passes on a property that exists
+  but is not callable.
 - Removes itself on any load error.

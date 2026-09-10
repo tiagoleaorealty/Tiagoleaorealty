@@ -2517,35 +2517,67 @@
       // WebM/VP9 is meaningfully smaller where it is supported; Safari gets MP4.
       var webm = v.canPlayType('video/webm; codecs="vp9"');
       var useWebm = (webm === 'probably' || webm === 'maybe');
+
+      var reveal = function () { v.classList.add('ready'); };
+      var attempt = function () {
+        var p = v.play();
+        if (p && p.catch) p.catch(function () { /* refused; the poster stands */ });
+      };
+
+      // iOS is the reason this is shaped the way it is. With preload="none"
+      // Safari will not fetch on load() alone — play() is what actually starts
+      // it — so we flip preload, call play() immediately rather than waiting
+      // for canplay, and reveal on whichever of loadeddata/playing lands first.
+      v.preload = 'auto';
+      v.addEventListener('loadeddata', reveal, { once: true });
+      v.addEventListener('playing', reveal, { once: true });
+      v.addEventListener('error', function () { v.remove(); }, { once: true });
+
       v.src = small
         ? (useWebm ? 'hero-mobile.webm' : 'hero-mobile.mp4')
         : (useWebm ? 'hero.webm' : 'hero.mp4');
-
-      v.addEventListener('canplay', function () {
-        v.classList.add('ready');
-        var p = v.play();
-        if (p && p.catch) p.catch(function () { /* autoplay refused; still stands */ });
-      }, { once: true });
-
-      v.addEventListener('error', function () { v.remove(); }, { once: true });
       v.load();
+      attempt();
 
-      if ('IntersectionObserver' in window) {
+      // Low Power Mode on iOS refuses muted autoplay outright. Start on the
+      // first real interaction instead of leaving a still frame forever.
+      var kick = function () {
+        if (v.isConnected && v.paused) attempt();
+        if (!v.paused) {
+          ['touchstart', 'pointerdown', 'scroll'].forEach(function (t) {
+            window.removeEventListener(t, kick);
+          });
+        }
+      };
+      ['touchstart', 'pointerdown', 'scroll'].forEach(function (t) {
+        window.addEventListener(t, kick, { passive: true });
+      });
+
+      if (typeof window.IntersectionObserver === 'function') {
         new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
-            if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+            if (e.isIntersecting) attempt();
             else v.pause();
           });
         }, { threshold: 0.01 }).observe(v);
       }
       document.addEventListener('visibilitychange', function () {
         if (document.hidden) v.pause();
-        else if (v.classList.contains('ready')) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else if (v.classList.contains('ready')) attempt();
       });
     }
 
-    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 2500 });
-    else window.addEventListener('load', function () { setTimeout(start, 500); });
+    // Safari has no requestIdleCallback, and the old fallback hung a listener
+    // on 'load' that never fires if load already happened. Check readyState.
+    function schedule(fn) {
+      var go = function () {
+        if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(fn, { timeout: 2000 });
+        else setTimeout(fn, 400);
+      };
+      if (document.readyState === 'complete') go();
+      else window.addEventListener('load', go, { once: true });
+    }
+    schedule(start);
   })();
   </script>
 </body>
