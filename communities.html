@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d4a4a" />
+  <meta name="theme-color" content="#2d422d" />
   <title>Guanacaste Beach Towns Guide: Where to Buy in Costa Rica | Tiago Leao</title>
   <meta name="description" content="A local's guide to Guanacaste's beach towns — Tamarindo, Flamingo, Conchal, Potrero, Nosara and more: the vibe, the market, and who each one fits.">
   <link rel="canonical" href="https://soldbytiago.com/communities.html">
@@ -156,15 +156,32 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Brand palette (2026-09) ──────────────────────────────────
+       Variable names are inverted legacy names — --black is the light
+       page ground, --cream is the dark text. Do not "fix" the names.
+
+         #e3dcd1  cream    page background          --black
+         #ffffff  white    cards, panels, sections  --charcoal
+         #2d422d  green    brand, CTAs, footer      --terra
+         #d37234  terracotta  accents, rules, hovers --accent
+         #30312f  charcoal primary text             --cream
+         #b1b7a9  sage     dividers, muted chrome
+
+       Text steps on cream: #30312f 9.6:1 / #454842 6.8:1 / #5c6058 4.7:1.
+       --accent-soft is the lighter terracotta for small accent text on the
+       dark greens, where brand terracotta only reaches 3.2:1.
+       ──────────────────────────────────────────────────────────── */
 
     :root {
-      --black:    #fafafa;
-      --charcoal: #fafafa;
-      --stone:    #6b7a7a;
-      --sand:     #3d4a4a;
-      --cream:    #1d2021;
-      --terra:    #0d4a4a;
-      --accent:   #ffffff;
+      --black:    #e3dcd1;
+      --charcoal: #ffffff;
+      --stone:    #5c6058;
+      --sand:     #454842;
+      --cream:    #30312f;
+      --terra:    #2d422d;
+      --accent:   #d37234;
+      --accent-soft: #e5945c;
+      --accent-ink:  #984916;
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -184,7 +201,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(250,250,250,.92);
+      background: rgba(227,220,209,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
@@ -211,8 +228,8 @@
     .nav-dd:hover .nav-dd-toggle svg, .nav-dd:focus-within .nav-dd-toggle svg { transform: rotate(180deg); }
     .nav-dd-menu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); list-style: none; margin: 0; padding: 8px; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.12); min-width: 195px; opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s, visibility .2s; }
     .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #3d4a4a !important; transition: background .15s, color .15s; }
-    .nav-dd-menu li a:hover { background: rgba(13,74,74,.07); color: #0d4a4a !important; }
+    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #454842 !important; transition: background .15s, color .15s; }
+    .nav-dd-menu li a:hover { background: rgba(45,66,45,.07); color: #2d422d !important; }
 
     /* Page header */
     .page-header {
@@ -248,11 +265,11 @@
       position: relative; display: block;
       aspect-ratio: 4 / 4.6;
       border-radius: 20px; overflow: hidden;
-      background: linear-gradient(155deg, #11423f 0%, #0b2b2b 55%, #081f1f 100%);
+      background: linear-gradient(155deg, #2b3f2b 0%, #1c291c 55%, #141e14 100%);
       transform: translateY(0);
       transition: transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s;
     }
-    .tcard:hover { transform: translateY(-5px); box-shadow: 0 24px 50px rgba(8,31,31,0.28); }
+    .tcard:hover { transform: translateY(-5px); box-shadow: 0 24px 50px rgba(20,30,20,0.28); }
     .tcard-photo {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; display: block;
@@ -261,7 +278,7 @@
     .tcard:hover .tcard-photo { transform: scale(1.06); }
     .tcard-shade {
       position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(to top, rgba(8,31,31,.92) 0%, rgba(8,31,31,.55) 26%, rgba(8,31,31,.12) 52%, rgba(8,31,31,.05) 100%);
+      background: linear-gradient(to top, rgba(20,30,20,.92) 0%, rgba(20,30,20,.55) 26%, rgba(20,30,20,.12) 52%, rgba(20,30,20,.05) 100%);
     }
     .tcard-initial {
       display: none;
@@ -271,7 +288,7 @@
       color: rgba(255,255,255,0.07);
     }
     .tcard.noimg .tcard-initial { display: flex; }
-    .tcard.noimg { background: radial-gradient(120% 90% at 80% 0%, rgba(127,208,200,.14) 0%, rgba(127,208,200,0) 55%), linear-gradient(155deg, #11423f 0%, #0b2b2b 55%, #081f1f 100%); }
+    .tcard.noimg { background: radial-gradient(120% 90% at 80% 0%, rgba(211,114,52,.14) 0%, rgba(211,114,52,0) 55%), linear-gradient(155deg, #2b3f2b 0%, #1c291c 55%, #141e14 100%); }
     .tcard-info {
       position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
       padding: 26px 26px 24px; color: #fff;
@@ -282,7 +299,7 @@
       display: flex; align-items: center; gap: 10px;
     }
     .tcard-kicker::before { content: ""; width: 22px; height: 1px; background: rgba(255,255,255,0.5); }
-    .tcard-name { font-size: clamp(21px, 2vw, 25px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 8px; text-shadow: 0 2px 16px rgba(8,31,31,.4); }
+    .tcard-name { font-size: clamp(21px, 2vw, 25px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.12; margin-bottom: 8px; text-shadow: 0 2px 16px rgba(20,30,20,.4); }
     .tcard-desc {
       font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,0.78);
       margin-bottom: 0; max-height: 0; opacity: 0; overflow: hidden;
@@ -321,8 +338,8 @@
     .guide-cta a.ghost { border: 1px solid rgba(255,255,255,0.4); color: #fff; }
     .guide-cta a:hover { transform: translateY(-2px); }
 
-    /* Footer (teal) */
-    footer { background: #0d4a4a; padding: 80px 48px 40px; }
+    /* Footer (brand green) */
+    footer { background: #2d422d; padding: 80px 48px 40px; }
     .footer-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 40px; }
     .footer-name { font-size: 32px; font-weight: 700; letter-spacing: -.03em; color: #fff; margin-bottom: 6px; }
     .footer-tagline { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
@@ -345,12 +362,12 @@
     nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
     nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    .nav-mobile { position: fixed; inset: 0; background: #1d2021; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile { position: fixed; inset: 0; background: #30312f; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
     .nav-mobile.open { opacity: 1; pointer-events: all; }
     .nav-mobile a { font-size: 26px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 16px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
     .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
     .nav-mobile a:active { color: #fff; }
-    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #ffffff; color: #1d2021 !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #ffffff; color: #30312f !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
     @media (max-width: 900px) {
       nav { padding: 20px 24px; }
       .nav-links { display: none; }

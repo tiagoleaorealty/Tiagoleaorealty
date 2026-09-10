@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d4a4a" />
+  <meta name="theme-color" content="#2d422d" />
   <title>Costa Rica Seller's Guide: Costs, Taxes & Getting Top Dollar | Tiago Leao</title>
   <meta name="description" content="Selling property in Costa Rica: commissions and VAT, capital gains tax, the 2.5% non-resident withholding, documents, timelines, and a net-proceeds calculator.">
   <link rel="canonical" href="https://soldbytiago.com/sellers-guide.html">
@@ -94,15 +94,32 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Brand palette (2026-09) ──────────────────────────────────
+       Variable names are inverted legacy names — --black is the light
+       page ground, --cream is the dark text. Do not "fix" the names.
+
+         #e3dcd1  cream    page background          --black
+         #ffffff  white    cards, panels, sections  --charcoal
+         #2d422d  green    brand, CTAs, footer      --terra
+         #d37234  terracotta  accents, rules, hovers --accent
+         #30312f  charcoal primary text             --cream
+         #b1b7a9  sage     dividers, muted chrome
+
+       Text steps on cream: #30312f 9.6:1 / #454842 6.8:1 / #5c6058 4.7:1.
+       --accent-soft is the lighter terracotta for small accent text on the
+       dark greens, where brand terracotta only reaches 3.2:1.
+       ──────────────────────────────────────────────────────────── */
 
     :root {
-      --black:    #fafafa;
-      --charcoal: #fafafa;
-      --stone:    #6b7a7a;
-      --sand:     #3d4a4a;
-      --cream:    #1d2021;
-      --terra:    #0d4a4a;
-      --accent:   #ffffff;
+      --black:    #e3dcd1;
+      --charcoal: #ffffff;
+      --stone:    #5c6058;
+      --sand:     #454842;
+      --cream:    #30312f;
+      --terra:    #2d422d;
+      --accent:   #d37234;
+      --accent-soft: #e5945c;
+      --accent-ink:  #984916;
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -122,7 +139,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(250,250,250,.92);
+      background: rgba(227,220,209,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
@@ -155,8 +172,8 @@
       opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s, visibility .2s;
     }
     .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #3d4a4a !important; transition: background .15s, color .15s; }
-    .nav-dd-menu li a:hover { background: rgba(13,74,74,.07); color: #0d4a4a !important; }
+    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #454842 !important; transition: background .15s, color .15s; }
+    .nav-dd-menu li a:hover { background: rgba(45,66,45,.07); color: #2d422d !important; }
 
     /* Page header */
     .page-header {
@@ -203,7 +220,7 @@
     .toc a {
       font-size: 13px; font-weight: 500;
       color: var(--terra);
-      border: 1px solid rgba(13,74,74,0.25);
+      border: 1px solid rgba(45,66,45,0.25);
       border-radius: 30px;
       padding: 8px 16px;
       transition: background .2s, color .2s;
@@ -274,7 +291,7 @@
     .calc-field input::-webkit-outer-spin-button, .calc-field input::-webkit-inner-spin-button { -webkit-appearance: none; }
     .calc-field input:focus, .calc-field select:focus { border-color: rgba(255,255,255,0.6); }
     .calc-field input::placeholder { color: rgba(255,255,255,0.35); }
-    .calc-field select option { color: #1d2021; }
+    .calc-field select option { color: #30312f; }
     .calc-results { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 24px; align-self: start; }
     .calc-row { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; font-size: 14px; color: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(255,255,255,0.09); }
     .calc-row span:last-child { font-weight: 500; color: #fff; font-variant-numeric: tabular-nums; }
@@ -289,7 +306,7 @@
       max-width: 764px;
       padding: 44px 40px;
       background: #fff;
-      border: 1px solid rgba(13,74,74,0.18);
+      border: 1px solid rgba(45,66,45,0.18);
       border-radius: 14px;
       text-align: center;
     }
@@ -301,7 +318,7 @@
       padding: 14px 30px; border-radius: 40px; transition: transform .2s, opacity .2s;
     }
     .guide-cta a.solid { background: var(--terra); color: #fff; }
-    .guide-cta a.ghost { border: 1px solid rgba(13,74,74,0.35); color: var(--terra); }
+    .guide-cta a.ghost { border: 1px solid rgba(45,66,45,0.35); color: var(--terra); }
     .guide-cta a:hover { transform: translateY(-2px); }
 
     /* Footer */
@@ -319,8 +336,8 @@
     .footer-copy { font-size: 12px; }
     .footer-domain { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 
-    /* Footer: brand teal with white text */
-    footer { background: #0d4a4a; }
+    /* Footer: brand green with cream text */
+    footer { background: #2d422d; }
     footer .footer-top { border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 40px; }
     footer .footer-name { color: #fff; }
     footer .footer-tagline { color: rgba(255,255,255,0.55); }
@@ -340,12 +357,12 @@
     nav.nav-open .nav-hamburger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     nav.nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
     nav.nav-open .nav-hamburger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    .nav-mobile { position: fixed; inset: 0; background: #1d2021; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
+    .nav-mobile { position: fixed; inset: 0; background: #30312f; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 40px 60px; opacity: 0; pointer-events: none; transition: opacity 0.3s; overflow-y: auto; }
     .nav-mobile.open { opacity: 1; pointer-events: all; }
     .nav-mobile a { font-size: 28px; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: -0.02em; padding: 18px 0; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.07); transition: color 0.2s; text-decoration: none; line-height: 1.2; }
     .nav-mobile a:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
     .nav-mobile a:active { color: #fff; }
-    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #ffffff; color: #1d2021 !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
+    .nav-mobile-cta-btn { margin-top: 28px; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.08em !important; text-transform: uppercase; background: #ffffff; color: #30312f !important; padding: 14px 36px !important; border-radius: 40px; border: none !important; width: auto !important; }
     @media (max-width: 900px) {
       nav { padding: 20px 24px; }
       .nav-links { display: none; }

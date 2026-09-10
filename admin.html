@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d4a4a" />
+  <meta name="theme-color" content="#2d422d" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Admin | Tiago Leao | Guanacaste Real Estate</title>
   
@@ -22,16 +22,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #fafafa;
-      --bg2: #fafafa;
-      --text: #1d2021;
-      --stone: #6b7a7a;
-      --sand: #3d4a4a;
-      --terra: #0d4a4a;
-      --accent: #7fd0c8;
+      --bg: #e3dcd1;
+      --bg2: #e3dcd1;
+      --text: #30312f;
+      --stone: #5c6058;
+      --sand: #454842;
+      --terra: #2d422d;
+      --accent: #d37234;
+      --accent-soft: #e5945c;
+      --accent-ink:  #984916;
       --white: #fff;
       /* Dark-theme leftover: this was white-on-dark. The admin is light now,
-         so a white border was invisible against #fafafa and every input,
+         so a white border was invisible against #e3dcd1 and every input,
          button and card looked like it had no edge at all. */
       --border: rgba(0,0,0,0.14);
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -101,7 +103,7 @@
     .topbar-links a {
       font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
       padding: 8px 16px; border-radius: 4px;
-      color: rgba(253,248,242,0.6); transition: all 0.2s;
+      color: rgba(240,235,227,0.6); transition: all 0.2s;
     }
     .topbar-links a:hover { color: var(--bg); }
     .topbar-links a.active { background: var(--terra); color: var(--white); }
@@ -159,11 +161,11 @@
       color: var(--terra); border-radius: 4px; cursor: pointer; font-size: 9px; line-height: 1;
       display: flex; align-items: center; justify-content: center; transition: background 0.15s;
     }
-    .reorder-btn:hover:not(:disabled) { background: rgba(13,74,74,0.08); }
+    .reorder-btn:hover:not(:disabled) { background: rgba(45,66,45,0.08); }
     .reorder-btn:disabled { opacity: 0.25; cursor: default; }
     .reorder-pos { font-size: 11px; color: var(--stone); font-weight: 600; }
     .item-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    .item-thumb { width: 100px; height: 70px; background: #d5dbda; border-radius: 4px; overflow: hidden; }
+    .item-thumb { width: 100px; height: 70px; background: #b1b7a9; border-radius: 4px; overflow: hidden; }
     .item-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .item-info h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
     .item-info .item-meta { font-size: 12px; color: var(--stone); }
@@ -171,7 +173,7 @@
     .item-info .item-meta .tag {
       display: inline-block; font-size: 9px; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--terra); font-weight: 500;
-      background: rgba(13,74,74,0.08); padding: 2px 8px; border-radius: 3px;
+      background: rgba(45,66,45,0.08); padding: 2px 8px; border-radius: 3px;
     }
     .item-actions { display: flex; gap: 6px; }
     .empty-state { text-align: center; padding: 80px 20px; color: var(--stone); }
@@ -189,7 +191,7 @@
     /* ─── Modal / Editor ───────────────────────────────────────── */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(15,15,14,0.5); backdrop-filter: blur(4px); overflow-y: auto;
+      background: rgba(48,49,47,0.5); backdrop-filter: blur(4px); overflow-y: auto;
     }
     .modal-overlay.open { display: flex; justify-content: center; padding: 40px 20px; }
     .modal {
@@ -232,7 +234,7 @@
       padding: 32px; text-align: center; cursor: pointer;
       transition: all 0.2s; margin-bottom: 16px;
     }
-    .photo-upload-area:hover, .photo-upload-area.dragover { border-color: var(--terra); background: rgba(13,74,74,0.03); }
+    .photo-upload-area:hover, .photo-upload-area.dragover { border-color: var(--terra); background: rgba(45,66,45,0.03); }
     .photo-upload-area p { font-size: 14px; color: var(--stone); margin-bottom: 8px; }
     .photo-upload-area .upload-hint { font-size: 12px; color: rgba(0,0,0,0.3); }
     .photo-upload-area input { display: none; }
@@ -338,7 +340,7 @@
     .badge-featured {
       display: inline-block; font-size: 9px; letter-spacing: 0.1em;
       text-transform: uppercase; font-weight: 600;
-      background: rgba(13,74,74,0.12); color: var(--terra);
+      background: rgba(45,66,45,0.12); color: var(--terra);
       padding: 2px 8px; border-radius: 3px; margin-left: 4px;
     }
   </style>
@@ -1056,12 +1058,12 @@ Separate paragraphs with a blank line."></textarea>
           pages.length + (pages.length === 1 ? ' page' : ' pages');
         listEl.innerHTML = pages.map(p => {
           const url = 'https://soldbytiago.com/' + p.slug + '/';
-          const statusColors = { live: '#0d4a4a', sold: '#8a6d3b', hidden: '#999' };
+          const statusColors = { live: '#2d422d', sold: '#8a6d3b', hidden: '#999' };
           return '<div class="item-card">' +
             '<div class="item-thumb"><img src="' + escS(p.hero) + '" alt="" loading="lazy"></div>' +
             '<div class="item-info"><h3>' + escS(p.title) + '</h3>' +
             '<div class="item-meta">' +
-              '<span class="tag" style="background:rgba(13,74,74,0.08);color:' + (statusColors[p.status] || '#666') + ';">' + escS(p.status) + '</span>' +
+              '<span class="tag" style="background:rgba(45,66,45,0.08);color:' + (statusColors[p.status] || '#666') + ';">' + escS(p.status) + '</span>' +
               '<span>' + escS(p.location) + '</span>' +
               '<span><strong>' + escS(p.price) + '</strong></span>' +
               (p.added ? '<span>added ' + escS(p.added) + '</span>' : '') +
@@ -1364,7 +1366,7 @@ Separate paragraphs with a blank line."></textarea>
     function initPropMap(data) {
       const key = getConfig().mapbox;
       const container = document.getElementById('prop-map');
-      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8e5df;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings to enable maps</div>'; return; }
+      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#dbd3c6;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings to enable maps</div>'; return; }
       mapboxgl.accessToken = key;
       const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
       const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
@@ -1372,13 +1374,13 @@ Separate paragraphs with a blank line."></textarea>
       propMap = new mapboxgl.Map({ container: 'prop-map', style: 'mapbox://styles/mapbox/satellite-streets-v12', center: [lng, lat], zoom: data?.lat ? 15 : 10 });
       propMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
       if (data?.lat && data?.lng) {
-        propMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(propMap);
+        propMarker = new mapboxgl.Marker({ color: '#2d422d' }).setLngLat([lng, lat]).addTo(propMap);
       }
       propMap.on('click', (e) => {
         document.getElementById('prop-lat').value = e.lngLat.lat.toFixed(6);
         document.getElementById('prop-lng').value = e.lngLat.lng.toFixed(6);
         if (propMarker) propMarker.remove();
-        propMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(propMap);
+        propMarker = new mapboxgl.Marker({ color: '#2d422d' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(propMap);
       });
     }
 
@@ -1581,19 +1583,19 @@ Separate paragraphs with a blank line."></textarea>
     function initDevMap(data) {
       const key = getConfig().mapbox;
       const container = document.getElementById('dev-map');
-      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8e5df;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings</div>'; return; }
+      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#dbd3c6;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings</div>'; return; }
       mapboxgl.accessToken = key;
       const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
       const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
       if (devMap) devMap.remove();
       devMap = new mapboxgl.Map({ container: 'dev-map', style: 'mapbox://styles/mapbox/satellite-streets-v12', center: [lng, lat], zoom: data?.lat ? 14 : 10 });
       devMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
-      if (data?.lat && data?.lng) devMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(devMap);
+      if (data?.lat && data?.lng) devMarker = new mapboxgl.Marker({ color: '#2d422d' }).setLngLat([lng, lat]).addTo(devMap);
       devMap.on('click', (e) => {
         document.getElementById('dev-lat').value = e.lngLat.lat.toFixed(6);
         document.getElementById('dev-lng').value = e.lngLat.lng.toFixed(6);
         if (devMarker) devMarker.remove();
-        devMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(devMap);
+        devMarker = new mapboxgl.Marker({ color: '#2d422d' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(devMap);
       });
     }
 
@@ -1748,7 +1750,7 @@ Separate paragraphs with a blank line."></textarea>
     function initSchoolMap(data) {
       const key = getConfig().mapbox;
       const container = document.getElementById('school-map');
-      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#e8e5df;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings to enable maps</div>'; return; }
+      if (!key) { container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#dbd3c6;color:var(--stone);font-size:13px;">Add your Mapbox API key in Settings to enable maps</div>'; return; }
       mapboxgl.accessToken = key;
       const lat = data?.lat ? parseFloat(data.lat) : 10.2636;
       const lng = data?.lng ? parseFloat(data.lng) : -85.8388;
@@ -1756,13 +1758,13 @@ Separate paragraphs with a blank line."></textarea>
       schoolMap = new mapboxgl.Map({ container: 'school-map', style: 'mapbox://styles/mapbox/satellite-streets-v12', center: [lng, lat], zoom: data?.lat ? 15 : 10 });
       schoolMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
       if (data?.lat && data?.lng) {
-        schoolMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([lng, lat]).addTo(schoolMap);
+        schoolMarker = new mapboxgl.Marker({ color: '#2d422d' }).setLngLat([lng, lat]).addTo(schoolMap);
       }
       schoolMap.on('click', (e) => {
         document.getElementById('school-lat').value = e.lngLat.lat.toFixed(6);
         document.getElementById('school-lng').value = e.lngLat.lng.toFixed(6);
         if (schoolMarker) schoolMarker.remove();
-        schoolMarker = new mapboxgl.Marker({ color: '#0d4a4a' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(schoolMap);
+        schoolMarker = new mapboxgl.Marker({ color: '#2d422d' }).setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(schoolMap);
       });
     }
 

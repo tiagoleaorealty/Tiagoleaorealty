@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d4a4a" />
+  <meta name="theme-color" content="#2d422d" />
   <title>Tiago Leao | Guanacaste Real Estate Agent | Luxury Properties Costa Rica</title>
   <meta name="description" content="Buy or sell property in Guanacaste with Tiago Leao of KRAIN Luxury Real Estate — homes, communities, buyer and seller representation, and local support.">
   <meta name="keywords" content="Guanacaste real estate, Costa Rica luxury homes, buy property Costa Rica, Tamarindo real estate agent, Flamingo real estate, Nosara property, Conchal real estate, Guanacaste Costa Rica, luxury real estate Costa Rica, American buying property Costa Rica, Canadian buying property Costa Rica, Guanacaste homes for sale, Costa Rica investment property, expat real estate Costa Rica">
@@ -211,15 +211,32 @@
   <style>
     /* ─── Reset & Base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Brand palette (2026-09) ──────────────────────────────────
+       Variable names are inverted legacy names — --black is the light
+       page ground, --cream is the dark text. Do not "fix" the names.
+
+         #e3dcd1  cream    page background          --black
+         #ffffff  white    cards, panels, sections  --charcoal
+         #2d422d  green    brand, CTAs, footer      --terra
+         #d37234  terracotta  accents, rules, hovers --accent
+         #30312f  charcoal primary text             --cream
+         #b1b7a9  sage     dividers, muted chrome
+
+       Text steps on cream: #30312f 9.6:1 / #454842 6.8:1 / #5c6058 4.7:1.
+       --accent-soft is the lighter terracotta for small accent text on the
+       dark greens, where brand terracotta only reaches 3.2:1.
+       ──────────────────────────────────────────────────────────── */
 
     :root {
-      --black:    #fafafa;
-      --charcoal: #fafafa;
-      --stone:    #6b7a7a;
-      --sand:     #3d4a4a;
-      --cream:    #1d2021;
-      --terra:    #0d4a4a;
-      --accent:   #ffffff;
+      --black:    #e3dcd1;
+      --charcoal: #ffffff;
+      --stone:    #5c6058;
+      --sand:     #454842;
+      --cream:    #30312f;
+      --terra:    #2d422d;
+      --accent:   #d37234;
+      --accent-soft: #e5945c;
+      --accent-ink:  #984916;
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -260,7 +277,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 36px; height: 36px;
-      border: 1px solid rgba(127,208,200,0.4);
+      border: 1px solid rgba(211,114,52,0.4);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9998;
@@ -354,10 +371,10 @@
       border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(250,250,250,0.88);
+      background: rgba(227,220,209,0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom-color: rgba(13,74,74,0.12);
+      border-bottom-color: rgba(45,66,45,0.12);
     }
     nav.scrolled .nav-logo { color: var(--cream); }
     nav.scrolled .nav-logo-sub { color: var(--terra); }
@@ -558,10 +575,10 @@
       padding: 120px 130px;
     }
     #about, #why, #form-section {
-      border-top: 1px solid rgba(13,74,74,0.25);
+      border-top: 1px solid rgba(45,66,45,0.25);
     }
     #footer {
-      border-top: 1px solid rgba(13,74,74,0.25);
+      border-top: 1px solid rgba(45,66,45,0.25);
     }
     .section-label {
       font-size: 11px;
@@ -633,7 +650,7 @@
     .property-img-placeholder {
       width: 100%;
       height: 280px;
-      background: #d5dbda;
+      background: #b1b7a9;
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
@@ -652,7 +669,7 @@
     .property-badge {
       position: absolute;
       top: 14px; left: 14px;
-      background: rgba(253,248,242,0.92);
+      background: rgba(240,235,227,0.92);
       backdrop-filter: blur(6px);
       font-size: 11px;
       font-weight: 600;
@@ -665,7 +682,7 @@
     .property-type-tag {
       position: absolute;
       top: 14px; right: 14px;
-      background: rgba(253,248,242,0.92);
+      background: rgba(240,235,227,0.92);
       backdrop-filter: blur(6px);
       font-size: 11px;
       font-weight: 600;
@@ -752,14 +769,14 @@
       transition: all 0.25s;
     }
     .btn-view-all:hover {
-      background: #0a3a3a;
+      background: #233423;
       color: #fff;
       transform: translateY(-2px);
     }
 
     /* ─── About ──────────────────────────────────────────────────── */
     #about {
-      background: #fafafa;
+      background: #e3dcd1;
     }
     #about .about-name span { color: var(--stone); opacity: 1; }
     #about .about-stats { border-top-color: rgba(0,0,0,0.1); }
@@ -867,7 +884,7 @@
       font-size: 11px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #0d4a4a;
+      color: #2d422d;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
@@ -878,7 +895,7 @@
       display: block;
       width: 32px;
       height: 1px;
-      background: #0d4a4a;
+      background: #2d422d;
     }
     .faq-headline {
       font-size: clamp(28px, 2.8vw, 40px);
@@ -911,7 +928,7 @@
     .faq-question-text {
       font-size: 17px;
       font-weight: 600;
-      color: #0d4a4a;
+      color: #2d422d;
       line-height: 1.4;
     }
     .faq-icon {
@@ -919,11 +936,11 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      border: 1.5px solid #0d4a4a;
+      border: 1.5px solid #2d422d;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #0d4a4a;
+      color: #2d422d;
       font-size: 18px;
       line-height: 1;
       transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
@@ -948,11 +965,11 @@
     }
 
     /* ─── Seller Form ────────────────────────────────────────────── */
-    /* Support beyond the property — brand-teal band between light sections */
+    /* Support beyond the property — brand-green band between light sections */
     .poc { padding: 110px 130px; background: var(--terra); }
-    .poc-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(250,250,250,.6); font-weight: 600; margin-bottom: 14px; }
-    .poc-title { font-size: clamp(28px, 3.4vw, 42px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; color: #fafafa; margin-bottom: 18px; }
-    .poc-text { font-size: 16px; line-height: 1.75; color: rgba(250,250,250,.85); max-width: 62ch; }
+    .poc-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(227,220,209,.6); font-weight: 600; margin-bottom: 14px; }
+    .poc-title { font-size: clamp(28px, 3.4vw, 42px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; color: #e3dcd1; margin-bottom: 18px; }
+    .poc-text { font-size: 16px; line-height: 1.75; color: rgba(227,220,209,.85); max-width: 62ch; }
     .poc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 44px; }
     .poc-step { display: flex; flex-direction: column; background: #fff; border: none; border-radius: 12px; padding: 26px 24px; transition: transform .25s, box-shadow .25s; }
     .poc-step:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,0.18); }
@@ -960,7 +977,7 @@
     .poc-step h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--cream); margin-bottom: 10px; }
     .poc-step p { font-size: 13.5px; line-height: 1.65; color: var(--stone); }
     .poc-step-link { margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--terra); }
-    .poc-foot { margin-top: 34px; font-size: 13.5px; line-height: 1.7; color: rgba(250,250,250,.6); max-width: 68ch; }
+    .poc-foot { margin-top: 34px; font-size: 13.5px; line-height: 1.7; color: rgba(227,220,209,.6); max-width: 68ch; }
     @media (max-width: 1000px) { .poc { padding: 90px 48px; } .poc-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) { .poc { padding: 72px 24px; } .poc-grid { grid-template-columns: 1fr; } }
 
@@ -1171,7 +1188,7 @@
     .btn-next {
       background: var(--terra);
       border: none;
-      color: #f5f3ef;
+      color: #ece6dd;
       font-family: var(--font);
       font-size: 13px;
       font-weight: 500;
@@ -1181,7 +1198,7 @@
       transition: background 0.25s, transform 0.2s;
     }
     .btn-next:hover {
-      background: #0a3a3a;
+      background: #233423;
       transform: translateY(-2px);
     }
 
@@ -1202,7 +1219,7 @@
     }
     .intent-btn:hover {
       border-color: var(--terra);
-      background: rgba(13,74,74,0.04);
+      background: rgba(45,66,45,0.04);
       transform: translateY(-2px);
     }
     .intent-btn-label {
@@ -1275,7 +1292,7 @@
     }
     .success-ig:hover {
       border-color: var(--terra);
-      background: rgba(13,74,74,0.06);
+      background: rgba(45,66,45,0.06);
     }
 
     /* ─── Footer ─────────────────────────────────────────────────── */
@@ -1372,7 +1389,7 @@
     .wg-hero-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(29,32,33,0.55);
+      background: rgba(48,49,47,0.55);
       z-index: 1;
     }
     .wg-hero-content {
@@ -1415,7 +1432,7 @@
     }
     .wg-hero-sub {
       font-size: clamp(16px, 1.5vw, 18px);
-      color: rgba(245,243,239,0.85);
+      color: rgba(236,230,221,0.85);
       max-width: 560px;
       margin: 0 auto;
       line-height: 1.6;
@@ -1440,7 +1457,7 @@
     }
     .wg-loc-card {
       background: #ffffff;
-      border: 0.5px solid #d3d1c7;
+      border: 0.5px solid #c6bdae;
       border-radius: 8px;
       padding: 28px;
       cursor: pointer;
@@ -1450,9 +1467,9 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.06);
     }
     .wg-loc-card.expanded {
-      background: #faf8f4;
+      background: #f0ebe3;
       border-color: var(--terra);
-      box-shadow: 0 8px 28px rgba(13,74,74,0.08);
+      box-shadow: 0 8px 28px rgba(45,66,45,0.08);
     }
     .wg-loc-tag {
       font-size: 9px;
@@ -1554,7 +1571,7 @@
     .nav-mobile {
       position: fixed;
       inset: 0;
-      background: #1d2021;
+      background: #30312f;
       z-index: 200;
       display: flex;
       flex-direction: column;
@@ -1589,7 +1606,7 @@
       letter-spacing: 0.08em !important;
       text-transform: uppercase;
       background: #ffffff;
-      color: #1d2021 !important;
+      color: #30312f !important;
       padding: 14px 36px !important;
       border-radius: 40px;
       border: none !important;
@@ -1644,8 +1661,8 @@
       .footer-name { font-size: 28px !important; }
     }
   
-    /* ── Footer: brand teal with white text ───────────────────── */
-    #footer { background: #0d4a4a; }
+    /* ── Footer: brand green with cream text ───────────────────── */
+    #footer { background: #2d422d; }
     #footer .footer-top { border-bottom-color: rgba(255,255,255,0.15); }
     #footer .footer-name { color: #fff; }
     #footer .footer-tagline { color: rgba(255,255,255,0.55); }
@@ -1668,8 +1685,8 @@
     .nav-dd:hover .nav-dd-toggle svg, .nav-dd:focus-within .nav-dd-toggle svg { transform: rotate(180deg); }
     .nav-dd-menu { position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px); list-style: none; margin: 0; padding: 8px; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.12); min-width: 195px; opacity: 0; visibility: hidden; transition: opacity .2s, transform .2s, visibility .2s; }
     .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #3d4a4a !important; transition: background .15s, color .15s; }
-    .nav-dd-menu li a:hover { background: rgba(13,74,74,.07); color: #0d4a4a !important; }
+    .nav-dd-menu li a { display: block; padding: 11px 14px; border-radius: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #454842 !important; transition: background .15s, color .15s; }
+    .nav-dd-menu li a:hover { background: rgba(45,66,45,.07); color: #2d422d !important; }
   
   
     /* ── Nav v2: consistent items + mobile Resources group ────── */
@@ -1774,7 +1791,7 @@
       <div class="scroll-line"></div>
       <span>Scroll</span>
     </div>
-    <div style="position:absolute;bottom:0;left:0;width:100%;height:40px;background:linear-gradient(to bottom, transparent, #fafafa);pointer-events:none;z-index:10;"></div>
+    <div style="position:absolute;bottom:0;left:0;width:100%;height:40px;background:linear-gradient(to bottom, transparent, #e3dcd1);pointer-events:none;z-index:10;"></div>
   </section>
 
   <!-- ── PROPERTIES ─────────────────────────────────────────────── -->

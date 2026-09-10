@@ -502,7 +502,7 @@ def build_properties(tpl, rows):
             f'<div class="detail-description" id="detail-description">{paragraphs}</div>',
             "description",
         )
-        feat_svg = ('<div class="feature-check"><svg viewBox="0 0 10 10" fill="none" stroke="#0d4a4a" '
+        feat_svg = ('<div class="feature-check"><svg viewBox="0 0 10 10" fill="none" stroke="#2d422d" '
                     'stroke-width="1.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div>')
         feats = "".join(
             f'<div class="feature-item">{feat_svg}{esc(f)}</div>' for f in (p.get("features") or [])
@@ -861,11 +861,11 @@ def build_posts(tpl, rows):
         disclaimer = ""
         body_low = (p.get("body") or "").lower()
         if (p.get("category") or "") in ("guide", "investment", "market") and "not constitute legal" not in body_low and "not legal, tax" not in body_low:
-            disclaimer = ('<p style="margin-top:32px;font-size:13px;line-height:1.6;color:#6b7a7a;">'
+            disclaimer = ('<p style="margin-top:32px;font-size:13px;line-height:1.6;color:#5c6058;">'
                           'This article is general information, not legal, tax, immigration, or financial advice. '
                           'Rules and figures change; confirm your situation with qualified Costa Rican professionals '
                           'before making decisions.</p>')
-        sources = '<div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(0,0,0,0.08);"><p style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#0d4a4a;margin-bottom:8px;">Sources &amp; verification</p><p style="font-size:12.5px;line-height:1.8;color:#6b7a7a;">Official references for the rules and figures discussed: <a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">Registro Nacional</a> &middot; <a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">Ministerio de Hacienda</a> &middot; <a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">Migraci&oacute;n</a> &middot; <a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">SUGEF</a> &middot; <a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">ICT</a> &middot; <a href="https://www.ccss.sa.cr" target="_blank" rel="noopener" style="color:#0d4a4a;">CCSS/CAJA</a>. Verify current requirements directly &mdash; rules change. Last reviewed: July 2026.</p></div>' if (p.get("category") or "") in ("guide", "investment", "market") else ""
+        sources = '<div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(0,0,0,0.08);"><p style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#2d422d;margin-bottom:8px;">Sources &amp; verification</p><p style="font-size:12.5px;line-height:1.8;color:#5c6058;">Official references for the rules and figures discussed: <a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:#2d422d;">Registro Nacional</a> &middot; <a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:#2d422d;">Ministerio de Hacienda</a> &middot; <a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:#2d422d;">Migraci&oacute;n</a> &middot; <a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:#2d422d;">SUGEF</a> &middot; <a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:#2d422d;">ICT</a> &middot; <a href="https://www.ccss.sa.cr" target="_blank" rel="noopener" style="color:#2d422d;">CCSS/CAJA</a>. Verify current requirements directly &mdash; rules change. Last reviewed: July 2026.</p></div>' if (p.get("category") or "") in ("guide", "investment", "market") else ""
         byline = (f'By <a href="about.html" style="color:inherit;text-decoration:underline;">Tiago Leao</a> &middot; '
                   f"KRAIN Luxury Real Estate &middot; Updated {nice_date}"
                   + (f" &middot; {esc(p['readtime'])}" if p.get("readtime") else ""))
@@ -1189,7 +1189,7 @@ SIGNATURE_TEMPLATE = """<!DOCTYPE html>
 <title>Signature Listings | Tiago Leao, Guanacaste Real Estate</title>
 <meta name="description" content="Hand-picked Guanacaste properties, each presented on its own dedicated page: full story, photography and investment numbers.">
 <link rel="canonical" href="https://soldbytiago.com/signature/">
-<meta name="theme-color" content="#0d4a4a">
+<meta name="theme-color" content="#2d422d">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://soldbytiago.com/signature/">
 <meta property="og:title" content="Signature Listings | Tiago Leao">
@@ -1201,11 +1201,11 @@ SIGNATURE_TEMPLATE = """<!DOCTYPE html>
 <link rel="stylesheet" href="/fonts.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--teal:#0d4a4a;--teal-deep:#072e2e;--ink:#1d2021;--stone:#6b7a7a;--bg:#fafafa;--cream:#fdf8f2;--line:rgba(29,32,33,.13)}
+:root{--teal:#2d422d;--teal-deep:#182518;--ink:#30312f;--stone:#5c6058;--bg:#e3dcd1;--cream:#f0ebe3;--line:rgba(48,49,47,.13)}
 body{background:var(--bg);color:var(--ink);font-family:"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55}
 a{color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
-header{position:sticky;top:0;z-index:50;background:rgba(250,250,250,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(29,32,33,.07)}
+header{position:sticky;top:0;z-index:50;background:rgba(227,220,209,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(48,49,47,.07)}
 .hrow{display:flex;align-items:center;justify-content:space-between;height:66px}
 .mark{text-decoration:none;line-height:1.05}
 .mark b{display:block;font-weight:700;font-size:15px;letter-spacing:.06em}
@@ -1218,8 +1218,8 @@ header{position:sticky;top:0;z-index:50;background:rgba(250,250,250,.9);backdrop
 .hero p{color:rgba(255,255,255,.72);font-size:clamp(15px,1.9vw,18px);max-width:560px;margin-top:20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:26px;padding:72px 0 96px}
 .cardlink{text-decoration:none;display:block;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff;transition:box-shadow .25s,transform .25s}
-.cardlink:hover{box-shadow:0 22px 48px -24px rgba(13,74,74,.4);transform:translateY(-3px)}
-.cardlink .ph{position:relative;height:250px;overflow:hidden;background:#d5dbda}
+.cardlink:hover{box-shadow:0 22px 48px -24px rgba(45,66,45,.4);transform:translateY(-3px)}
+.cardlink .ph{position:relative;height:250px;overflow:hidden;background:#b1b7a9}
 .cardlink .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .cardlink:hover .ph img{transform:scale(1.05)}
 .sold{position:absolute;top:14px;left:14px;background:#fff;color:var(--teal);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:5px 11px;border-radius:2px}

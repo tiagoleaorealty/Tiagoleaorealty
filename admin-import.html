@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d4a4a" />
+  <meta name="theme-color" content="#2d422d" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Listing Importer | Admin | Tiago Leao</title>
   <!-- Root-absolute: this page also serves at /admin/import-property/, where
@@ -14,8 +14,10 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #fafafa; --text: #1d2021; --stone: #6b7a7a; --sand: #3d4a4a;
-      --terra: #0d4a4a; --accent: #7fd0c8; --white: #fff;
+      --bg: #e3dcd1; --text: #30312f; --stone: #5c6058; --sand: #454842;
+      --terra: #2d422d; --accent: #d37234;
+      --accent-soft: #e5945c;
+      --accent-ink:  #984916; --white: #fff;
       --border: rgba(0,0,0,0.14);
       --font: "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --red: #b3261e; --amber: #9a6a00; --green: #2e7d32;
@@ -37,7 +39,7 @@
     .topbar-brand { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
     .topbar-brand span { color: var(--accent); }
     .topbar-links { display: flex; gap: 6px; flex-wrap: wrap; }
-    .topbar-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 14px; border-radius: 4px; color: rgba(253,248,242,0.65); cursor: pointer; }
+    .topbar-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 14px; border-radius: 4px; color: rgba(240,235,227,0.65); cursor: pointer; }
     .topbar-links a:hover { color: var(--bg); }
 
     .page { max-width: 1280px; margin: 0 auto; padding: 32px 28px 80px; }
@@ -71,8 +73,8 @@
     .item-card:hover { border-color: var(--terra); }
     .item-info h3 { font-size: 15px; font-weight: 600; }
     .item-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; font-size: 12px; color: var(--stone); align-items: center; }
-    .chip { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: rgba(13,74,74,.08); color: var(--terra); }
-    .chip.st-imported { background: rgba(13,74,74,.08); color: var(--terra); }
+    .chip { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: rgba(45,66,45,.08); color: var(--terra); }
+    .chip.st-imported { background: rgba(45,66,45,.08); color: var(--terra); }
     .chip.st-needs_review { background: rgba(154,106,0,.12); color: var(--amber); }
     .chip.st-ready { background: rgba(46,125,50,.12); color: var(--green); }
     .chip.st-published { background: var(--terra); color: #fff; }
@@ -132,12 +134,12 @@
 
     .authz label.chk { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; margin: 10px 0; cursor: pointer; }
     .authz input[type=checkbox] { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--terra); }
-    .authz .master { font-weight: 600; background: rgba(13,74,74,.05); border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
+    .authz .master { font-weight: 600; background: rgba(45,66,45,.05); border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
 
-    .actions { position: sticky; bottom: 0; background: rgba(250,250,250,.96); backdrop-filter: blur(4px); border-top: 1px solid var(--border); margin: 0 -28px; padding: 14px 28px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; z-index: 50; }
+    .actions { position: sticky; bottom: 0; background: rgba(227,220,209,.96); backdrop-filter: blur(4px); border-top: 1px solid var(--border); margin: 0 -28px; padding: 14px 28px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; z-index: 50; }
     .actions .spacer { flex: 1; }
 
-    .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(29,32,33,.5); display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow: auto; }
+    .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(48,49,47,.5); display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow: auto; }
     .modal-overlay.open { display: flex; }
     .modal { background: var(--white); border-radius: 8px; max-width: 760px; width: 100%; padding: 26px; position: relative; }
     .modal h2 { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
