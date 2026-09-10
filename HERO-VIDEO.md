@@ -57,6 +57,18 @@ feels laggy:
 **Target under 4 MB for the MP4.** Check with `ls -lh hero.*`. If it is far
 over, shorten the clip before you lower the quality.
 
+Current files, from a 1920x1080 10.8s master (19 MB): **hero.mp4 3.8 MB,
+hero.webm 2.6 MB**, both exactly 10.00s.
+
+Two things worth knowing for next time:
+
+- **VP9's CRF scale is not H.264's.** At `-crf 36` the WebM came out at 5.1 MB,
+  *larger* than the 3.8 MB MP4, which defeats the point of shipping it. 44 is
+  the value that actually wins, and the first frames of the two files differ by
+  about 2/255 per channel, so nothing visible is lost.
+- **macOS's built-in `avconvert` cannot do this.** Its presets have no bitrate
+  control: the same clip came out 12 MB at 1080p and still 8.8 MB at 720p.
+
 The poster is the existing hero still. If you change the hero photo, update the
 `poster` attribute on `#hero-video` in `index.html` to match, or the fade will
 jump.
