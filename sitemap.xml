@@ -246,6 +246,18 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://soldbytiago.com/property/the-point-18-playa-avellanas/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/property/the-point-4-playa-avellanas/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://soldbytiago.com/school/costa-rica-international-academy/</loc>
     <lastmod>2026-07-18</lastmod>
     <priority>0.6</priority>
@@ -303,6 +315,12 @@
     <loc>https://soldbytiago.com/school/dolphins-academy/</loc>
     <lastmod>2026-07-18</lastmod>
     <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/moving-to-costa-rica-buyers-guide/</loc>
+    <lastmod>2026-09-09</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>

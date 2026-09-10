@@ -289,6 +289,25 @@
       }
     },
 
+    // Posts kept in the repo (blog-posts-local.json) rather than Supabase.
+    // The publishable key cannot write blog_posts since the RLS lockdown, so a
+    // post can ship as source and go live on a git push. Same row shape, same
+    // escaping as DB data, so callers can merge the two lists freely.
+    // Keep in sync with load_local_posts()/merge_posts() in build.py.
+    async getLocalPosts() {
+      try {
+        const res = await fetch('/blog-posts-local.json', { cache: 'no-cache' });
+        if (!res.ok) return [];
+        const rows = sanitize(await res.json());
+        return Array.isArray(rows)
+          ? rows.filter(r => (r.status || 'published') === 'published')
+          : [];
+      } catch (e) {
+        // Absent file is the normal state once every post lives in the DB.
+        return [];
+      }
+    },
+
     // Load published client reviews (About page)
     async getReviews() {
       try {

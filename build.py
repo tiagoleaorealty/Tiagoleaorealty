@@ -68,6 +68,37 @@ def esc(s):
     return html.escape(str(s if s is not None else ""), quote=True)
 
 
+LOCAL_POSTS_FILE = "blog-posts-local.json"
+
+
+def load_local_posts():
+    """Blog posts kept in the repo instead of Supabase.
+
+    The publishable key cannot write blog_posts since the RLS lockdown, so a
+    post can ship as source here and go live on a git push. Rows use the same
+    field shape as a blog_posts row. Keep in sync with the loader in blog.html.
+    """
+    path = os.path.join(ROOT, LOCAL_POSTS_FILE)
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        rows = json.load(f)
+    return [r for r in rows if (r.get("status") or "published") == "published"]
+
+
+def merge_posts(db_rows, local_rows):
+    """DB rows win on slug collision.
+
+    That way moving a local post into Supabase later is a no-op: add the row,
+    and the DB copy (which admin.html can edit) takes over immediately, whether
+    or not the JSON entry is removed.
+    """
+    seen = {r.get("slug") for r in db_rows}
+    merged = list(db_rows) + [r for r in local_rows if r.get("slug") not in seen]
+    merged.sort(key=lambda r: (r.get("created_at") or ""), reverse=True)
+    return merged
+
+
 def sub_once(doc, pattern, replacement, label, count=1, flags=0):
     """Regex-replace that fails the build if the anchor is missing/ambiguous."""
     out, n = re.subn(pattern, replacement, doc, flags=flags)
@@ -78,9 +109,16 @@ def sub_once(doc, pattern, replacement, label, count=1, flags=0):
 
 def inline_md(t):
     """Inline markdown → HTML. Input must already be HTML-escaped."""
+    def _link(m):
+        label, url = m.group(1), m.group(2)
+        # Root-relative internal links stay in-tab; external + mailto get
+        # target/rel. '//' is rejected so protocol-relative URLs can't pass.
+        rel = "" if url.startswith("/") else ' target="_blank" rel="noopener"'
+        return f'<a href="{url}" class="body-link"{rel}>{label}</a>'
+
     t = re.sub(
-        r"\[([^\]]+)\]\((https?://[^\s)]+|mailto:[^\s)]+)\)",
-        r'<a href="\2" class="body-link" target="_blank" rel="noopener">\1</a>',
+        r"\[([^\]]+)\]\((https?://[^\s)]+|mailto:[^\s)]+|/(?!/)[^\s)]*)\)",
+        _link,
         t,
     )
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
@@ -1362,7 +1400,8 @@ def main():
 
     props = fetch("properties?select=*&status=in.(active,sold)&order=sort_order.asc,created_at.desc")
     schools = fetch("schools?select=*&status=eq.published&order=sort_order.asc")
-    posts = fetch("blog_posts?select=*&status=eq.published&order=created_at.desc")
+    posts = merge_posts(fetch("blog_posts?select=*&status=eq.published&order=created_at.desc"),
+                        load_local_posts())
     try:
         devs = fetch("developments?select=*&status=eq.published&order=sort_order.asc")
     except Exception:
@@ -1389,7 +1428,7 @@ def main():
         # Rendered content only — stop at the first script so the page's own
         # markdown-parser source can never false-positive the scan.
         seg = body.split(marker, 1)[1].split("<script", 1)[0]
-        if re.search(r"\]\((https?:|mailto:)", seg) or "**" in seg:
+        if re.search(r"\]\((https?:|mailto:|/)", seg) or "**" in seg:
             print(f"  WARN raw markdown leaked in {os.path.relpath(f, ROOT)}")
     total = write_sitemap(urls)
     n_full = write_llms_full(posts)

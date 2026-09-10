@@ -45,3 +45,9 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Property tax article: 0.25% base rate (matches buyers guide); Luxury Home Tax framed as threshold-updates-yearly with no specific figure; corporation annual tax framed without figures; "purchase price becomes new base" simplification — CPA check
 - CR vs MX vs PA article: Mexico restricted-zone fideicomiso (~50km coast) and Panama island/border restriction framing are high-level; article directs readers to in-country attorneys; "no army since 1948" historical fact
 - Build cost article: $1,200-2,500/m2 quoted range labeled as builder-quote observations, mid-2026 — Tiago to confirm range matches current local quotes; permit chain framing mirrors the land checklist article
+
+## Blog: moving to Costa Rica buyer's guide (added 2026-09-09) — verify before/while live
+- Residency figures are restated from the residency article and inherit its open items ($1,000/mo pensionado, $2,500/mo or $60,000 deposit rentista, $150,000 inversionista, personal-name-not-corporation requirement, 180-day tourist entry, CAJA 9-11%)
+- Reused from existing posts: 0.25% property tax, 3.5-4.5% closing costs, ~10% escrow deposit custom, 15-30 day due diligence, 200m maritime zone
+- NEW and unsourced (Tiago's own observations, labeled as such in the on-page disclaimer): cost-of-living characterizations (Guanacaste coast more expensive than Central Valley; imported goods/cars/private school as the budget-breakers), fiber availability on the developed coast, container-shipping and pet-import framing, non-resident bank account difficulty, green-season timing (May-November, heaviest Sept-Oct)
+- The 18-month timeline is illustrative sequencing, not a guaranteed processing time; residency processing time is stated in the residency article as 6-12 months from a complete filing

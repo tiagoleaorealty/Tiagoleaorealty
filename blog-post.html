@@ -269,7 +269,15 @@
     function parseBody(text) {
       if (!text) return '';
       function inline(t) {
-        t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g, '<a href="$2" class="body-link" target="_blank" rel="noopener">$1</a>');
+        // Root-relative internal links (/blog/..., /communities.html) stay in-tab;
+        // external + mailto open in a new tab. '//' is rejected so a
+        // protocol-relative URL cannot smuggle in an external host.
+        t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|\/(?!\/)[^\s)]*)\)/g,
+          function(_m, label, url) {
+            var internal = url.charAt(0) === '/';
+            return '<a href="' + url + '" class="body-link"' +
+              (internal ? '' : ' target="_blank" rel="noopener"') + '>' + label + '</a>';
+          });
         t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
         t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
         return t;
@@ -302,14 +310,24 @@
       // Baked pages already carry static JSON-LD; skip the runtime duplicates.
       const hasBakedLd = !!document.querySelector('script[type="application/ld+json"][data-baked]');
 
-      if (!slug || typeof TL === 'undefined' || !TL.isConnected()) {
+      // A baked page already holds the full article, head tags and JSON-LD.
+      // Never replace that with "not found": a Supabase miss (post kept in
+      // blog-posts-local.json, RLS change, outage) must leave the static
+      // content standing rather than blanking a good page.
+      function giveUp() {
+        if (hasBakedLd) return;
         container.innerHTML = '<div class="loading">Article not found. <a href="blog.html" style="color:var(--terra);">Back to blog &rarr;</a></div>';
+      }
+
+      if (!slug || typeof TL === 'undefined' || !TL.isConnected()) {
+        giveUp();
         return;
       }
 
-      const post = await TL.getBlogPost(slug);
+      let post = null;
+      try { post = await TL.getBlogPost(slug); } catch (e) { post = null; }
       if (!post) {
-        container.innerHTML = '<div class="loading">Article not found. <a href="blog.html" style="color:var(--terra);">Back to blog &rarr;</a></div>';
+        giveUp();
         return;
       }
 
