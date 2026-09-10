@@ -58,21 +58,22 @@
        Variable names are inverted legacy names — --black is the light
        page ground, --cream is the dark text. Do not "fix" the names.
 
-         #e3dcd1  cream    page background          --black
-         #ffffff  white    cards, panels, sections  --charcoal
+         #ffffff  white    page background          --black
+         #e3dcd1  cream    section bands, cards     --charcoal
          #2d422d  green    brand, CTAs, footer      --terra
          #d37234  terracotta  accents, rules, hovers --accent
          #30312f  charcoal primary text             --cream
          #b1b7a9  sage     dividers, muted chrome
 
-       Text steps on cream: #30312f 9.6:1 / #454842 6.8:1 / #5c6058 4.7:1.
+       Text steps (cream ground, the tighter of the two): #30312f 9.6:1 /
+       #454842 6.8:1 / #5c6058 4.7:1 — all higher again on white.
        --accent-soft is the lighter terracotta for small accent text on the
        dark greens, where brand terracotta only reaches 3.2:1.
        ──────────────────────────────────────────────────────────── */
 
     :root {
-      --black:    #e3dcd1;
-      --charcoal: #ffffff;
+      --black:    #ffffff;
+      --charcoal: #e3dcd1;
       --stone:    #5c6058;
       --sand:     #454842;
       --cream:    #30312f;
