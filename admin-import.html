@@ -1321,6 +1321,31 @@ async function copyImagesForRow(row, token, onProgress, cap, onToken) {
   // Anything past the cap is deselected so it is not expected at publish time.
   for (const im of selected) if (!capped.includes(im)) im.selected = false;
 
+  // A previous run may already have uploaded these photos and then failed to
+  // save the URLs (the permission_scope bug rejected the whole draft update),
+  // so the bucket has them but the draft does not. Adopt anything already
+  // there instead of downloading and re-uploading it all over again.
+  let adopted = 0;
+  try {
+    const listed = await sb.storage.from('photos').list('import/' + row.id, { limit: 1000 });
+    if (!listed.error && listed.data && listed.data.length) {
+      const have = new Set(listed.data.map((f) => f.name));
+      capped.forEach((im) => {
+        if (im.display_url) return;
+        const stem = `${String(im.order).padStart(2, '0')}-${nameSlug}-${im.uuid.slice(0, 8)}`;
+        if (!have.has(stem + '.jpg')) return;
+        const path = `import/${row.id}/${stem}`;
+        im.display_url = sb.storage.from('photos').getPublicUrl(path + '.jpg').data.publicUrl;
+        if (have.has(stem + '-orig.jpg')) {
+          im.original_storage_url = sb.storage.from('photos').getPublicUrl(path + '-orig.jpg').data.publicUrl;
+        }
+        im.status = 'uploaded';
+        im.error = '';
+        adopted++;
+      });
+    }
+  } catch (e) { /* listing is an optimisation; fall through to copying */ }
+
   const todo = capped.filter((i) => !i.display_url);
   const seenSig = new Set(ordered.filter((i) => i.bytes).map((i) => `${i.bytes}:${i.width}x${i.height}`));
   let done = 0, failed = 0;
@@ -1387,7 +1412,7 @@ async function copyImagesForRow(row, token, onProgress, cap, onToken) {
     row.images.forEach((i) => { i.hero = false; });
     copied[0].hero = true;
   }
-  return { done, failed, copied: copied.length };
+  return { done, failed, adopted, copied: copied.length };
 }
 
 async function publishRow(row, d, a, email) {
@@ -1540,6 +1565,7 @@ async function finishAllDrafts() {
         line.note = note ? `photo ${n} of ${total} — ${note}` : `photo ${n} of ${total}…`;
         draw();
       }, cap, getToken);
+      if (imgRes.adopted && !imgRes.done) { line.note = 'photos already in storage'; draw(); }
       if (bulkStop) { line.state = 'skip'; line.note = 'stopped'; draw(); break; }
 
       const findings = validateDraftRow(row, d, auth);
