@@ -22,3 +22,13 @@ secrets.json
 .vscode/
 .idea/
 *.swp
+
+# Video masters. Source footage stays local — only the encoded hero loop
+# (hero.mp4 / hero.webm) is committed. A 78 MB .mov in a public repo's
+# history would be permanent and unremovable.
+*.mov
+*.MOV
+*.mp4
+*.webm
+!hero.mp4
+!hero.webm

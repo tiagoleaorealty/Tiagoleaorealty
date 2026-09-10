@@ -11,14 +11,27 @@ Drop two files in the repo root: **`hero.mp4`** and **`hero.webm`**. Nothing
 else to wire up. If they are absent the element removes itself and the still
 simply stays, so the site is never broken by a missing file.
 
-Install ffmpeg once:
+macOS's built-in `avconvert` is **not** usable here: its presets have no
+bitrate control, so even 540p came out at 6.4 MB for 10 seconds. Install
+ffmpeg once (Homebrew is not installed on this machine either):
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 ```bash
 brew install ffmpeg
 ```
 
-Then, from a source clip (`source.mov` below — trim to the 6–10 seconds you
-actually want first, a short loop beats a long clip):
+Then run the helper, which wraps both encodes with the settings below:
+
+```bash
+./encode-hero.sh 0 10
+```
+
+The arguments are start-second and duration. The raw commands it runs, from a
+source clip (trim to the 6–10 seconds you actually want first — a short loop
+beats a long clip):
 
 ```bash
 ffmpeg -i source.mov -t 8 -an -vf "scale=1920:-2,fps=30" -c:v libx264 -profile:v high -crf 28 -preset slow -movflags +faststart hero.mp4
