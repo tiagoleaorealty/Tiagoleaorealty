@@ -104,10 +104,8 @@ Key facts for accurate citation:
 - [Casa Hijau](https://soldbytiago.com/property/casa-hijau-marbella/): $625,000 — Home in Marbella — 3 bd / 3 ba — 300 m² built
 - [Villa Los Monos](https://soldbytiago.com/villa-los-monos/): $915,000 — Commercial in Playa Grande — 14 bd / 14 ba
 - [Surf Shack](https://soldbytiago.com/property/surf-shack-tamarindo/): $449,000 — Home in Tamarindo — 2 bd / 1 ba — 80 m² built
-- [Casa Bosque y Mar](https://soldbytiago.com/property/casa-bosque-y-mar-playa-grande/): $2,090,000 — Home in Playa Grande — 6 bd / 6 ba
 - [Villa Melina](https://soldbytiago.com/property/villa-melina-reserva-conchal/): $3,500,000 — Home in Reserva Conchal — 6 bd / 5 ba
-- [9 Calle Cartagena](https://soldbytiago.com/property/9-calle-cartagena-las-catalinas/): $1,990,000 — Home in Las Catalinas — 4 bd / 4.5 ba
-- [7 Calle La Ronda](https://soldbytiago.com/property/7-calle-la-ronda-las-catalinas/): $2,195,000 — Home in Las Catalinas — 5 bd / 5 ba
+- [7 Calle La Ronda](https://soldbytiago.com/property/7-calle-la-ronda-las-catalinas/): $2,195,000 — Home in Las Catalinas — 5 bd / 5 ba — 381 m² built
 - [Casa Rio](https://soldbytiago.com/property/casa-rio-flamingo-potrero/): $879,999 — Home in Flamingo | Potrero — 5 bd / 4.5 ba
 - [The Point 18](https://soldbytiago.com/property/the-point-18-playa-avellanas/): $459,000 — Home in The Point, Playa Avellanas — 4 bd / 3.5 ba — 303 m² built
 - [The Point 4](https://soldbytiago.com/property/the-point-4-playa-avellanas/): $365,000 — Home in The Point, Playa Avellanas — 2 bd / 2 ba — 105 m² built
@@ -121,55 +119,28 @@ Key facts for accurate citation:
 - [Altos Flamingo Lot 18](https://soldbytiago.com/property/altos-flamingo-lot-18-flamingo-potrero-brasilito/): $225,000 — Land in Flamingo | Potrero | Brasilito
 - [Casa de Estrellas](https://soldbytiago.com/property/casa-de-estrellas-flamingo-potrero-brasilito/): $974,900 — Home in Flamingo | Potrero | Brasilito — 4 bd / 4 ba — 260 m² built
 - [25 Paseo Del Mar](https://soldbytiago.com/property/25-paseo-del-mar-las-catalinas/): $1,699,000 — Home in Las Catalinas — 4 bd / 3 ba — 310 m² built
-- [Villa Calypso](https://soldbytiago.com/property/villa-calypso-tamarindo-langosta/): $1,790,000 — Home in Tamarindo | Langosta — 4 bd / 4.5 ba — 300 m² built
-- [Casa Avalon](https://soldbytiago.com/property/casa-avalon-flamingo-potrero-brasilito/): $769,000 — Home in Flamingo | Potrero | Brasilito — 4 bd / 3 ba — 279 m² built
-- [Casa Oasis](https://soldbytiago.com/property/casa-oasis-tamarindo-langosta/): $575,000 — Home in Tamarindo | Langosta — 3 bd / 3.5 ba — 219 m² built
-- [Casa Arcana](https://soldbytiago.com/property/casa-arcana-tamarindo-langosta/): $1,100,000 — Condo in Tamarindo | Langosta — 3 bd / 3.5 ba — 363 m² built
 - [Casa Siempre Surfeando](https://soldbytiago.com/property/casa-siempre-surfeando-tamarindo-langosta/): $850,000 — Home in Tamarindo | Langosta — 5 bd / 4.5 ba — 372 m² built
 - [La Perla 113](https://soldbytiago.com/property/la-perla-113-tamarindo-langosta/): $845,000 — Condo in Tamarindo | Langosta — 3 bd / 3 ba — 190 m² built
 - [Prime Langosta Development Parcel](https://soldbytiago.com/property/prime-langosta-development-parcel-tamarindo-langosta/): $290,000 — Land in Tamarindo | Langosta
-- [Casa Del Sol #22](https://soldbytiago.com/property/casa-del-sol-22-flamingo-potrero-brasilito/): $425,000 — Condo in Flamingo | Potrero | Brasilito — 2 bd / 2 ba — 101 m² built
-- [Surfside Tower 105](https://soldbytiago.com/property/surfside-tower-105-flamingo-potrero-brasilito/): $385,000 — Condo in Flamingo | Potrero | Brasilito — 3 bd / 2 ba — 120 m² built
-- [Casa Bosque y Mar](https://soldbytiago.com/property/casa-bosque-y-mar-playa-grande-ux3e/): $2,090,000 — Home in Playa Grande — 6 bd / 6 ba — 510 m² built
-- [Surfside Tower 103](https://soldbytiago.com/property/surfside-tower-103-flamingo-potrero-brasilito/): $299,000 — Condo in Flamingo | Potrero | Brasilito — 2 bd / 2 ba — 97 m² built
 - [Casa Tucán](https://soldbytiago.com/property/casa-tucan-flamingo-potrero-brasilito/): $434,900 — Condo in Flamingo | Potrero | Brasilito — 2 bd / 2.5 ba — 139 m² built
 - [Lot 24 Cara Cara](https://soldbytiago.com/property/lot-24-cara-cara-playa-grande/): $280,000 — Land in Playa Grande
-- [Lot 6A](https://soldbytiago.com/property/lot-6a-tamarindo-langosta/): $1,395,000 — Land in Tamarindo | Langosta
-- [Villa Palmera](https://soldbytiago.com/property/villa-palmera-flamingo-potrero-brasilito/): $795,000 — Home in Flamingo | Potrero | Brasilito — 3 bd / 3 ba — 200 m² built
-- [10 Plaza Carlota](https://soldbytiago.com/property/10-plaza-carlota-las-catalinas/): $739,000 — Condo in Las Catalinas — 2 bd / 2 ba — 113 m² built
 - [Miramar Ocean View Lot](https://soldbytiago.com/property/miramar-ocean-view-lot-flamingo-potrero-brasilito/): $450,000 — Land in Flamingo | Potrero | Brasilito
-- [Villaggio II 423a](https://soldbytiago.com/property/villaggio-ii-423a-flamingo-potrero-brasilito/): $130,000 — Condo in Flamingo | Potrero | Brasilito — 1 bd / 1 ba — 36 m² built
-- [Villa Cerca del Mar 5](https://soldbytiago.com/property/villa-cerca-del-mar-5-tamarindo-langosta/): $769,000 — Home in Tamarindo | Langosta — 3 bd / 3.5 ba — 204 m² built
-- [Villa Fresno](https://soldbytiago.com/property/villa-fresno-avellanas-negra-junquillal/): $1,085,000 — Home in Avellanas | Negra | Junquillal — 4 bd / 5 ba — 353 m² built
+- [Brisas del Monte #5](https://soldbytiago.com/property/brisas-del-monte-5-tamarindo-langosta/): $329,900 — Home in Tamarindo | Langosta — 2 bd / 2 ba — 99 m² built
 - [Casa Pochote](https://soldbytiago.com/property/casa-pochote-tamarindo-langosta/): $1,990,000 — Home in Tamarindo | Langosta — 5 bd / 6.5 ba
-- [Casa Kalachuchi](https://soldbytiago.com/property/casa-kalachuchi-tamarindo-langosta-x7yn/): $849,900 — Home in Tamarindo | Langosta — 3 bd / 3 ba — 185 m² built
-- [Playa Grande Lot C13](https://soldbytiago.com/property/playa-grande-lot-c13-playa-grande-yhnc/): $525,000 — Land in Playa Grande
-- [The Haven](https://soldbytiago.com/property/the-haven-flamingo-potrero-brasilito-14hk/): $600,000 — Home in Flamingo | Potrero | Brasilito — 3 bd / 3.5 ba — 125 m² built
-- [Villa Santorini](https://soldbytiago.com/property/villa-santorini-las-catalinas-2vvj/): $9,800,000 — Home in Las Catalinas — 8 bd / 9 ba — 1087 m² built
-- [Casa Acuarela](https://soldbytiago.com/property/casa-acuarela-las-catalinas-3vj7/): $1,690,000 — Home in Las Catalinas — 4 bd / 4.5 ba — 280 m² built
-- [Altos Flamingo Lot 18](https://soldbytiago.com/property/altos-flamingo-lot-18-flamingo-potrero-brasilito-4cv4/): $225,000 — Land in Flamingo | Potrero | Brasilito
-- [Casa de Estrellas](https://soldbytiago.com/property/casa-de-estrellas-flamingo-potrero-brasilito-5my7/): $974,900 — Home in Flamingo | Potrero | Brasilito — 4 bd / 4 ba — 260 m² built
-- [25 Paseo Del Mar](https://soldbytiago.com/property/25-paseo-del-mar-las-catalinas-84vq/): $1,699,000 — Home in Las Catalinas — 4 bd / 3 ba — 310 m² built
-- [Villa Calypso](https://soldbytiago.com/property/villa-calypso-tamarindo-langosta-af9f/): $1,790,000 — Home in Tamarindo | Langosta — 4 bd / 4.5 ba — 300 m² built
 - [Casa Avalon](https://soldbytiago.com/property/casa-avalon-flamingo-potrero-brasilito-bxwl/): $769,000 — Home in Flamingo | Potrero | Brasilito — 4 bd / 3 ba — 279 m² built
 - [Casa Oasis](https://soldbytiago.com/property/casa-oasis-tamarindo-langosta-e51d/): $575,000 — Home in Tamarindo | Langosta — 3 bd / 3.5 ba — 219 m² built
 - [Casa Arcana](https://soldbytiago.com/property/casa-arcana-tamarindo-langosta-g4xa/): $1,100,000 — Condo in Tamarindo | Langosta — 3 bd / 3.5 ba — 363 m² built
-- [Casa Siempre Surfeando](https://soldbytiago.com/property/casa-siempre-surfeando-tamarindo-langosta-l1oo/): $850,000 — Home in Tamarindo | Langosta — 5 bd / 4.5 ba — 372 m² built
-- [La Perla 113](https://soldbytiago.com/property/la-perla-113-tamarindo-langosta-nbz6/): $845,000 — Condo in Tamarindo | Langosta — 3 bd / 3 ba — 190 m² built
-- [Prime Langosta Development Parcel](https://soldbytiago.com/property/prime-langosta-development-parcel-tamarindo-langosta-o52k/): $290,000 — Land in Tamarindo | Langosta
 - [Casa Del Sol #22](https://soldbytiago.com/property/casa-del-sol-22-flamingo-potrero-brasilito-q67w/): $425,000 — Condo in Flamingo | Potrero | Brasilito — 2 bd / 2 ba — 101 m² built
 - [Surfside Tower 105](https://soldbytiago.com/property/surfside-tower-105-flamingo-potrero-brasilito-s57k/): $385,000 — Condo in Flamingo | Potrero | Brasilito — 3 bd / 2 ba — 120 m² built
 - [Casa Bosque y Mar](https://soldbytiago.com/property/casa-bosque-y-mar-playa-grande-uave/): $2,090,000 — Home in Playa Grande — 6 bd / 6 ba — 510 m² built
 - [Surfside Tower 103](https://soldbytiago.com/property/surfside-tower-103-flamingo-potrero-brasilito-w53u/): $299,000 — Condo in Flamingo | Potrero | Brasilito — 2 bd / 2 ba — 97 m² built
-- [Casa Tucán](https://soldbytiago.com/property/casa-tucan-flamingo-potrero-brasilito-y7um/): $434,900 — Condo in Flamingo | Potrero | Brasilito — 2 bd / 2.5 ba — 139 m² built
-- [Lot 24 Cara Cara](https://soldbytiago.com/property/lot-24-cara-cara-playa-grande-170d/): $280,000 — Land in Playa Grande
 - [Lot 6A](https://soldbytiago.com/property/lot-6a-tamarindo-langosta-2m1f/): $1,395,000 — Land in Tamarindo | Langosta
 - [Villa Palmera](https://soldbytiago.com/property/villa-palmera-flamingo-potrero-brasilito-6ttl/): $795,000 — Home in Flamingo | Potrero | Brasilito — 3 bd / 3 ba — 200 m² built
 - [10 Plaza Carlota](https://soldbytiago.com/property/10-plaza-carlota-las-catalinas-9cp9/): $739,000 — Condo in Las Catalinas — 2 bd / 2 ba — 113 m² built
-- [Miramar Ocean View Lot](https://soldbytiago.com/property/miramar-ocean-view-lot-flamingo-potrero-brasilito-ad0y/): $450,000 — Land in Flamingo | Potrero | Brasilito
 - [Villaggio II 423a](https://soldbytiago.com/property/villaggio-ii-423a-flamingo-potrero-brasilito-gm57/): $130,000 — Condo in Flamingo | Potrero | Brasilito — 1 bd / 1 ba — 36 m² built
 - [Villa Cerca del Mar 5](https://soldbytiago.com/property/villa-cerca-del-mar-5-tamarindo-langosta-iv0k/): $769,000 — Home in Tamarindo | Langosta — 3 bd / 3.5 ba — 204 m² built
 - [Villa Fresno](https://soldbytiago.com/property/villa-fresno-avellanas-negra-junquillal-lf97/): $1,085,000 — Home in Avellanas | Negra | Junquillal — 4 bd / 5 ba — 353 m² built
+- [Casa Sereneness - Villaggio II, 405B](https://soldbytiago.com/property/casa-sereneness-villaggio-ii-405b-flamingo-potrero-brasilito/): $129,000 — Condo in Flamingo | Potrero | Brasilito — 1 bd / 1 ba — 36 m² built
 - [Casa Elsa Villaggio II – Unit 406A](https://soldbytiago.com/property/casa-elsa-villaggio-ii-unit-406a-flamingo-potrero-brasilito/): $126,000 — Condo in Flamingo | Potrero | Brasilito — 1 bd / 1 ba — 35 m² built
 - [Casa Tatou](https://soldbytiago.com/property/casa-tatou-flamingo-potrero-brasilito/): $499,000 — Home in Flamingo | Potrero | Brasilito — 3 bd / 2 ba — 192 m² built
 - [Casa Suerte](https://soldbytiago.com/property/casa-suerte-flamingo-potrero-brasilito/): $449,000 — Home in Flamingo | Potrero | Brasilito — 2 bd / 2.5 ba — 130 m² built
@@ -188,6 +159,16 @@ Key facts for accurate citation:
 - [The Oaks #21](https://soldbytiago.com/property/the-oaks-21-tamarindo-langosta/): $235,000 — Condo in Tamarindo | Langosta — 2 bd / 2 ba — 99 m² built
 - [Casa Agave Azul](https://soldbytiago.com/property/casa-agave-azul-flamingo-potrero-brasilito/): $675,000 — Home in Flamingo | Potrero | Brasilito — 4 bd / 3 ba — 195 m² built
 - [Lot Y17](https://soldbytiago.com/property/lot-y17-flamingo-potrero-brasilito/): $1,199,000 — Land in Flamingo | Potrero | Brasilito
+- [Condominio Villagio Parque del Lago Palma 21-1](https://soldbytiago.com/property/condominio-villagio-parque-del-lago-palma-21-1-flamingo-potrero-brasilito/): $280,000 — Home in Flamingo | Potrero | Brasilito — 2 bd / 2 ba — 76 m² built
+- [Villa Terraza Lot](https://soldbytiago.com/property/villa-terraza-lot-tamarindo-langosta/): $695,000 — Land in Tamarindo | Langosta
+- [Villa Calypso](https://soldbytiago.com/property/villa-calypso-tamarindo-langosta/): $1,790,000 — Home in Tamarindo | Langosta — 4 bd / 4.5 ba — 300 m² built
+- [Casa Manta Ray](https://soldbytiago.com/property/casa-manta-ray-flamingo-potrero-brasilito/): $2,500,000 — Home in Flamingo | Potrero | Brasilito — 4 bd / 5 ba — 573 m² built
+- [Villa Mariposa](https://soldbytiago.com/property/villa-mariposa-flamingo-potrero-brasilito/): $1,230,000 — Home in Flamingo | Potrero | Brasilito — 4 bd / 4.5 ba — 341 m² built
+- [Pierre & Colors](https://soldbytiago.com/property/pierre-colors-tamarindo-langosta/): $2,500,000 — Commercial in Tamarindo | Langosta — 12 bd / 12 ba — 660 m² built
+- [Casa Mareva](https://soldbytiago.com/property/casa-mareva-playa-grande/): $1,300,000 — Home in Playa Grande — 4 bd / 3.5 ba — 305 m² built
+- [Casa Oasis](https://soldbytiago.com/property/casa-oasis-flamingo-potrero-brasilito/): $899,000 — Home in Flamingo | Potrero | Brasilito — 5 bd / 5.5 ba — 260 m² built
+- [Villa Altamar](https://soldbytiago.com/property/villa-altamar-tamarindo-langosta/): $1,575,000 — Villa in Tamarindo | Langosta — 8 bd / 6 ba — 556 m² built
+- [16 Calle La Ronda](https://soldbytiago.com/property/16-calle-la-ronda-las-catalinas/): $1,495,000 — Home in Las Catalinas — 3 bd / 3.5 ba — 214 m² built
 - See all: https://soldbytiago.com/properties.html
 
 
