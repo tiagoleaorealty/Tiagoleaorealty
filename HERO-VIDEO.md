@@ -55,6 +55,18 @@ feels laggy:
   smaller file. Nudge down if it looks soft on your footage.
 - `-movflags +faststart` moves the index to the front of the MP4 so it can
   start playing before it has finished downloading.
+- **`-level:v 4.0` is not optional.** Without it, `-preset slow` uses five
+  reference frames, which inflates the decoded-picture-buffer requirement and
+  makes x264 stamp the stream **Level 5.0**. iOS hardware decoders are
+  certified to High Profile Level 4.2 and below, and Safari can refuse a
+  higher-level stream outright — the classic "plays everywhere except iPhone".
+  1920x1080 at 30fps genuinely only needs Level 4.0.
+
+Check any new encode with:
+
+```bash
+python3 -c "d=open('hero.mp4','rb').read(400000); i=d.find(b'avcC'); print('profile',d[i+5],'level',d[i+7]/10)"
+```
 
 **Target under 4 MB for the MP4.** Check with `ls -lh hero.*`. If it is far
 over, shorten the clip before you lower the quality.
