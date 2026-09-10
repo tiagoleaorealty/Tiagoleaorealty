@@ -1401,24 +1401,53 @@ async function publishRow(row, d, a, email) {
     updated_at: nowIso(), featured: false, sort_order: maxSort + 1,
     slug: slugify(d.name.split(':')[0].split('|')[0] + ' ' + d.location),
   };
-  let res = await sb.from('properties').insert([propRow]).select().single();
-  if (res.error && /slug/i.test(res.error.message) && /duplicate|unique/i.test(res.error.message)) {
-    propRow.slug += '-' + Date.now().toString(36).slice(-4);
+  // Idempotent publish. Re-running a batch must never mint a second copy:
+  // the old code inserted unconditionally and, on the unique-slug collision
+  // that a re-run guarantees, appended a random suffix and inserted anyway —
+  // which is precisely how a listing ends up on the site three times.
+  const norm = (x) => String(x || '').trim().toLowerCase();
+  let existing = null;
+  if (row.published_property_id) {
+    existing = allProperties.find((p) => p.id === row.published_property_id) || null;
+  }
+  if (!existing) existing = allProperties.find((p) => p.slug === propRow.slug) || null;
+  if (!existing) {
+    existing = allProperties.find((p) => norm(p.name) === norm(d.name) && norm(p.location) === norm(d.location)) || null;
+  }
+
+  let res;
+  if (existing) {
+    // Keep the row's identity and any curation done by hand.
+    propRow.slug = existing.slug;
+    delete propRow.featured;
+    delete propRow.sort_order;
+    res = await sb.from('properties').update(propRow).eq('id', existing.id).select().single();
+  } else {
     res = await sb.from('properties').insert([propRow]).select().single();
   }
   if (res.error) throw new Error(res.error.message);
   const prop = res.data;
-  allProperties.push(prop);
+  const at = allProperties.findIndex((p) => p.id === prop.id);
+  if (at >= 0) allProperties[at] = prop; else allProperties.push(prop);
 
-  await sb.from('property_imports').update({
+  // If this write fails the draft stays "not published" and the next run
+  // publishes it again — the loop that produced the duplicates. It is checked
+  // now, and the in-memory row is updated so the list reflects reality mid-run
+  // rather than only after the final refresh.
+  const marked = {
     draft: d, ...a, images: row.images,
     validation: validateDraftRow(row, d, a),
     import_status: 'published', published_property_id: prop.id,
     published_at: nowIso(), published_by: email,
     history: (row.history || []).concat([{ at: nowIso(), user: email, event: 'published',
-      details: { property_id: prop.id, mode: 'created_new', slug: prop.slug, via: 'bulk finisher' } }]),
+      details: { property_id: prop.id, mode: existing ? 'updated_existing' : 'created_new', slug: prop.slug, via: 'bulk finisher' } }]),
     updated_at: nowIso(),
-  }).eq('id', row.id);
+  };
+  const upd = await sb.from('property_imports').update(marked).eq('id', row.id);
+  if (upd.error) throw new Error('Property saved, but the draft could not be marked published: ' + upd.error.message);
+  Object.assign(row, marked);
+  const li = allImports.findIndex((r) => r.id === row.id);
+  if (li >= 0) Object.assign(allImports[li], marked);
   return prop;
 }
 
@@ -1442,6 +1471,9 @@ async function finishAllDrafts() {
     'Continue?')) return;
 
   bulkStop = false;
+  // The duplicate check below compares against allProperties, so make sure it
+  // reflects the database and not whatever was loaded when the page opened.
+  await refreshAll();
   const email = await userEmail();
   const panel = document.getElementById('bulk-finish');
   const rows = pending.map((r) => ({ id: r.id, name: (r.draft || {}).name || '(unnamed)', state: 'wait', note: '' }));
@@ -1515,6 +1547,7 @@ async function finishAllDrafts() {
       line.note = 'publishing…'; draw();
       const prop = await publishRow(row, d, auth, email);
       line.state = 'ok';
+      renderImportsList();
       line.note = `${imgRes.copied} photo${imgRes.copied === 1 ? '' : 's'} · ${d.status}` +
         (st.conflict ? ` — heads up, the source page says ${st.conflict}` : '') +
         (imgRes.failed ? ` · ${imgRes.failed} photo(s) failed` : '');
