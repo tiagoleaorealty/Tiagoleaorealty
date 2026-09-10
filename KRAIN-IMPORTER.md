@@ -220,6 +220,24 @@ Verified against stubs: clean draft → published active; a Sold source →
 published **sold**; a draft missing its price → skipped with "Missing price.";
 a publish error → reported without stopping the batch.
 
+### Authorization pre-fill (2026-09-10)
+
+Opening an untouched import from `krain-lp` pre-fills the Authorization panel:
+scope `brokerage_approved`, images and description authorized, the
+confirmation ticked, and a note saying it is a KRAIN listing published by its
+own agent. A visible amber line in the panel says it was pre-filled and can be
+changed.
+
+Without it a hand-edited draft could not be published no matter how complete
+the content was: four blocking findings (`desc-auth`, `img-auth`, `authz`,
+`scope`) sat on the Authorization panel and always got the same answer for
+KRAIN's own listings. The bulk finisher already filled these in, so the manual
+path was the odd one out.
+
+It applies only when `source_provider === 'krain-lp'` **and** no scope has been
+chosen yet: a pasted or other-source import still blocks until authorized by
+hand, and an existing choice is never overwritten.
+
 ### Remove duplicates (2026-09-10)
 
 Button on the Imports card, beside "Finish & publish all drafts". Finds

@@ -304,6 +304,10 @@
           <label class="chk"><input type="checkbox" id="a-sync" onchange="onFieldInput()" /> Periodic re-checking of the source page is authorized (manual “Check source” button)</label>
           <label class="chk master"><input type="checkbox" id="a-confirm" onchange="onFieldInput()" />
             I confirm that I am authorized to republish this listing and its selected media on SoldByTiago.</label>
+          <div id="a-prefilled" hidden class="banner banner-amber" style="margin:12px 0 0;">
+            Pre-filled because this came from krainrealestate.com, a listing you represent.
+            Change anything here if that is not right for this one.
+          </div>
         </div>
 
         <div class="actions">
@@ -841,13 +845,23 @@ function renderWork() {
   document.getElementById('desc-source-view').textContent = (s.listing && s.listing.description) || 'Not provided by source';
   document.getElementById('f-short_desc').value = d.short_desc || '';
 
-  // Authorization
-  document.getElementById('a-scope').value = current.permission_scope || '';
-  document.getElementById('a-note').value = current.permission_note || '';
-  document.getElementById('a-images').checked = !!current.images_authorized;
-  document.getElementById('a-desc').checked = !!current.description_authorized;
+  // Authorization. A KRAIN listing imported from krainrealestate.com is one
+  // Tiago is authorised to publish, and the bulk finisher already fills this
+  // in for exactly that reason — so an untouched draft opened by hand starts
+  // filled in too, rather than blocking on four boxes that always get the
+  // same answer. The record is still written with his account and the time,
+  // and every field below stays editable.
+  const krainOwn = (current.source_provider === 'krain-lp') && !current.permission_scope;
+  document.getElementById('a-scope').value = current.permission_scope || (krainOwn ? 'brokerage_approved' : '');
+  document.getElementById('a-note').value = current.permission_note ||
+    (krainOwn ? 'KRAIN listing, published by its own agent.' : '');
+  document.getElementById('a-images').checked = krainOwn ? true : !!current.images_authorized;
+  document.getElementById('a-desc').checked = krainOwn ? true : !!current.description_authorized;
   document.getElementById('a-sync').checked = !!current.sync_authorized;
-  document.getElementById('a-confirm').checked = !!current.authorization_confirmed;
+  document.getElementById('a-confirm').checked = krainOwn ? true : !!current.authorization_confirmed;
+  const prefillNote = document.getElementById('a-prefilled');
+  if (prefillNote) prefillNote.hidden = !krainOwn;
+  if (krainOwn) dirty = true;   // so the pre-fill is saved, not just displayed
 
   renderImages();
   updateConversions();
