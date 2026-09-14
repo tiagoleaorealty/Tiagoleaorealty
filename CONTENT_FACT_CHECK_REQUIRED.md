@@ -58,3 +58,5 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Personal: Tiago graduated from CRIA five years ago (stated by Tiago in his video script)
 - Healthcare/residency lines restate the residency article's open items: spouse and children under 18 covered under the primary CAJA enrollment; one applicant covers the family; 180-day tourist entry
 - Tiago's own claims from the video script, not independently sourced: Flamingo/Potrero "growing year-round community", grocery stores, La Paz "very close"; waitlist tightness in grades 6-9 comes from the schools guide
+- Updated 2026-09-13 per Tiago: most schools run buses (replaces "assume there is no school bus"); a morning bus runs from inside Hacienda Pinilla to CRIA; Journey School and Educarte are each about a 12-minute drive from Tamarindo. Stated by Tiago from local experience.
+- CONFLICT to resolve: the Supabase-hosted post schools-guanacaste-gold-coast-guide still says "There is no school bus system" and "Assume you are driving until a school tells you otherwise in writing"
