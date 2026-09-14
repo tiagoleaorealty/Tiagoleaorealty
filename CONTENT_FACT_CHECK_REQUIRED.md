@@ -51,3 +51,10 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Reused from existing posts: 0.25% property tax, 3.5-4.5% closing costs, ~10% escrow deposit custom, 15-30 day due diligence, 200m maritime zone
 - NEW and unsourced (Tiago's own observations, labeled as such in the on-page disclaimer): cost-of-living characterizations (Guanacaste coast more expensive than Central Valley; imported goods/cars/private school as the budget-breakers), fiber availability on the developed coast, container-shipping and pet-import framing, non-resident bank account difficulty, green-season timing (May-November, heaviest Sept-Oct)
 - The 18-month timeline is illustrative sequencing, not a guaranteed processing time; residency processing time is stated in the residency article as 6-12 months from a complete filing
+
+## Blog: best places to live in Costa Rica with kids (added 2026-09-13)
+- Community amenity lists (Hacienda Pinilla, Reserva Conchal, Mar Vista) restate the existing community guides, which attribute them to each resort's published materials
+- School facts restate the schools guide: TIDE ~80 students / 17 countries / 8:1; CRIA ~500m from the Reserva Conchal entrance, 32-acre campus, founded 2000, U.S.-accredited; La Paz Cabo Velas at Mar Vista's entrance, IB PreK-12; Journey IB Pre-K-12; Educarte the only school publishing tuition
+- Personal: Tiago graduated from CRIA five years ago (stated by Tiago in his video script)
+- Healthcare/residency lines restate the residency article's open items: spouse and children under 18 covered under the primary CAJA enrollment; one applicant covers the family; 180-day tourist entry
+- Tiago's own claims from the video script, not independently sourced: Flamingo/Potrero "growing year-round community", grocery stores, La Paz "very close"; waitlist tightness in grades 6-9 comes from the schools guide
