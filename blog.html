@@ -707,8 +707,11 @@
         TL.getBlogPosts(),
         TL.getLocalPosts ? TL.getLocalPosts() : []
       ]);
-      const dbSlugs = new Set((dbPosts || []).map(p => p.slug));
-      const posts = (dbPosts || [])
+      // Local rows marked override replace the DB row of the same slug.
+      const overrides = new Map((localPosts || []).filter(p => p.override).map(p => [p.slug, p]));
+      const dbKept = (dbPosts || []).map(p => overrides.get(p.slug) || p);
+      const dbSlugs = new Set(dbKept.map(p => p.slug));
+      const posts = dbKept
         .concat((localPosts || []).filter(p => !dbSlugs.has(p.slug)))
         .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
       if (!posts.length) return;

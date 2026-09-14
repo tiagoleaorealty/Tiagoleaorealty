@@ -332,6 +332,12 @@
     // Load a single blog post by slug
     async getBlogPost(slug) {
       try {
+        // A repo-hosted row marked override replaces the DB copy, so a
+        // correction made in blog-posts-local.json is not overwritten when
+        // the page re-renders from Supabase after loading.
+        const local = await this.getLocalPosts();
+        const override = (local || []).find((r) => r.slug === slug && r.override);
+        if (override) return override;
         const data = await sbFetch('blog_posts', {
           'slug': `eq.${slug}`,
           'select': '*'

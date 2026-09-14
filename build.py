@@ -93,8 +93,13 @@ def merge_posts(db_rows, local_rows):
     and the DB copy (which admin.html can edit) takes over immediately, whether
     or not the JSON entry is removed.
     """
-    seen = {r.get("slug") for r in db_rows}
-    merged = list(db_rows) + [r for r in local_rows if r.get("slug") not in seen]
+    # A local row marked "override" replaces the DB row of the same slug:
+    # corrections to a Supabase post ship from the repo, since the public key
+    # cannot write blog_posts. Without the flag the DB copy still wins.
+    overrides = {r.get("slug"): r for r in local_rows if r.get("override")}
+    db_kept = [overrides.get(r.get("slug"), r) for r in db_rows]
+    seen = {r.get("slug") for r in db_kept}
+    merged = db_kept + [r for r in local_rows if r.get("slug") not in seen]
     merged.sort(key=lambda r: (r.get("created_at") or ""), reverse=True)
     return merged
 
