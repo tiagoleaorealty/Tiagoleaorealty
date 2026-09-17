@@ -2086,6 +2086,7 @@
         </div>
 
         <form id="seller-form" action="https://formspree.io/f/mnjydabv" method="POST">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
 
           <!-- Hidden fields to collect all step data -->
           <input type="hidden" name="property_type" id="h-property-type" />
@@ -2446,10 +2447,7 @@
           alert('Something went wrong. Please email me directly at tiago@soldbytiago.com');
         }
       } catch (err) {
-        // Fallback: show success anyway if endpoint not set up yet
-        document.getElementById('form-container').querySelector('.form-progress').style.display = 'none';
-        form.style.display = 'none';
-        document.getElementById('form-success').classList.add('active');
+        alert('Something went wrong. Please email me directly at tiago@soldbytiago.com');
       }
     });
 
