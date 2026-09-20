@@ -143,6 +143,14 @@ def parse_body(text):
         if block == "---":
             out.append('<hr class="body-hr" />')
             continue
+        # An image on its own line becomes a figure. Kept out of inline_md so a
+        # figure is never nested inside a <p>. Same subset as the JS parser in
+        # blog-post.html: ![alt](/path.jpg) or ![alt](https://…).
+        img = re.match(r"^!\[([^\]]*)\]\((/?[\w./%-]+\.(?:jpg|jpeg|png|webp|avif)|https://[^\s)\"']+)\)$", block, re.I)
+        if img:
+            out.append('<figure class="body-figure"><img src="' + img.group(2)
+                       + '" alt="' + img.group(1) + '" loading="lazy" /></figure>')
+            continue
         if block.startswith("### "):
             out.append("<h3>" + inline_md(block[4:]) + "</h3>")
             continue

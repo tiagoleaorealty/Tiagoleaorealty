@@ -74,6 +74,8 @@
     .article-body a.body-link { color: var(--terra); border-bottom: 1px solid var(--terra); transition: opacity 0.2s; }
     .article-body a.body-link:hover { opacity: 0.7; }
     .article-body hr.body-hr { border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 44px 0; }
+    .article-body figure.body-figure { margin: 0 0 32px; }
+    .article-body figure.body-figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
 
     .article-cta { margin-top: 56px; padding: 40px; background: rgba(45,66,45,0.06); border: 1px solid rgba(45,66,45,0.15); border-radius: 8px; text-align: center; }
     .article-cta p { font-size: 20px; font-weight: 600; color: var(--cream); margin-bottom: 20px; }
@@ -306,6 +308,13 @@
         .map(block => {
           block = block.trim();
           if (block === '---') return '<hr class="body-hr" />';
+          // Image on its own line → figure. Handled here, not in inline(), so
+          // a figure never ends up inside a <p>. Mirrors parse_body in build.py.
+          const img = block.match(/^!\[([^\]]*)\]\((\/?[\w./%-]+\.(?:jpg|jpeg|png|webp|avif)|https:\/\/[^\s)"']+)\)$/i);
+          if (img) {
+            return '<figure class="body-figure"><img src="' + img[2] +
+              '" alt="' + img[1] + '" loading="lazy" /></figure>';
+          }
           if (block.startsWith('### ')) return '<h3>' + inline(block.slice(4)) + '</h3>';
           if (block.startsWith('## ')) return '<h2>' + inline(block.slice(3)) + '</h2>';
           const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
