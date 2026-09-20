@@ -69,6 +69,6 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 
 ## Blog: best surf beaches to live and buy (added 2026-09-19) — Tiago to confirm
 - Surf detail (spots, tides, crowds, drive times, the Avellanas road being paved, the Marbella road repair) was dictated by Tiago 2026-09-19 from his own surfing — treat as firsthand, not as something to verify
-- NOTE: the Avellanas town page still says Tamarindo is 15 minutes away; Tiago says ~25. The blog post uses 25; avellanas.html was not updated
+- avellanas.html was updated to match 2026-09-19: Tamarindo is ~25 minutes (was 15, in both the FAQ schema and the FAQ text), the road in is being paved, and the surf paragraph now names the three setups
 - Las Baulas framing (low-density zoning, no beachfront construction, dark-sky restrictions) is restated from the Playa Grande town page and inherits its existing note
 - Photos surf-marbella.jpg (cover, Marbella), surf-playa-grande.jpg (Playa Grande) and surf-avellanas.jpg are Tiago's own; the Marbella shot doubles as the cover, which never renders on the article page itself
