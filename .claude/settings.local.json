@@ -68,7 +68,8 @@
       "Bash(echo \"=== storage buckets ===\")",
       "Bash(curl -s __TRACKED_VAR__/storage/v1/bucket -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__')",
       "Bash(curl -s -X POST __TRACKED_VAR__/storage/v1/object/list/photos -H 'apikey: __TRACKED_VAR__' -H 'Authorization: Bearer __TRACKED_VAR__' -H 'Content-Type: application/json' -d '{\"prefix\":\"\",\"limit\":100,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}')",
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d[:5], indent=2\\) if isinstance\\(d,list\\) else d\\)\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d[:5], indent=2\\) if isinstance\\(d,list\\) else d\\)\")",
+      "Bash(python3 scripts/fetch-listing-photos.py)"
     ]
   }
 }
