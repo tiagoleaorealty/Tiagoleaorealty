@@ -71,4 +71,4 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Wave descriptions for Avellanas (three peaks, Little Hawaii in front of the Pinilla Beach Club), Playa Grande (most consistent, picks up more swell) and Marbella (heavy hollow beach break, reef sections) come from Tiago's own reel script plus the existing town pages
 - Seasonality line "offshore mornings most of the dry season, bigger south swells in the wet season" is a general characterization — Tiago to sanity-check
 - Las Baulas framing (low-density zoning, no beachfront construction, dark-sky restrictions) is restated from the Playa Grande town page and inherits its existing note
-- Photos surf-marbella.jpg (cover), surf-marbella-barrel.jpg (Marbella) and surf-avellanas.jpg are Tiago's own; Playa Grande has no photo yet
+- Photos surf-marbella.jpg (cover, Marbella), surf-playa-grande.jpg (Playa Grande) and surf-avellanas.jpg are Tiago's own; the Marbella section itself has no photo yet
