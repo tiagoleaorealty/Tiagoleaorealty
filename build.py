@@ -112,6 +112,11 @@ def sub_once(doc, pattern, replacement, label, count=1, flags=0):
     return out
 
 
+LISTING_CARD_ICON = (
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#e3dcd1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>'
+)
+
+
 def inline_md(t):
     """Inline markdown → HTML. Input must already be HTML-escaped."""
     def _link(m):
@@ -151,24 +156,30 @@ def parse_body(text):
             out.append('<figure class="body-figure"><img src="' + img.group(2)
                        + '" alt="' + img.group(1) + '" loading="lazy" /></figure>')
             continue
-        # A "::listings" block becomes a grid of outbound listing cards:
+        # A "::listings" block becomes a horizontal rail of outbound listing cards:
         #   ::listings
-        #   - [Casa Tatou](https://…) | Playa Potrero
-        # Same subset as the JS parser in blog-post.html.
+        #   - [Casa Tatou](https://…) | Playa Potrero | https://…/photo.jpg
+        # The photo is optional; without one the card shows a branded panel
+        # rather than a stand-in image. Same subset as blog-post.html's parser.
         if block.startswith("::listings"):
             cards = []
             for line in block.split("\n")[1:]:
                 line = line.strip()
-                m = re.match(r"^-\s*\[([^\]]+)\]\((https://[^\s)\"']+)\)\s*(?:\|\s*(.*))?$", line)
+                m = re.match(r"^-\s*\[([^\]]+)\]\((https://[^\s)\"']+)\)\s*(?:\|\s*([^|]*))?(?:\|\s*(\S+))?$", line)
                 if not m:
                     continue
-                name, url, meta = m.group(1), m.group(2), (m.group(3) or "").strip()
+                name, url = m.group(1), m.group(2)
+                meta = (m.group(3) or "").strip()
+                photo = (m.group(4) or "").strip()
+                hero = ('<span class="lc-photo"><img src="' + photo + '" alt="' + name + '" loading="lazy" /></span>'
+                        if photo else '<span class="lc-photo lc-photo-empty">' + LISTING_CARD_ICON + "</span>")
                 cards.append('<a class="listing-card" href="' + url + '" target="_blank" rel="noopener nofollow">'
-                             + '<span class="lc-name">' + name + "</span>"
+                             + hero
+                             + '<span class="lc-body"><span class="lc-name">' + name + "</span>"
                              + ('<span class="lc-meta">' + meta + "</span>" if meta else "")
-                             + '<span class="lc-cta">View on KRAIN &rarr;</span></a>')
+                             + '<span class="lc-cta">View on KRAIN &rarr;</span></span></a>')
             if cards:
-                out.append('<div class="listing-cards">' + "".join(cards) + "</div>")
+                out.append('<div class="listing-rail">' + "".join(cards) + "</div>")
                 continue
         if block.startswith("### "):
             out.append("<h3>" + inline_md(block[4:]) + "</h3>")
