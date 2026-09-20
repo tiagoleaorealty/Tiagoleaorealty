@@ -65,4 +65,4 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Papagayo Ocean Course: "Arnold Palmer Signature design with ocean views from 14 of its holes" — taken from Tiago's reel script, not verified against the club's current materials
 - Papagayo concession framing ("much of the peninsula sits inside a government tourism concession rather than ordinary titled land") — confirm with a CR real-estate attorney; the article sends readers to the titled-vs-concession guide
 - Pinilla (Mike Young, par 72, ~7,200 yds, Audubon) and Conchal (Robert Trent Jones II, Audubon) course facts are restated from the existing community guides and inherit their verification status
-- Photos: golf-hacienda-pinilla.jpg (also the cover), golf-reserva-conchal.jpg, golf-papagayo.jpg — communities identified by Tiago 2026-09-19. Usage rights for the three photos are Tiago's to confirm; the Papagayo shot looks like resort/press material.
+- Photos: golf-hacienda-pinilla.jpg (also the cover), golf-reserva-conchal.jpg, golf-papagayo.jpg — shot by Tiago himself and identified by him 2026-09-19. No rights question; nothing to verify.
