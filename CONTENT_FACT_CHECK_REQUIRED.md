@@ -66,3 +66,9 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Papagayo concession/titled discussion was REMOVED from the article 2026-09-19 at Tiago's request (he was not sure the titled/concession split was accurate). The section now says only that ownership works differently property to property and that he walks buyers through it. Nothing left to verify here; re-add only with attorney confirmation.
 - Pinilla (Mike Young, par 72, ~7,200 yds, Audubon) and Conchal (Robert Trent Jones II, Audubon) course facts are restated from the existing community guides and inherit their verification status
 - Photos: golf-hacienda-pinilla.jpg (also the cover), golf-reserva-conchal.jpg, golf-papagayo.jpg — shot by Tiago himself and identified by him 2026-09-19. No rights question; nothing to verify.
+
+## Blog: best surf beaches to live and buy (added 2026-09-19) — Tiago to confirm
+- Wave descriptions for Avellanas (three peaks, Little Hawaii in front of the Pinilla Beach Club), Playa Grande (most consistent, picks up more swell) and Marbella (heavy hollow beach break, reef sections) come from Tiago's own reel script plus the existing town pages
+- Seasonality line "offshore mornings most of the dry season, bigger south swells in the wet season" is a general characterization — Tiago to sanity-check
+- Las Baulas framing (low-density zoning, no beachfront construction, dark-sky restrictions) is restated from the Playa Grande town page and inherits its existing note
+- Photos surf-marbella.jpg (cover), surf-marbella-barrel.jpg (Marbella) and surf-avellanas.jpg are Tiago's own; Playa Grande has no photo yet
