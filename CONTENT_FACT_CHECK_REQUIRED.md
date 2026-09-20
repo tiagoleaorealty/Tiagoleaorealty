@@ -72,3 +72,8 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - avellanas.html was updated to match 2026-09-19: Tamarindo is ~25 minutes (was 15, in both the FAQ schema and the FAQ text), the road in is being paved, and the surf paragraph now names the three setups
 - Las Baulas framing (low-density zoning, no beachfront construction, dark-sky restrictions) is restated from the Playa Grande town page and inherits its existing note
 - Photos surf-marbella.jpg (cover, Marbella), surf-playa-grande.jpg (Playa Grande) and surf-avellanas.jpg are Tiago's own; the Marbella shot doubles as the cover, which never renders on the article page itself
+
+## Blog: beach towns under $500,000 (added 2026-09-20) — Tiago to confirm
+- Price-band descriptions (Tamarindo condos, Potrero one-beds "low six figures" up to 3-bed homes, Coco "best selection including ocean-view condos") are written from Tiago's own current site inventory plus his reel script, and are deliberately vague so they do not go stale — recheck if the market moves
+- The article links to NO individual listings and to no krainrealestate.com/home-search URLs (house rule: home-search can include other brokerages' listings). Tiago sends current options himself via the "500K" CTA
+- Photos: town-tamarindo.jpg (also the cover) and town-potrero.jpg. The third photo Tiago supplied for Playas del Coco carried a visible "Mytanfeet.com" watermark and was NOT used — Coco has no photo until he supplies one of his own
