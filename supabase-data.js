@@ -342,7 +342,11 @@
           'slug': `eq.${slug}`,
           'select': '*'
         });
-        return data && data.length > 0 ? data[0] : null;
+        if (data && data.length > 0) return data[0];
+        // Repo-only post (no DB row at all): /blog/<slug>/ is pre-rendered by
+        // build.py, but this dynamic route has to find it too, or old
+        // blog-post.html?slug= links 404 on posts that only live in the repo.
+        return (local || []).find((r) => r.slug === slug) || null;
       } catch (e) {
         console.error('[Supabase] Failed to load blog post:', e);
         return null;
