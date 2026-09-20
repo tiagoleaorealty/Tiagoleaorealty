@@ -60,3 +60,9 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Tiago's own claims from the video script, not independently sourced: Flamingo/Potrero "growing year-round community", grocery stores, La Paz "very close"; waitlist tightness in grades 6-9 comes from the schools guide
 - Updated 2026-09-13 per Tiago: most schools run buses (replaces "assume there is no school bus"); a morning bus runs from inside Hacienda Pinilla to CRIA; Journey School and Educarte are each about a 12-minute drive from Tamarindo. Stated by Tiago from local experience.
 - RESOLVED 2026-09-13: schools-guanacaste-gold-coast-guide now says "Most schools run a bus" and mentions the Hacienda Pinilla -> CRIA bus, via a repo override row in blog-posts-local.json (the Supabase row itself is unchanged)
+
+## Blog: best golf communities in Costa Rica (added 2026-09-19) — Tiago to confirm
+- Papagayo Ocean Course: "Arnold Palmer Signature design with ocean views from 14 of its holes" — taken from Tiago's reel script, not verified against the club's current materials
+- Papagayo concession framing ("much of the peninsula sits inside a government tourism concession rather than ordinary titled land") — confirm with a CR real-estate attorney; the article sends readers to the titled-vs-concession guide
+- Pinilla (Mike Young, par 72, ~7,200 yds, Audubon) and Conchal (Robert Trent Jones II, Audubon) course facts are restated from the existing community guides and inherit their verification status
+- Cover photo golf-guanacaste-cover.jpg: which course/community it shows is unconfirmed — alt text is deliberately generic
