@@ -63,6 +63,6 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 
 ## Blog: best golf communities in Costa Rica (added 2026-09-19) — Tiago to confirm
 - Papagayo Ocean Course: "Arnold Palmer Signature design with ocean views from 14 of its holes" — taken from Tiago's reel script, not verified against the club's current materials
-- Papagayo concession framing ("much of the peninsula sits inside a government tourism concession rather than ordinary titled land") — confirm with a CR real-estate attorney; the article sends readers to the titled-vs-concession guide
+- Papagayo concession framing — reworded 2026-09-19 to "ask how any specific property is actually held" after Tiago flagged that he is not sure the titled/concession split is accurate; the flat "titled ownership points you to Pinilla or Conchal" line was removed from the decision section, and the Pinilla body text no longer states the land is titled. Still worth confirming with a CR real-estate attorney.
 - Pinilla (Mike Young, par 72, ~7,200 yds, Audubon) and Conchal (Robert Trent Jones II, Audubon) course facts are restated from the existing community guides and inherit their verification status
 - Photos: golf-hacienda-pinilla.jpg (also the cover), golf-reserva-conchal.jpg, golf-papagayo.jpg — shot by Tiago himself and identified by him 2026-09-19. No rights question; nothing to verify.
