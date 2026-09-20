@@ -151,6 +151,25 @@ def parse_body(text):
             out.append('<figure class="body-figure"><img src="' + img.group(2)
                        + '" alt="' + img.group(1) + '" loading="lazy" /></figure>')
             continue
+        # A "::listings" block becomes a grid of outbound listing cards:
+        #   ::listings
+        #   - [Casa Tatou](https://…) | Playa Potrero
+        # Same subset as the JS parser in blog-post.html.
+        if block.startswith("::listings"):
+            cards = []
+            for line in block.split("\n")[1:]:
+                line = line.strip()
+                m = re.match(r"^-\s*\[([^\]]+)\]\((https://[^\s)\"']+)\)\s*(?:\|\s*(.*))?$", line)
+                if not m:
+                    continue
+                name, url, meta = m.group(1), m.group(2), (m.group(3) or "").strip()
+                cards.append('<a class="listing-card" href="' + url + '" target="_blank" rel="noopener nofollow">'
+                             + '<span class="lc-name">' + name + "</span>"
+                             + ('<span class="lc-meta">' + meta + "</span>" if meta else "")
+                             + '<span class="lc-cta">View on KRAIN &rarr;</span></a>')
+            if cards:
+                out.append('<div class="listing-cards">' + "".join(cards) + "</div>")
+                continue
         if block.startswith("### "):
             out.append("<h3>" + inline_md(block[4:]) + "</h3>")
             continue

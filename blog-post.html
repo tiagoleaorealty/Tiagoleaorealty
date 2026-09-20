@@ -74,6 +74,13 @@
     .article-body a.body-link { color: var(--terra); border-bottom: 1px solid var(--terra); transition: opacity 0.2s; }
     .article-body a.body-link:hover { opacity: 0.7; }
     .article-body hr.body-hr { border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 44px 0; }
+    .article-body .listing-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0 0 32px; }
+    .article-body a.listing-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid rgba(45,66,45,0.18); border-radius: 8px; background: rgba(45,66,45,0.04); transition: border-color 0.2s, background 0.2s; }
+    .article-body a.listing-card:hover { border-color: var(--terra); background: rgba(45,66,45,0.07); }
+    .article-body .lc-name { font-size: 16px; font-weight: 600; color: var(--cream); line-height: 1.35; }
+    .article-body .lc-meta { font-size: 13px; color: var(--stone); }
+    .article-body .lc-cta { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--terra); margin-top: 4px; }
+    @media (max-width: 600px) { .article-body .listing-cards { grid-template-columns: 1fr; } }
     .article-body figure.body-figure { margin: 0 0 32px; }
     .article-body figure.body-figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
 
@@ -314,6 +321,18 @@
           if (img) {
             return '<figure class="body-figure"><img src="' + img[2] +
               '" alt="' + img[1] + '" loading="lazy" /></figure>';
+          }
+          // "::listings" block → grid of outbound listing cards. Mirrors parse_body in build.py.
+          if (block.startsWith('::listings')) {
+            const cards = block.split('\n').slice(1).map(function(line) {
+              const m = line.trim().match(/^-\s*\[([^\]]+)\]\((https:\/\/[^\s)"']+)\)\s*(?:\|\s*(.*))?$/);
+              if (!m) return '';
+              return '<a class="listing-card" href="' + m[2] + '" target="_blank" rel="noopener nofollow">' +
+                '<span class="lc-name">' + m[1] + '</span>' +
+                (m[3] ? '<span class="lc-meta">' + m[3].trim() + '</span>' : '') +
+                '<span class="lc-cta">View on KRAIN &rarr;</span></a>';
+            }).join('');
+            if (cards) return '<div class="listing-cards">' + cards + '</div>';
           }
           if (block.startsWith('### ')) return '<h3>' + inline(block.slice(4)) + '</h3>';
           if (block.startsWith('## ')) return '<h2>' + inline(block.slice(3)) + '</h2>';
