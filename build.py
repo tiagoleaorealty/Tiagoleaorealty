@@ -300,7 +300,7 @@ AGENT_LD_PAGES = {
     "properties.html": "Homes and condos for sale in Guanacaste, Costa Rica",
     "communities.html": "Beach towns and communities of Guanacaste, Costa Rica",
     "developments.html": "New developments and gated communities in Guanacaste, Costa Rica",
-    "schools.html": "Schools on the Guanacaste Gold Coast, Costa Rica",
+    "schools.html": "Schools in Guanacaste, Costa Rica",
     "blog.html": "Buying and owning property in Guanacaste, Costa Rica",
     "buyers-guide.html": "Buying property in Costa Rica as a foreigner",
     "sellers-guide.html": "Selling property in Guanacaste, Costa Rica",
