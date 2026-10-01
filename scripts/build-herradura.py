@@ -52,7 +52,8 @@ T = {
               "Una finca para desarrollo con vista al mar, uso de suelo residencial y comercial, disponibilidad de agua para hasta 500 viviendas, y el principal resort con marina del Pacífico Central a dos kilómetros."),
  "hero_alt": ("Sunset over the Pacific seen from the upper land of Finca Herradura", "Atardecer sobre el Pacífico visto desde la parte alta de Finca Herradura"),
  "offered": ("Offered at", "Precio"),
- "btn_package": ("Request the investor package", "Solicitar el paquete de inversión"),
+ "btn_package": ('Schedule a site visit',
+   'Agendar una visita'),
  "btn_explore": ("Explore the land", "Conocer la finca"),
  "f1_n": ("204 acres", "82.5 ha"),
  "f1_l": ("82.5 hectares in one property", "204 acres en una sola propiedad"),
@@ -165,8 +166,8 @@ T = {
  "r7_l": ("Ownership", "Propiedad"), "r7_v": ("Held in one Costa Rican corporation with a single shareholder", "A nombre de una sociedad anónima costarricense con un único accionista"),
  "r8_l": ("Survey", "Plano"), "r8_v": ("Three properties being joined into one plan and one title. The new survey is complete", "Tres fincas en proceso de reunirse en un solo plano y una sola finca. El plano nuevo ya está levantado"),
  "r9_l": ("Property taxes", "Impuestos"), "r9_v": ("Paid through 2026", "Pagados todo el 2026"),
- "de_note": ("The survey plan, land use, water and electrical documentation are shared with qualified buyers on request.",
-             "El plano, el uso de suelo y la documentación de agua y electricidad se comparten con compradores calificados a solicitud."),
+ "de_note": ('Ask us for the survey plan and any further detail on the property.',
+   'Consúltenos por el plano y cualquier otro detalle de la propiedad.'),
 
  # price
  "pr_kicker": ("Offered At", "Precio de Venta"),
@@ -194,14 +195,15 @@ T = {
  # cta
  "ct_kicker": ("Next Step", "Siguiente Paso"),
  "ct_h2": ("Come walk the land", "Venga a recorrer la finca"),
- "ct_p": ("Request the investor package or schedule a private site visit. We answer in English, Spanish and Portuguese.",
-          "Solicite el paquete de inversión o agende una visita privada a la finca. Atendemos en español, inglés y portugués."),
+ "ct_p": ('Schedule a private site visit or ask us anything about the property. We answer in English, Spanish and Portuguese.',
+   'Agende una visita privada a la finca o consúltenos lo que necesite sobre la propiedad. Atendemos en español, inglés y portugués.'),
  "ct_b1": ("Message us on WhatsApp", "Escríbanos por WhatsApp"),
  "ct_b2": ("Request by email", "Solicitar por correo"),
- "wa_msg": ("Hi Tiago, I'd like to receive the investor package for Finca Herradura (82.5 ha, Herradura, Costa Rica).",
-            "Hola Tiago, me gustaría recibir el paquete de inversión de Finca Herradura (82.5 ha, Herradura, Costa Rica)."),
+ "wa_msg": ("Hi Tiago, I'd like more information about Finca Herradura (82.5 ha, Herradura, Costa Rica).",
+   'Hola Tiago, me gustaría recibir más información sobre Finca Herradura (82.5 ha, Herradura, Costa Rica).'),
  "wa_visit": ("Hi Tiago, I'd like to schedule a site visit to Finca Herradura.", "Hola Tiago, me gustaría agendar una visita a Finca Herradura."),
- "mail_subj": ("Finca Herradura: investor package request", "Finca Herradura: solicitud del paquete de inversión"),
+ "mail_subj": ('Finca Herradura: site visit request',
+   'Finca Herradura: solicitud de visita'),
  "wa_float": ("Chat on WhatsApp", "Escribir por WhatsApp"),
 
  # footer
@@ -635,7 +637,7 @@ footer .fine{font-size:12px;line-height:1.6;margin-top:18px;color:rgba(239,234,2
     <div class="hero-row">
       <div class="price-tag"><small>[[offered]]</small><b>USD {{PRICE}}</b></div>
       <div class="hero-ctas">
-        <a class="btn btn-white" href="{{WA_PACKAGE}}" target="_blank" rel="noopener">[[btn_package]]</a>
+        <a class="btn btn-white" href="{{WA_VISIT}}" target="_blank" rel="noopener">[[btn_package]]</a>
         <a class="btn btn-line" href="#land">[[btn_explore]]</a>
       </div>
     </div>
