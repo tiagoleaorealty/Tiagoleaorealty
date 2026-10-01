@@ -46,3 +46,14 @@ Hand-built, custom-designed property pages, each hosted at its own root URL
   last is generated output. Root-level folders only.
 - Do not link external CSS/JS/fonts from a showcase page; they must render
   correctly on any device with zero external requests.
+
+## Bilingual pages (Finca Herradura)
+
+`/herradura/` (English) and `/herradura/es/` (Spanish) are generated from one
+template by `python3 scripts/build-herradura.py`. Edit copy in that script's `T`
+dictionary (each entry is English, Spanish), run it, and commit the two HTML
+files. The EN/ES switch in the header links the two URLs and keeps the reader's
+scroll position. In `showcases.json` the Spanish URL is listed under `alt_urls`
+so `build.py` adds it to the sitemap. This page uses the 2026-09 brand palette
+(green #2d422d, terracotta accents) and loads fonts from the site's shared font
+folder instead of embedding them.

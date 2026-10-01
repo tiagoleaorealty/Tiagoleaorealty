@@ -2,6 +2,19 @@
   "_readme": "Registry of hand-built signature property pages. Each entry is a static folder at the repo root (e.g. /villa-mariposa/). This file drives the /signature/ gallery, the sitemap, and the Showcases tab in admin. To add/change a page, edit this file and the folder together, then push. status: live (gallery + sitemap), sold (gallery with SOLD badge + sitemap), hidden (URL still works, excluded from gallery and sitemap).",
   "pages": [
     {
+      "slug": "herradura",
+      "title": "Finca Herradura",
+      "location": "Herradura, Central Pacific",
+      "price": "$16,500,000",
+      "tagline": "82.5 hectares of ocean-view development land, 2 km from Los Sueños Resort and Marina. Water availability for up to 500 homes.",
+      "hero": "/herradura/img/hero.jpg",
+      "status": "live",
+      "added": "2026-10-01",
+      "alt_urls": [
+        "/herradura/es/"
+      ]
+    },
+    {
       "slug": "villa-los-monos",
       "title": "Villa Los Monos",
       "location": "Matapalo, Playa Grande",

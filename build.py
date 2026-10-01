@@ -1322,6 +1322,8 @@ def build_signature(pages):
         f.write(doc)
     urls = [("/signature/", None, "0.9", "weekly")]
     urls += [(f"/{p['slug']}/", None, "0.8", "monthly") for p in visible]
+    # optional alt_urls: other language versions of a showcase (e.g. /herradura/es/)
+    urls += [(u, None, "0.8", "monthly") for p in visible for u in p.get("alt_urls", [])]
     return urls
 
 

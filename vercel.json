@@ -41,6 +41,16 @@
       "permanent": true
     },
     {
+      "source": "/herradura",
+      "destination": "/herradura/",
+      "permanent": true
+    },
+    {
+      "source": "/herradura/es",
+      "destination": "/herradura/es/",
+      "permanent": true
+    },
+    {
       "source": "/signature",
       "destination": "/signature/",
       "permanent": true
