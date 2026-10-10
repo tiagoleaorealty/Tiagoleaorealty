@@ -2096,8 +2096,6 @@
           <input type="hidden" name="value_range" id="h-value-range" />
           <input type="hidden" name="timeline" id="h-timeline" />
           <input type="hidden" name="motivation" id="h-motivation" />
-          <input type="hidden" name="assist_with" id="h-uncertain" />
-          <input type="hidden" name="wants_introductions" id="h-intros" />
 
           <!-- Step 1 -->
           <div class="form-step active" id="step-1">
@@ -2155,27 +2153,6 @@
                 <option value="Within 3 months">Within 3 months</option>
                 <option value="Within 6 months">Within 6 months</option>
                 <option value="Just exploring">Just exploring options</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label for="uncertain">How can I best assist you? (Optional)</label>
-              <select class="form-control" id="uncertain">
-                <option value="" selected>Choose one — or skip</option>
-                <option value="The process and next steps">Walking me through the process and next steps</option>
-                <option value="Legal and due diligence">Legal questions and due diligence</option>
-                <option value="Choosing the area or community">Choosing the right area or community</option>
-                <option value="Pricing and negotiation">Pricing and negotiation</option>
-                <option value="Rental and management">Renting it out or managing it remotely</option>
-                <option value="Schools and relocating">Schools and relocating with family</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label for="intros">Would introductions to independent local professionals help? (Optional)</label>
-              <select class="form-control" id="intros">
-                <option value="" selected>Choose one — or skip</option>
-                <option value="Yes">Yes — attorney, escrow, inspector, or similar</option>
-                <option value="Not yet">Not yet, but probably later</option>
-                <option value="Not sure">Not sure what I'll need</option>
               </select>
             </div>
             <div class="form-row">
@@ -2429,8 +2406,6 @@
       document.getElementById('h-value-range').value = sliderValues[sliderIdx];
       document.getElementById('h-timeline').value = document.getElementById('timeline').value;
       document.getElementById('h-motivation').value = document.getElementById('motivation').value;
-      document.getElementById('h-uncertain').value = document.getElementById('uncertain').value;
-      document.getElementById('h-intros').value = document.getElementById('intros').value;
 
       const data = new FormData(form);
 

@@ -36,7 +36,7 @@
   }
 
   // Lightweight fetch wrapper (no SDK needed for read-only)
-  async function sbFetch(table, params) {
+  async function sbFetch(table, params, transform) {
     const url = new URL(`${SB_URL}/rest/v1/${table}`);
     if (params) Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
     const res = await fetch(url, {
@@ -47,7 +47,35 @@
       }
     });
     if (!res.ok) throw new Error(`Supabase fetch error: ${res.status}`);
-    return sanitize(await res.json());
+    const raw = await res.json();
+    // transform runs on the raw text, before escaping, so phrases that
+    // contain an apostrophe still match.
+    return sanitize(transform ? transform(raw) : raw);
+  }
+
+  // Phrase replacements applied to post text wherever it is stored. Supabase
+  // posts cannot be edited from the repo, so wording changes that span many
+  // posts live in blog-wording-fixes.json. Same list, same order and same
+  // fields as apply_wording_fixes() in build.py — otherwise a baked page would
+  // flip back to the old wording when it re-renders from the database.
+  const POST_TEXT_FIELDS = ['title', 'excerpt', 'meta_desc', 'body'];
+  let wordingFixesPromise = null;
+  function loadWordingFixes() {
+    if (!wordingFixesPromise) {
+      wordingFixesPromise = fetch('/blog-wording-fixes.json', { cache: 'no-cache' })
+        .then(r => (r.ok ? r.json() : []))
+        .then(f => (Array.isArray(f) ? f : []))
+        .catch(() => []);
+    }
+    return wordingFixesPromise;
+  }
+  function applyWordingFixes(rows, fixes) {
+    if (!Array.isArray(rows) || !fixes.length) return rows;
+    rows.forEach(r => POST_TEXT_FIELDS.forEach(k => {
+      if (!r || typeof r[k] !== 'string') return;
+      fixes.forEach(pair => { r[k] = r[k].split(pair[0]).join(pair[1]); });
+    }));
+    return rows;
   }
 
   // ── Expose globally ─────────────────────────────────────────
@@ -278,11 +306,12 @@
     // Load all published blog posts
     async getBlogPosts() {
       try {
+        const fixes = await loadWordingFixes();
         return await sbFetch('blog_posts', {
           'status': 'eq.published',
           'order': 'created_at.desc',
           'select': '*'
-        });
+        }, rows => applyWordingFixes(rows, fixes));
       } catch (e) {
         console.error('[Supabase] Failed to load blog posts:', e);
         return null;
@@ -338,10 +367,11 @@
         const local = await this.getLocalPosts();
         const override = (local || []).find((r) => r.slug === slug && r.override);
         if (override) return override;
+        const fixes = await loadWordingFixes();
         const data = await sbFetch('blog_posts', {
           'slug': `eq.${slug}`,
           'select': '*'
-        });
+        }, rows => applyWordingFixes(rows, fixes));
         if (data && data.length > 0) return data[0];
         // Repo-only post (no DB row at all): /blog/<slug>/ is pre-rendered by
         // build.py, but this dynamic route has to find it too, or old

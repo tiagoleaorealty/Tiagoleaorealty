@@ -86,6 +86,36 @@ def load_local_posts():
     return [r for r in rows if (r.get("status") or "published") == "published"]
 
 
+WORDING_FIXES_FILE = "blog-wording-fixes.json"
+POST_TEXT_FIELDS = ("title", "excerpt", "meta_desc", "body")
+
+
+def apply_wording_fixes(rows):
+    """Phrase replacements applied to every post, wherever it is stored.
+
+    Most posts live in Supabase, which the repo cannot write to, so a wording
+    change that spans many posts (for example retiring "Gold Coast") cannot be
+    made at the source. blog-wording-fixes.json is an ordered list of
+    [from, to] pairs — most specific first — applied to the text fields here
+    and, identically, by applyWordingFixes() in supabase-data.js. URLs are
+    left alone: a slug that contains the old phrase keeps working.
+    """
+    path = os.path.join(ROOT, WORDING_FIXES_FILE)
+    if not os.path.isfile(path):
+        return rows
+    with open(path, encoding="utf-8") as f:
+        fixes = json.load(f)
+    for r in rows:
+        for field in POST_TEXT_FIELDS:
+            text = r.get(field)
+            if not isinstance(text, str):
+                continue
+            for old, new in fixes:
+                text = text.replace(old, new)
+            r[field] = text
+    return rows
+
+
 def merge_posts(db_rows, local_rows):
     """DB rows win on slug collision.
 
@@ -101,7 +131,7 @@ def merge_posts(db_rows, local_rows):
     seen = {r.get("slug") for r in db_kept}
     merged = db_kept + [r for r in local_rows if r.get("slug") not in seen]
     merged.sort(key=lambda r: (r.get("created_at") or ""), reverse=True)
-    return merged
+    return apply_wording_fixes(merged)
 
 
 def sub_once(doc, pattern, replacement, label, count=1, flags=0):
