@@ -1078,6 +1078,8 @@
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
   </style>
+  <!-- noscript-reveal: .reveal content starts invisible and is shown by script; without JS it would stay hidden. -->
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <script>
   /* Legacy ?id=/?slug= redirects: Vercel always forwards the query string,
      so once the clean path has loaded, drop those params from the URL bar. */
@@ -1099,7 +1101,7 @@
 
   <!-- Nav -->
   <nav>
-    <a href="index.html" class="nav-logo">Tiago Leao</a>
+    <a href="/" class="nav-logo">Tiago Leao</a>
     <ul class="nav-links">
       <li><a href="properties.html">Properties</a></li>
       <li><a href="communities.html">Communities</a></li>
@@ -1115,9 +1117,9 @@
         </ul>
       </li>
       <li><a href="blog.html">Blog</a></li>
-      <li><a href="index.html#form-section">Work With Me</a></li>
+      <li><a href="/#form-section">Work With Me</a></li>
     </ul>
-    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <a href="/#form-section" class="nav-cta">Get Started</a>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="nav-mobile" id="nav-mobile">
@@ -1133,8 +1135,8 @@
       <a href="developments.html">Developments</a>
     </details>
     <a href="blog.html">Blog</a>
-    <a href="index.html#form-section">Work With Me</a>
-    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+    <a href="/#form-section">Work With Me</a>
+    <a href="/#form-section" class="nav-mobile-cta-btn">Get Started</a>
   </div>
 
   <div class="page-content">
@@ -1460,6 +1462,13 @@
       }
     }
 
+    // Same rule as seo_title() / listing_title_base() in build.py: keep the title
+    // inside the ~60 characters Google shows, and name the town on listings.
+    function seoTitle(text) {
+      var full = text + ' | Tiago Leao | Guanacaste Real Estate';
+      return full.length <= 60 ? full : text + ' | Tiago Leao';
+    }
+
     // ── Inquiry form toggle ──────────────────────────────────────
     document.getElementById('inquiry-toggle').addEventListener('click', function() {
       this.classList.toggle('open');
@@ -1575,7 +1584,10 @@
           if (robotsMeta) robotsMeta.remove();
           const canonEl = document.querySelector('link[rel="canonical"]');
           if (canonEl) canonEl.href = 'https://soldbytiago.com/property/' + encodeURIComponent(p.slug || p.id) + '/';
-          document.title = p.name + ' | Tiago Leao | Guanacaste Real Estate';
+          const town = String(p.location || '').split(/[|,]/)[0].trim();
+          const titleBase = (!town || String(p.name || '').length > 40 || String(p.name || '').toLowerCase().includes(town.toLowerCase()))
+            ? p.name : p.name + ', ' + town;
+          document.title = seoTitle(titleBase);
           document.getElementById('detail-type').textContent = (p.type || 'home').charAt(0).toUpperCase() + (p.type || 'home').slice(1);
           document.getElementById('detail-title').textContent = p.name || '';
           document.getElementById('detail-location').textContent = p.location || '';
@@ -1821,16 +1833,19 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
-    // Touch swipe for lightbox
-    (function() {
+    // Touch swipe for lightbox. The #lightbox markup sits below this script,
+    // so wait for the DOM — binding immediately threw on a null element and
+    // left swipe dead on every listing page.
+    document.addEventListener('DOMContentLoaded', function() {
       const lb = document.getElementById('lightbox');
+      if (!lb) return;
       let ts = 0;
       lb.addEventListener('touchstart', e => { ts = e.touches[0].clientX; }, { passive: true });
       lb.addEventListener('touchend', e => {
         const diff = ts - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 40) lbNav(diff > 0 ? 1 : -1);
       }, { passive: true });
-    })();
+    });
   </script>
 
   <!-- Lightbox -->

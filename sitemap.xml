@@ -116,12 +116,22 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://soldbytiago.com/herradura/</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://soldbytiago.com/villa-los-monos/</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://soldbytiago.com/villa-mariposa/</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/herradura/es/</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -663,6 +673,24 @@
     <loc>https://soldbytiago.com/school/dolphins-academy/</loc>
     <lastmod>2026-07-18</lastmod>
     <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/costa-rica-beach-towns-under-500k/</loc>
+    <lastmod>2026-10-10</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/best-surf-beaches-costa-rica-buy-property/</loc>
+    <lastmod>2026-10-10</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://soldbytiago.com/blog/best-golf-communities-costa-rica/</loc>
+    <lastmod>2026-10-10</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>

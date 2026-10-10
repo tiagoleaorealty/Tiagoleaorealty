@@ -382,6 +382,246 @@
       "source": "/blog/casa-golondrinas-hacienda-pinilla/",
       "destination": "/property/casa-golondrinas-hacienda-pinilla/",
       "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html",
+      "permanent": true
+    },
+    {
+      "source": "/about/",
+      "destination": "/about.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/buyers-guide",
+      "destination": "/buyers-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/buyers-guide/",
+      "destination": "/buyers-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/communities",
+      "destination": "/communities.html",
+      "permanent": true
+    },
+    {
+      "source": "/communities/",
+      "destination": "/communities.html",
+      "permanent": true
+    },
+    {
+      "source": "/developments",
+      "destination": "/developments.html",
+      "permanent": true
+    },
+    {
+      "source": "/developments/",
+      "destination": "/developments.html",
+      "permanent": true
+    },
+    {
+      "source": "/how-i-sell",
+      "destination": "/how-i-sell.html",
+      "permanent": true
+    },
+    {
+      "source": "/how-i-sell/",
+      "destination": "/how-i-sell.html",
+      "permanent": true
+    },
+    {
+      "source": "/properties",
+      "destination": "/properties.html",
+      "permanent": true
+    },
+    {
+      "source": "/properties/",
+      "destination": "/properties.html",
+      "permanent": true
+    },
+    {
+      "source": "/schools",
+      "destination": "/schools.html",
+      "permanent": true
+    },
+    {
+      "source": "/schools/",
+      "destination": "/schools.html",
+      "permanent": true
+    },
+    {
+      "source": "/sellers-guide",
+      "destination": "/sellers-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/sellers-guide/",
+      "destination": "/sellers-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/avellanas",
+      "destination": "/avellanas.html",
+      "permanent": true
+    },
+    {
+      "source": "/avellanas/",
+      "destination": "/avellanas.html",
+      "permanent": true
+    },
+    {
+      "source": "/conchal",
+      "destination": "/conchal.html",
+      "permanent": true
+    },
+    {
+      "source": "/conchal/",
+      "destination": "/conchal.html",
+      "permanent": true
+    },
+    {
+      "source": "/flamingo",
+      "destination": "/flamingo.html",
+      "permanent": true
+    },
+    {
+      "source": "/flamingo/",
+      "destination": "/flamingo.html",
+      "permanent": true
+    },
+    {
+      "source": "/langosta",
+      "destination": "/langosta.html",
+      "permanent": true
+    },
+    {
+      "source": "/langosta/",
+      "destination": "/langosta.html",
+      "permanent": true
+    },
+    {
+      "source": "/las-catalinas",
+      "destination": "/las-catalinas.html",
+      "permanent": true
+    },
+    {
+      "source": "/las-catalinas/",
+      "destination": "/las-catalinas.html",
+      "permanent": true
+    },
+    {
+      "source": "/marbella",
+      "destination": "/marbella.html",
+      "permanent": true
+    },
+    {
+      "source": "/marbella/",
+      "destination": "/marbella.html",
+      "permanent": true
+    },
+    {
+      "source": "/nosara",
+      "destination": "/nosara.html",
+      "permanent": true
+    },
+    {
+      "source": "/nosara/",
+      "destination": "/nosara.html",
+      "permanent": true
+    },
+    {
+      "source": "/playa-grande",
+      "destination": "/playa-grande.html",
+      "permanent": true
+    },
+    {
+      "source": "/playa-grande/",
+      "destination": "/playa-grande.html",
+      "permanent": true
+    },
+    {
+      "source": "/playas-del-coco",
+      "destination": "/playas-del-coco.html",
+      "permanent": true
+    },
+    {
+      "source": "/playas-del-coco/",
+      "destination": "/playas-del-coco.html",
+      "permanent": true
+    },
+    {
+      "source": "/potrero",
+      "destination": "/potrero.html",
+      "permanent": true
+    },
+    {
+      "source": "/potrero/",
+      "destination": "/potrero.html",
+      "permanent": true
+    },
+    {
+      "source": "/tamarindo",
+      "destination": "/tamarindo.html",
+      "permanent": true
+    },
+    {
+      "source": "/tamarindo/",
+      "destination": "/tamarindo.html",
+      "permanent": true
+    },
+    {
+      "source": "/property",
+      "destination": "/properties.html",
+      "permanent": true
+    },
+    {
+      "source": "/property/",
+      "destination": "/properties.html",
+      "permanent": true
+    },
+    {
+      "source": "/school",
+      "destination": "/schools.html",
+      "permanent": true
+    },
+    {
+      "source": "/school/",
+      "destination": "/schools.html",
+      "permanent": true
+    },
+    {
+      "source": "/development",
+      "destination": "/developments.html",
+      "permanent": true
+    },
+    {
+      "source": "/development/",
+      "destination": "/developments.html",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/#form-section",
+      "permanent": true
+    },
+    {
+      "source": "/contact/",
+      "destination": "/#form-section",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -404,6 +644,79 @@
     {
       "source": "/development/(.*)",
       "destination": "/development.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(jpg|jpeg|png|webp|avif|ico)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/neue-haas-grotesk-display-pro-cufonfonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/hero.mp4",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/hero.webm",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/hero-mobile.mp4",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/hero-mobile.webm",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
     }
   ]
 }

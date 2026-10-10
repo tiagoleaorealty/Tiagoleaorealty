@@ -948,6 +948,8 @@
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
   </style>
+  <!-- noscript-reveal: .reveal content starts invisible and is shown by script; without JS it would stay hidden. -->
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <!--BAKE:AGENT-LD-->
 <script type="application/ld+json" data-baked="1">
 {
@@ -984,7 +986,7 @@
 
   <!-- Nav -->
   <nav>
-    <a href="index.html" class="nav-logo">Tiago Leao</a>
+    <a href="/" class="nav-logo">Tiago Leao</a>
     <ul class="nav-links">
       <li><a href="properties.html" class="active">Properties</a></li>
       <li><a href="communities.html">Communities</a></li>
@@ -1000,9 +1002,9 @@
         </ul>
       </li>
       <li><a href="blog.html">Blog</a></li>
-      <li><a href="index.html#form-section">Work With Me</a></li>
+      <li><a href="/#form-section">Work With Me</a></li>
     </ul>
-    <a href="index.html#form-section" class="nav-cta">Get Started</a>
+    <a href="/#form-section" class="nav-cta">Get Started</a>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
   <div class="nav-mobile" id="nav-mobile">
@@ -1018,8 +1020,8 @@
       <a href="developments.html">Developments</a>
     </details>
     <a href="blog.html">Blog</a>
-    <a href="index.html#form-section">Work With Me</a>
-    <a href="index.html#form-section" class="nav-mobile-cta-btn">Get Started</a>
+    <a href="/#form-section">Work With Me</a>
+    <a href="/#form-section" class="nav-mobile-cta-btn">Get Started</a>
   </div>
 
   <!-- Filter Bar -->
@@ -1392,7 +1394,7 @@
       countEl.textContent = count;
       const lc = document.getElementById('list-count');
       if (lc) lc.textContent = count;
-      noResults.innerHTML = 'No properties match this filter. <a href="index.html#form-section" style="color:var(--terra);border-bottom:1px solid var(--terra);margin-left:6px;">Contact me directly →</a>'; noResults.setAttribute('role','status'); noResults.style.display = count === 0 ? 'block' : 'none';
+      noResults.innerHTML = 'No properties match this filter. <a href="/#form-section" style="color:var(--terra);border-bottom:1px solid var(--terra);margin-left:6px;">Contact me directly →</a>'; noResults.setAttribute('role','status'); noResults.style.display = count === 0 ? 'block' : 'none';
 
       // Keep map markers in sync with filtered cards
       if (splitWrap && splitWrap.classList.contains('map-active')) {

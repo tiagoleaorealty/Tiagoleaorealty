@@ -241,6 +241,24 @@ def write_page(rel_dir, content):
         f.write(content)
 
 
+def seo_title(text):
+    """Title tag for a page. Google shows roughly 60 characters, so the long
+    brand suffix is dropped when it would push the page's own words out.
+    Mirrored by seoTitle() in blog-post.html and property-detail.html."""
+    full = f"{text} | Tiago Leao | Guanacaste Real Estate"
+    return full if len(full) <= 60 else f"{text} | Tiago Leao"
+
+
+def listing_title_base(name, loc):
+    """Listing name plus its town, unless the name already says where it is.
+    Without the town, two listings that share a name share a title tag."""
+    town = re.split(r"[|,]", loc or "")[0].strip()
+    # Long descriptive names already place the listing; adding more only truncates.
+    if not town or len(name or "") > 40 or town.lower() in (name or "").lower():
+        return name
+    return f"{name}, {town}"
+
+
 def head_common(doc, title, desc, canon, og_title, og_desc, og_image):
     """Per-page head surgery shared by all three templates."""
     if '<base href="/">' not in doc:
@@ -433,7 +451,7 @@ def build_properties(tpl, rows):
         seg = slug or pid
         canon = f"{SITE}/property/{seg}/"
         desc = one_line(p.get("short_desc") or p.get("description") or f"{name} in {loc}.")
-        title = f"{name} | Tiago Leao | Guanacaste Real Estate"
+        title = seo_title(listing_title_base(name, loc))
         og_title = f"{name} — Sold" if sold else (f"{name} — {price}" if price else name)
         og_image = photos[0] if photos else f"{SITE}/og-image.jpg"
 
@@ -677,7 +695,7 @@ def build_schools(tpl, rows):
             "their website has the most current information.</p>"
         )
         hero_style = f' style="background-image:url(\'{esc(s["cover_url"])}\')"' if s.get("cover_url") else ""
-        baked = f"""<div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; <a href="schools.html">Schools</a> &rsaquo; {esc(name)}</div>
+        baked = f"""<div class="sch-crumb"><a href="/">Home</a> &rsaquo; <a href="schools.html">Schools</a> &rsaquo; {esc(name)}</div>
         <div class="sch-hero"{hero_style}></div>
         {f'<div class="sch-town">{esc(s["town"])}</div>' if s.get("town") else ''}
         <h1 class="sch-title">{esc(name)}</h1>
@@ -787,7 +805,7 @@ def build_developments(tpl, rows):
         hero_style = (' style="background-image:url(' + "'" + esc(s["cover_url"]) + "'" + ')"') if s.get("cover_url") else ""
         town_div = ('<div class="sch-town">' + esc(s["town"]) + "</div>") if s.get("town") else ""
         exc_p = ('<p class="sch-excerpt">' + esc(s["excerpt"]) + "</p>") if s.get("excerpt") else ""
-        baked = ('<div class="sch-crumb"><a href="index.html">Home</a> &rsaquo; '
+        baked = ('<div class="sch-crumb"><a href="/">Home</a> &rsaquo; '
                  '<a href="developments.html">Communities</a> &rsaquo; ' + esc(name) + "</div>"
                  + '<div class="sch-hero"' + hero_style + "></div>"
                  + town_div
@@ -893,7 +911,7 @@ def build_posts(tpl, rows):
         desc = one_line(p.get("meta_desc") or p.get("excerpt") or title_txt)
         og_image = abs_url(p.get("cover_url")) or f"{SITE}/og-image.jpg"
 
-        doc = head_common(tpl, f"{title_txt} | Tiago Leao | Guanacaste Real Estate", desc, canon, title_txt, desc, og_image)
+        doc = head_common(tpl, seo_title(title_txt), desc, canon, title_txt, desc, og_image)
 
         upd = (p.get("updated_at") or p.get("created_at") or TODAY)[:10]
         try:
@@ -918,7 +936,7 @@ def build_posts(tpl, rows):
     <div class="article-byline">{byline}</div>
     <div class="article-body">
       {parse_body(p.get("body"))}
-      <div class="article-cta"><p>Interested in learning more?</p><a href="index.html#form-section">Get in Touch &rarr;</a></div>
+      <div class="article-cta"><p>Interested in learning more?</p><a href="/#form-section">Get in Touch &rarr;</a></div>
       {disclaimer}
       {sources}
     </div>"""
