@@ -85,6 +85,9 @@
   </script>
 
   <link rel="stylesheet" href="fonts.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -118,7 +121,7 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 48px; background: rgba(255,255,255,.92);
+      padding: 28px 48px; background: rgba(247,244,239,.92);
       backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,.06);
     }
     .nav-logo { font-size: 18px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); display: flex; flex-direction: column; line-height: 1.2; }
@@ -278,6 +281,186 @@
     .nav-mobile-group a:first-of-type { margin-top: 4px; }
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
+  
+/* ==== DESIGN POLISH ====================================================
+   The one place the site's colors, type and shared polish live.
+
+   Every page carries its own <style> block, so this file is INLINED into
+   each page by scripts/apply-design.py (look for the DESIGN-POLISH markers).
+   Edit here, run the script, never edit the inlined copies.
+
+   Variable names: the legacy names are inverted (--black is the page ground,
+   --cream is the dark heading color, --terra is brand green). They are kept
+   so 20k lines of existing CSS keep working; the new semantic names below
+   point at the same values. Use the semantic names in new code.
+   ===================================================================== */
+:root {
+  /* brand */
+  --green:        #2d422d;   /* deep green: headings, links, the one dark band per page */
+  --green-soft:   #3d533d;   /* hover on green, secondary dark surfaces */
+  --cream-brand:  #eee8e0;   /* brand cream: soft bands, quote block, buttons on green */
+  --orange:       #d37234;   /* accent only: hero full stop, rules, hover highlights */
+  --orange-deep:  #b85b22;   /* primary buttons (white text passes AA: 4.6:1) */
+  --orange-ink:   #984916;   /* orange as text on light backgrounds */
+  --sage:         #b1b7a9;   /* borders, dividers, rules */
+  --sage-soft:    #e6e9e3;   /* very light sage band */
+  --sage-ink:     #636a60;   /* muted captions (4.5:1 on cream) */
+  /* neutrals */
+  --bg:           #f7f4ef;   /* page ground: a lighter tint of the cream */
+  --surface:      #ffffff;   /* cards, nav, fields */
+  --ink:          #30312f;   /* body text, the greyish black */
+  --ink-soft:     #5c6058;   /* secondary text */
+  --line:         rgba(45,66,45,0.14);
+  --line-strong:  rgba(45,66,45,0.28);
+  /* legacy names → new values */
+  --black:        var(--bg);
+  --charcoal:     var(--surface);
+  --charcoal-warm: var(--cream-brand);
+  --cream:        var(--green);
+  --sand:         var(--ink);
+  --stone:        var(--ink-soft);
+  --terra:        var(--green);
+  --accent:       var(--orange);
+  --accent-soft:  #e5945c;
+  --accent-ink:   var(--orange-ink);
+  /* type */
+  --font:       "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  /* spacing scale (8px base) */
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-6: 48px; --s-8: 64px; --s-12: 96px; --s-16: 128px;
+  --section-y: clamp(72px, 9vw, 120px);
+  --radius: 10px;
+  --shadow-card: 0 10px 30px rgba(45,66,45,0.08);
+}
+
+body { background: var(--bg); color: var(--ink); }
+
+/* ---- Type hierarchy: calmer weights, fewer sizes -------------------- */
+h1, h2, h3,
+[class*="title"], [class*="headline"], .about-name, .footer-name, .properties-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+h1, .hero-headline, .about-name, .properties-title, .detail-title, .article-title, .sch-title { line-height: 1.08; }
+h4, h5, h6, strong, b { font-weight: 500; }
+p { text-wrap: pretty; }
+
+/* Cormorant, in small doses: eyebrow labels */
+.section-label, .hero-eyebrow, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .surf-kicker,
+.tcard-kicker, .poc-label, .wg-hero-label, .faq-label, .detail-eyebrow, .listings-label,
+.sidebar-label, .similar-label, .map-label, .article-tag, .blog-card-tag, .related-card-tag,
+.sch-cta-label, .krain-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Cormorant: the four stats and other large figures */
+.stat-number, .stat-num, .krain-num {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(40px, 4vw, 54px);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.stat-number sup { font-size: 0.45em; color: var(--orange); vertical-align: super; font-family: var(--font); font-weight: 400; }
+.stat-label { font-size: 12px; letter-spacing: 0.12em; white-space: nowrap; }
+/* Cormorant: quotes and testimonials */
+blockquote, .review-text, .review-quote, .quote, .pull-quote, .testimonial-text {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.5;
+}
+
+/* ---- Spacing scale ---------------------------------------------------- */
+section, .poc { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+
+/* ---- Buttons: orange only on the primary action ----------------------- */
+.btn-primary, .facts-cta, .sch-cta-btn, .featured-btn, .btn-view-all, .article-cta a, .btn-next,
+.form-submit, .success-cta, .guide-cta a.btn, .about-cta a.btn {
+  background: var(--orange-deep);
+  color: #fff;
+  border-color: var(--orange-deep);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  box-shadow: none;
+}
+.btn-primary:hover, .facts-cta:hover, .sch-cta-btn:hover, .featured-btn:hover, .btn-view-all:hover,
+.article-cta a:hover, .btn-next:hover, .form-submit:hover, .success-cta:hover {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+/* Over the hero footage the button stays white and lights up orange */
+#hero .btn-primary { background: #fff; color: var(--green); border-color: #fff; }
+#hero .btn-primary:hover { background: var(--orange-deep); color: #fff; border-color: var(--orange-deep); }
+nav.scrolled { background: rgba(247,244,239,0.92); border-bottom-color: var(--line); }
+
+/* ---- Cards: photo-forward, quiet text, one soft shadow --------------- */
+.property-card, .blog-card, .featured-card, .tcard, .pcard, .sim-card, .related-card, .school-card, .dev-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+.property-card:hover, .blog-card:hover, .featured-card:hover, .tcard:hover, .pcard:hover, .sim-card:hover,
+.related-card:hover, .school-card:hover, .dev-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--line-strong);
+}
+.prop-price, .property-price, .sim-price { font-weight: 500; letter-spacing: -0.01em; }
+.prop-meta, .prop-name, .pcard-name, .tcard-name { color: var(--ink-soft); }
+.prop-name, .pcard-name { color: var(--ink); }
+
+/* ---- Lines and rules in sage, not black ------------------------------ */
+hr, .body-hr, .about-stats, #about, #why, #form-section, #footer, .article-byline {
+  border-color: var(--line) !important;
+}
+
+/* ---- The tagline band: cream, Cormorant, modest ----------------------- */
+.wg-hero {
+  background: var(--cream-brand);
+  background-image: none;
+  height: auto;
+  min-height: 0;
+  padding: clamp(88px, 11vw, 150px) 24px;
+  justify-content: center;
+}
+.wg-hero-overlay { display: none; }
+.wg-hero-content { max-width: 880px; margin: 0 auto; padding: 0; text-align: center; }
+.wg-hero-headline {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 48px);
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--green);
+  margin-bottom: 22px;
+}
+.wg-hero-headline em { font-style: italic; font-weight: 400; }
+.wg-hero-attr { text-align: center; }
+.wg-hero-attr-name { color: var(--sage-ink); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+.footer-tagline-line { font-family: var(--font-serif); font-size: 19px; color: rgba(238,232,224,0.78); margin-top: 18px; letter-spacing: 0.01em; }
+
+/* ---- Hero over footage: lighter weight, keep contrast ---------------- */
+.hero-headline { font-weight: 500; }
+.hero-headline .hl-dot { color: var(--orange); }
+
+/* ---- Reduce competing color: labels in green, not orange, on light ---- */
+.section-label, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .detail-eyebrow { color: var(--green); }
+.section-label::before, .hero-eyebrow::before { background: var(--sage); }
+
+/* ---- Mobile ----------------------------------------------------------- */
+@media (max-width: 900px) {
+  .wg-hero { height: auto; min-height: 0; padding: 72px 24px; }
+  .wg-hero-headline { font-size: clamp(26px, 7vw, 34px); font-weight: 400; letter-spacing: 0; line-height: 1.22; color: var(--green); }
+  .stat-number, .stat-num { font-size: clamp(34px, 9vw, 44px); }
+}
+/* ==== /DESIGN POLISH ==== */
   </style>
 <!--BAKE:AGENT-LD-->
 <script type="application/ld+json" data-baked="1">
@@ -355,7 +538,7 @@
       <div class="crumbs"><a href="/">Home</a> / <a href="communities.html">Communities</a> / Playa Grande</div>
       <div class="eyebrow">Protected Surf Town · ≈1 hr 10 min from Liberia Airport</div>
       <h1>Playa Grande</h1>
-      <p class="tagline">World-class waves inside a national park — two minutes from Tamarindo by boat, and permanently protected from ever becoming it.</p>
+      <p class="tagline">World-class waves inside a national park, two minutes from Tamarindo by boat, and permanently protected from ever becoming it.</p>
     </div>
   </header>
 
@@ -364,14 +547,14 @@
     <div class="town-grid">
       <div class="town-content">
         <h2>Life Inside a National Park</h2>
-        <p>Playa Grande sits directly across the estuary from Tamarindo — a two-minute boat shuttle — and lives by completely different rules. The beach is part of Las Baulas National Park, one of the world's most important leatherback turtle nesting sites, and that protection shapes everything: no construction on the beachfront strip, lighting restrictions at night, low-density zoning behind it, and a permanent cap on how big this town can ever get.</p>
-        <p>The community that chose Grande chose it deliberately: surfers, nature-first families, and owners who want dark skies and empty sand over restaurants and nightlife. There's a small core of good restaurants, a market, surf shops and boutique hotels — and Tamarindo's full amenities are minutes away when you want them.</p>
+        <p>Playa Grande sits directly across the estuary from Tamarindo, a two-minute boat shuttle, and lives by completely different rules. The beach is part of Las Baulas National Park, one of the world's most important leatherback turtle nesting sites, and that protection shapes everything: no construction on the beachfront strip, lighting restrictions at night, low-density zoning behind it, and a permanent cap on how big this town can ever get.</p>
+        <p>The community that chose Grande chose it deliberately: surfers, nature-first families, and owners who want dark skies and empty sand over restaurants and nightlife. There's a small core of good restaurants, a market, surf shops and boutique hotels, and Tamarindo's full amenities are minutes away when you want them.</p>
         <h2>Surf &amp; Beach</h2>
-        <p>Grande is one of the most consistent beach breaks in Costa Rica — faster, hollower, and more powerful than Tamarindo across the water, with A-frame peaks spread along more than a kilometer of sand that rarely feels crowded. It picks up more swell than its neighbors, which makes it the daily driver for serious surfers on this stretch of coast. At night in season, the same sand hosts nesting leatherbacks under ranger supervision.</p>
+        <p>Grande is one of the most consistent beach breaks in Costa Rica, faster, hollower, and more powerful than Tamarindo across the water, with A-frame peaks spread along more than a kilometer of sand that rarely feels crowded. It picks up more swell than its neighbors, which makes it the daily driver for serious surfers on this stretch of coast. At night in season, the same sand hosts nesting leatherbacks under ranger supervision.</p>
         <h2>Everyday Practicalities</h2>
-        <p>Daily life runs through Tamarindo and Huacas: supermarkets, Beachside Clinic, banks, and the school corridor (Educarte, La Paz, CRIA, Journey) all within 20–40 minutes by road, or minutes by boat for a Tamarindo dinner. The road access loops around the estuary through Matapalo. Liberia airport is about 1 hour 10 minutes — slightly closer than Tamarindo.</p>
+        <p>Daily life runs through Tamarindo and Huacas: supermarkets, Beachside Clinic, banks, and the school corridor (Educarte, La Paz, CRIA, Journey) all within 20–40 minutes by road, or minutes by boat for a Tamarindo dinner. The road access loops around the estuary through Matapalo. Liberia airport is about 1 hour 10 minutes, slightly closer than Tamarindo.</p>
         <h2>The Real Estate Market</h2>
-        <p>The park cap is the investment story: supply in Playa Grande can never meaningfully grow, while demand from surfers and privacy-seekers keeps climbing. The market is mostly single-family homes and lots on quiet jungle streets a short walk from the sand — modern surf villas, older beach houses, and a limited number of small condo projects. Prices sit below comparable Tamarindo ocean proximity, precisely because you're trading amenities for protection — a trade more buyers make every year.</p>
+        <p>The park cap is the investment story: supply in Playa Grande can never meaningfully grow, while demand from surfers and privacy-seekers keeps climbing. The market is mostly single-family homes and lots on quiet jungle streets a short walk from the sand, modern surf villas, older beach houses, and a limited number of small condo projects. Prices sit below comparable Tamarindo ocean proximity, precisely because you're trading amenities for protection, a trade more buyers make every year.</p>
       </div>
       <aside class="facts-card">
         <h3>Playa Grande at a Glance</h3>
@@ -387,7 +570,7 @@
   </div>
 
   <!-- Listings -->
-  <div class="listings" style="padding-bottom:0;"><p style="font-size:14.5px;line-height:1.75;color:var(--stone);border-left:2px solid var(--terra);padding-left:14px;max-width:70ch;">Playa Grande decisions turn on things you can't see from the beach: hillside communities versus independent homes, titled land versus Maritime Zone concession, road access, and water availability. I help you frame those questions — and the attorney, surveyor, and other independent professionals verify the answers.</p></div>
+  <div class="listings" style="padding-bottom:0;"><p style="font-size:14.5px;line-height:1.75;color:var(--stone);border-left:2px solid var(--terra);padding-left:14px;max-width:70ch;">Playa Grande decisions turn on things you can't see from the beach: hillside communities versus independent homes, titled land versus Maritime Zone concession, road access, and water availability. I help you frame those questions, and the attorney, surveyor, and other independent professionals verify the answers.</p></div>
 
   <div class="listings">
     <div class="listings-label">Current listings in Playa Grande <a href="properties.html">Browse all properties &rarr;</a></div>
@@ -396,10 +579,10 @@
 
   <!-- FAQ -->
   <section class="faq-sec">
-    <h2>Playa Grande — Common Questions</h2>
+    <h2>Playa Grande: Common Questions</h2>
     <div class="faq-item">
       <h3>Can you build on the beach in Playa Grande?</h3>
-      <p>No — the beachfront is part of Las Baulas National Park, protected as a leatherback turtle nesting site, and the zone behind it carries strict low-density and lighting rules. That permanent cap on development is exactly why Playa Grande keeps its wild character and why existing homes hold value.</p>
+      <p>No, the beachfront is part of Las Baulas National Park, protected as a leatherback turtle nesting site, and the zone behind it carries strict low-density and lighting rules. That permanent cap on development is exactly why Playa Grande keeps its wild character and why existing homes hold value.</p>
     </div>
     <div class="faq-item">
       <h3>How do you get from Playa Grande to Tamarindo?</h3>
@@ -407,7 +590,7 @@
     </div>
     <div class="faq-item">
       <h3>Is Playa Grande good for surfing?</h3>
-      <p>It's one of the most consistent beach breaks in Costa Rica — faster and more powerful than Tamarindo, with uncrowded A-frame peaks along more than a kilometer of sand. Serious surfers on this coast treat Grande as their daily wave.</p>
+      <p>It's one of the most consistent beach breaks in Costa Rica, faster and more powerful than Tamarindo, with uncrowded A-frame peaks along more than a kilometer of sand. Serious surfers on this coast treat Grande as their daily wave.</p>
     </div>
   </section>
 
@@ -424,7 +607,7 @@
   <!-- CTA -->
   <div class="guide-cta">
     <h3>Thinking about Playa Grande?</h3>
-    <p>I work this coast every day. Tell me your budget and how you want to live — I'll tell you honestly if Playa Grande fits, and what your money buys here right now.</p>
+    <p>I work this coast every day. Tell me your budget and how you want to live: I'll tell you honestly if Playa Grande fits, and what your money buys here right now.</p>
     <div class="btns">
       <a href="https://wa.me/50683028660" target="_blank" rel="noopener" class="solid">WhatsApp Me</a>
       <a href="/#form-section" class="ghost">Send a Message</a>
@@ -501,7 +684,7 @@
       const mine = (props || []).filter(p => townOf(p) === MY_TOWN);
       el.outerHTML = mine.length
         ? `<div class="prop-scroll">${mine.map(card).join('')}</div>`
-        : '<div class="no-listings">No current listings in Playa Grande — inventory moves fast and I often know what\'s coming before it lists. <a href="https://wa.me/50683028660" target="_blank" rel="noopener">Ask me on WhatsApp</a>.</div>';
+        : '<div class="no-listings">No current listings in Playa Grande, inventory moves fast and I often know what\'s coming before it lists. <a href="https://wa.me/50683028660" target="_blank" rel="noopener">Ask me on WhatsApp</a>.</div>';
     })();
 
     // ── Mobile menu ────────────────────────────────────────────────

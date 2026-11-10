@@ -70,6 +70,9 @@
   </script>
 
   <link rel="stylesheet" href="fonts.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -119,7 +122,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(255,255,255,.92);
+      background: rgba(247,244,239,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
@@ -350,6 +353,186 @@
       .footer-top { grid-template-columns: 1fr; gap: 32px; }
       .footer-bottom { flex-direction: column; gap: 10px; }
     }
+  
+/* ==== DESIGN POLISH ====================================================
+   The one place the site's colors, type and shared polish live.
+
+   Every page carries its own <style> block, so this file is INLINED into
+   each page by scripts/apply-design.py (look for the DESIGN-POLISH markers).
+   Edit here, run the script, never edit the inlined copies.
+
+   Variable names: the legacy names are inverted (--black is the page ground,
+   --cream is the dark heading color, --terra is brand green). They are kept
+   so 20k lines of existing CSS keep working; the new semantic names below
+   point at the same values. Use the semantic names in new code.
+   ===================================================================== */
+:root {
+  /* brand */
+  --green:        #2d422d;   /* deep green: headings, links, the one dark band per page */
+  --green-soft:   #3d533d;   /* hover on green, secondary dark surfaces */
+  --cream-brand:  #eee8e0;   /* brand cream: soft bands, quote block, buttons on green */
+  --orange:       #d37234;   /* accent only: hero full stop, rules, hover highlights */
+  --orange-deep:  #b85b22;   /* primary buttons (white text passes AA: 4.6:1) */
+  --orange-ink:   #984916;   /* orange as text on light backgrounds */
+  --sage:         #b1b7a9;   /* borders, dividers, rules */
+  --sage-soft:    #e6e9e3;   /* very light sage band */
+  --sage-ink:     #636a60;   /* muted captions (4.5:1 on cream) */
+  /* neutrals */
+  --bg:           #f7f4ef;   /* page ground: a lighter tint of the cream */
+  --surface:      #ffffff;   /* cards, nav, fields */
+  --ink:          #30312f;   /* body text, the greyish black */
+  --ink-soft:     #5c6058;   /* secondary text */
+  --line:         rgba(45,66,45,0.14);
+  --line-strong:  rgba(45,66,45,0.28);
+  /* legacy names → new values */
+  --black:        var(--bg);
+  --charcoal:     var(--surface);
+  --charcoal-warm: var(--cream-brand);
+  --cream:        var(--green);
+  --sand:         var(--ink);
+  --stone:        var(--ink-soft);
+  --terra:        var(--green);
+  --accent:       var(--orange);
+  --accent-soft:  #e5945c;
+  --accent-ink:   var(--orange-ink);
+  /* type */
+  --font:       "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  /* spacing scale (8px base) */
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-6: 48px; --s-8: 64px; --s-12: 96px; --s-16: 128px;
+  --section-y: clamp(72px, 9vw, 120px);
+  --radius: 10px;
+  --shadow-card: 0 10px 30px rgba(45,66,45,0.08);
+}
+
+body { background: var(--bg); color: var(--ink); }
+
+/* ---- Type hierarchy: calmer weights, fewer sizes -------------------- */
+h1, h2, h3,
+[class*="title"], [class*="headline"], .about-name, .footer-name, .properties-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+h1, .hero-headline, .about-name, .properties-title, .detail-title, .article-title, .sch-title { line-height: 1.08; }
+h4, h5, h6, strong, b { font-weight: 500; }
+p { text-wrap: pretty; }
+
+/* Cormorant, in small doses: eyebrow labels */
+.section-label, .hero-eyebrow, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .surf-kicker,
+.tcard-kicker, .poc-label, .wg-hero-label, .faq-label, .detail-eyebrow, .listings-label,
+.sidebar-label, .similar-label, .map-label, .article-tag, .blog-card-tag, .related-card-tag,
+.sch-cta-label, .krain-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Cormorant: the four stats and other large figures */
+.stat-number, .stat-num, .krain-num {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(40px, 4vw, 54px);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.stat-number sup { font-size: 0.45em; color: var(--orange); vertical-align: super; font-family: var(--font); font-weight: 400; }
+.stat-label { font-size: 12px; letter-spacing: 0.12em; white-space: nowrap; }
+/* Cormorant: quotes and testimonials */
+blockquote, .review-text, .review-quote, .quote, .pull-quote, .testimonial-text {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.5;
+}
+
+/* ---- Spacing scale ---------------------------------------------------- */
+section, .poc { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+
+/* ---- Buttons: orange only on the primary action ----------------------- */
+.btn-primary, .facts-cta, .sch-cta-btn, .featured-btn, .btn-view-all, .article-cta a, .btn-next,
+.form-submit, .success-cta, .guide-cta a.btn, .about-cta a.btn {
+  background: var(--orange-deep);
+  color: #fff;
+  border-color: var(--orange-deep);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  box-shadow: none;
+}
+.btn-primary:hover, .facts-cta:hover, .sch-cta-btn:hover, .featured-btn:hover, .btn-view-all:hover,
+.article-cta a:hover, .btn-next:hover, .form-submit:hover, .success-cta:hover {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+/* Over the hero footage the button stays white and lights up orange */
+#hero .btn-primary { background: #fff; color: var(--green); border-color: #fff; }
+#hero .btn-primary:hover { background: var(--orange-deep); color: #fff; border-color: var(--orange-deep); }
+nav.scrolled { background: rgba(247,244,239,0.92); border-bottom-color: var(--line); }
+
+/* ---- Cards: photo-forward, quiet text, one soft shadow --------------- */
+.property-card, .blog-card, .featured-card, .tcard, .pcard, .sim-card, .related-card, .school-card, .dev-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+.property-card:hover, .blog-card:hover, .featured-card:hover, .tcard:hover, .pcard:hover, .sim-card:hover,
+.related-card:hover, .school-card:hover, .dev-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--line-strong);
+}
+.prop-price, .property-price, .sim-price { font-weight: 500; letter-spacing: -0.01em; }
+.prop-meta, .prop-name, .pcard-name, .tcard-name { color: var(--ink-soft); }
+.prop-name, .pcard-name { color: var(--ink); }
+
+/* ---- Lines and rules in sage, not black ------------------------------ */
+hr, .body-hr, .about-stats, #about, #why, #form-section, #footer, .article-byline {
+  border-color: var(--line) !important;
+}
+
+/* ---- The tagline band: cream, Cormorant, modest ----------------------- */
+.wg-hero {
+  background: var(--cream-brand);
+  background-image: none;
+  height: auto;
+  min-height: 0;
+  padding: clamp(88px, 11vw, 150px) 24px;
+  justify-content: center;
+}
+.wg-hero-overlay { display: none; }
+.wg-hero-content { max-width: 880px; margin: 0 auto; padding: 0; text-align: center; }
+.wg-hero-headline {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 48px);
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--green);
+  margin-bottom: 22px;
+}
+.wg-hero-headline em { font-style: italic; font-weight: 400; }
+.wg-hero-attr { text-align: center; }
+.wg-hero-attr-name { color: var(--sage-ink); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+.footer-tagline-line { font-family: var(--font-serif); font-size: 19px; color: rgba(238,232,224,0.78); margin-top: 18px; letter-spacing: 0.01em; }
+
+/* ---- Hero over footage: lighter weight, keep contrast ---------------- */
+.hero-headline { font-weight: 500; }
+.hero-headline .hl-dot { color: var(--orange); }
+
+/* ---- Reduce competing color: labels in green, not orange, on light ---- */
+.section-label, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .detail-eyebrow { color: var(--green); }
+.section-label::before, .hero-eyebrow::before { background: var(--sage); }
+
+/* ---- Mobile ----------------------------------------------------------- */
+@media (max-width: 900px) {
+  .wg-hero { height: auto; min-height: 0; padding: 72px 24px; }
+  .wg-hero-headline { font-size: clamp(26px, 7vw, 34px); font-weight: 400; letter-spacing: 0; line-height: 1.22; color: var(--green); }
+  .stat-number, .stat-num { font-size: clamp(34px, 9vw, 44px); }
+}
+/* ==== /DESIGN POLISH ==== */
   </style>
 </head>
 <body>
@@ -399,8 +582,8 @@
   <header class="page-header">
     <div class="page-eyebrow">For Sellers</div>
     <h1>How I Sell Homes in Guanacaste</h1>
-    <p>Costa Rica has no single mandatory MLS — your buyer is almost certainly sitting in the United States, Canada, or Europe, and whether they ever see your home comes down to marketing. Here is exactly what I do for every listing, and the network that carries it.</p>
-    <div class="guide-note">Every listing I take gets the full system below — there is no reduced version for smaller properties. For the costs, taxes and process of selling, see the <a href="sellers-guide.html" style="color:var(--terra);border-bottom:1px solid var(--terra);">Seller's Guide</a>.</div>
+    <p>Costa Rica has no single mandatory MLS, your buyer is almost certainly sitting in the United States, Canada, or Europe, and whether they ever see your home comes down to marketing. Here is exactly what I do for every listing, and the network that carries it.</p>
+    <div class="guide-note">Every listing I take gets the full system below, there is no reduced version for smaller properties. For the costs, taxes and process of selling, see the <a href="sellers-guide.html" style="color:var(--terra);border-bottom:1px solid var(--terra);">Seller's Guide</a>.</div>
   </header>
 
   <div class="toc">
@@ -416,9 +599,9 @@
 
     <div class="qa" id="launch">
       <h2>Every listing gets a launch, not a post</h2>
-      <p class="direct">Most agents photograph a home and upload it to a portal. I produce a launch: a cinematic property film, drone footage, a full professional photo set, and a purpose-built page for the property — its own address on the internet, designed to sell that specific home to its specific buyer.</p>
-      <p>The reason is simple: the buyer for a Guanacaste home is almost never local. They are a North American, Canadian or European lifestyle buyer or investor scrolling on a phone five thousand kilometers away. A portal thumbnail does not move them. A ninety-second film that shows the morning light, the drive to the beach, and the life the home makes possible — that moves them. Story first, specs second.</p>
-      <p>All of it is produced in-house — filming, editing, page design, and copy — which means it happens fast and the quality is controlled, not outsourced.</p>
+      <p class="direct">Most agents photograph a home and upload it to a portal. I produce a launch: a cinematic property film, drone footage, a full professional photo set, and a purpose-built page for the property, its own address on the internet, designed to sell that specific home to its specific buyer.</p>
+      <p>The reason is simple: the buyer for a Guanacaste home is almost never local. They are a North American, Canadian or European lifestyle buyer or investor scrolling on a phone five thousand kilometers away. A portal thumbnail does not move them. A ninety-second film that shows the morning light, the drive to the beach, and the life the home makes possible, that moves them. Story first, specs second.</p>
+      <p>All of it is produced in-house, filming, editing, page design, and copy, which means it happens fast and the quality is controlled, not outsourced.</p>
     </div>
 
     <div class="qa" id="plan">
@@ -431,19 +614,19 @@
         </div></div>
         <div class="plan-step"><div class="plan-step-body">
           <h3>Direct buyer distribution</h3>
-          <p>The listing goes straight to KRAIN's private network of active buyers and investors — people who have already raised their hand for this coast — before the broad campaigns even start.</p>
+          <p>The listing goes straight to KRAIN's private network of active buyers and investors, people who have already raised their hand for this coast, before the broad campaigns even start.</p>
         </div></div>
         <div class="plan-step"><div class="plan-step-body">
           <h3>Global syndication</h3>
-          <p>Placement across KRAIN's platforms and the international portals and networks below — Realtor.com, Omni MLS, and the luxury networks that put Guanacaste listings in front of buyers in 60+ countries.</p>
+          <p>Placement across KRAIN's platforms and the international portals and networks below: Realtor.com, Omni MLS, and the luxury networks that put Guanacaste listings in front of buyers in 60+ countries.</p>
         </div></div>
         <div class="plan-step"><div class="plan-step-body">
           <h3>Data-informed paid advertising</h3>
-          <p>Paid Meta and Google campaigns run on data, not guesswork: audience and creative testing, lead tracking, and retargeting where permitted — refined continuously toward the buyers most likely to respond.</p>
+          <p>Paid Meta and Google campaigns run on data, not guesswork: audience and creative testing, lead tracking, and retargeting where permitted, refined continuously toward the buyers most likely to respond.</p>
         </div></div>
         <div class="plan-step"><div class="plan-step-body">
           <h3>Agent-network circulation</h3>
-          <p>The listing circulates through the WhatsApp groups where Guanacaste deals actually move — it is distributed directly through the principal local agent networks and to agents working with relevant buyers.</p>
+          <p>The listing circulates through the WhatsApp groups where Guanacaste deals actually move, it is distributed directly through the principal local agent networks and to agents working with relevant buyers.</p>
         </div></div>
       </div>
     </div>
@@ -452,14 +635,14 @@
       <h2>Where your home shows up</h2>
       <p class="direct">One production, distributed everywhere the buyer might be:</p>
       <ul>
-        <li><strong>YouTube</strong> — property films on a channel with 145K subscribers</li>
-        <li><strong>Instagram, TikTok &amp; Reels</strong> — short-form cuts feeding 1M+ combined monthly reach</li>
-        <li><strong>Direct buyer network</strong> — KRAIN's private buyer and investor database</li>
-        <li><strong>Luxury Portfolio International</strong> — direct exposure in 60+ countries</li>
-        <li><strong>Leading Real Estate Companies of the World</strong> — a 550+ brokerage global network</li>
-        <li><strong>Mayfair International</strong> — UK and European buyer reach</li>
-        <li><strong>Realtor.com &amp; Omni MLS</strong> — North American portal coverage</li>
-        <li><strong>Local agent networks</strong> — the WhatsApp groups where this coast's deals circulate</li>
+        <li><strong>YouTube</strong>property films on a channel with 145K subscribers</li>
+        <li><strong>Instagram, TikTok &amp; Reels</strong>short-form cuts feeding 1M+ combined monthly reach</li>
+        <li><strong>Direct buyer network</strong>KRAIN's private buyer and investor database</li>
+        <li><strong>Luxury Portfolio International</strong>direct exposure in 60+ countries</li>
+        <li><strong>Leading Real Estate Companies of the World</strong>a 550+ brokerage global network</li>
+        <li><strong>Mayfair International</strong>UK and European buyer reach</li>
+        <li><strong>Realtor.com &amp; Omni MLS</strong>North American portal coverage</li>
+        <li><strong>Local agent networks</strong>the WhatsApp groups where this coast's deals circulate</li>
       </ul>
       <p>Reach figures are KRAIN brokerage-wide numbers from KRAIN's published materials.</p>
     </div>
@@ -470,7 +653,7 @@
   <section class="stats" id="krain">
     <div class="stats-card">
       <h2>The machine behind every listing</h2>
-      <p class="stats-sub">I'm an agent with KRAIN Luxury Real Estate. When you list with me, your home is carried by the brokerage's full network — these are KRAIN's numbers:</p>
+      <p class="stats-sub">I'm an agent with KRAIN Luxury Real Estate. When you list with me, your home is carried by the brokerage's full network, these are KRAIN's numbers:</p>
       <div class="stats-grid">
         <div><div class="stat-num">$130M+</div><div class="stat-label">Total deal volume<br>2024&ndash;2025</div></div>
         <div><div class="stat-num">115+</div><div class="stat-label">Deals closed<br>2024&ndash;2025</div></div>
@@ -492,20 +675,20 @@
 
     <div class="qa" id="more-than-marketing">
       <h2>More than marketing</h2>
-      <p class="direct">Professional marketing creates attention — but a successful sale also depends on preparation and coordination.</p>
-      <p>I help sellers organize the information and people the transaction requires: documentation, repairs, landscaping, pool and cleaning contacts before launch; staging, photography and video for the launch itself; then attorneys, escrow, inspections, showings, negotiation and closing once a buyer appears. When a specialist is needed, I introduce an independent professional and keep the communication organized. The goal isn't only to promote the property — it's to remove the delays that quietly kill deals. The full seller process, costs and taxes are in the <a class="inline" href="sellers-guide.html">Seller's Guide</a>.</p>
+      <p class="direct">Professional marketing creates attention, but a successful sale also depends on preparation and coordination.</p>
+      <p>I help sellers organize the information and people the transaction requires: documentation, repairs, landscaping, pool and cleaning contacts before launch; staging, photography and video for the launch itself; then attorneys, escrow, inspections, showings, negotiation and closing once a buyer appears. When a specialist is needed, I introduce an independent professional and keep the communication organized. The goal isn't only to promote the property, it's to remove the delays that quietly kill deals. The full seller process, costs and taxes are in the <a class="inline" href="sellers-guide.html">Seller's Guide</a>.</p>
     </div>
 
     <div class="qa" id="presentation">
       <h2>What my listing presentation looks like</h2>
-      <p class="direct">Before you sign anything, you get a full written proposal for your specific property — not a generic pitch deck.</p>
-      <p>It covers the opportunity as a buyer would see it, the asset's strongest selling points, the profile of the most likely buyer and how to reach them, the complete marketing plan for your property, and a comparative pricing analysis built on real closed sales — not asking prices. It reads like a launch plan, because that is what it is.</p>
-      <p>Ask me for a sample when we talk — I'll walk you through a real one.</p>
+      <p class="direct">Before you sign anything, you get a full written proposal for your specific property, not a generic pitch deck.</p>
+      <p>It covers the opportunity as a buyer would see it, the asset's strongest selling points, the profile of the most likely buyer and how to reach them, the complete marketing plan for your property, and a comparative pricing analysis built on real closed sales, not asking prices. It reads like a launch plan, because that is what it is.</p>
+      <p>Ask me for a sample when we talk: I'll walk you through a real one.</p>
     </div>
 
     <div class="qa" id="pricing">
       <h2>Priced honestly, from day one</h2>
-      <p class="direct">The best marketing in the world cannot save a mispriced listing — so I will tell you what the comparables actually say, even when it is not the number you hoped for.</p>
+      <p class="direct">The best marketing in the world cannot save a mispriced listing, so I will tell you what the comparables actually say, even when it is not the number you hoped for.</p>
       <p>Without a mandatory MLS, public pricing data here is thin, and many Guanacaste listings sit for years because they were priced on hope. My pricing analysis works from real closed sales and current competing inventory, and lands on a recommended range with reasons attached. Well-priced homes on this coast attract offers in the first months; overpriced ones go stale and typically sell for less after the price cuts. The math on that trade is in the <a class="inline" href="sellers-guide.html">Seller's Guide</a>, along with everything selling costs.</p>
     </div>
 
@@ -514,7 +697,7 @@
   <!-- CTA -->
   <div class="guide-cta">
     <h3>Want this for your home?</h3>
-    <p>Tell me about your property and I'll put together the full presentation — marketing plan, buyer profile, and an honest pricing analysis. No obligation.</p>
+    <p>Tell me about your property and I'll put together the full presentation, marketing plan, buyer profile, and an honest pricing analysis. No obligation.</p>
     <div class="btns">
       <a href="https://wa.me/50683028660" target="_blank" rel="noopener" class="solid">WhatsApp Me</a>
       <a href="/#form-section" class="ghost">Request a Proposal</a>

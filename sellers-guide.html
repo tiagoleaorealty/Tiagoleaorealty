@@ -91,6 +91,9 @@
   </script>
 
   <link rel="stylesheet" href="fonts.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -140,7 +143,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(255,255,255,.92);
+      background: rgba(247,244,239,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
@@ -398,6 +401,186 @@
     .nav-mobile-group a:first-of-type { margin-top: 4px; }
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
+  
+/* ==== DESIGN POLISH ====================================================
+   The one place the site's colors, type and shared polish live.
+
+   Every page carries its own <style> block, so this file is INLINED into
+   each page by scripts/apply-design.py (look for the DESIGN-POLISH markers).
+   Edit here, run the script, never edit the inlined copies.
+
+   Variable names: the legacy names are inverted (--black is the page ground,
+   --cream is the dark heading color, --terra is brand green). They are kept
+   so 20k lines of existing CSS keep working; the new semantic names below
+   point at the same values. Use the semantic names in new code.
+   ===================================================================== */
+:root {
+  /* brand */
+  --green:        #2d422d;   /* deep green: headings, links, the one dark band per page */
+  --green-soft:   #3d533d;   /* hover on green, secondary dark surfaces */
+  --cream-brand:  #eee8e0;   /* brand cream: soft bands, quote block, buttons on green */
+  --orange:       #d37234;   /* accent only: hero full stop, rules, hover highlights */
+  --orange-deep:  #b85b22;   /* primary buttons (white text passes AA: 4.6:1) */
+  --orange-ink:   #984916;   /* orange as text on light backgrounds */
+  --sage:         #b1b7a9;   /* borders, dividers, rules */
+  --sage-soft:    #e6e9e3;   /* very light sage band */
+  --sage-ink:     #636a60;   /* muted captions (4.5:1 on cream) */
+  /* neutrals */
+  --bg:           #f7f4ef;   /* page ground: a lighter tint of the cream */
+  --surface:      #ffffff;   /* cards, nav, fields */
+  --ink:          #30312f;   /* body text, the greyish black */
+  --ink-soft:     #5c6058;   /* secondary text */
+  --line:         rgba(45,66,45,0.14);
+  --line-strong:  rgba(45,66,45,0.28);
+  /* legacy names → new values */
+  --black:        var(--bg);
+  --charcoal:     var(--surface);
+  --charcoal-warm: var(--cream-brand);
+  --cream:        var(--green);
+  --sand:         var(--ink);
+  --stone:        var(--ink-soft);
+  --terra:        var(--green);
+  --accent:       var(--orange);
+  --accent-soft:  #e5945c;
+  --accent-ink:   var(--orange-ink);
+  /* type */
+  --font:       "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  /* spacing scale (8px base) */
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-6: 48px; --s-8: 64px; --s-12: 96px; --s-16: 128px;
+  --section-y: clamp(72px, 9vw, 120px);
+  --radius: 10px;
+  --shadow-card: 0 10px 30px rgba(45,66,45,0.08);
+}
+
+body { background: var(--bg); color: var(--ink); }
+
+/* ---- Type hierarchy: calmer weights, fewer sizes -------------------- */
+h1, h2, h3,
+[class*="title"], [class*="headline"], .about-name, .footer-name, .properties-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+h1, .hero-headline, .about-name, .properties-title, .detail-title, .article-title, .sch-title { line-height: 1.08; }
+h4, h5, h6, strong, b { font-weight: 500; }
+p { text-wrap: pretty; }
+
+/* Cormorant, in small doses: eyebrow labels */
+.section-label, .hero-eyebrow, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .surf-kicker,
+.tcard-kicker, .poc-label, .wg-hero-label, .faq-label, .detail-eyebrow, .listings-label,
+.sidebar-label, .similar-label, .map-label, .article-tag, .blog-card-tag, .related-card-tag,
+.sch-cta-label, .krain-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Cormorant: the four stats and other large figures */
+.stat-number, .stat-num, .krain-num {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(40px, 4vw, 54px);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.stat-number sup { font-size: 0.45em; color: var(--orange); vertical-align: super; font-family: var(--font); font-weight: 400; }
+.stat-label { font-size: 12px; letter-spacing: 0.12em; white-space: nowrap; }
+/* Cormorant: quotes and testimonials */
+blockquote, .review-text, .review-quote, .quote, .pull-quote, .testimonial-text {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.5;
+}
+
+/* ---- Spacing scale ---------------------------------------------------- */
+section, .poc { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+
+/* ---- Buttons: orange only on the primary action ----------------------- */
+.btn-primary, .facts-cta, .sch-cta-btn, .featured-btn, .btn-view-all, .article-cta a, .btn-next,
+.form-submit, .success-cta, .guide-cta a.btn, .about-cta a.btn {
+  background: var(--orange-deep);
+  color: #fff;
+  border-color: var(--orange-deep);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  box-shadow: none;
+}
+.btn-primary:hover, .facts-cta:hover, .sch-cta-btn:hover, .featured-btn:hover, .btn-view-all:hover,
+.article-cta a:hover, .btn-next:hover, .form-submit:hover, .success-cta:hover {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+/* Over the hero footage the button stays white and lights up orange */
+#hero .btn-primary { background: #fff; color: var(--green); border-color: #fff; }
+#hero .btn-primary:hover { background: var(--orange-deep); color: #fff; border-color: var(--orange-deep); }
+nav.scrolled { background: rgba(247,244,239,0.92); border-bottom-color: var(--line); }
+
+/* ---- Cards: photo-forward, quiet text, one soft shadow --------------- */
+.property-card, .blog-card, .featured-card, .tcard, .pcard, .sim-card, .related-card, .school-card, .dev-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+.property-card:hover, .blog-card:hover, .featured-card:hover, .tcard:hover, .pcard:hover, .sim-card:hover,
+.related-card:hover, .school-card:hover, .dev-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--line-strong);
+}
+.prop-price, .property-price, .sim-price { font-weight: 500; letter-spacing: -0.01em; }
+.prop-meta, .prop-name, .pcard-name, .tcard-name { color: var(--ink-soft); }
+.prop-name, .pcard-name { color: var(--ink); }
+
+/* ---- Lines and rules in sage, not black ------------------------------ */
+hr, .body-hr, .about-stats, #about, #why, #form-section, #footer, .article-byline {
+  border-color: var(--line) !important;
+}
+
+/* ---- The tagline band: cream, Cormorant, modest ----------------------- */
+.wg-hero {
+  background: var(--cream-brand);
+  background-image: none;
+  height: auto;
+  min-height: 0;
+  padding: clamp(88px, 11vw, 150px) 24px;
+  justify-content: center;
+}
+.wg-hero-overlay { display: none; }
+.wg-hero-content { max-width: 880px; margin: 0 auto; padding: 0; text-align: center; }
+.wg-hero-headline {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 48px);
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--green);
+  margin-bottom: 22px;
+}
+.wg-hero-headline em { font-style: italic; font-weight: 400; }
+.wg-hero-attr { text-align: center; }
+.wg-hero-attr-name { color: var(--sage-ink); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+.footer-tagline-line { font-family: var(--font-serif); font-size: 19px; color: rgba(238,232,224,0.78); margin-top: 18px; letter-spacing: 0.01em; }
+
+/* ---- Hero over footage: lighter weight, keep contrast ---------------- */
+.hero-headline { font-weight: 500; }
+.hero-headline .hl-dot { color: var(--orange); }
+
+/* ---- Reduce competing color: labels in green, not orange, on light ---- */
+.section-label, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .detail-eyebrow { color: var(--green); }
+.section-label::before, .hero-eyebrow::before { background: var(--sage); }
+
+/* ---- Mobile ----------------------------------------------------------- */
+@media (max-width: 900px) {
+  .wg-hero { height: auto; min-height: 0; padding: 72px 24px; }
+  .wg-hero-headline { font-size: clamp(26px, 7vw, 34px); font-weight: 400; letter-spacing: 0; line-height: 1.22; color: var(--green); }
+  .stat-number, .stat-num { font-size: clamp(34px, 9vw, 44px); }
+}
+/* ==== /DESIGN POLISH ==== */
   </style>
 <!--BAKE:AGENT-LD-->
 <script type="application/ld+json" data-baked="1">
@@ -473,8 +656,8 @@
   <header class="page-header">
     <div class="page-eyebrow">For Property Owners</div>
     <h1>The Costa Rica Seller's Guide</h1>
-    <p>What it actually costs to sell property in Costa Rica, how the taxes work, what documents to prepare, and how to walk away with the most — explained plainly by an agent who markets and sells in Guanacaste every day.</p>
-    <div class="guide-note">Updated for 2026. This guide is general information, not legal or tax advice — confirm your specific situation with a licensed Costa Rican attorney and accountant. I can connect you with the ones my clients use.</div>
+    <p>What it actually costs to sell property in Costa Rica, how the taxes work, what documents to prepare, and how to walk away with the most, explained plainly by an agent who markets and sells in Guanacaste every day.</p>
+    <div class="guide-note">Updated for 2026. This guide is general information, not legal or tax advice, confirm your specific situation with a licensed Costa Rican attorney and accountant. I can connect you with the ones my clients use.</div>
   </header>
 
   <!-- TOC -->
@@ -497,8 +680,8 @@
 
     <section class="qa" id="more-than-a-listing">
       <h2>Selling involves more than publishing a listing</h2>
-      <p class="direct">Depending on the property, a sale can require corporate records, tax information, HOA documents, repairs, staging, photography, showings, attorneys, escrow, inspections, and closing requirements — often coordinated from another country.</p>
-      <p>My role is to help identify what's needed, introduce the appropriate independent professionals, and keep communication moving so you aren't managing every detail alone. The marketing side — film, distribution, and the KRAIN network — is covered in <a class="inline" href="how-i-sell.html">How I Sell</a>. A typical sale runs in this order:</p>
+      <p class="direct">Depending on the property, a sale can require corporate records, tax information, HOA documents, repairs, staging, photography, showings, attorneys, escrow, inspections, and closing requirements, often coordinated from another country.</p>
+      <p>My role is to help identify what's needed, introduce the appropriate independent professionals, and keep communication moving so you aren't managing every detail alone. The marketing side, film, distribution, and the KRAIN network, is covered in <a class="inline" href="how-i-sell.html">How I Sell</a>. A typical sale runs in this order:</p>
       <ol>
         <li>Property and pricing strategy</li>
         <li>Documentation and professional introductions</li>
@@ -511,34 +694,34 @@
         <li>Closing preparation</li>
         <li>Post-sale follow-up where appropriate</li>
       </ol>
-      <p>At each step, the attorney, accountant, inspector, escrow provider, or contractor performs their own professional work — my job is to make sure the right people are involved at the right time and that you always know where things stand.</p>
+      <p>At each step, the attorney, accountant, inspector, escrow provider, or contractor performs their own professional work, my job is to make sure the right people are involved at the right time and that you always know where things stand.</p>
     </section>
 
     <section class="qa" id="process">
       <h2>How does selling property work in Costa Rica?</h2>
-      <p class="direct">Costa Rica does not have one mandatory nationwide MLS like the US and Canada — local and brokerage listing systems exist, but coverage varies by region and agency, so your property sells through agent networks, marketing reach, and buyer targeting — not a shared listing feed. Who sees your property is decided almost entirely by how it is marketed.</p>
+      <p class="direct">Costa Rica does not have one mandatory nationwide MLS like the US and Canada, local and brokerage listing systems exist, but coverage varies by region and agency, so your property sells through agent networks, marketing reach, and buyer targeting, not a shared listing feed. Who sees your property is decided almost entirely by how it is marketed.</p>
       <p>That structural difference changes everything about choosing an agent. In the US or Canada, every agent's listing reaches the same MLS audience; here, an agent with professional video, drone content, targeted digital campaigns aimed at US and Canadian buyers, and a real referral network will simply reach more qualified buyers than one who posts photos on a listing site and waits.</p>
-      <p>Once a buyer offers, the mechanics mirror a purchase: a signed purchase and sale agreement, a deposit (usually 10 percent) into SUGEF-regulated escrow, 15 to 30 days of buyer due diligence, then closing before a notary who records the transfer in the National Registry. Most buyers here pay cash, which keeps closings fast — typically 30 to 60 days from accepted offer.</p>
+      <p>Once a buyer offers, the mechanics mirror a purchase: a signed purchase and sale agreement, a deposit (usually 10 percent) into SUGEF-regulated escrow, 15 to 30 days of buyer due diligence, then closing before a notary who records the transfer in the National Registry. Most buyers here pay cash, which keeps closings fast, typically 30 to 60 days from accepted offer.</p>
     </section>
 
     <section class="qa" id="costs">
       <h2>What does it cost to sell?</h2>
-      <p class="direct">The main cost is the agent commission — typically 5 to 6 percent for homes and condos in Guanacaste, often higher for raw land — plus Costa Rica's 13 percent VAT charged on the commission itself.</p>
+      <p class="direct">The main cost is the agent commission, typically 5 to 6 percent for homes and condos in Guanacaste, often higher for raw land, plus Costa Rica's 13 percent VAT charged on the commission itself.</p>
       <p>Transfer taxes, registry stamps, and the notary's transfer work are commonly paid by the buyer in Costa Rica, though everything is negotiable in the contract. Beyond commission, seller-side costs are usually small: bringing corporation filings current, property tax receipts, HOA statements, and any minor repairs surfaced during due diligence.</p>
       <p>Use the <a class="inline" href="#calculator">net proceeds calculator below</a> to see what these numbers mean for your property.</p>
     </section>
 
     <section class="qa" id="capital-gains">
       <h2>How much is the capital gains tax?</h2>
-      <p class="direct">15 percent of your profit — the sale price minus your documented cost basis (what you paid plus documented improvements). Properties acquired before July 1, 2019 can instead opt once to pay 2.25 percent of the gross sale price.</p>
-      <p>That pre-2019 option exists because Costa Rica's capital gains law took effect in mid-2019, and it is often the better deal for long-held properties with large gains — 2.25 percent of the sale price can be far less than 15 percent of a decade of appreciation. A primary residence is generally exempt from the tax entirely.</p>
+      <p class="direct">15 percent of your profit, the sale price minus your documented cost basis (what you paid plus documented improvements). Properties acquired before July 1, 2019 can instead opt once to pay 2.25 percent of the gross sale price.</p>
+      <p>That pre-2019 option exists because Costa Rica's capital gains law took effect in mid-2019, and it is often the better deal for long-held properties with large gains, 2.25 percent of the sale price can be far less than 15 percent of a decade of appreciation. A primary residence is generally exempt from the tax entirely.</p>
       <p>This is the single best reason to keep records: every documented improvement raises your cost basis and lowers the taxable gain. Have a Costa Rican accountant run both calculations before you list, so the tax is a known number and not a closing-week surprise.</p>
     </section>
 
     <section class="qa" id="withholding">
       <h2>What is the 2.5% non-resident withholding?</h2>
       <p class="direct">If you are not domiciled in Costa Rica for tax purposes, the buyer is required to withhold 2.5 percent of the sale price at closing and remit it to the tax authority as an advance on your capital gains tax.</p>
-      <p>It is a prepayment, not an additional tax: the withheld amount is credited against the 15 percent (or 2.25 percent) you actually owe, and the difference is settled when the tax is filed. Most foreign sellers on Costa Rica's North Pacific coast fall under this rule, so build it into your cash-flow expectations for closing day — the calculator below includes it.</p>
+      <p>It is a prepayment, not an additional tax: the withheld amount is credited against the 15 percent (or 2.25 percent) you actually owe, and the difference is settled when the tax is filed. Most foreign sellers on Costa Rica's North Pacific coast fall under this rule, so build it into your cash-flow expectations for closing day, the calculator below includes it.</p>
     </section>
 
   </main>
@@ -582,7 +765,7 @@
           <div class="calc-row"><span>VAT on commission (13%)</span><span id="r-vat">—</span></div>
           <div class="calc-row"><span>Est. capital gains tax</span><span id="r-cg">—</span></div>
           <div class="calc-row total"><span>Estimated net to you</span><span id="r-net">—</span></div>
-          <p class="calc-disclaimer">Estimate only — not tax or legal advice. The 2.5% non-resident withholding at closing is an advance on the capital gains figure shown, not an extra cost. Confirm your numbers with a Costa Rican accountant.</p>
+          <p class="calc-disclaimer">Estimate only, not tax or legal advice. The 2.5% non-resident withholding at closing is an advance on the capital gains figure shown, not an extra cost. Confirm your numbers with a Costa Rican accountant.</p>
         </div>
       </div>
     </div>
@@ -592,13 +775,13 @@
 
     <section class="qa" id="pricing">
       <h2>How should my property be priced?</h2>
-      <p class="direct">To the market, from day one. Without an MLS, public comparable data is thin — real pricing comes from actual closed sales, which only an active local agent sees. Overpricing is the most expensive mistake sellers make here.</p>
-      <p>Guanacaste is full of listings that have sat for years because they were priced on hope and anchored to what a neighbor once asked (not got). Buyers and their agents notice stale listings and discount accordingly, so overpriced properties routinely end up selling for less than they would have with an honest price at launch. Well-priced homes in Tamarindo, Flamingo, and the surrounding communities attract offers in the first months — often from buyers who have been waiting for exactly that property at a real number.</p>
+      <p class="direct">To the market, from day one. Without an MLS, public comparable data is thin, real pricing comes from actual closed sales, which only an active local agent sees. Overpricing is the most expensive mistake sellers make here.</p>
+      <p>Guanacaste is full of listings that have sat for years because they were priced on hope and anchored to what a neighbor once asked (not got). Buyers and their agents notice stale listings and discount accordingly, so overpriced properties routinely end up selling for less than they would have with an honest price at launch. Well-priced homes in Tamarindo, Flamingo, and the surrounding communities attract offers in the first months, often from buyers who have been waiting for exactly that property at a real number.</p>
     </section>
 
     <section class="qa" id="documents">
       <h2>What documents should I prepare before listing?</h2>
-      <p class="direct">Have the full package ready before the listing goes live — deals die in due diligence when sellers scramble for paperwork.</p>
+      <p class="direct">Have the full package ready before the listing goes live, deals die in due diligence when sellers scramble for paperwork.</p>
       <ul>
         <li>Title deed (escritura) and the registered survey map (plano catastrado)</li>
         <li>Up-to-date property tax receipts and Luxury Home Tax filings, if applicable</li>
@@ -606,33 +789,33 @@
         <li>HOA/condo account statements showing you are current</li>
         <li>If held in a corporation: legal books, shareholder registry, and current annual filings</li>
         <li>If selling furnished: a signed inventory list</li>
-        <li>For rental properties: booking history and income records — they are part of your sales pitch</li>
+        <li>For rental properties: booking history and income records, they are part of your sales pitch</li>
       </ul>
       <p>A buyer's attorney will request every item on this list. Producing them the same day keeps momentum; taking three weeks invites renegotiation.</p>
     </section>
 
     <section class="qa" id="corporation">
-      <h2>My property is in a corporation — how does that sale work?</h2>
+      <h2>My property is in a corporation, how does that sale work?</h2>
       <p class="direct">Two routes: an asset sale (the corporation deeds the property to the buyer) or a share transfer (the buyer purchases the corporation itself, and the property never changes registered owners).</p>
-      <p>Share transfers can save the buyer transfer taxes, which sometimes becomes a negotiating chip — but they require deeper due diligence, because the buyer inherits the corporation's entire history, including any liabilities. Either way, the corporation must be current on its annual corporate tax and shareholder declarations before closing. If your filings have lapsed, fix them before listing; it is cheap to cure early and expensive to cure under deadline.</p>
+      <p>Share transfers can save the buyer transfer taxes, which sometimes becomes a negotiating chip, but they require deeper due diligence, because the buyer inherits the corporation's entire history, including any liabilities. Either way, the corporation must be current on its annual corporate tax and shareholder declarations before closing. If your filings have lapsed, fix them before listing; it is cheap to cure early and expensive to cure under deadline.</p>
     </section>
 
     <section class="qa" id="timeline">
       <h2>How long will it take to sell?</h2>
       <p class="direct">Well-priced, well-marketed properties in demand areas can go under contract in weeks. Overpriced or under-marketed ones sit for a year or more. Once under contract, expect 30 to 60 days to close.</p>
-      <p>The two levers you control are price and marketing. The market sets the rest: demand is strongest for turnkey, rental-ready homes and condos in walkable locations, and softer for remote land and half-finished projects. If you need to sell by a date — a 1031 exchange window, a move, a partnership dissolving — tell your agent at the start so the pricing strategy matches the deadline.</p>
+      <p>The two levers you control are price and marketing. The market sets the rest: demand is strongest for turnkey, rental-ready homes and condos in walkable locations, and softer for remote land and half-finished projects. If you need to sell by a date, a 1031 exchange window, a move, a partnership dissolving, tell your agent at the start so the pricing strategy matches the deadline.</p>
     </section>
 
     <section class="qa" id="proceeds">
-      <h2>How do I receive the money — and get it out of Costa Rica?</h2>
+      <h2>How do I receive the money, and get it out of Costa Rica?</h2>
       <p class="direct">The escrow company disburses your proceeds at closing and can wire directly to your US, Canadian, or other foreign account. Your money does not need to sit in Costa Rica at all.</p>
-      <p>Because escrow companies are regulated by SUGEF, the outbound wire involves the same compliance documentation as inbound funds — routine, but faster when planned. Decide the receiving account in advance, ask escrow for their outbound requirements early, and loop in a cross-border tax professional on the reporting side at home (the sale is reportable to the IRS or CRA even though Costa Rica taxed it).</p>
+      <p>Because escrow companies are regulated by SUGEF, the outbound wire involves the same compliance documentation as inbound funds, routine, but faster when planned. Decide the receiving account in advance, ask escrow for their outbound requirements early, and loop in a cross-border tax professional on the reporting side at home (the sale is reportable to the IRS or CRA even though Costa Rica taxed it).</p>
     </section>
 
     <section class="qa" id="furnished">
       <h2>Should I sell furnished?</h2>
-      <p class="direct">On Guanacaste, usually yes. Furnished, turnkey, rental-ready properties are worth more to the typical North American buyer — many are buying precisely so they can rent immediately.</p>
-      <p>For vacation-rental properties, the furniture, the listing's ratings, and future bookings are genuinely part of the asset. Include a signed inventory list in the contract, exclude personal items explicitly, and hand over the rental operation cleanly — reviews, calendars, and guest pipeline included. It is one of the easiest ways to defend a premium price.</p>
+      <p class="direct">On Guanacaste, usually yes. Furnished, turnkey, rental-ready properties are worth more to the typical North American buyer, many are buying precisely so they can rent immediately.</p>
+      <p>For vacation-rental properties, the furniture, the listing's ratings, and future bookings are genuinely part of the asset. Include a signed inventory list in the contract, exclude personal items explicitly, and hand over the rental operation cleanly, reviews, calendars, and guest pipeline included. It is one of the easiest ways to defend a premium price.</p>
     </section>
 
   </main>
@@ -640,7 +823,7 @@
   <!-- CTA -->
   <div class="guide-cta">
     <h3>Thinking about selling?</h3>
-    <p>Tell me about the property and anything that may need resolving before listing. I'll help you evaluate it honestly, organize preparation and professional media, and determine the next practical steps — no obligation.</p>
+    <p>Tell me about the property and anything that may need resolving before listing. I'll help you evaluate it honestly, organize preparation and professional media, and determine the next practical steps, no obligation.</p>
     <div class="btns">
       <a href="https://wa.me/50683028660" target="_blank" rel="noopener" class="solid">WhatsApp Me</a>
       <a href="/#form-section" class="ghost">Request a Valuation</a>
@@ -653,15 +836,15 @@
   <section style="max-width:900px;margin:0 auto;padding:20px 48px 70px;">
     <h2 style="font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);margin-bottom:14px;">Sources &amp; Verification</h2>
     <p style="font-size:13px;line-height:1.7;color:var(--stone);margin-top:14px;">Attorneys, escrow providers, inspectors, surveyors, contractors, property managers, and other specialists mentioned on this site are independent service providers. Clients select and engage third-party professionals directly and should conduct their own evaluation before retaining any provider.</p>
-    <p style="font-size:13px;line-height:1.7;color:var(--stone);margin-bottom:12px;">Figures and rules referenced in this guide come from Costa Rica's official bodies. Verify current requirements directly — rules change:</p>
+    <p style="font-size:13px;line-height:1.7;color:var(--stone);margin-bottom:12px;">Figures and rules referenced in this guide come from Costa Rica's official bodies. Verify current requirements directly, rules change:</p>
     <ul style="font-size:13px;line-height:1.9;color:var(--sand);margin:0 0 16px 18px;">
-      <li><a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Registro Nacional</a> — property titles &amp; the National Registry</li>
-      <li><a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Ministerio de Hacienda</a> — taxes, transfer tax, capital gains</li>
-      <li><a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Direcci&oacute;n General de Migraci&oacute;n</a> — residency &amp; immigration</li>
-      <li><a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:var(--terra);">SUGEF</a> — banking supervision &amp; funds registration</li>
-      <li><a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Instituto Costarricense de Turismo (ICT)</a> — tourism &amp; short-term rental rules</li>
+      <li><a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Registro Nacional</a>property titles &amp; the National Registry</li>
+      <li><a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Ministerio de Hacienda</a>taxes, transfer tax, capital gains</li>
+      <li><a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Direcci&oacute;n General de Migraci&oacute;n</a>residency &amp; immigration</li>
+      <li><a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:var(--terra);">SUGEF</a>banking supervision &amp; funds registration</li>
+      <li><a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Instituto Costarricense de Turismo (ICT)</a>tourism &amp; short-term rental rules</li>
     </ul>
-    <p style="font-size:12px;line-height:1.7;color:var(--stone);">This guide is general information, not legal, tax, immigration, or financial advice — consult qualified Costa Rican professionals before acting. Author: <a href="about.html" style="color:var(--terra);">Tiago Leao</a>, KRAIN Luxury Real Estate. Last reviewed: July 2026.</p>
+    <p style="font-size:12px;line-height:1.7;color:var(--stone);">This guide is general information, not legal, tax, immigration, or financial advice, consult qualified Costa Rican professionals before acting. Author: <a href="about.html" style="color:var(--terra);">Tiago Leao</a>, KRAIN Luxury Real Estate. Last reviewed: July 2026.</p>
   </section>
 
   <footer>

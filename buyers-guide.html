@@ -101,6 +101,9 @@
   </script>
 
   <link rel="stylesheet" href="fonts.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -150,7 +153,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(255,255,255,.92);
+      background: rgba(247,244,239,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
@@ -368,6 +371,186 @@
     .nav-mobile-group a:first-of-type { margin-top: 4px; }
     .nav-mobile-group[open] { padding-bottom: 10px; }
   
+  
+/* ==== DESIGN POLISH ====================================================
+   The one place the site's colors, type and shared polish live.
+
+   Every page carries its own <style> block, so this file is INLINED into
+   each page by scripts/apply-design.py (look for the DESIGN-POLISH markers).
+   Edit here, run the script, never edit the inlined copies.
+
+   Variable names: the legacy names are inverted (--black is the page ground,
+   --cream is the dark heading color, --terra is brand green). They are kept
+   so 20k lines of existing CSS keep working; the new semantic names below
+   point at the same values. Use the semantic names in new code.
+   ===================================================================== */
+:root {
+  /* brand */
+  --green:        #2d422d;   /* deep green: headings, links, the one dark band per page */
+  --green-soft:   #3d533d;   /* hover on green, secondary dark surfaces */
+  --cream-brand:  #eee8e0;   /* brand cream: soft bands, quote block, buttons on green */
+  --orange:       #d37234;   /* accent only: hero full stop, rules, hover highlights */
+  --orange-deep:  #b85b22;   /* primary buttons (white text passes AA: 4.6:1) */
+  --orange-ink:   #984916;   /* orange as text on light backgrounds */
+  --sage:         #b1b7a9;   /* borders, dividers, rules */
+  --sage-soft:    #e6e9e3;   /* very light sage band */
+  --sage-ink:     #636a60;   /* muted captions (4.5:1 on cream) */
+  /* neutrals */
+  --bg:           #f7f4ef;   /* page ground: a lighter tint of the cream */
+  --surface:      #ffffff;   /* cards, nav, fields */
+  --ink:          #30312f;   /* body text, the greyish black */
+  --ink-soft:     #5c6058;   /* secondary text */
+  --line:         rgba(45,66,45,0.14);
+  --line-strong:  rgba(45,66,45,0.28);
+  /* legacy names → new values */
+  --black:        var(--bg);
+  --charcoal:     var(--surface);
+  --charcoal-warm: var(--cream-brand);
+  --cream:        var(--green);
+  --sand:         var(--ink);
+  --stone:        var(--ink-soft);
+  --terra:        var(--green);
+  --accent:       var(--orange);
+  --accent-soft:  #e5945c;
+  --accent-ink:   var(--orange-ink);
+  /* type */
+  --font:       "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  /* spacing scale (8px base) */
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-6: 48px; --s-8: 64px; --s-12: 96px; --s-16: 128px;
+  --section-y: clamp(72px, 9vw, 120px);
+  --radius: 10px;
+  --shadow-card: 0 10px 30px rgba(45,66,45,0.08);
+}
+
+body { background: var(--bg); color: var(--ink); }
+
+/* ---- Type hierarchy: calmer weights, fewer sizes -------------------- */
+h1, h2, h3,
+[class*="title"], [class*="headline"], .about-name, .footer-name, .properties-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+h1, .hero-headline, .about-name, .properties-title, .detail-title, .article-title, .sch-title { line-height: 1.08; }
+h4, h5, h6, strong, b { font-weight: 500; }
+p { text-wrap: pretty; }
+
+/* Cormorant, in small doses: eyebrow labels */
+.section-label, .hero-eyebrow, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .surf-kicker,
+.tcard-kicker, .poc-label, .wg-hero-label, .faq-label, .detail-eyebrow, .listings-label,
+.sidebar-label, .similar-label, .map-label, .article-tag, .blog-card-tag, .related-card-tag,
+.sch-cta-label, .krain-label {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Cormorant: the four stats and other large figures */
+.stat-number, .stat-num, .krain-num {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(40px, 4vw, 54px);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.stat-number sup { font-size: 0.45em; color: var(--orange); vertical-align: super; font-family: var(--font); font-weight: 400; }
+.stat-label { font-size: 12px; letter-spacing: 0.12em; white-space: nowrap; }
+/* Cormorant: quotes and testimonials */
+blockquote, .review-text, .review-quote, .quote, .pull-quote, .testimonial-text {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.5;
+}
+
+/* ---- Spacing scale ---------------------------------------------------- */
+section, .poc { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+
+/* ---- Buttons: orange only on the primary action ----------------------- */
+.btn-primary, .facts-cta, .sch-cta-btn, .featured-btn, .btn-view-all, .article-cta a, .btn-next,
+.form-submit, .success-cta, .guide-cta a.btn, .about-cta a.btn {
+  background: var(--orange-deep);
+  color: #fff;
+  border-color: var(--orange-deep);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  box-shadow: none;
+}
+.btn-primary:hover, .facts-cta:hover, .sch-cta-btn:hover, .featured-btn:hover, .btn-view-all:hover,
+.article-cta a:hover, .btn-next:hover, .form-submit:hover, .success-cta:hover {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+/* Over the hero footage the button stays white and lights up orange */
+#hero .btn-primary { background: #fff; color: var(--green); border-color: #fff; }
+#hero .btn-primary:hover { background: var(--orange-deep); color: #fff; border-color: var(--orange-deep); }
+nav.scrolled { background: rgba(247,244,239,0.92); border-bottom-color: var(--line); }
+
+/* ---- Cards: photo-forward, quiet text, one soft shadow --------------- */
+.property-card, .blog-card, .featured-card, .tcard, .pcard, .sim-card, .related-card, .school-card, .dev-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+.property-card:hover, .blog-card:hover, .featured-card:hover, .tcard:hover, .pcard:hover, .sim-card:hover,
+.related-card:hover, .school-card:hover, .dev-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--line-strong);
+}
+.prop-price, .property-price, .sim-price { font-weight: 500; letter-spacing: -0.01em; }
+.prop-meta, .prop-name, .pcard-name, .tcard-name { color: var(--ink-soft); }
+.prop-name, .pcard-name { color: var(--ink); }
+
+/* ---- Lines and rules in sage, not black ------------------------------ */
+hr, .body-hr, .about-stats, #about, #why, #form-section, #footer, .article-byline {
+  border-color: var(--line) !important;
+}
+
+/* ---- The tagline band: cream, Cormorant, modest ----------------------- */
+.wg-hero {
+  background: var(--cream-brand);
+  background-image: none;
+  height: auto;
+  min-height: 0;
+  padding: clamp(88px, 11vw, 150px) 24px;
+  justify-content: center;
+}
+.wg-hero-overlay { display: none; }
+.wg-hero-content { max-width: 880px; margin: 0 auto; padding: 0; text-align: center; }
+.wg-hero-headline {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 48px);
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--green);
+  margin-bottom: 22px;
+}
+.wg-hero-headline em { font-style: italic; font-weight: 400; }
+.wg-hero-attr { text-align: center; }
+.wg-hero-attr-name { color: var(--sage-ink); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
+.footer-tagline-line { font-family: var(--font-serif); font-size: 19px; color: rgba(238,232,224,0.78); margin-top: 18px; letter-spacing: 0.01em; }
+
+/* ---- Hero over footage: lighter weight, keep contrast ---------------- */
+.hero-headline { font-weight: 500; }
+.hero-headline .hl-dot { color: var(--orange); }
+
+/* ---- Reduce competing color: labels in green, not orange, on light ---- */
+.section-label, .page-eyebrow, .about-eyebrow, .eyebrow, .kicker, .detail-eyebrow { color: var(--green); }
+.section-label::before, .hero-eyebrow::before { background: var(--sage); }
+
+/* ---- Mobile ----------------------------------------------------------- */
+@media (max-width: 900px) {
+  .wg-hero { height: auto; min-height: 0; padding: 72px 24px; }
+  .wg-hero-headline { font-size: clamp(26px, 7vw, 34px); font-weight: 400; letter-spacing: 0; line-height: 1.22; color: var(--green); }
+  .stat-number, .stat-num { font-size: clamp(34px, 9vw, 44px); }
+}
+/* ==== /DESIGN POLISH ==== */
   </style>
 <!--BAKE:AGENT-LD-->
 <script type="application/ld+json" data-baked="1">
@@ -443,8 +626,8 @@
   <header class="page-header">
     <div class="page-eyebrow">For American &amp; Canadian Buyers</div>
     <h1>The Costa Rica Expat Buyer's Guide</h1>
-    <p>Every question North American buyers ask before purchasing property in Costa Rica — escrow, wiring money, taxes, land titles, and the process — answered plainly by an agent who lives and works in Guanacaste.</p>
-    <div class="guide-note">Updated for 2026. This guide is general information, not legal or tax advice — confirm your specific situation with a licensed Costa Rican attorney. I can connect you with the ones my clients use.</div>
+    <p>Every question North American buyers ask before purchasing property in Costa Rica, escrow, wiring money, taxes, land titles, and the process, answered plainly by an agent who lives and works in Guanacaste.</p>
+    <div class="guide-note">Updated for 2026. This guide is general information, not legal or tax advice, confirm your specific situation with a licensed Costa Rican attorney. I can connect you with the ones my clients use.</div>
   </header>
 
   <!-- TOC -->
@@ -468,33 +651,33 @@
 
     <section class="qa" id="not-alone">
       <h2>You do not have to coordinate this alone</h2>
-      <p class="direct">This guide explains the general buying process. How much of it you want handled for you is up to you — especially if you're managing the purchase from abroad.</p>
-      <p>I help buyers compare <a class="inline" href="communities.html">communities</a> and properties, organize showings, prepare for offers, and — when wanted — connect with independent attorneys, escrow providers, inspectors, surveyors, lenders, property managers, and other professionals. You're welcome to work with your existing professional team; when additional local support is needed, I can help identify and introduce the appropriate independent specialists. Either way, I remain your local real estate point of contact, in English, Spanish, or Portuguese.</p>
+      <p class="direct">This guide explains the general buying process. How much of it you want handled for you is up to you, especially if you're managing the purchase from abroad.</p>
+      <p>I help buyers compare <a class="inline" href="communities.html">communities</a> and properties, organize showings, prepare for offers, and, when wanted, connect with independent attorneys, escrow providers, inspectors, surveyors, lenders, property managers, and other professionals. You're welcome to work with your existing professional team; when additional local support is needed, I can help identify and introduce the appropriate independent specialists. Either way, I remain your local real estate point of contact, in English, Spanish, or Portuguese.</p>
     </section>
 
     <section class="qa" id="ownership">
       <h2>Can foreigners own property in Costa Rica?</h2>
-      <p class="direct">Yes. Foreigners have the same ownership rights as Costa Rican citizens for titled (fee simple) property. You can own it outright in your own name — no residency requirement, no local partner, no special permits.</p>
+      <p class="direct">Yes. Foreigners have the same ownership rights as Costa Rican citizens for titled (fee simple) property. You can own it outright in your own name, no residency requirement, no local partner, no special permits.</p>
       <p>Ownership is recorded in Costa Rica's centralized National Registry (Registro Nacional), and every closing is handled by a notary attorney who verifies clean title before the transfer is recorded. This is one of the strongest property-rights frameworks for foreigners anywhere in Latin America, and it is the main reason the Guanacaste market is dominated by American and Canadian buyers.</p>
     </section>
 
     <section class="qa" id="titles">
       <h2>What is the difference between fee simple and concession land?</h2>
-      <p class="direct">Fee simple (titled) property is full, permanent ownership — identical in effect to owning in the US or Canada. Concession land is government-owned coastal land you lease through a municipality, with real restrictions for foreigners. Always confirm which one a listing is before offering.</p>
-      <p>Costa Rica protects its coastline through the Maritime Terrestrial Zone (Zona Marítimo Terrestre): the first 200 meters of land measured from the high-tide line. The first 50 meters is public — it can never be owned, fenced, or built on, which is why every beach in Costa Rica is public. The next 150 meters is the restricted zone, where the municipality grants renewable concessions, typically for 20 years.</p>
+      <p class="direct">Fee simple (titled) property is full, permanent ownership, identical in effect to owning in the US or Canada. Concession land is government-owned coastal land you lease through a municipality, with real restrictions for foreigners. Always confirm which one a listing is before offering.</p>
+      <p>Costa Rica protects its coastline through the Maritime Terrestrial Zone (Zona Marítimo Terrestre): the first 200 meters of land measured from the high-tide line. The first 50 meters is public, it can never be owned, fenced, or built on, which is why every beach in Costa Rica is public. The next 150 meters is the restricted zone, where the municipality grants renewable concessions, typically for 20 years.</p>
       <ul>
         <li>Non-resident foreigners generally cannot hold more than 49 percent of a concession (five years of legal residency changes this).</li>
         <li>Concessions must be renewed, carry annual canon fees, and can have use restrictions.</li>
-        <li>Titled property inside beach towns like Tamarindo and Flamingo does exist — including some parcels with historic titles near the water — and is usually the cleaner, more liquid choice.</li>
+        <li>Titled property inside beach towns like Tamarindo and Flamingo does exist, including some parcels with historic titles near the water, and is usually the cleaner, more liquid choice.</li>
       </ul>
       <p>A low price on "beachfront" often reflects concession status. It is not automatically a deal-breaker, but you must know what you are buying and price it accordingly. Your attorney's title study settles the question definitively.</p>
     </section>
 
     <section class="qa" id="escrow">
       <h2>How does escrow work in Costa Rica?</h2>
-      <p class="direct">Costa Rica uses licensed third-party escrow companies regulated by SUGEF, the national banking regulator. Your deposit — usually 10 percent — goes into escrow, not to the seller, and is released at closing only when the transfer deed is signed and every condition is met.</p>
+      <p class="direct">Costa Rica uses licensed third-party escrow companies regulated by SUGEF, the national banking regulator. Your deposit, usually 10 percent, goes into escrow, not to the seller, and is released at closing only when the transfer deed is signed and every condition is met.</p>
       <p>The flow looks like this: you sign the purchase and sale agreement, wire your deposit to the escrow company, and the funds sit protected while your attorney completes due diligence. If due diligence turns up a problem covered by your contingencies, the deposit comes back to you. At closing, escrow disburses to the seller, the notary, and anyone else on the settlement statement, all in one coordinated step.</p>
-      <p>Two practical tips: only use an escrow company registered with SUGEF (your agent and attorney will have established ones they work with), and open the escrow file early — the account setup involves compliance paperwork that is faster to complete before you are up against a closing date.</p>
+      <p>Two practical tips: only use an escrow company registered with SUGEF (your agent and attorney will have established ones they work with), and open the escrow file early, the account setup involves compliance paperwork that is faster to complete before you are up against a closing date.</p>
     </section>
 
     <div class="coord-note">When a transaction moves forward, I can introduce established independent escrow providers and help coordinate timing and communication with your attorney.</div>
@@ -502,14 +685,14 @@
     <section class="qa" id="sugef">
       <h2>What is SUGEF, and why does it matter when I wire money?</h2>
       <p class="direct">SUGEF (Superintendencia General de Entidades Financieras) is Costa Rica's banking regulator. Its anti-money-laundering rules require any bank or escrow company receiving your funds to document exactly where the money came from before accepting it.</p>
-      <p>This is the step that surprises North American buyers most. It is called "know your customer," and it means you will be asked for evidence of the source of your funds — commonly some combination of:</p>
+      <p>This is the step that surprises North American buyers most. It is called "know your customer," and it means you will be asked for evidence of the source of your funds, commonly some combination of:</p>
       <ul>
         <li>Bank or brokerage statements showing the funds accumulating</li>
         <li>Recent tax returns</li>
         <li>A closing statement if the money came from selling a property</li>
         <li>Business ownership or salary documentation</li>
       </ul>
-      <p>None of this is a barrier — it is routine compliance, and tens of thousands of foreigners wire purchase funds into Costa Rica every year. The key is to prepare the documents at the start of your purchase instead of scrambling at closing. When buyers hit delays moving money, missing source-of-funds paperwork is almost always the reason.</p>
+      <p>None of this is a barrier, it is routine compliance, and tens of thousands of foreigners wire purchase funds into Costa Rica every year. The key is to prepare the documents at the start of your purchase instead of scrambling at closing. When buyers hit delays moving money, missing source-of-funds paperwork is almost always the reason.</p>
     </section>
 
     <section class="qa" id="closing-costs">
@@ -520,49 +703,49 @@
 
     <section class="qa" id="taxes">
       <h2>What taxes do property owners pay each year?</h2>
-      <p class="direct">The annual property tax is 0.25 percent of registered value — about $1,250 a year on a $500,000 property. That is a fraction of typical US and Canadian property tax rates.</p>
+      <p class="direct">The annual property tax is 0.25 percent of registered value, about $1,250 a year on a $500,000 property. That is a fraction of typical US and Canadian property tax rates.</p>
       <p>It is paid to the local municipality, usually quarterly or annually. On top of that, two situational taxes may apply: the Luxury Home Tax on higher-value construction (next question), and, if you rent your property to tourists, Costa Rica's 13 percent VAT (IVA) on rental income plus registration with the tourism board (ICT). If you hold the property in a corporation, add a small annual corporation tax and filings.</p>
     </section>
 
     <section class="qa" id="luxury-tax">
       <h2>What is the Luxury Home Tax (Impuesto Solidario)?</h2>
       <p class="direct">A separate annual tax that applies only when a home's construction value exceeds a threshold the tax authority adjusts every year. Qualifying homes pay progressive rates from 0.25 percent up to 0.55 percent, filed each January.</p>
-      <p>Two details matter. First, the trigger is <strong>construction value</strong>, not total property value — a spectacular lot with a modest house may owe nothing, while a large new build on cheap land may qualify. Second, the threshold moves annually, so have your attorney or accountant confirm the current figure and whether your home crosses it. Many properties on this coast fall under the threshold; the high-end ocean-view estates generally do not, and for them this tax is a known, modest carrying cost rather than a surprise.</p>
+      <p>Two details matter. First, the trigger is <strong>construction value</strong>, not total property value, a spectacular lot with a modest house may owe nothing, while a large new build on cheap land may qualify. Second, the threshold moves annually, so have your attorney or accountant confirm the current figure and whether your home crosses it. Many properties on this coast fall under the threshold; the high-end ocean-view estates generally do not, and for them this tax is a known, modest carrying cost rather than a surprise.</p>
     </section>
 
     <section class="qa" id="corporation">
       <h2>Should I buy in my own name or through a corporation?</h2>
-      <p class="direct">Both are common. A Costa Rican corporation (S.A. or SRL) can simplify estate planning, shared ownership, and future resale — but if you plan to use the purchase for Inversionista residency, the property must be registered in your personal name.</p>
+      <p class="direct">Both are common. A Costa Rican corporation (S.A. or SRL) can simplify estate planning, shared ownership, and future resale, but if you plan to use the purchase for Inversionista residency, the property must be registered in your personal name.</p>
       <p>Corporations carry small annual taxes and reporting obligations. There is no single right answer: a retired couple planning residency usually buys personally; partners splitting an investment property usually use an SRL. Decide with your attorney before closing, because changing how you hold title afterward costs time and transfer taxes.</p>
     </section>
 
     <section class="qa" id="financing">
       <h2>Can I get a mortgage in Costa Rica?</h2>
-      <p class="direct">Local financing for non-residents is limited and expensive, so most purchases here are cash. Buyers who want leverage typically borrow against assets back home — a HELOC, portfolio loan, or refinance — or negotiate seller financing.</p>
+      <p class="direct">Local financing for non-residents is limited and expensive, so most purchases here are cash. Buyers who want leverage typically borrow against assets back home, a HELOC, portfolio loan, or refinance, or negotiate seller financing.</p>
       <p>Seller financing is more common in Costa Rica than most North Americans expect, particularly on land and at the higher end: a meaningful down payment with the balance over two to five years is a structure sellers will often entertain. If you need leverage, tell your agent early so it shapes which properties and sellers you target.</p>
     </section>
 
-    <div class="coord-note">When financing is part of the plan, I can connect you with lenders and financing contacts active in this market — evaluate all terms and eligibility independently before committing.</div>
+    <div class="coord-note">When financing is part of the plan, I can connect you with lenders and financing contacts active in this market, evaluate all terms and eligibility independently before committing.</div>
 
     <section class="qa" id="due-diligence">
       <h2>What does due diligence actually check?</h2>
       <p class="direct">Your independent attorney verifies title at the National Registry, checks liens and easements, confirms the survey map (plano catastrado) matches reality, verifies a water letter (carta de agua), and reviews permits and concession status. It typically takes 15 to 30 days.</p>
-      <p>The water letter deserves special mention: legal water availability is the make-or-break issue for building lots in Guanacaste, and a property without documented water is worth dramatically less than one with it. This is also where the fee-simple-versus-concession question is settled with certainty. Due diligence is the single most important protection you have as a foreign buyer — never waive it, and never use the seller's attorney to do it.</p>
+      <p>The water letter deserves special mention: legal water availability is the make-or-break issue for building lots in Guanacaste, and a property without documented water is worth dramatically less than one with it. This is also where the fee-simple-versus-concession question is settled with certainty. Due diligence is the single most important protection you have as a foreign buyer, never waive it, and never use the seller's attorney to do it.</p>
     </section>
 
-    <div class="coord-note">During due diligence I help keep the buyer, attorney, inspector, surveyor and seller aligned while each specialist gives their own independent professional advice — the full document list is in my <a href="/blog/costa-rica-property-due-diligence-checklist/">due-diligence checklist</a>.</div>
+    <div class="coord-note">During due diligence I help keep the buyer, attorney, inspector, surveyor and seller aligned while each specialist gives their own independent professional advice, the full document list is in my <a href="/blog/costa-rica-property-due-diligence-checklist/">due-diligence checklist</a>.</div>
 
     <section class="qa" id="capital-gains">
       <h2>What happens tax-wise when I sell?</h2>
       <p class="direct">Costa Rica charges 15 percent capital gains tax on your profit when you sell. A primary residence is generally exempt.</p>
-      <p>Because the tax applies to the gain rather than the sale price, keep clean records of your purchase price and every documented improvement — they raise your cost basis and lower the taxable gain. Costa Rica's system is territorial, so your income from outside the country is generally not taxed here; Americans still file with the IRS wherever they live, and Canadians have their own non-residency rules, so use a cross-border tax professional.</p>
+      <p>Because the tax applies to the gain rather than the sale price, keep clean records of your purchase price and every documented improvement, they raise your cost basis and lower the taxable gain. Costa Rica's system is territorial, so your income from outside the country is generally not taxed here; Americans still file with the IRS wherever they live, and Canadians have their own non-residency rules, so use a cross-border tax professional.</p>
     </section>
 
     <div class="coord-note">Support doesn't necessarily end at closing. When appropriate, I can help connect owners with property managers, insurance contacts, contractors, utility providers, furnishing suppliers, and other local services.</div>
 
     <section class="qa" id="residency">
       <h2>Does buying property qualify me for residency?</h2>
-      <p class="direct">Yes. A real estate investment of at least $150,000 US, registered in your personal name, qualifies you to apply for Inversionista (investor) temporary residency — and one qualifying purchase covers your spouse and dependent children.</p>
+      <p class="direct">Yes. A real estate investment of at least $150,000 US, registered in your personal name, qualifies you to apply for Inversionista (investor) temporary residency, and one qualifying purchase covers your spouse and dependent children.</p>
       <p>After three years of temporary residency you can apply for permanent residency, and citizenship becomes possible after seven. At Guanacaste prices, $150,000 is the entry point of the market, so most purchases qualify comfortably. I wrote a complete guide covering all three residency paths, healthcare, and timelines: <a class="inline" href="/blog/costa-rica-residency-property-buyers/">How Americans and Canadians Can Get Residency in Costa Rica</a>.</p>
     </section>
 
@@ -571,7 +754,7 @@
   <!-- CTA -->
   <div class="guide-cta">
     <h3>Have a question this page didn't answer?</h3>
-    <p>Tell me what you're looking for, what feels uncertain, and where you are in the process — I'll help you identify the next practical step. I answer every message myself, in English, Spanish, or Portuguese.</p>
+    <p>Tell me what you're looking for, what feels uncertain, and where you are in the process: I'll help you identify the next practical step. I answer every message myself, in English, Spanish, or Portuguese.</p>
     <div class="btns">
       <a href="https://wa.me/50683028660" target="_blank" rel="noopener" class="solid">WhatsApp Me</a>
       <a href="/#form-section" class="ghost">Send a Message</a>
@@ -584,15 +767,15 @@
   <section style="max-width:900px;margin:0 auto;padding:20px 48px 70px;">
     <h2 style="font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra);margin-bottom:14px;">Sources &amp; Verification</h2>
     <p style="font-size:13px;line-height:1.7;color:var(--stone);margin-top:14px;">Attorneys, escrow providers, inspectors, surveyors, contractors, property managers, and other specialists mentioned on this site are independent service providers. Clients select and engage third-party professionals directly and should conduct their own evaluation before retaining any provider.</p>
-    <p style="font-size:13px;line-height:1.7;color:var(--stone);margin-bottom:12px;">Figures and rules referenced in this guide come from Costa Rica's official bodies. Verify current requirements directly — rules change:</p>
+    <p style="font-size:13px;line-height:1.7;color:var(--stone);margin-bottom:12px;">Figures and rules referenced in this guide come from Costa Rica's official bodies. Verify current requirements directly, rules change:</p>
     <ul style="font-size:13px;line-height:1.9;color:var(--sand);margin:0 0 16px 18px;">
-      <li><a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Registro Nacional</a> — property titles &amp; the National Registry</li>
-      <li><a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Ministerio de Hacienda</a> — taxes, transfer tax, capital gains</li>
-      <li><a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Direcci&oacute;n General de Migraci&oacute;n</a> — residency &amp; immigration</li>
-      <li><a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:var(--terra);">SUGEF</a> — banking supervision &amp; funds registration</li>
-      <li><a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Instituto Costarricense de Turismo (ICT)</a> — tourism &amp; short-term rental rules</li>
+      <li><a href="https://www.registronacional.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Registro Nacional</a>property titles &amp; the National Registry</li>
+      <li><a href="https://www.hacienda.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Ministerio de Hacienda</a>taxes, transfer tax, capital gains</li>
+      <li><a href="https://www.migracion.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Direcci&oacute;n General de Migraci&oacute;n</a>residency &amp; immigration</li>
+      <li><a href="https://www.sugef.fi.cr" target="_blank" rel="noopener" style="color:var(--terra);">SUGEF</a>banking supervision &amp; funds registration</li>
+      <li><a href="https://www.ict.go.cr" target="_blank" rel="noopener" style="color:var(--terra);">Instituto Costarricense de Turismo (ICT)</a>tourism &amp; short-term rental rules</li>
     </ul>
-    <p style="font-size:12px;line-height:1.7;color:var(--stone);">This guide is general information, not legal, tax, immigration, or financial advice — consult qualified Costa Rican professionals before acting. Author: <a href="about.html" style="color:var(--terra);">Tiago Leao</a>, KRAIN Luxury Real Estate. Last reviewed: July 2026.</p>
+    <p style="font-size:12px;line-height:1.7;color:var(--stone);">This guide is general information, not legal, tax, immigration, or financial advice, consult qualified Costa Rican professionals before acting. Author: <a href="about.html" style="color:var(--terra);">Tiago Leao</a>, KRAIN Luxury Real Estate. Last reviewed: July 2026.</p>
   </section>
 
   <footer>
