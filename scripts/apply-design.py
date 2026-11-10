@@ -9,7 +9,6 @@ into each one. This script does that copy, idempotently:
     rules win over the page's own rules at equal specificity.
   * A Google Fonts link for Cormorant Garamond (regular 400/500 + italic 400,
     display=swap) goes in right after the fonts.css link, with preconnects.
-  * The white nav backgrounds become the cream page tint.
 
 Run from the repo root after editing design.css:  python3 scripts/apply-design.py
 Templates (property-detail.html, blog-post.html, school.html, development.html)
@@ -72,7 +71,7 @@ def main():
     n = 0
     for f in pages():
         doc = open(f, encoding="utf-8").read()
-        new = tint_nav(add_fonts(inline_polish(doc, css)))
+        new = add_fonts(inline_polish(doc, css))
         if new != doc:
             open(f, "w", encoding="utf-8").write(new)
             n += 1

@@ -1292,11 +1292,11 @@ SIGNATURE_TEMPLATE = """<!DOCTYPE html>
 <link rel="stylesheet" href="/fonts.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--teal:#2d422d;--teal-deep:#182518;--ink:#30312f;--stone:#5c6058;--bg:#eee8e0;--cream:#f7f4ef;--line:rgba(45,66,45,.14)}
+:root{--teal:#2d422d;--teal-deep:#182518;--ink:#30312f;--stone:#5c6058;--bg:#ffffff;--cream:#eee8e0;--line:rgba(45,66,45,.14)}
 body{background:var(--bg);color:var(--ink);font-family:"Neue Haas Grotesk Display Pro","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55}
 a{color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
-header{position:sticky;top:0;z-index:50;background:rgba(238,232,224,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(48,49,47,.07)}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(48,49,47,.07)}
 .hrow{display:flex;align-items:center;justify-content:space-between;height:66px}
 .mark{text-decoration:none;line-height:1.05}
 .mark b{display:block;font-weight:700;font-size:15px;letter-spacing:.06em}

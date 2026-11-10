@@ -122,7 +122,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 28px 48px;
-      background: rgba(247,244,239,.92);
+      background: rgba(255,255,255,.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
@@ -378,7 +378,7 @@
   --sage-soft:    #e6e9e3;   /* very light sage band */
   --sage-ink:     #636a60;   /* muted captions (4.5:1 on cream) */
   /* neutrals */
-  --bg:           #f7f4ef;   /* page ground: a lighter tint of the cream */
+  --bg:           #ffffff;   /* page ground stays white (Tiago's call); cream only on bands */
   --surface:      #ffffff;   /* cards, nav, fields */
   --ink:          #30312f;   /* body text, the greyish black */
   --ink-soft:     #5c6058;   /* secondary text */
@@ -469,7 +469,7 @@ section, .poc { padding-top: var(--section-y); padding-bottom: var(--section-y);
 /* Over the hero footage the button stays white and lights up orange */
 #hero .btn-primary { background: #fff; color: var(--green); border-color: #fff; }
 #hero .btn-primary:hover { background: var(--orange-deep); color: #fff; border-color: var(--orange-deep); }
-nav.scrolled { background: rgba(247,244,239,0.92); border-bottom-color: var(--line); }
+nav.scrolled { background: rgba(255,255,255,0.92); border-bottom-color: var(--line); }
 
 /* ---- Cards: photo-forward, quiet text, one soft shadow --------------- */
 .property-card, .blog-card, .featured-card, .tcard, .pcard, .sim-card, .related-card, .school-card, .dev-card {
