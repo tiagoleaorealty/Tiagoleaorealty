@@ -86,3 +86,9 @@ Site content states these as fact; each needs sign-off from a licensed Costa Ric
 - Land-cover notes (potrero is the largest share, montaña on the east side, tacotal on the south boundary, creek, internal roads, frontage by Route 34) are read off the plan
 - Gabriel Sáenz bio restates the owner proposal (Florida-licensed, based in the U.S.); phone +1 (954) 595-7719 added 2026-10-01, no email on the page yet
 - Tiago is shown under soldbytiago Real Estate Group (the logo supplied); KRAIN is not mentioned on this page
+
+## Blog: cost of living in Guanacaste (added 2026-11-16) — Tiago to confirm the ranges
+- Every dollar figure is an estimate written from the budgets Tiago sees, not a published statistic: rents by town and bedroom count, HOA ranges ($150–600 condos, $300–900 gated homes), electricity $80–300, water $20–60, fiber $50–80, Starlink $80–120, mobile $20–40, propane $15–20, groceries ($600–900 couple / $900–1,400 family), casado $7–10, dinner for two $60–120, used SUV $18–30k, fuel $5–6/gal, car insurance $80–150/mo, private health insurance $100–300/person, private doctor $60–120, dental cleaning $50–80, school tuition $8–20k/yr, the three sample budgets, and the "20–40% more than the Central Valley" line
+- CAJA 9–11% and property tax 0.25% are restated from existing articles and inherit their open items
+- "Import duties on a container often exceed the value of what is inside" is a generalization; soften if Tiago disagrees
+- Cover photo communities/flamingo.jpg is an existing site asset (Flamingo aerial)
